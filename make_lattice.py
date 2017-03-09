@@ -42,7 +42,7 @@ if 0:
 
 if 0:
     i = -1
-    j = -.1
+    j = -.5
     j12 = np.zeros([n_sites,n_sites])+j*(np.random.rand(n_sites,n_sites)-.5)
     j12 = np.zeros([n_sites,n_sites])+j
 
@@ -62,7 +62,7 @@ if 0:
 
 if 1:
     b = 2 # block size
-    n_blocks = 4
+    n_blocks = 3
     n_sites = n_blocks*b
     
     i = -1

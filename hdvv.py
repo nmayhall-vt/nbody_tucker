@@ -15,13 +15,6 @@ def form_hdvv_H(lattice,j12):
     """
     n_sites = len(lattice)
     n_configs = np.power(2,n_sites) 
-    
-    print " Lattice: ", lattice
-    print
-    print " J12"
-    print j12
-    print
-
 
     sx = .5*np.array([[0,1.],[1.,0]])
     sy = .5*np.array([[0,(0-1j)],[(0+1j),0]])
@@ -59,7 +52,6 @@ def form_hdvv_H(lattice,j12):
                 i1 = np.eye(np.power(2,si))
                 i2 = np.eye(np.power(2,sj-si-1))
                 i3 = np.eye(np.power(2,n_sites-sj-1))
-                print si,sj
                 #print
                 #print "i1\n", i1 
                 #print "i2\n", i2 
