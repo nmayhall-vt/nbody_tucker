@@ -61,7 +61,7 @@ if 0:
     print j12
 
 if 1:
-    b = 2 # block size
+    b = 4 # block size
     n_blocks = 3
     n_sites = n_blocks*b
     
