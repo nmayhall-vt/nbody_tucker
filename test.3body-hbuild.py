@@ -58,6 +58,7 @@ def form_compressed_hamiltonian(vecs,Hi,Hij):
         dims.extend([v.shape[1]])
     H = np.zeros((dim,dim))
     Htest = np.zeros((dim,dim))
+    n_dims = len(dims)
 
 
     H1 = cp.deepcopy(Hi)
@@ -74,7 +75,7 @@ def form_compressed_hamiltonian(vecs,Hi,Hij):
     dimsdims = dims
     dimsdims = np.append(dims,dims)
 
-    Htest = Htest.reshape(dimsdims)
+    #Htest = Htest.reshape(dimsdims)
     #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
     #   target subspace
     dim_i1=1 #   dimension of space to the left
@@ -87,13 +88,14 @@ def form_compressed_hamiltonian(vecs,Hi,Hij):
         
         #print "dim_i1  :  dim_i2", dim_i1, dim_i2, dim
         H += np.kron(i1,np.kron(H1[vi],i2))
-        nv = v.shape[1]
-        test = np.ones(len(dimsdims)).astype(int)
-        test[vi] = nv
-        test[vi+len(dims)] = nv
         
-        h = cp.deepcopy(H1[vi])
-        h = h.reshape(test)
+        #nv = v.shape[1]
+        #test = np.ones(len(dimsdims)).astype(int)
+        #test[vi] = nv
+        #test[vi+len(dims)] = nv
+        
+        #h = cp.deepcopy(H1[vi])
+        #h = h.reshape(test)
         #Htest = np.einsum('ijkljk->ijklmn',Htest,h)
         
         dim_i1 = dim_i1 * v.shape[1]
@@ -118,24 +120,71 @@ def form_compressed_hamiltonian(vecs,Hi,Hij):
     dim_i2=dim #   dimension of space to the right
   
     H = H.reshape(dimsdims)
-  
-    sliceij = []
-    for d in dimsdims:
-        sliceij.extend([slice(0,d)])
-    print sliceij
+
+    #print H.shape
+    #print H[tuple([slice(0,3)])*len(H.shape)].shape
+    ##print H[tuple([slice(0,3)])*len(H.shape)] - H
+    #print np.diagonal(np.diagonal(H)).shape
+    #print H[np.ones(len(H.shape)).astype(int)].shape
+    
+    #sliceij = []
+    #for d in dimsdims:
+    #    sliceij.extend([slice(0,d)])
+    #print sliceij
 
     for vi,v in enumerate(vecs):
         for wi,w in enumerate(vecs):
             if wi>vi:
-                i1 = np.eye(dim_i1)
+
+                nv = v.shape[1]
+                nw = w.shape[1]
+                dim_env = dim / nv / nw
+                #print ": ", nv, nw, dim_env, dim
+                
+    
+                i1 = np.eye(dim_env)
+                h = np.kron(H2[(vi,wi)],i1)
+                #print ": ", H2[(vi,wi)].shape, i1.shape, h.shape, H.shape
+                
+                #print H2[(vi,wi)].shape, " x ", i1.shape, " = ", h.shape
+                
+                tens_dims    = []
+                tens_inds    = []
+                tens_inds.extend([vi])
+                tens_inds.extend([wi])
+                tens_dims.extend([nv])
+                tens_dims.extend([nw])
+                for ti,t in enumerate(vecs):
+                    if (ti != vi) and (ti != wi):
+                        tens_dims.extend([t.shape[1]])
+                        tens_inds.extend([ti])
+                tens_dims = np.append(tens_dims, tens_dims) 
+                #tens_inds = np.append(tens_inds, tens_inds) 
+
+                sort_ind = np.argsort(tens_inds)
+                
+    
+                #print "sort: ", sort_ind, np.array(tens_inds)[sort_ind]
+                #print ":",vi,wi, tens_inds, tens_dims
+                #swap indices since we have done kronecker product as H2xI
+                #tens_dims[vi], tens_dims[] = tens_dims[0], tens_dims[vi] 
+                #tens_dims[vi+n_dims], tens_dims[0+n_dims] = tens_dims[0+n_dims], tens_dims[vi+n_dims] 
+                swap = np.append(sort_ind,sort_ind+n_dims) 
+                H += h.reshape(tens_dims).transpose(swap)
+                #print "swap ", swap
+                #h = h.reshape(tens_dims)
+                #h = h.transpose(swap)
+                #print h.shape
+                #print h.shape, dimsdims
+                
   
-                sl = cp.deepcopy(sliceij)
-                sl
-                print H[sl].shape
+                #sl = cp.deepcopy(sliceij)
+                #sl
+                #print H[sl].shape
                 #H[] = Hij[(vi,wi)]
-                dim_i2 = 1
-                for i in range(vi,wi):
-                    dim_i2 = dim_i2 * vecs[i].shape[1]
+                #dim_i2 = 1
+                #for i in range(vi,wi):
+                #    dim_i2 = dim_i2 * vecs[i].shape[1]
                 #dim_i2 = dim_i2/v.shape[1]
                 #i2 = np.eye(dim_i2)
                 
@@ -144,7 +193,9 @@ def form_compressed_hamiltonian(vecs,Hi,Hij):
              
                 #dim_i1 = dim_i1 * v.shape[1]
 
+    H = H.reshape(dim,dim)
     #printm(H)
+    return H
 
 """
 Test forming HDVV Hamiltonian and projecting onto "many-body tucker basis"
@@ -293,7 +344,16 @@ for bi,b in enumerate(blocks):
 for bi,b in enumerate(blocks):
     vecs0.extend([p_states[bi]])
 
-form_compressed_hamiltonian(vecs0,Hi,Hij)
+#vecs0[0] = np.hstack((p_states[0],q_states[0]))
+#vecs0[1] = np.hstack((p_states[1],q_states[1]))
+#vecs0[2] = np.hstack((p_states[2],q_states[2]))
+#print vecs0[0].shape
+Hp = form_compressed_hamiltonian(vecs0,Hi,Hij)
+lp,vp = np.linalg.eigh(Hp)
+
+print
+print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
+
 
 Ha = form_superblock_hamiltonian(lattice, j12, blocks, [0])
 Hb = form_superblock_hamiltonian(lattice, j12, blocks, [1])
