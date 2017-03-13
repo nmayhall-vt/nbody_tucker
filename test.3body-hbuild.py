@@ -50,7 +50,8 @@ def form_superblock_hamiltonian(lattice, j12, blocks, block_list):
     return H_b
     # }}}
 
-def form_compressed_hamiltonian(vecs,Hi,Hij):
+def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
+    # {{{
     dim = 1 # dimension of subspace
     dims = [] # list of mode dimensions (size of hilbert space on each fragment) 
     for vi,v in enumerate(vecs):
@@ -196,6 +197,99 @@ def form_compressed_hamiltonian(vecs,Hi,Hij):
     H = H.reshape(dim,dim)
     #printm(H)
     return H
+    # }}}
+
+def form_compressed_hamiltonian_offdiag_1block_op(vecs_l,vecs_r,Hi,Hij,differences):
+    # {{{
+    """
+        Find (1-site) Hamiltonian matrix in between differently compressed spaces:
+            i.e., 
+                <Abcd| H(1) |ab'c'd'> = <A|Ha|a> * del(bb') * del(cc')
+            or like,
+                <aBcd| H(1) |abcd> = <B|Hb|b> * del(aa') * del(cc')
+        
+        Notice that the full Hamiltonian will also have the two-body part:
+            <Abcd| H(2) |abcd> = <Ab|Hab|ab'> del(cc') + <Ac|Hac|ac'> del(bb')
+
+       
+        differences = [blocks which are not diagonal]
+            i.e., for <Abcd|H(1)|abcd>, differences = [1]
+                  for <Abcd|H(1)|aBcd>, differences = [1,2], and all values are zero for H(1)
+            
+        vecs_l  [vecs_A, vecs_B, vecs_C, ...]
+        vecs_r  [vecs_A, vecs_B, vecs_C, ...]
+    """
+    dim_l = 1 # dimension of subspace
+    dim_r = 1 # dimension of subspace
+    dims_l = [] # list of mode dimensions (size of hilbert space on each fragment) 
+    dims_r = [] # list of mode dimensions (size of hilbert space on each fragment) 
+  
+    assert( len(differences) == 1) # make sure we are not trying to get H(1) between states with multiple fragments orthogonal 
+
+    #   vecs_l correspond to the bra states
+    #   vecs_r correspond to the ket states
+
+    assert(len(vecs_l) == len(vecs_r))
+
+    for vi,v in enumerate(vecs_l):
+        dim_l = dim_l*v.shape[1]
+        dims_l.extend([v.shape[1]])
+
+    for vi,v in enumerate(vecs_r):
+        dim_r = dim_r*v.shape[1]
+        dims_r.extend([v.shape[1]])
+
+    H = np.zeros((dim_l,dim_r))
+    print " Size of Hamitonian block: ", H.shape
+
+    assert(len(dims_l) == len(dims_r))
+    n_dims = len(dims_l)
+
+
+    H1 = cp.deepcopy(Hi)
+    H2 = cp.deepcopy(Hij)
+    
+    # Rotate the single block Hamiltonians into the appropriate single site basis 
+    for vi in range(0,n_dims):
+        H1[vi] = np.dot(vecs_l[vi].transpose(),np.dot(Hi[vi],vecs_r[vi]))
+
+    # Rotate the double block Hamiltonians into the appropriate single site basis 
+    for vi in range(0,n_dims):
+        for wi in range(0,n_dims):
+            if wi>vi:
+                vw_l = np.kron(vecs_l[vi],vecs_l[wi])
+                vw_r = np.kron(vecs_r[vi],vecs_r[wi])
+                H2[(vi,wi)] = np.dot(vw_l.transpose(),np.dot(Hij[(vi,wi)],vw_r))
+   
+
+    dimsdims = np.append(dims_l,dims_r) # this is the tensor layout for the many-body Hamiltonian in the current subspace
+    
+    vecs = vecs_l
+    dims = dims_l
+    dim = dim_l
+    
+    #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
+    #   target subspace
+    dim_i1=1 # dimension of space for fragments to the left of the current 'different' fragment
+    dim_i2=1 # dimension of space for fragments to the right of the current 'different' fragment
+    
+    block = differences[0]
+
+    for vi in range(n_dims):
+        if vi<block:
+            dim_i1 *= dims_l[vi]
+            assert(dims_l[vi]==dims_r[vi])
+        elif vi>block:
+            dim_i2 *= dims_l[vi]
+            assert(dims_l[vi]==dims_r[vi])
+    
+    i1 = np.eye(dim_i1)
+    i2 = np.eye(dim_i2)
+    H += np.kron(i1,np.kron(H1[block],i2))
+    
+    return H
+    # }}}
+
 
 """
 Test forming HDVV Hamiltonian and projecting onto "many-body tucker basis"
@@ -225,6 +319,8 @@ lattice = np.loadtxt(args['lattice']).astype(int)
 blocks = np.loadtxt(args['blocks']).astype(int)
 n_sites = len(lattice)
 n_blocks = len(blocks)
+
+np.random.seed(2)
 
 print " j12:\n", j12
 print " lattice:\n", lattice 
@@ -303,9 +399,17 @@ if args['use_exact_tucker_factors']:
     for bi,b in enumerate(Atfac):
         #p_states.extend([scipy.linalg.orth(np.random.rand(b.shape[0],n_p_states))])
         p_states.extend([b[:,0:n_p_states]])
-
         q_states.extend([b[:,n_p_states::]])
 
+if 0:
+    # do random guess
+    p_states = []
+    q_states = []
+    for bi,b in enumerate(blocks):
+        block_dim = np.power(2,b.shape[0])
+        r = scipy.linalg.orth(np.random.rand(block_dim,block_dim))
+        p_states.extend([r[:,0:n_p_states]])
+        q_states.extend([r[:,n_p_states::]])
 
 #
 # |Ia,Ib,Ic> P(Ia,a) P(Ib,b) P(Ic,c) = |abc>    : |PPP>
@@ -348,9 +452,102 @@ for bi,b in enumerate(blocks):
 #vecs0[1] = np.hstack((p_states[1],q_states[1]))
 #vecs0[2] = np.hstack((p_states[2],q_states[2]))
 #print vecs0[0].shape
-Hp = form_compressed_hamiltonian(vecs0,Hi,Hij)
+Hp = form_compressed_hamiltonian_diag(vecs0,Hi,Hij)
 lp,vp = np.linalg.eigh(Hp)
 
+vecs1 = cp.deepcopy(vecs0)
+vecs2 = cp.deepcopy(vecs0)
+vecs3 = cp.deepcopy(vecs0)
+
+vecs1[0] = q_states[0]
+vecs2[1] = q_states[1]
+vecs3[2] = q_states[2]
+
+#vecs0[1] = np.hstack((p_states[1],q_states[1]))
+#vecs0[2] = np.hstack((p_states[2],q_states[2]))
+#print vecs0[0].shape
+H0_0 = form_compressed_hamiltonian_diag(vecs0,Hi,Hij) # <PPP|H|PPP>
+H1_1 = form_compressed_hamiltonian_diag(vecs1,Hi,Hij) # <QPP|H|QPP>
+H2_2 = form_compressed_hamiltonian_diag(vecs2,Hi,Hij) # <PQP|H|PQP>
+H3_3 = form_compressed_hamiltonian_diag(vecs3,Hi,Hij) # <PPQ|H|PPQ>
+
+H0_1 = form_compressed_hamiltonian_offdiag_1block_op(vecs0,vecs1,Hi,Hij,[0])
+H0_2 = form_compressed_hamiltonian_offdiag_1block_op(vecs0,vecs2,Hi,Hij,[1])
+H0_3 = form_compressed_hamiltonian_offdiag_1block_op(vecs0,vecs3,Hi,Hij,[2])
+
+# set all q-space contributions to zero
+H1_1 = np.zeros((H1_1.shape[0],H1_1.shape[0]))
+H2_2 = np.zeros((H2_2.shape[0],H2_2.shape[0]))
+H3_3 = np.zeros((H3_3.shape[0],H3_3.shape[0]))
+
+H1 = scipy.linalg.block_diag(H0_0, H1_1, H2_2, H3_3) 
+
+
+n0 = H0_0.shape[1]
+n1 = H0_1.shape[1]
+n2 = H0_2.shape[1]
+n3 = H0_3.shape[1]
+
+H1_offdiag = np.zeros((H1.shape[0], H1.shape[0]))
+print "h1_offdiag: ", H1_offdiag.shape
+
+print "n0,n1,n2,n3", [n0,n1,n2,n3]
+H1_offdiag[0:n0 , n0:n0+n1] = H0_1
+H1_offdiag[0:n0 , n0+n1:n0+n1+n2] = H0_2
+H1_offdiag[0:n0 , n0+n1+n2:n0+n1+n2+n3] = H0_2
+
+#H1 += H1_offdiag + H1_offdiag.transpose()
+
+#print H0_1
+lp,vp = np.linalg.eigh(H1)
+
+
+
+#re-compose
+if 1:
+    v0 = vp[0][0 : n0]
+    v1 = vp[0][n0 : n0+n1]
+    v2 = vp[0][n0+n1 : n0+n1+n2]
+    v3 = vp[0][n0+n1+n2 : n0+n1+n2+n3]
+
+    print " norm of PPP component %12.8f" %np.dot(v0,v0)
+    np0 = p_states[0].shape[1]
+    np1 = p_states[1].shape[1]
+    np2 = p_states[2].shape[1]
+    
+    nq0 = q_states[0].shape[1]
+    nq1 = q_states[1].shape[1]
+    nq2 = q_states[2].shape[1]
+    
+    v0 = v0.reshape([np0,np1,np2])
+    v1 = v1.reshape([nq0,np1,np2])
+    v2 = v2.reshape([np0,nq1,np2])
+    v3 = v3.reshape([np0,np1,nq2])
+
+    vec = np.zeros(H_tot.shape[0])
+    vec = vec.reshape(dims_0)
+    
+    vec += tucker_recompose(v0,vecs0)
+    
+    vec += tucker_recompose(v1,vecs1)
+    vec += tucker_recompose(v2,vecs2)
+    vec += tucker_recompose(v3,vecs3)
+
+    vec = vec.reshape(H_tot.shape[0])
+    vv = np.dot(vec,vec)
+    print " Expectation value: %12.8f"% (np.dot(vec.transpose(),np.dot(H_tot,vec))/vv )
+    print " norm:              %12.8f"% vv 
+
+print H0_0.shape
+print H1.shape
+print 
+print " Eigenvectors of compressed Hamiltonian"
+print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
+for si,i in enumerate(lp):
+    print " %5i =  %12.8f  %12.8f  %12.8s" %(si,i*convert,(i-lp[0])*convert,"--")
+    if si>10:
+        break
+print 
 print
 print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
 
