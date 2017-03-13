@@ -126,7 +126,7 @@ def tucker_decompose_list(A,n_keep_list):
 
 
 
-def tucker_recompose(core, tucker_factors):
+def tucker_recompose(core, tucker_factors, trans=0):
     """
     Recover original tensor from tucker decomposition 
     """
@@ -145,8 +145,47 @@ def tucker_recompose(core, tucker_factors):
             
         d_range = range(0,sd) 
         d_range.extend(range(sd+1,n_modes))
+   
+        
+        if trans==0:
+            A = np.tensordot(A,tucker_factors[sd],axes=(0,1))
+        if trans==1:
+            A = np.tensordot(A,tucker_factors[sd].T,axes=(0,1))
 
-        A = np.tensordot(A,tucker_factors[sd],axes=(0,1))
+    return A
 
+
+def transform_tensor(core, vectors, trans=0):
+    """
+    Perform a multi linear transformation on a tensor
+    Core is the tensor to be transformed
+    vectors is a list of matrices which define the transformation for each tensor index
+    trans = 1: transpose the matrices in 'vectors'
+                the resulting tensor will then be in the row space
+    trans = 0: don't transpose the matrices in 'vectors'
+                the resulting tensor will then be in the column space
+    """
+    dims = [] 
+    A = cp.deepcopy(core)
+    n_modes = len(dims)
+  
+    for sd,d in enumerate(vectors):
+        dims.append(d.shape[1])
+
+    for sd,d in enumerate(dims):
+
+        print " Contract A along index %4i " %(sd),
+        print "   Dimension %4i" %(d)
+            
+        d_range = range(0,sd) 
+        d_range.extend(range(sd+1,n_modes))
+   
+        
+        if trans==0:
+            A = np.tensordot(A,vectors[sd],axes=(0,1))
+        if trans==1:
+            A = np.tensordot(A,vectors[sd],axes=(0,0))
+
+    print " Final shape of tensor: ", A.shape
     return A
 
