@@ -550,13 +550,7 @@ for it in range(0,maxiter):
                 dim_b[bi] = q_states[bi].shape[1]
                 v_tmp = v_tmp.reshape(dim_b)
                
-                print q_states[bi].shape 
-                print n_p_states
                 # add this recomposed portion of the CI vector
-                print v_tmp.shape
-                for d in vecs_b:
-                    print "   ", d.shape
-
                 vec_curr += transform_tensor(v_tmp, vecs_b)
                 start = stop
         
@@ -634,7 +628,7 @@ for it in range(0,maxiter):
 
     energy_per_iter += [l0[0]]
 
-    thresh = 1e-10
+    thresh = 1e-8
     if it > 0:
         if abs(l0[0]-energy_per_iter[it-1]) < thresh:
             break
