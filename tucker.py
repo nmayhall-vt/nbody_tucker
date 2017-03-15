@@ -175,7 +175,8 @@ def transform_tensor(core, vectors, trans=0):
     for sd,d in enumerate(dims):
 
         print " Contract A along index %4i " %(sd),
-        print "   Dimension %4i" %(d)
+        print "   Dimension %4i" %(d),
+        print "   Operation: ", A.shape, " x(%i) "% sd,  vectors[sd].shape
             
         d_range = range(0,sd) 
         d_range.extend(range(sd+1,n_modes))
@@ -186,6 +187,6 @@ def transform_tensor(core, vectors, trans=0):
         if trans==1:
             A = np.tensordot(A,vectors[sd],axes=(0,0))
 
-    print " Final shape of tensor: ", A.shape
+    print " %37s Final shape of tensor: " %"", A.shape
     return A
 

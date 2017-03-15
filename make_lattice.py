@@ -61,7 +61,7 @@ if 0:
     print j12
 
 if 1:
-    b = 4 # block size
+    b = 3 # block size
     n_blocks = 3
     n_sites = n_blocks*b
     
@@ -73,7 +73,7 @@ if 1:
     for f in range(n_blocks):
         a = range(bi,bi+b)
         blocks.extend([a])
-        j12[bi:bi+b, bi:bi+b] = i*np.ones([b,b])
+        j12[bi:bi+b, bi:bi+b] = i*np.ones([b,b]) * np.power(-1,bi) 
         #print range(bi,bi+b)
         bi += b
     
