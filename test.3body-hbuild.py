@@ -23,14 +23,17 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states):
     p_states = []
     q_states = []
     for bi,b in enumerate(blocks):
-	# form block hamiltonian
-	j_b = np.zeros([len(b),len(b)])
-	j_b = j12[:,b][b]
-	lat_b = lattice[b]
-	H_b, tmp, S2_b = form_hdvv_H(lat_b,j_b)
+        # form block hamiltonian
+        j_b = np.zeros([len(b),len(b)])
+        j_b = j12[:,b][b]
+        lat_b = lattice[b]
+        H_b, tmp, S2_b = form_hdvv_H(lat_b,j_b)
     
-	l_b,v_b = np.linalg.eigh(H_b)
-	p_states.extend([v_b[:,0:n_p_states[bi]]])
+        l_b,v_b = np.linalg.eigh(H_b)
+        print " Guess eigenstates"
+        for l in l_b:
+            print "%12.8f" %l
+        p_states.extend([v_b[:,0:n_p_states[bi]]])
         q_states.extend([v_b[:,n_p_states[bi]::]])
     return p_states, q_states
     # }}}
@@ -506,6 +509,7 @@ parser.add_argument('-s2','--s2', type=str, default="heis_s2.npy", help='File co
 parser.add_argument('--eigvals', type=str, default="heis_eigvals.npy", help='File of Hamiltonian eigvals', required=False)
 parser.add_argument('--eigvecs', type=str, default="heis_eigvecs.npy", help='File of Hamiltonian eigvecs', required=False)
 parser.add_argument('-np','--n_p_space', type=int, nargs="+", help='Number of vectors in block P space', required=False)
+parser.add_argument('-nb','--n_body_order', type=int, default="0", help='n_body spaces', required=False)
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 args = vars(parser.parse_args())
 #
@@ -516,6 +520,8 @@ lattice = np.loadtxt(args['lattice']).astype(int)
 blocks = np.loadtxt(args['blocks']).astype(int)
 n_sites = len(lattice)
 n_blocks = len(blocks)
+
+assert(len(args['n_p_space']) == n_blocks)
 
 np.random.seed(2)
 
@@ -669,7 +675,7 @@ vecs3 = vecsQ[2]
 H_sectors = {}
 H_sectors[0,0] = H0_0
 
-n_body_order = 2
+n_body_order = args['n_body_order'] 
 
 if n_body_order >= 1:
     for bi in range(n_blocks):
