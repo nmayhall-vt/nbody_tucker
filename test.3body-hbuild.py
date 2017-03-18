@@ -688,7 +688,7 @@ if n_body_order >= 2:
             bij = (bi+1,bj+1)
             H_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Hi,Hij) # <QPQ|H|QPQ>
             
-            H_sectors[0,bij]    = np.zeros( (H0_0.shape[1], H_sectors[bij,bij].shape[1] ) ) # <PPP|H|QPQ>
+            H_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Hi,Hij,[bi,bj]) # <PPP|H|QQP>
             H_sectors[bij,0]    = H_sectors[0,bij].T
             
     for bi in range(n_blocks):
@@ -696,14 +696,14 @@ if n_body_order >= 2:
             bij = (bi+1,bj+1)
             for bk in range(n_blocks):
                 if bk == bi:
-                    H_sectors[bk+1,bij] = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bj]) # <QPP|H|PQQ>
+                    H_sectors[bk+1,bij] = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bj]) # <PPQ|H|PQQ>
                     H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
                 elif bk == bj:
-                    H_sectors[bk+1,bij] = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bi]) # <QPP|H|PQQ>
+                    H_sectors[bk+1,bij] = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bi]) # <PQP|H|PQQ>
                     H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
                 else:
                     #H_sectors[bk+1,bij] = np.zeros(( len(vecsQ[bk]),len(vecsQQ[bi,bj]) )) 
-                    H_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PPP|H|QPQ>
+                    H_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
                     H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
             
                 for bl in range(bk+1,n_blocks):
@@ -731,12 +731,11 @@ if n_body_order >= 2:
                         if diff[bbi] == 1:
                             diff2.extend([bbi])
                    
-                    if len(diff2) == 1:
+                    if len(diff2) == 2:
                         H_sectors[bij,bkl] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],Hi,Hij,diff2) # <QPQ|H|QQP>
                         H_sectors[bkl,bij] = H_sectors[bij,bkl].T
-                    if len(diff2) > 1:
-                        #H_sectors[bij,bkl] = np.zeros(( len(vecsQQ[bi,bj]),len(vecsQQ[bk,bl]) )) 
-                        H_sectors[bij,bkl]    = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) ) # <PPP|H|QPQ>
+                    if len(diff2) > 2:
+                        H_sectors[bij,bkl]    = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
                         H_sectors[bkl,bij] = H_sectors[bij,bkl].T
 
 
@@ -809,7 +808,8 @@ if n_body_order == 2:
             Htest = np.vstack((Htest,row_ij))
 
 
-
+#Hb = np.load('b.npy')
+#print np.linalg.norm(H_sectors[(1,2),(1,3)] - Hb)
 
 lp,vp = np.linalg.eigh(Htest)
 print 
@@ -822,6 +822,12 @@ for si,i in enumerate(lp):
 print 
 print
 print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
+
+
+
+
+
+
 exit(-1)
 
 #vecs0[1] = np.hstack((p_states[1],q_states[1]))

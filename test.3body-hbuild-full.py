@@ -633,6 +633,7 @@ for it in range(0,maxiter):
     if it > 0:
         if abs(l0[0]-energy_per_iter[it-1]) < thresh:
             break
+     
 
 print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
 for ei,e in enumerate(energy_per_iter):
@@ -640,6 +641,7 @@ for ei,e in enumerate(energy_per_iter):
         print " %10i  %12.8f  %12.8f" %(ei,e,e-energy_per_iter[ei-1])
     else:
         print " %10i  %12.8f" %(ei,e)
+
 
 
 
