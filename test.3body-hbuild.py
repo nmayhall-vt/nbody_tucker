@@ -203,6 +203,7 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
                 #dim_i1 = dim_i1 * v.shape[1]
 
     H = H.reshape(dim,dim)
+    print "     Size of Hamitonian block: ", H.shape
     #printm(H)
     return H
     # }}}
@@ -259,7 +260,7 @@ def form_compressed_hamiltonian_offdiag_1block_diff(vecs_l,vecs_r,Hi,Hij,differe
     assert(dim_same == dim_same_check)
 
     H = np.zeros((dim_l,dim_r))
-    print " Size of Hamitonian block: ", H.shape
+    print "     Size of Hamitonian block: ", H.shape
 
     assert(len(dims_l) == len(dims_r))
     n_dims = len(dims_l)
@@ -353,7 +354,7 @@ def form_compressed_hamiltonian_offdiag_1block_diff(vecs_l,vecs_r,Hi,Hij,differe
     for bi in range(block_curr, n_dims):
         if bi == block_curr:
             continue
-        print "block_curr, bi", block_curr, bi
+        #print "block_curr, bi", block_curr, bi
         vw_l = np.kron(vecs_l[block_curr],vecs_l[bi])
         vw_r = np.kron(vecs_r[block_curr],vecs_r[bi])
         h2 = vw_l.T.dot(Hij[(block_curr,bi)]).dot(vw_r) # i.e.  get reference to <aC|Hij[0,2]|a'c>, where block_curr = 2 and bi = 0
@@ -432,7 +433,7 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
     assert(dim_same == dim_same_check)
 
     H = np.zeros((dim_l,dim_r))
-    print " Size of Hamitonian block: ", H.shape
+    print "     Size of Hamitonian block: ", H.shape
 
     assert(len(dims_l) == len(dims_r))
     n_dims = len(dims_l)
@@ -456,7 +457,7 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
 
     assert(block_curr1 < block_curr2)
 
-    print " block_curr1, block_curr2", block_curr1, block_curr2
+    #print " block_curr1, block_curr2", block_curr1, block_curr2
     vw_l = np.kron(vecs_l[block_curr1],vecs_l[block_curr2])
     vw_r = np.kron(vecs_r[block_curr1],vecs_r[block_curr2])
     h2 = vw_l.T.dot(Hij[(block_curr1,block_curr2)]).dot(vw_r) # i.e.  get reference to <aC|Hij[0,2]|a'c>, where block_curr = 2 and bi = 0
@@ -583,12 +584,12 @@ if args['save']==True:
 
 
 # reshape eigenvector into tensor
-dims_0 = []
+dims_tot = []
 for bi,b in enumerate(blocks):
     block_dim = np.power(2,b.shape[0])
-    dims_0.extend([block_dim])
+    dims_tot.extend([block_dim])
 
-v0 = np.reshape(v0,dims_0)
+v0 = np.reshape(v0,dims_tot)
 
 n_p_states = args['n_p_space'] 
 
@@ -613,6 +614,8 @@ if 0:
         r = scipy.linalg.orth(np.random.rand(block_dim,block_dim))
         p_states.extend([r[:,0:n_p_states[bi]]])
         q_states.extend([r[:,n_p_states[bi]::]])
+
+dims_0 = n_p_states
 
 #
 # |Ia,Ib,Ic> P(Ia,a) P(Ib,b) P(Ic,c) = |abc>    : |PPP>
@@ -645,7 +648,7 @@ for bi,b in enumerate(blocks):
             
             Hij[(bi,bj)] = form_superblock_hamiltonian(lattice, j12, blocks, [bi,bj])
             Hij[(bi,bj)] -= np.kron(hi,np.eye(hj.shape[0])) 
-            Hij[(bi,bj)] -= np.kron(np.eye(hi.shape[0]),hi) 
+            Hij[(bi,bj)] -= np.kron(np.eye(hi.shape[0]),hj) 
 
 # get vecs for PPP class
 for bi,b in enumerate(blocks):
@@ -668,10 +671,6 @@ for bi in range(n_blocks):
 H0_0 = form_compressed_hamiltonian_diag(vecs0,Hi,Hij) # <PPP|H|PPP>
 #
 
-vecs1 = vecsQ[0]
-vecs2 = vecsQ[1]
-vecs3 = vecsQ[2]
-
 H_sectors = {}
 H_sectors[0,0] = H0_0
 
@@ -692,8 +691,12 @@ if n_body_order >= 2:
     for bi in range(n_blocks):
         for bj in range(bi+1,n_blocks):
             bij = (bi+1,bj+1)
+            print 
+            print " Form Hamiltonian for <%s|H|%s>" %(bij, bij)
             H_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Hi,Hij) # <QPQ|H|QPQ>
             
+            print 
+            print " Form Hamiltonian for <%s|H|%s>" %(0, bij)
             H_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Hi,Hij,[bi,bj]) # <PPP|H|QQP>
             H_sectors[bij,0]    = H_sectors[0,bij].T
             
@@ -701,6 +704,8 @@ if n_body_order >= 2:
         for bj in range(bi+1,n_blocks):
             bij = (bi+1,bj+1)
             for bk in range(n_blocks):
+                print 
+                print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
                 if bk == bi:
                     H_sectors[bk+1,bij] = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bj]) # <PPQ|H|PQQ>
                     H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
@@ -708,7 +713,6 @@ if n_body_order >= 2:
                     H_sectors[bk+1,bij] = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bi]) # <PQP|H|PQQ>
                     H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
                 else:
-                    #H_sectors[bk+1,bij] = np.zeros(( len(vecsQ[bk]),len(vecsQQ[bi,bj]) )) 
                     H_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
                     H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
             
@@ -817,6 +821,22 @@ if n_body_order == 2:
 #Hb = np.load('b.npy')
 #print np.linalg.norm(H_sectors[(1,2),(1,3)] - Hb)
 
+if 0:
+    dims_0
+    Htest = cp.deepcopy(H_tot)
+    Htest.shape = dims_tot + dims_tot
+    v0v0 = vecs0+vecs0
+    Htest   = transform_tensor(Htest,vecs0+vecs0,trans=1)
+    dim0 = 1
+    for d in dims_0:
+        dim0 *= d
+    print dim0,dim0
+    print Htest.shape
+    Htest.shape = [dim0,dim0] 
+    print Htest
+    print H0_0
+
+
 lp,vp = np.linalg.eigh(Htest)
 print 
 print " Eigenvectors of compressed Hamiltonian"
@@ -892,43 +912,6 @@ lp,vp = np.linalg.eigh(H_ss)
 #print H1_2 - Hb
 #exit(-1)
 
-#re-compose
-if 0:
-    v0 = vp[0][0 : n0]
-    v1 = vp[0][n0 : n0+n1]
-    v2 = vp[0][n0+n1 : n0+n1+n2]
-    v3 = vp[0][n0+n1+n2 : n0+n1+n2+n3]
-
-    print " norm of PPP component %12.8f" %np.dot(v0,v0)
-    np0 = p_states[0].shape[1]
-    np1 = p_states[1].shape[1]
-    np2 = p_states[2].shape[1]
-    
-    nq0 = q_states[0].shape[1]
-    nq1 = q_states[1].shape[1]
-    nq2 = q_states[2].shape[1]
-    
-    v0 = v0.reshape([np0,np1,np2])
-    v1 = v1.reshape([nq0,np1,np2])
-    v2 = v2.reshape([np0,nq1,np2])
-    v3 = v3.reshape([np0,np1,nq2])
-
-    vec = np.zeros(H_tot.shape[0])
-    vec = vec.reshape(dims_0)
-    
-    vec += tucker_recompose(v0,vecs0)
-    
-    vec += tucker_recompose(v1,vecs1)
-    vec += tucker_recompose(v2,vecs2)
-    vec += tucker_recompose(v3,vecs3)
-
-    vec = vec.reshape(H_tot.shape[0])
-    vv = np.dot(vec,vec)
-    print " Expectation value: %12.8f"% (np.dot(vec.transpose(),np.dot(H_tot,vec))/vv )
-    print " norm:              %12.8f"% vv 
-
-print H0_0.shape
-print H_ss.shape
 print 
 print " Eigenvectors of compressed Hamiltonian"
 print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
@@ -939,104 +922,4 @@ for si,i in enumerate(lp):
 print 
 print
 print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
-
-exit(-1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ha = form_superblock_hamiltonian(lattice, j12, blocks, [0])
-Hb = form_superblock_hamiltonian(lattice, j12, blocks, [1])
-Hc = form_superblock_hamiltonian(lattice, j12, blocks, [2])
-Hab = form_superblock_hamiltonian(lattice, j12, blocks, [0,1])
-Hac = form_superblock_hamiltonian(lattice, j12, blocks, [0,2])
-Hbc = form_superblock_hamiltonian(lattice, j12, blocks, [1,2])
-#Habc = form_superblock_hamiltonian(lattice, j12, blocks, [0,1,2])
-
-Ia = np.eye(Ha.shape[0])
-Ib = np.eye(Hb.shape[0])
-Ic = np.eye(Hc.shape[0])
-
-a = p_states[0]
-b = p_states[1]
-c = p_states[2]
-ab = np.kron(a,b)
-ac = np.kron(a,c)
-bc = np.kron(b,c)
-
-A = q_states[0]
-B = q_states[1]
-C = q_states[2]
-AB = np.kron(A,B)
-AC = np.kron(A,C)
-BC = np.kron(B,C)
-
-
-Hab = Hab - np.kron(Ha,np.eye(Hb.shape[0])) - np.kron(np.eye(Ha.shape[0]),Hb) 
-Hac = Hac - np.kron(Ha,np.eye(Hc.shape[0])) - np.kron(np.eye(Ha.shape[0]),Hc) 
-Hbc = Hbc - np.kron(Hb,np.eye(Hc.shape[0])) - np.kron(np.eye(Hb.shape[0]),Hc) 
-
-Ia = np.dot(a.transpose(),np.dot(Ia,a))
-Ib = np.dot(b.transpose(),np.dot(Ib,b))
-Ic = np.dot(c.transpose(),np.dot(Ic,c))
-Ha = np.dot(a.transpose(),np.dot(Ha,a))
-Hb = np.dot(b.transpose(),np.dot(Hb,b))
-Hc = np.dot(c.transpose(),np.dot(Hc,c))
-Hab = np.dot(ab.transpose(),np.dot(Hab,ab))
-Hac = np.dot(ac.transpose(),np.dot(Hac,ac))
-Hbc = np.dot(bc.transpose(),np.dot(Hbc,bc))
-
-H0 = np.kron(Ha,np.kron(Ib,Ic)) + np.kron(Ia,np.kron(Hb,Ic)) + np.kron(Ia,np.kron(Ib,Hc)) 
-#printm(H0)
-#exit(-1)
-
-H0 += np.kron(Hab,Ic) 
-H0 += np.kron(Ia,Hbc) 
-tmp = np.kron(Hac,Ib)
-npv = n_p_states
-tmp = tmp.reshape([npv,npv,npv,npv,npv,npv])
-tmp = tmp.transpose((0,2,1,3,5,4))
-tmp = tmp.reshape(np.power(npv,3),np.power(npv,3))
-H0 += tmp
-
-#abc = np.kron(p_states[0],np.kron(p_states[1],p_states[2]))
-#Habc = np.dot(abc.transpose(),np.dot(Habc,abc))
-
-l0,v0 = np.linalg.eigh(H0)
-#l1,v1 = np.linalg.eigh(Habc)
-#print np.array([l0,l1])
-
-print
-print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(l0[0],l[0],l0[0]-l[0])
-
-exit(-1)
-
-
-
-
-
-
-
-
-
-
-
 
