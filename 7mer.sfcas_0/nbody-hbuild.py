@@ -1036,9 +1036,9 @@ for it in range(0,maxiter):
         #H_tot = H_tot.reshape(dim_tot, dim_tot)
         
 
-    print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
+    print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(lp):
-        print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,abs(s2[si,si]))
+        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,abs(s2[si,si]))
         if si>args['n_print']:
             break
     
