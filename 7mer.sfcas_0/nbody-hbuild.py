@@ -7,8 +7,11 @@ import copy as cp
 import argparse
 import scipy.sparse
 import scipy.sparse.linalg
+import sys
+sys.path.insert(0, '../')
 
 from hdvv import *
+
 
 def printm(m):
     # {{{
@@ -29,7 +32,7 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states):
         j_b = np.zeros([len(b),len(b)])
         j_b = j12[:,b][b]
         lat_b = lattice[b]
-        H_b, tmp, S2_b = form_hdvv_H(lat_b,j_b)
+        H_b, tmp, S2_b, Sz_b = form_hdvv_H(lat_b,j_b)
     
         l_b,v_b = np.linalg.eigh(H_b)
         print " Guess eigenstates"
@@ -51,8 +54,8 @@ def form_superblock_hamiltonian(lattice, j12, blocks, block_list):
     j_b = np.zeros([len(super_block),len(super_block)])
     j_b = j12[:,super_block][super_block]
     lat_b = lattice[super_block]
-    H_b, tmp, S2_b = form_hdvv_H(lat_b,j_b)
-    return H_b
+    H_b, tmp, S2_b, Sz_b = form_hdvv_H(lat_b,j_b)
+    return H_b, S2_b, Sz_b
     # }}}
 
 def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
@@ -493,294 +496,9 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
     return H
     # }}}
 
-
-"""
-Test forming HDVV Hamiltonian and projecting onto "many-body tucker basis"
-"""
-#   Setup input arguments
-parser = argparse.ArgumentParser(description='Finds eigenstates of a spin lattice',
-formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
-#parser.add_argument('-d','--dry_run', default=False, action="store_true", help='Run but don\'t submit.', required=False)
-parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
-parser.add_argument('-j','--j12', type=str, default="heis_j12.m", help='File containing matrix of exchange constants', required=False)
-parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='File containing vector of block sizes', required=False)
-parser.add_argument('-s','--save', default=False, action="store_true", help='Save the Hamiltonian and S2 matrices', required=False)
-parser.add_argument('-r','--read', default=False, action="store_true", help='Read the Hamiltonian and S2 matrices', required=False)
-#parser.add_argument('-hdvv','--hamiltonian', type=str, default="heis_hamiltonian.npy", help='File containing matrix of Hamiltonian', required=False)
-#parser.add_argument('-s2','--s2', type=str, default="heis_s2.npy", help='File containing matrix of s2', required=False)
-#parser.add_argument('--eigvals', type=str, default="heis_eigvals.npy", help='File of Hamiltonian eigvals', required=False)
-#parser.add_argument('--eigvecs', type=str, default="heis_eigvecs.npy", help='File of Hamiltonian eigvecs', required=False)
-parser.add_argument('-np','--n_p_space', type=int, nargs="+", help='Number of vectors in block P space', required=False)
-parser.add_argument('-nb','--n_body_order', type=int, default="0", help='n_body spaces', required=False)
-parser.add_argument('--n_print', type=int, default="10", help='number of states to print', required=False)
-parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
-parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
-parser.add_argument('--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
-parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
-args = vars(parser.parse_args())
-#
-#   Let minute specification of walltime override hour specification
-
-j12 = np.loadtxt(args['j12'])
-lattice = np.loadtxt(args['lattice']).astype(int)
-blocks = np.loadtxt(args['blocks']).astype(int)
-n_sites = len(lattice)
-n_blocks = len(blocks)
-
-assert(len(args['n_p_space']) == n_blocks)
-
-np.random.seed(2)
-
-print " j12:\n", j12
-print " lattice:\n", lattice 
-print " blocks:\n", blocks
-print " n_blocks:\n", n_blocks
-
-H_tot = np.array([])
-S2_tot = np.array([])
-H_dict = {}
-
-#get Hamiltonian and eigenstates 
-if args['read']:
-    print "Reading Hamiltonian and S2 from disk"
-    H_tot = np.load(args['hamiltonian'])
-    S2_tot = np.load(args['s2'])
-    v = np.load(args['eigvecs'])
-    l = np.load(args['eigvals'])
-else:
-    print "Building Hamiltonian"
-    #H_tot, H_dict, S2_tot = form_hdvv_H(lattice,j12)
-
-
-    #print " Diagonalize Hamiltonian (%ix%i):\n" %(H_tot.shape[0],H_tot.shape[0]), H_tot.shape
-    #l,v = np.linalg.eigh(H_tot)
-    #l,v = scipy.sparse.linalg.eigsh(H_tot, k=min(100,H_tot.shape[0]))
-
-
-
-if args['save']==True:
-    np.save("heis_hamiltonian",H_tot)
-    np.save("heis_s2",S2_tot)
-
-
-
-#print v.shape
-#print S2_tot.shape
-au2ev = 27.21165;
-au2cm = 219474.63;
-
-convert = au2ev/au2cm;		# convert from wavenumbers to eV
-convert = 1;			# 1 for wavenumbers
-#S2_eig = np.dot(v.transpose(),np.dot(S2_tot,v))
-#print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
-#for si,i in enumerate(l):
-#    print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,S2_eig[si,si])
-#    if si>10:
-#        break
-
-#v0 = v[:,0]
-
-if args['save']==True:
-    np.save("heis_eigvecs",v)
-    np.save("heis_eigvals",l)
-
-
-
-
-
-# reshape eigenvector into tensor
-dims_tot = []
-dim_tot = 1
-for bi,b in enumerate(blocks):
-    print b
-    block_dim = np.power(2,b.shape[0])
-    dims_tot.extend([block_dim])
-    dim_tot *= block_dim
-
-#v0 = np.reshape(v0,dims_tot)
-
-n_p_states = args['n_p_space'] 
-
-# Get initial compression vectors 
-p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states)
-
-if args['use_exact_tucker_factors']:
-    p_states = []
-    q_states = []
-    Acore, Atfac = tucker_decompose(v0,0,0)
-    for bi,b in enumerate(Atfac):
-        #p_states.extend([scipy.linalg.orth(np.random.rand(b.shape[0],n_p_states))])
-        p_states.extend([b[:,0:n_p_states[bi]]])
-        q_states.extend([b[:,n_p_states[bi]::]])
-
-if 0:
-    # do random guess
-    p_states = []
-    q_states = []
-    for bi,b in enumerate(blocks):
-        block_dim = np.power(2,b.shape[0])
-        r = scipy.linalg.orth(np.random.rand(block_dim,block_dim))
-        p_states.extend([r[:,0:n_p_states[bi]]])
-        q_states.extend([r[:,n_p_states[bi]::]])
-
-dims_0 = n_p_states
-
-#
-# |Ia,Ib,Ic> P(Ia,a) P(Ib,b) P(Ic,c) = |abc>    : |PPP>
-#
-# |Ia,Ib,Ic> Q(Ia,A) P(Ib,b) P(Ic,c) = |Abc>    : |QPP>
-# |Ia,Ib,Ic> P(Ia,a) Q(Ib,B) P(Ic,c) = |aBc>    : |PQP>
-#
-# |Ia,Ib,Ic> Q(Ia,A) Q(Ib,B) P(Ic,c) = |ABc>    : |QQP>
-#
-#<abc|Ha+Hb+Hc+Hab+Hac+Hbc|abc>
-#
-#<a|Ha|a><bc|bc> = <a|Ha|a>
-#<ab|Hab|ab><c|c> = <ab|Hab|ab>
-#<Abc|Hab|Abc> = <Ab|Hab|Ab>
-
-
-Hi = {}
-Hij = {}
-#1 body operators
-for bi,b in enumerate(blocks):
-    Hi[bi] = form_superblock_hamiltonian(lattice, j12, blocks, [bi])
-
-#2 body operators
-for bi,b in enumerate(blocks):
-    for bj,bb in enumerate(blocks):
-        if bj>bi:
-            hi = Hi[bi]
-            hj = Hi[bj]
-            
-            Hij[(bi,bj)] = form_superblock_hamiltonian(lattice, j12, blocks, [bi,bj])
-            Hij[(bi,bj)] -= np.kron(hi,np.eye(hj.shape[0])) 
-            Hij[(bi,bj)] -= np.kron(np.eye(hi.shape[0]),hj) 
-
-
-
-
-
-
-
-
-
-
-
-# loop over compression vector iterations
-energy_per_iter = []
-maxiter = args['max_iter'] 
-for it in range(0,maxiter):
-
-    print " Tucker optimization: Iteration %4i" %it
-
-    vecs0 = []
-    # get vecs for PPP class
-    for bi,b in enumerate(blocks):
-        vecs0.extend([p_states[bi]])
-    
-    vecsQ = []
-    for bi in range(n_blocks):
-        v = cp.deepcopy(vecs0)
-        v[bi] = q_states[bi]
-        vecsQ.extend([v])
-    
-    vecsQQ = {}
-    for bi in range(n_blocks):
-        for bj in range(bi+1,n_blocks):
-            v = cp.deepcopy(vecs0)
-            v[bi] = q_states[bi]
-            v[bj] = q_states[bj]
-            vecsQQ[bi,bj] = v
-    
-    H0_0 = form_compressed_hamiltonian_diag(vecs0,Hi,Hij) # <PPP|H|PPP>
-    #
-    
-    H_sectors = {}
-    H_sectors[0,0] = H0_0
-    
-    n_body_order = args['n_body_order'] 
-    
-    if n_body_order >= 1:
-        for bi in range(n_blocks):
-            H_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],Hi,Hij) # <QPP|H|QPP>
-            
-            H_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],Hi,Hij,[bi]) # <PPP|H|QPP>
-            H_sectors[bi+1,0]       = H_sectors[0,bi+1].T
-            for bj in range(bi+1,n_blocks):
-                H_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],Hi,Hij,[bi,bj]) # <QPP|H|PQP>
-                H_sectors[bj+1,bi+1] = H_sectors[bi+1,bj+1].T
-    
-    
-    if n_body_order >= 2:
-        for bi in range(n_blocks):
-            for bj in range(bi+1,n_blocks):
-                bij = (bi+1,bj+1)
-                print 
-                print " Form Hamiltonian for <%s|H|%s>" %(bij, bij)
-                H_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Hi,Hij) # <QPQ|H|QPQ>
-                
-                print 
-                print " Form Hamiltonian for <%s|H|%s>" %(0, bij)
-                H_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Hi,Hij,[bi,bj]) # <PPP|H|QQP>
-                H_sectors[bij,0]    = H_sectors[0,bij].T
-                
-        for bi in range(n_blocks):
-            for bj in range(bi+1,n_blocks):
-                bij = (bi+1,bj+1)
-                for bk in range(n_blocks):
-                    if bk == bi:
-                        print 
-                        print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
-                        H_sectors[bk+1,bij] = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bj]) # <PPQ|H|PQQ>
-                        H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
-                    elif bk == bj:
-                        print 
-                        print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
-                        H_sectors[bk+1,bij] = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bi]) # <PQP|H|PQQ>
-                        H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
-                    else:
-                        H_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
-                        H_sectors[bij,bk+1] = H_sectors[bk+1,bij].T
-                
-                    for bl in range(bk+1,n_blocks):
-                        bkl = (bk+1,bl+1)
-    
-                        #only compute upper triangular blocks
-                        if bk < bi:
-                            continue
-                        if bk == bi and bl <= bj:
-                            continue
-                        
-                        diff = {}
-                        diff[bi] = 1
-                        diff[bj] = 1
-                        diff[bk] = 1
-                        diff[bl] = 1
-                        for bbi in (bi,bj):
-                            for bbj in (bk,bl):
-                                if bbi == bbj:
-                                    diff[bbi] = 0
-                        diff2 = []
-                        for bbi in diff.keys():
-                            if diff[bbi] == 1:
-                                diff2.extend([bbi])
-                       
-                        if len(diff2) == 2:
-                            print 
-                            print " Form Hamiltonian for <%s|H|%s>" %(bij, bkl)
-                            H_sectors[bij,bkl] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],Hi,Hij,diff2) # <QPQ|H|QQP>
-                            H_sectors[bkl,bij] = H_sectors[bij,bkl].T
-                        if len(diff2) > 2:
-                            H_sectors[bij,bkl]    = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
-                            H_sectors[bkl,bij] = H_sectors[bij,bkl].T
-    
-    
-    #for k in H_sectors.keys():
-    #    print k
-    Htest = H0_0
-    
+def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
+    # {{{
+    Htest = H_sectors[0,0]
     if n_body_order == 1:
         # Singles
         for bi in range(n_blocks+1):
@@ -844,10 +562,337 @@ for it in range(0,maxiter):
                         row_ij = np.hstack( (row_ij, H_sectors[(bi,bj),(bk,bl)]) )  #<ij|H|kl>
                 
                 Htest = np.vstack((Htest,row_ij))
+    return Htest
+    # }}}
+
+
+
+
+"""
+Test forming HDVV Hamiltonian and projecting onto "many-body tucker basis"
+"""
+#   Setup input arguments
+parser = argparse.ArgumentParser(description='Finds eigenstates of a spin lattice',
+formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+#parser.add_argument('-d','--dry_run', default=False, action="store_true", help='Run but don\'t submit.', required=False)
+parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
+parser.add_argument('-j','--j12', type=str, default="heis_j12.m", help='File containing matrix of exchange constants', required=False)
+parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='File containing vector of block sizes', required=False)
+#parser.add_argument('-s','--save', default=False, action="store_true", help='Save the Hamiltonian and S2 matrices', required=False)
+#parser.add_argument('-r','--read', default=False, action="store_true", help='Read the Hamiltonian and S2 matrices', required=False)
+#parser.add_argument('-hdvv','--hamiltonian', type=str, default="heis_hamiltonian.npy", help='File containing matrix of Hamiltonian', required=False)
+#parser.add_argument('-s2','--s2', type=str, default="heis_s2.npy", help='File containing matrix of s2', required=False)
+#parser.add_argument('--eigvals', type=str, default="heis_eigvals.npy", help='File of Hamiltonian eigvals', required=False)
+#parser.add_argument('--eigvecs', type=str, default="heis_eigvecs.npy", help='File of Hamiltonian eigvecs', required=False)
+parser.add_argument('-np','--n_p_space', type=int, nargs="+", help='Number of vectors in block P space', required=False)
+parser.add_argument('-nb','--n_body_order', type=int, default="0", help='n_body spaces', required=False)
+parser.add_argument('--n_print', type=int, default="10", help='number of states to print', required=False)
+parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
+parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
+parser.add_argument('--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
+parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
+args = vars(parser.parse_args())
+#
+#   Let minute specification of walltime override hour specification
+
+j12 = np.loadtxt(args['j12'])
+lattice = np.loadtxt(args['lattice']).astype(int)
+blocks = np.loadtxt(args['blocks']).astype(int)
+n_sites = len(lattice)
+n_blocks = len(blocks)
+
+n_p_states = args['n_p_space'] 
+
+
+if args['n_p_space'] == None:
+    n_p_states = []
+    for bi in range(n_blocks):
+        n_p_states.extend([1])
+    args['n_p_space'] = n_p_states
+
+assert(len(args['n_p_space']) == n_blocks)
+
+np.random.seed(2)
+
+print " j12:\n", j12
+print " lattice:\n", lattice 
+print " blocks:\n", blocks
+print " n_blocks:\n", n_blocks
+
+H_tot = np.array([])
+S2_tot = np.array([])
+H_dict = {}
+
+#get Hamiltonian and eigenstates 
+#if args['read']:
+#    print "Reading Hamiltonian and S2 from disk"
+#    H_tot = np.load(args['hamiltonian'])
+#    S2_tot = np.load(args['s2'])
+#    v = np.load(args['eigvecs'])
+#    l = np.load(args['eigvals'])
+#else:
+#    print "Building Hamiltonian"
+#    H_tot, H_dict, S2_tot, Sz_tot = form_hdvv_H(lattice,j12)
+
+
+    #print " Diagonalize Hamiltonian (%ix%i):\n" %(H_tot.shape[0],H_tot.shape[0]), H_tot.shape
+    #l,v = np.linalg.eigh(H_tot)
+    #l,v = scipy.sparse.linalg.eigsh(H_tot, k=min(100,H_tot.shape[0]))
+
+
+
+#if args['save']==True:
+#    np.save("heis_hamiltonian",H_tot)
+#    np.save("heis_s2",S2_tot)
+#
+
+
+#print v.shape
+#print S2_tot.shape
+au2ev = 27.21165;
+au2cm = 219474.63;
+
+convert = au2ev/au2cm;		# convert from wavenumbers to eV
+convert = 1;			# 1 for wavenumbers
+#S2_eig = np.dot(v.transpose(),np.dot(S2_tot,v))
+#print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
+#for si,i in enumerate(l):
+#    print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,S2_eig[si,si])
+#    if si>10:
+#        break
+
+#v0 = v[:,0]
+
+#if args['save']==True:
+#    np.save("heis_eigvecs",v)
+#    np.save("heis_eigvals",l)
+#
+
+
+
+
+# reshape eigenvector into tensor
+dims_tot = []
+dim_tot = 1
+for bi,b in enumerate(blocks):
+    print b
+    block_dim = np.power(2,b.shape[0])
+    dims_tot.extend([block_dim])
+    dim_tot *= block_dim
+
+#v0 = np.reshape(v0,dims_tot)
+
+
+# Get initial compression vectors 
+p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states)
+
+if args['use_exact_tucker_factors']:
+    p_states = []
+    q_states = []
+    Acore, Atfac = tucker_decompose(v0,0,0)
+    for bi,b in enumerate(Atfac):
+        #p_states.extend([scipy.linalg.orth(np.random.rand(b.shape[0],n_p_states))])
+        p_states.extend([b[:,0:n_p_states[bi]]])
+        q_states.extend([b[:,n_p_states[bi]::]])
+
+if 0:
+    # do random guess
+    p_states = []
+    q_states = []
+    for bi,b in enumerate(blocks):
+        block_dim = np.power(2,b.shape[0])
+        r = scipy.linalg.orth(np.random.rand(block_dim,block_dim))
+        p_states.extend([r[:,0:n_p_states[bi]]])
+        q_states.extend([r[:,n_p_states[bi]::]])
+
+dims_0 = n_p_states
+
+#
+# |Ia,Ib,Ic> P(Ia,a) P(Ib,b) P(Ic,c) = |abc>    : |PPP>
+#
+# |Ia,Ib,Ic> Q(Ia,A) P(Ib,b) P(Ic,c) = |Abc>    : |QPP>
+# |Ia,Ib,Ic> P(Ia,a) Q(Ib,B) P(Ic,c) = |aBc>    : |PQP>
+#
+# |Ia,Ib,Ic> Q(Ia,A) Q(Ib,B) P(Ic,c) = |ABc>    : |QQP>
+#
+#<abc|Ha+Hb+Hc+Hab+Hac+Hbc|abc>
+#
+#<a|Ha|a><bc|bc> = <a|Ha|a>
+#<ab|Hab|ab><c|c> = <ab|Hab|ab>
+#<Abc|Hab|Abc> = <Ab|Hab|Ab>
+
+
+Hi = {}
+Hij = {}
+S2i = {}
+S2ij = {}
+Szi = {}
+Szij = {}
+#1 body operators
+for bi,b in enumerate(blocks):
+    Hi[bi], S2i[bi], Szi[bi] = form_superblock_hamiltonian(lattice, j12, blocks, [bi])
+
+#2 body operators
+for bi,b in enumerate(blocks):
+    for bj,bb in enumerate(blocks):
+        if bj>bi:
+            hi = Hi[bi]
+            hj = Hi[bj]
+            s2i = S2i[bi]
+            s2j = S2i[bj]
+            
+            Hij[(bi,bj)], S2ij[(bi,bj)], Szij[(bi,bj)] = form_superblock_hamiltonian(lattice, j12, blocks, [bi,bj])
+            Hij[(bi,bj)] -= np.kron(hi,np.eye(hj.shape[0])) 
+            Hij[(bi,bj)] -= np.kron(np.eye(hi.shape[0]),hj) 
+            S2ij[(bi,bj)] -= np.kron(s2i,np.eye(s2j.shape[0])) 
+            S2ij[(bi,bj)] -= np.kron(np.eye(s2i.shape[0]),s2j) 
+
+
+
+
+
+# loop over compression vector iterations
+energy_per_iter = []
+maxiter = args['max_iter'] 
+for it in range(0,maxiter):
+
+    print " Tucker optimization: Iteration %4i" %it
+
+    vecs0 = []
+    # get vecs for PPP class
+    for bi,b in enumerate(blocks):
+        vecs0.extend([p_states[bi]])
+    
+    vecsQ = []
+    for bi in range(n_blocks):
+        v = cp.deepcopy(vecs0)
+        v[bi] = q_states[bi]
+        vecsQ.extend([v])
+    
+    vecsQQ = {}
+    for bi in range(n_blocks):
+        for bj in range(bi+1,n_blocks):
+            v = cp.deepcopy(vecs0)
+            v[bi] = q_states[bi]
+            v[bj] = q_states[bj]
+            vecsQQ[bi,bj] = v
+    
+    H0_0 = form_compressed_hamiltonian_diag(vecs0,Hi,Hij)   # <PPP|H|PPP>
+    S20_0 = form_compressed_hamiltonian_diag(vecs0,S2i,S2ij)# <PPP|S^2|PPP>
+    #
+    
+    H_sectors = {}
+    H_sectors[0,0] = H0_0
+    
+    S2_sectors = {}
+    S2_sectors[0,0] = S20_0
+    
+    n_body_order = args['n_body_order'] 
+    
+    if n_body_order >= 1:
+        for bi in range(n_blocks):
+            H_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],Hi,Hij) # <QPP|H|QPP>
+            
+            H_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],Hi,Hij,[bi]) # <PPP|H|QPP>
+            H_sectors[bi+1,0]       = H_sectors[0,bi+1].T
+            
+            S2_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],S2i,S2ij) # <QPP|H|QPP>
+            S2_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],S2i,S2ij,[bi]) # <PPP|H|QPP>
+            S2_sectors[bi+1,0]       = S2_sectors[0,bi+1].T
+            for bj in range(bi+1,n_blocks):
+                H_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],Hi,Hij,[bi,bj]) # <QPP|H|PQP>
+                H_sectors[bj+1,bi+1] = H_sectors[bi+1,bj+1].T
+    
+                S2_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],S2i,S2ij,[bi,bj]) # <QPP|H|PQP>
+                S2_sectors[bj+1,bi+1] = S2_sectors[bi+1,bj+1].T
     
     
-    #Hb = np.load('b.npy')
-    #print np.linalg.norm(H_sectors[(1,2),(1,3)] - Hb)
+    if n_body_order >= 2:
+        for bi in range(n_blocks):
+            for bj in range(bi+1,n_blocks):
+                bij = (bi+1,bj+1)
+                print 
+                print " Form Hamiltonian for <%s|H|%s>" %(bij, bij)
+                H_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Hi,Hij) # <QPQ|H|QPQ>
+                
+                print 
+                print " Form Hamiltonian for <%s|H|%s>" %(0, bij)
+                H_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Hi,Hij,[bi,bj]) # <PPP|H|QQP>
+                H_sectors[bij,0]    = H_sectors[0,bij].T
+                
+                S2_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],S2i,S2ij) # <QPQ|H|QPQ>
+                S2_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],S2i,S2ij,[bi,bj]) # <PPP|H|QQP>
+                S2_sectors[bij,0]    = S2_sectors[0,bij].T
+                
+        for bi in range(n_blocks):
+            for bj in range(bi+1,n_blocks):
+                bij = (bi+1,bj+1)
+                for bk in range(n_blocks):
+                    if bk == bi:
+                        print 
+                        print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
+                        H_sectors[bk+1,bij]     = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bj]) # <PPQ|H|PQQ>
+                        H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
+                        
+                        S2_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],S2i,S2ij,[bj]) # <PPQ|H|PQQ>
+                        S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
+                    elif bk == bj:
+                        print 
+                        print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
+                        H_sectors[bk+1,bij]     = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bi]) # <PQP|H|PQQ>
+                        H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
+                        
+                        S2_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],S2i,S2ij,[bi]) # <PQP|H|PQQ>
+                        S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
+                    else:
+                        H_sectors[bk+1,bij]     = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
+                        H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
+                
+                        S2_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
+                        S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
+                
+                    for bl in range(bk+1,n_blocks):
+                        bkl = (bk+1,bl+1)
+    
+                        #only compute upper triangular blocks
+                        if bk < bi:
+                            continue
+                        if bk == bi and bl <= bj:
+                            continue
+                        
+                        diff = {}
+                        diff[bi] = 1
+                        diff[bj] = 1
+                        diff[bk] = 1
+                        diff[bl] = 1
+                        for bbi in (bi,bj):
+                            for bbj in (bk,bl):
+                                if bbi == bbj:
+                                    diff[bbi] = 0
+                        diff2 = []
+                        for bbi in diff.keys():
+                            if diff[bbi] == 1:
+                                diff2.extend([bbi])
+                       
+                        if len(diff2) == 2:
+                            print 
+                            print " Form Hamiltonian for <%s|H|%s>" %(bij, bkl)
+                            H_sectors[bij,bkl]  = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],Hi,Hij,diff2) # <QPQ|H|QQP>
+                            H_sectors[bkl,bij]  = H_sectors[bij,bkl].T
+                            
+                            S2_sectors[bij,bkl] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],S2i,S2ij,diff2) # <QPQ|H|QQP>
+                            S2_sectors[bkl,bij] = S2_sectors[bij,bkl].T
+                        if len(diff2) > 2:
+                            H_sectors[bij,bkl]  = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
+                            H_sectors[bkl,bij]  = H_sectors[bij,bkl].T
+                            
+                            S2_sectors[bij,bkl] = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
+                            S2_sectors[bkl,bij] = S2_sectors[bij,bkl].T
+    
+    
+    Htest = assemble_blocked_matrix(H_sectors, n_blocks, n_body_order) 
+    S2test = assemble_blocked_matrix(S2_sectors, n_blocks, n_body_order) 
     
     if 0:
         dims_0
@@ -868,15 +913,18 @@ for it in range(0,maxiter):
     print " Dimensions of Full Hamiltonian      ", H_tot.shape
     print " Dimensions of Subspace Hamiltonian  ", Htest.shape
     lp,vp = np.linalg.eigh(Htest)
+
+    s2 = vp.T.dot(S2test).dot(vp)
+    print s2
     print 
     print " Eigenvectors of compressed Hamiltonian"
     print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(lp):
-        print " %5i =  %12.8f  %12.8f  %12.8s" %(si,i*convert,(i-lp[0])*convert,"--")
+        print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
         if si>10:
             break
-    print 
-    print
+    #print 
+    #print
     #print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
 
     if 1:
@@ -916,7 +964,11 @@ for it in range(0,maxiter):
    
         target_state = args['target_state'] 
         v = cp.deepcopy(vp[:,target_state])
-       
+
+
+        
+        
+
         v_0 = v[0:P_dim]
         
         print " norm of PPP component %12.8f" %np.dot(v_0.T,v_0)
@@ -966,7 +1018,7 @@ for it in range(0,maxiter):
                         v_tmp = v_tmp.reshape(dim_b)
                         
                         # add this recomposed portion of the CI vector
-                        vec_curr += transform_tensor(v_tmp, vecs_b)
+                        vec_curr -= transform_tensor(v_tmp, vecs_b)
 
                         block_dimer_index += 1
                         print "QQ_dims, start, stop", start, stop
@@ -984,9 +1036,9 @@ for it in range(0,maxiter):
         #H_tot = H_tot.reshape(dim_tot, dim_tot)
         
 
-    print " %5s    %12s  %12s" %("State","Energy","Relative")
+    print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(lp):
-        print " %5i =  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert)
+        print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,abs(s2[si,si]))
         if si>args['n_print']:
             break
     
@@ -994,11 +1046,11 @@ for it in range(0,maxiter):
     #print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
 
 
-    energy_per_iter += [lp[0]]
+    energy_per_iter += [lp[target_state]]
 
     thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
-        if abs(lp[0]-energy_per_iter[it-1]) < thresh:
+        if abs(lp[target_state]-energy_per_iter[it-1]) < thresh:
             break
 
     

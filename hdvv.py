@@ -33,12 +33,14 @@ def form_hdvv_H(lattice,j12):
     H_dict = {}
     H_tot = np.zeros([n_configs,n_configs])
     S2_tot = np.zeros([n_configs,n_configs])
+    Sz_tot = np.zeros([n_configs,n_configs])
 
     
     for si,i in enumerate(lattice):
         i1 = np.eye(np.power(2,si))
         i2 = np.eye(np.power(2,n_sites-si-1))
         S2_tot += np.kron(i1,np.kron(s2,i2))
+        Sz_tot += np.kron(i1,np.kron(s2,i2))
 
         for sj,j in enumerate(lattice):
             if sj>si:
@@ -64,7 +66,7 @@ def form_hdvv_H(lattice,j12):
                 H_tot -= j*S1S2
                 S2_tot += S1S2
 
-    return H_tot, H_dict, S2_tot
+    return H_tot, H_dict, S2_tot, Sz_tot
 
 
 
