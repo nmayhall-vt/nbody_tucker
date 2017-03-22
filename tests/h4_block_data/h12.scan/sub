@@ -1,0 +1,27 @@
+submit.qchem.pl -save=00 00.in
+submit.qchem.pl -save=01 01.in
+submit.qchem.pl -save=02 02.in
+submit.qchem.pl -save=03 03.in
+submit.qchem.pl -save=04 04.in
+submit.qchem.pl -save=05 05.in
+submit.qchem.pl -save=06 06.in
+submit.qchem.pl -save=07 07.in
+submit.qchem.pl -save=08 08.in
+submit.qchem.pl -save=09 09.in
+submit.qchem.pl -save=10 10.in
+submit.qchem.pl -save=11 11.in
+submit.qchem.pl -save=12 12.in
+
+cp $QCSCRATCH/00/*. 00.scr
+cp $QCSCRATCH/01/*. 01.scr
+cp $QCSCRATCH/02/*. 02.scr
+cp $QCSCRATCH/03/*. 03.scr
+cp $QCSCRATCH/04/*. 04.scr
+cp $QCSCRATCH/05/*. 05.scr
+cp $QCSCRATCH/06/*. 06.scr
+cp $QCSCRATCH/07/*. 07.scr
+cp $QCSCRATCH/08/*. 08.scr
+cp $QCSCRATCH/09/*. 09.scr
+cp $QCSCRATCH/10/*. 10.scr
+cp $QCSCRATCH/11/*. 11.scr
+cp $QCSCRATCH/12/*. 12.scr

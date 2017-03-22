@@ -1,0 +1,27 @@
+$rem
+	exchange 		hf
+	unrestricted		0
+	basis			6-31g*	
+	aux_basis		rimp2-vdz
+	scf_guess		read	
+	scf_convergence		8
+	purecart		1111
+
+	symmetry		0
+	sym_ignore		1
+
+	correlation		sf-cas
+	cas_n_spin_flip		1
+	cas_local		1
+	gui			2
+$end
+
+$development
+	1sf_heis_projection	1
+	scf_corresponding_orbs	1
+$end
+
+$molecule
+read
+$end
+

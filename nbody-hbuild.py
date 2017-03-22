@@ -419,7 +419,6 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
     #   vecs_l correspond to the bra states
     #   vecs_r correspond to the ket states
 
-
     assert(len(vecs_l) == len(vecs_r))
     
 
@@ -461,7 +460,8 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
     #       flip Cb and cb
     H.shape = (dims_l+dims_r)
 
-    assert(block_curr1 < block_curr2)
+    #print block_curr1, block_curr2
+    #assert(block_curr1 < block_curr2)
 
     #print " block_curr1, block_curr2", block_curr1, block_curr2
     vw_l = np.kron(vecs_l[block_curr1],vecs_l[block_curr2])
@@ -945,7 +945,7 @@ for it in range(0,maxiter):
     #    last_vector = cp.deepcopy(vp[:,target_state])
 
 
-    if 1:
+    if it<maxiter-1 :
         print " Recompose target state (SLOW)"
         n0 = H_sectors[0,0].shape[0] 
        

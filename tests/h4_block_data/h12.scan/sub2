@@ -1,0 +1,13 @@
+cp $QCSCRATCH/00/* 00.scr
+cp $QCSCRATCH/01/* 01.scr
+cp $QCSCRATCH/02/* 02.scr
+cp $QCSCRATCH/03/* 03.scr
+cp $QCSCRATCH/04/* 04.scr
+cp $QCSCRATCH/05/* 05.scr
+cp $QCSCRATCH/06/* 06.scr
+cp $QCSCRATCH/07/* 07.scr
+cp $QCSCRATCH/08/* 08.scr
+cp $QCSCRATCH/09/* 09.scr
+cp $QCSCRATCH/10/* 10.scr
+cp $QCSCRATCH/11/* 11.scr
+cp $QCSCRATCH/12/* 12.scr
