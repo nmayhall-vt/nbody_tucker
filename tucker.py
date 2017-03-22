@@ -190,3 +190,91 @@ def transform_tensor(core, vectors, trans=0):
     print " %37s Final shape of tensor: " %"", A.shape
     return A
 
+
+def form_gramian(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, trans2=0):
+    """
+    Form grammian tensor, where open_dims = [1]
+         __      __
+        |          |
+        |__Ua--Ub__|
+        |          |
+        A__Ua--Ub__B
+        |          |
+        |__Ua--Ub__|
+
+    A is a ndarray numpy tensor
+    B is a ndarray numpy tensor
+    open_dims tells us which dimension to not contract over
+
+    tuck_factors_A  :   a list of numpy matrices with row indices being the final basis, and column indices being the tucker
+                        basis indices. trans1=1 switches this definition
+    tuck_factors_B  :   a list of numpy matrices with row indices being the final basis, and column indices being the tucker
+                        basis indices. trans1=1 switches this definition
+    """
+    assert(len(tuck_factors_A) == len(tuck_factors_B) )
+    assert(len(A.shape) == len(tuck_factors_A) )
+    assert(len(B.shape) == len(tuck_factors_B) )
+    
+    n_dims = len(A.shape)
+
+    A_inds = range(n_dims) 
+    B_inds = range(n_dims)
+    
+    tuck_factors_l = []
+    tuck_factors_r = []
+
+    for d in range(n_dims):
+        if (trans1,trans2) == (0,0):
+            
+            for dd in open_dims:
+                if d==dd:
+                    in_open = 1
+            if in_open == 1:
+                tuck_factors_l.extend([tuck_factors_A[d]])
+                tuck_factors_r.extend([tuck_factors_A[d]])
+                
+                old_index = A_inds.index(d)
+                A_inds.pop(old_index)
+                
+                old_index = B_inds.index(d)
+                B_inds.pop(old_index)
+                
+                continue
+
+            assert( tuck_factors_A[d].shape[0] == tuck_factors_A[d].shape[0]) 
+            assert( A.shape[d] == tuck_factors_A[d].shape[1] )
+            assert( B.shape[d] == tuck_factors_B[d].shape[1] )
+            
+            S_d = tuck_factors_A[d].T.dot(tuck_factors_B[d])
+
+            #Contract this dimension's basis overlap with one of the two tensors, (which ever has the largest index)
+            
+            if S_d.shape[0] >= S_d.shape[1]:
+                # A--S(Ai,Bi)--B  -->  AS(Bj)--B --> ASB
+                
+                A = np.tensordot(A,S_d,axes=(d,0))
+
+                # keep info about moving current dimension to the end A(i,d,j,k) U(d,l) -> A(i,j,k,l)
+                old_index = A_inds.index(d)
+                A_inds.append( A_inds.pop(old_index) )
+
+                print "A_inds:",  A_inds
+            else:
+                # A--S(Ai,Bi)--B  -->  A--S(Aj)B --> ASB
+                
+                B = np.tensordot(B,S_d,axes=(d,0))
+
+                old_index = B_inds.index(d)
+                B_inds.append( A_inds.pop(old_index) )
+                print "B_inds:",  B_inds
+        else:
+            print "Transposes NYI"
+            exit(-1)
+    
+    tuck_factors_C = []
+    tuck_factors_C.extend( [tuck_factors_l] ) 
+    tuck_factors_C.extend( [tuck_factors_r] ) 
+
+    return np.tensordot(A,B,axes=(A_inds,B_inds)), tuck_factors_C
+
+            

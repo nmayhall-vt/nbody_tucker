@@ -7,8 +7,8 @@ import copy as cp
 import argparse
 import scipy.sparse
 import scipy.sparse.linalg
-import sys
-sys.path.insert(0, '../')
+#import sys
+#sys.path.insert(0, '../')
 
 from hdvv import *
 
@@ -22,7 +22,7 @@ def printm(m):
         print
     # }}}
 
-def get_guess_vectors(lattice, j12, blocks, n_p_states):
+def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
     # {{{
     print " Generate initial guess vectors"
     p_states = []
@@ -40,6 +40,7 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states):
             print "%12.8f" %l
         p_states.extend([v_b[:,0:n_p_states[bi]]])
         q_states.extend([v_b[:,n_p_states[bi]::]])
+        #q_states.extend([v_b[:,n_p_states[bi]: n_p_states[bi]+n_q_states[bi]]])
     return p_states, q_states
     # }}}
 
@@ -586,6 +587,7 @@ parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='Fi
 #parser.add_argument('--eigvals', type=str, default="heis_eigvals.npy", help='File of Hamiltonian eigvals', required=False)
 #parser.add_argument('--eigvecs', type=str, default="heis_eigvecs.npy", help='File of Hamiltonian eigvecs', required=False)
 parser.add_argument('-np','--n_p_space', type=int, nargs="+", help='Number of vectors in block P space', required=False)
+parser.add_argument('-nq','--n_q_space', type=int, nargs="+", help='Number of vectors in block Q space', required=False)
 parser.add_argument('-nb','--n_body_order', type=int, default="0", help='n_body spaces', required=False)
 parser.add_argument('--n_print', type=int, default="10", help='number of states to print', required=False)
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
@@ -603,6 +605,7 @@ n_sites = len(lattice)
 n_blocks = len(blocks)
 
 n_p_states = args['n_p_space'] 
+n_q_states = args['n_q_space'] 
 
 
 if args['n_p_space'] == None:
@@ -681,11 +684,17 @@ for bi,b in enumerate(blocks):
     dims_tot.extend([block_dim])
     dim_tot *= block_dim
 
+if args['n_q_space'] == None:
+    n_q_states = []
+    for bi in range(n_blocks):
+        n_q_states.extend([dims_tot[bi]-1])
+    args['n_q_space'] = n_q_states
+
 #v0 = np.reshape(v0,dims_tot)
 
 
 # Get initial compression vectors 
-p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states)
+p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states)
 
 if args['use_exact_tucker_factors']:
     p_states = []
@@ -704,7 +713,7 @@ if 0:
         block_dim = np.power(2,b.shape[0])
         r = scipy.linalg.orth(np.random.rand(block_dim,block_dim))
         p_states.extend([r[:,0:n_p_states[bi]]])
-        q_states.extend([r[:,n_p_states[bi]::]])
+        q_states.extend([r[:,n_p_states[bi]:n_p_states[bi]+n_q_states[bi]]])
 
 dims_0 = n_p_states
 
@@ -755,6 +764,7 @@ for bi,b in enumerate(blocks):
 # loop over compression vector iterations
 energy_per_iter = []
 maxiter = args['max_iter'] 
+last_vector = np.array([])  # used to detect root flipping
 for it in range(0,maxiter):
 
     print " Tucker optimization: Iteration %4i" %it
@@ -923,9 +933,17 @@ for it in range(0,maxiter):
         print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
         if si>10:
             break
-    #print 
-    #print
-    #print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
+
+    
+    target_state = args['target_state'] 
+    #
+    #   todo: look for, and address, root flipping
+    #
+    #check if root flipped
+    #if 1:
+        #vec_curr.shape = dim_tot
+    #    last_vector = cp.deepcopy(vp[:,target_state])
+
 
     if 1:
         print " Recompose target state (SLOW)"
@@ -957,12 +975,11 @@ for it in range(0,maxiter):
                             q_dim = q_dim / p_states[bbbi].shape[1] * q_states[bbbi].shape[1]
                             QQQ_dims.extend([q_dim])
         
-        print P_dim
-        print Q_dims
-        print QQ_dims
-        print QQQ_dims
+        print "P_dims", P_dim
+        print "Q_dims", Q_dims
+        print "QQ_dims", QQ_dims
+        print "QQQ_dims", QQQ_dims
    
-        target_state = args['target_state'] 
         v = cp.deepcopy(vp[:,target_state])
 
 
@@ -974,7 +991,14 @@ for it in range(0,maxiter):
         print " norm of PPP component %12.8f" %np.dot(v_0.T,v_0)
         
         v_0.shape = n_p_states
+
+        #G0_0, vecs_G0_0 = form_gramian(v_0,vecs0, v_0, vecs0, [0])
+        #print "G0_0.shape", G0_0.shape
+        #print "len(vecs_G0_0)", len(vecs_G0_0)
+
         vec_curr = transform_tensor(v_0, vecs0)
+    
+        #change_tucker_basis(last_vector, last_tucker_basis, 
         
         if n_body_order >= 1:
             
@@ -1030,7 +1054,7 @@ for it in range(0,maxiter):
         q_states = []
         for bi,b in enumerate(Atfac):
             p_states.extend([b[:,0:n_p_states[bi]]])
-            q_states.extend([b[:,n_p_states[bi]::]])
+            q_states.extend([b[:,n_p_states[bi]:n_p_states[bi]+n_q_states[bi]]])
       
         vec_curr = vec_curr.reshape(dim_tot)
         #H_tot = H_tot.reshape(dim_tot, dim_tot)
