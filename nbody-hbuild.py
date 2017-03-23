@@ -39,8 +39,8 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
         for l in l_b:
             print "%12.8f" %l
         p_states.extend([v_b[:,0:n_p_states[bi]]])
-        q_states.extend([v_b[:,n_p_states[bi]::]])
-        #q_states.extend([v_b[:,n_p_states[bi]: n_p_states[bi]+n_q_states[bi]]])
+        #q_states.extend([v_b[:,n_p_states[bi]::]])
+        q_states.extend([v_b[:,n_p_states[bi]: n_p_states[bi]+n_q_states[bi]]])
     return p_states, q_states
     # }}}
 
@@ -656,7 +656,7 @@ H_dict = {}
 au2ev = 27.21165;
 au2cm = 219474.63;
 
-convert = au2ev/au2cm;		# convert from wavenumbers to eV
+convert = au2ev/au2cm;	# convert from wavenumbers to eV
 convert = 1;			# 1 for wavenumbers
 #S2_eig = np.dot(v.transpose(),np.dot(S2_tot,v))
 #print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
@@ -925,14 +925,13 @@ for it in range(0,maxiter):
     lp,vp = np.linalg.eigh(Htest)
 
     s2 = vp.T.dot(S2test).dot(vp)
-    print s2
-    print 
-    print " Eigenvectors of compressed Hamiltonian"
-    print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
-    for si,i in enumerate(lp):
-        print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
-        if si>10:
-            break
+    #print 
+    #print " Eigenvectors of compressed Hamiltonian"
+    #print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
+    #for si,i in enumerate(lp):
+    #    print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
+    #    if si>10:
+    #        break
 
     
     target_state = args['target_state'] 
