@@ -191,12 +191,12 @@ def transform_tensor(core, vectors, trans=0):
     return A
 
 
-def form_gramian(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, trans2=0):
+def form_gramian1(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, trans2=0):
     """
-    Form grammian tensor, where open_dims = [1]
-         __      __
+    Form grammian tensor, where open_dims = 1
+         __Ua--Ub__
         |          |
-        |__Ua--Ub__|
+        |__      __|
         |          |
         A__Ua--Ub__B
         |          |
@@ -225,13 +225,14 @@ def form_gramian(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, tran
 
     for d in range(n_dims):
         if (trans1,trans2) == (0,0):
-            
+           
+            in_open = 0
             for dd in open_dims:
                 if d==dd:
                     in_open = 1
             if in_open == 1:
                 tuck_factors_l.extend([tuck_factors_A[d]])
-                tuck_factors_r.extend([tuck_factors_A[d]])
+                tuck_factors_r.extend([tuck_factors_B[d]])
                 
                 old_index = A_inds.index(d)
                 A_inds.pop(old_index)
@@ -275,6 +276,13 @@ def form_gramian(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, tran
     tuck_factors_C.extend( [tuck_factors_l] ) 
     tuck_factors_C.extend( [tuck_factors_r] ) 
 
-    return np.tensordot(A,B,axes=(A_inds,B_inds)), tuck_factors_C
+    print " Forming the gramiam:  ", "A(",A_inds,") B(",B_inds,")", 
+    AA= np.tensordot(A,B,axes=(A_inds,B_inds))
+    print " = ", AA.shape
+    AA = tuck_factors_l[0].dot(AA).dot(tuck_factors_r[0].T)
+    return AA
+    #return AA, tuck_factors_C
 
-            
+           
+
+#def form_tot_gramiam1(v,P_dims, Q_dims, QQ_dims, blocks, 

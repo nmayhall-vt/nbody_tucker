@@ -990,11 +990,36 @@ for it in range(0,maxiter):
         print " norm of PPP component %12.8f" %np.dot(v_0.T,v_0)
         
         v_0.shape = n_p_states
+    
+        grams = {}
+        for fi,f in enumerate(blocks):
+            grams[fi] = form_gramian1(v_0,vecs0, v_0, vecs0, [fi])
 
-        #G0_0, vecs_G0_0 = form_gramian(v_0,vecs0, v_0, vecs0, [0])
-        #print "G0_0.shape", G0_0.shape
-        #print "len(vecs_G0_0)", len(vecs_G0_0)
+          
+            
+            if n_body_order >= 1:
+                
+                start = P_dim
+                
+                for bi,b in enumerate(blocks):
+                    stop = start + Q_dims[bi]
+                    v1 = cp.deepcopy(vp[start:stop,target_state])
+                    
+                    dim_b = cp.deepcopy(n_p_states)
+                    dim_b[bi] = q_states[bi].shape[1]
+                    
+                    v1.shape = dim_b
+            
+                    #grams[fi] += form_gramian1(v_0, vecs0,    v1, vecsQ[bi], [fi])
+                    #grams[fi] += form_gramian1(v1, vecsQ[bi], v1, vecsQ[bi], [fi])
+            
+                    start = stop
 
+            lx,vx = np.linalg.eigh(grams[fi])
+            print lx
+
+
+        exit(-1)
         vec_curr = transform_tensor(v_0, vecs0)
     
         #change_tucker_basis(last_vector, last_tucker_basis, 
