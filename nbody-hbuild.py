@@ -990,36 +990,37 @@ for it in range(0,maxiter):
         print " norm of PPP component %12.8f" %np.dot(v_0.T,v_0)
         
         v_0.shape = n_p_states
-    
-        grams = {}
-        for fi,f in enumerate(blocks):
-            grams[fi] = form_gramian1(v_0,vecs0, v_0, vecs0, [fi])
-
-          
-            
-            if n_body_order >= 1:
+   
+        if 0:
+            grams = {}
+            for fi,f in enumerate(blocks):
+                grams[fi] = form_gramian1(v_0,vecs0, v_0, vecs0, [fi])
+         
+              
                 
-                start = P_dim
+                if n_body_order >= 1:
+                    
+                    start = P_dim
+                    
+                    for bi,b in enumerate(blocks):
+                        stop = start + Q_dims[bi]
+                        v1 = cp.deepcopy(vp[start:stop,target_state])
+                        
+                        dim_b = cp.deepcopy(n_p_states)
+                        dim_b[bi] = q_states[bi].shape[1]
+                        
+                        v1.shape = dim_b
                 
-                for bi,b in enumerate(blocks):
-                    stop = start + Q_dims[bi]
-                    v1 = cp.deepcopy(vp[start:stop,target_state])
-                    
-                    dim_b = cp.deepcopy(n_p_states)
-                    dim_b[bi] = q_states[bi].shape[1]
-                    
-                    v1.shape = dim_b
-            
-                    #grams[fi] += form_gramian1(v_0, vecs0,    v1, vecsQ[bi], [fi])
-                    #grams[fi] += form_gramian1(v1, vecsQ[bi], v1, vecsQ[bi], [fi])
-            
-                    start = stop
-
-            lx,vx = np.linalg.eigh(grams[fi])
-            print lx
-
-
-        exit(-1)
+                        #grams[fi] += form_gramian1(v_0, vecs0,    v1, vecsQ[bi], [fi])
+                        #grams[fi] += form_gramian1(v1, vecsQ[bi], v1, vecsQ[bi], [fi])
+                
+                        start = stop
+         
+                lx,vx = np.linalg.eigh(grams[fi])
+                print lx
+         
+         
+            exit(-1)
         vec_curr = transform_tensor(v_0, vecs0)
     
         #change_tucker_basis(last_vector, last_tucker_basis, 
@@ -1083,6 +1084,17 @@ for it in range(0,maxiter):
         vec_curr = vec_curr.reshape(dim_tot)
         #H_tot = H_tot.reshape(dim_tot, dim_tot)
         
+
+
+    #davidson
+    davidson = 1
+    if davidson == 1:
+        n0 = H_sectors[0,0].shape[0] 
+        c_0 =  np.dot(vp[0:n0,0].T,vp[0:n0,0])
+        ltmp, vtmp = np.linalg.eigh(H0_0)
+        davidson_correction = (1-c_0)*(lp[0] - ltmp[0])/c_0
+        print " Davidson correction : %12.8f " %davidson_correction
+        #lp[0] += davidson_correction
 
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(lp):
