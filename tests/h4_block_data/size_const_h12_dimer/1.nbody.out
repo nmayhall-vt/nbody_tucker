@@ -1,0 +1,1507 @@
+ j12:
+[[  0.00000000e+00  -3.15480430e+03  -2.88817233e+03  -3.09859971e+03
+   -1.66697890e+01  -1.70528606e+01  -3.49235908e+02  -1.58006201e+01
+    1.80516910e+01  -2.00993667e+01  -2.15478866e+02  -1.85940709e+02]
+ [ -3.15480430e+03   0.00000000e+00  -3.13309432e+03  -3.03784707e+03
+    2.18995968e+00   1.92089147e+00   9.16447123e+00  -2.25818926e+00
+    2.34042297e+00  -2.33397663e+00  -1.27603483e+01  -1.31484528e+01]
+ [ -2.88817233e+03  -3.13309432e+03   0.00000000e+00  -3.09769326e+03
+   -5.17966089e+00  -1.02387195e+01  -3.25713342e+02  -7.33000440e+01
+    1.84960999e+00  -2.15500671e+00  -1.07249576e+01  -1.10249747e+01]
+ [ -3.09859971e+03  -3.03784707e+03  -3.09769326e+03   0.00000000e+00
+    7.15664445e-01   3.95544233e-02   6.56902747e-01  -1.85732107e+00
+    2.18292461e+00  -1.88674415e+00  -1.51714103e+01  -1.08106844e+01]
+ [ -1.66697890e+01   2.18995968e+00  -5.17966089e+00   7.15664445e-01
+    0.00000000e+00  -3.12051950e+03  -2.89712495e+03  -3.14514493e+03
+   -2.04938211e+01  -3.48206852e+02  -1.61816266e+01  -1.79469785e+01]
+ [ -1.70528606e+01   1.92089147e+00  -1.02387195e+01   3.95544233e-02
+   -3.12051950e+03   0.00000000e+00  -3.16984795e+03  -3.03970262e+03
+    1.83087741e+00   7.30073131e+00  -2.21414791e-01   1.54786755e+00]
+ [ -3.49235908e+02   9.16447123e+00  -3.25713342e+02   6.56902747e-01
+   -2.89712495e+03  -3.16984795e+03   0.00000000e+00  -3.04057929e+03
+   -1.47843012e+01  -3.93231074e+02  -2.89739394e+01  -9.18460778e+00]
+ [ -1.58006201e+01  -2.25818926e+00  -7.33000440e+01  -1.85732107e+00
+   -3.14514493e+03  -3.03970262e+03  -3.04057929e+03   0.00000000e+00
+    1.09300338e+00   6.29546761e+00  -3.75144343e-01  -2.62569629e-02]
+ [  1.80516910e+01   2.34042297e+00   1.84960999e+00   2.18292461e+00
+   -2.04938211e+01   1.83087741e+00  -1.47843012e+01   1.09300338e+00
+    0.00000000e+00  -3.13312862e+03  -3.11851219e+03  -3.10164323e+03]
+ [ -2.00993667e+01  -2.33397663e+00  -2.15500671e+00  -1.88674415e+00
+   -3.48206852e+02   7.30073131e+00  -3.93231074e+02   6.29546761e+00
+   -3.13312862e+03   0.00000000e+00  -3.03131551e+03  -3.07188122e+03]
+ [ -2.15478866e+02  -1.27603483e+01  -1.07249576e+01  -1.51714103e+01
+   -1.61816266e+01  -2.21414791e-01  -2.89739394e+01  -3.75144343e-01
+   -3.11851219e+03  -3.03131551e+03   0.00000000e+00  -2.96189458e+03]
+ [ -1.85940709e+02  -1.31484528e+01  -1.10249747e+01  -1.08106844e+01
+   -1.79469785e+01   1.54786755e+00  -9.18460778e+00  -2.62569629e-02
+   -3.10164323e+03  -3.07188122e+03  -2.96189458e+03   0.00000000e+00]]
+ lattice:
+[1 1 1 1 1 1 1 1 1 1 1 1]
+ blocks:
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+ n_blocks:
+3
+[0 1 2 3]
+[4 5 6 7]
+[ 8  9 10 11]
+ Generate initial guess vectors
+ Guess eigenstates
+-9521.69494451
+-8888.51604140
+-3302.02877620
+-3302.02877620
+-3302.02877620
+-3090.51987062
+-3090.51987062
+-3090.51987062
+-2812.55684614
+-2812.55684614
+-2812.55684614
+9205.10549295
+9205.10549295
+9205.10549295
+9205.10549295
+9205.10549295
+ Guess eigenstates
+-9535.84538076
+-8877.07385934
+-3298.93728305
+-3298.93728305
+-3298.93728305
+-3107.96410070
+-3107.96410070
+-3107.96410070
+-2799.55823629
+-2799.55823629
+-2799.55823629
+9206.45962005
+9206.45962005
+9206.45962005
+9206.45962005
+9206.45962005
+ Guess eigenstates
+-9292.35414668
+-9126.02121234
+-3265.05920647
+-3265.05920647
+-3265.05920647
+-3072.72075408
+-3072.72075408
+-3072.72075408
+-2871.40771896
+-2871.40771896
+-2871.40771896
+9209.18767951
+9209.18767951
+9209.18767951
+9209.18767951
+9209.18767951
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Tucker optimization: Iteration    0
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+ Recompose target state (SLOW)
+P_dims 1
+Q_dims [15, 15, 15]
+QQ_dims [225, 225, 225]
+QQQ_dims [3375]
+ norm of PPP component   0.99633960
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+0
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+1
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+2
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+ Contract A along index    0     Dimension   15    Operation:  (15, 15, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 46 271
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 15)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 271 496
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 15, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 496 721
+ Contract A along index    0    Dimension   16
+   Eigenvalues for mode    0 contraction:
+   0            0.99819542 : Keep
+   1            0.00056819 : Keep
+   2            0.00056819 : Keep
+   3            0.00056819 : Keep
+   4            0.00003332 : Keep
+   5            0.00003332 : Keep
+   6            0.00003332 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    1    Dimension   16
+   Eigenvalues for mode    1 contraction:
+   0            0.99686688 : Keep
+   1            0.00094215 : Keep
+   2            0.00094215 : Keep
+   3            0.00094215 : Keep
+   4            0.00010190 : Keep
+   5            0.00010190 : Keep
+   6            0.00010190 : Keep
+   7            0.00000032 : Keep
+   8            0.00000032 : Keep
+   9            0.00000032 : Keep
+   10           0.00000001 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    2    Dimension   16
+   Eigenvalues for mode    2 contraction:
+   0            0.99777963 : Keep
+   1            0.00067915 : Keep
+   2            0.00067915 : Keep
+   3            0.00067915 : Keep
+   4            0.00006092 : Keep
+   5            0.00006092 : Keep
+   6            0.00006092 : Keep
+   7            0.00000009 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000001 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ State              Energy          Relative          <S2>
+     0 =   -28392.98021066        0.00000000    0.00000000
+     1 =   -28204.26946744      188.71074322    0.00000000
+     2 =   -27722.74295642      670.23725424    0.00000000
+     3 =   -27710.36837152      682.61183914    0.00000000
+     4 =   -27551.05847068      841.92173998    0.00000000
+     5 =   -27525.85122177      867.12898888    0.00000000
+     6 =   -27058.27278845     1334.70742221    0.00000000
+     7 =   -22638.64606640     5754.33414426    2.00000000
+     8 =   -22638.64606640     5754.33414426    2.00000000
+     9 =   -22638.64606640     5754.33414426    2.00000000
+    10 =   -22327.65791459     6065.32229607    2.00000000
+    11 =   -22327.65791459     6065.32229607    2.00000000
+ Tucker optimization: Iteration    1
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+ Recompose target state (SLOW)
+P_dims 1
+Q_dims [15, 15, 15]
+QQ_dims [225, 225, 225]
+QQQ_dims [3375]
+ norm of PPP component   0.99641983
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+0
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+1
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+2
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+ Contract A along index    0     Dimension   15    Operation:  (15, 15, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 46 271
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 15)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 271 496
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 15, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 496 721
+ Contract A along index    0    Dimension   16
+   Eigenvalues for mode    0 contraction:
+   0            0.99819489 : Keep
+   1            0.00056836 : Keep
+   2            0.00056836 : Keep
+   3            0.00056836 : Keep
+   4            0.00003333 : Keep
+   5            0.00003333 : Keep
+   6            0.00003333 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    1    Dimension   16
+   Eigenvalues for mode    1 contraction:
+   0            0.99686654 : Keep
+   1            0.00094227 : Keep
+   2            0.00094227 : Keep
+   3            0.00094227 : Keep
+   4            0.00010190 : Keep
+   5            0.00010190 : Keep
+   6            0.00010190 : Keep
+   7            0.00000032 : Keep
+   8            0.00000032 : Keep
+   9            0.00000032 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    2    Dimension   16
+   Eigenvalues for mode    2 contraction:
+   0            0.99777931 : Keep
+   1            0.00067931 : Keep
+   2            0.00067931 : Keep
+   3            0.00067931 : Keep
+   4            0.00006091 : Keep
+   5            0.00006091 : Keep
+   6            0.00006091 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ State              Energy          Relative          <S2>
+     0 =   -28392.98341330        0.00000000    0.00000000
+     1 =   -28204.26980854      188.71360476    0.00000000
+     2 =   -27722.74310319      670.24031012    0.00000000
+     3 =   -27710.36752764      682.61588566    0.00000000
+     4 =   -27551.04952934      841.93388396    0.00000000
+     5 =   -27525.85230797      867.13110533    0.00000000
+     6 =   -27058.26172284     1334.72169046    0.00000000
+     7 =   -22638.69933530     5754.28407801    2.00000000
+     8 =   -22638.69933530     5754.28407801    2.00000000
+     9 =   -22638.69933530     5754.28407801    2.00000000
+    10 =   -22327.64990733     6065.33350597    2.00000000
+    11 =   -22327.64990733     6065.33350597    2.00000000
+ Tucker optimization: Iteration    2
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+ Recompose target state (SLOW)
+P_dims 1
+Q_dims [15, 15, 15]
+QQ_dims [225, 225, 225]
+QQQ_dims [3375]
+ norm of PPP component   0.99642032
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+0
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+1
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+2
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+ Contract A along index    0     Dimension   15    Operation:  (15, 15, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 46 271
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 15)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 271 496
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 15, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 496 721
+ Contract A along index    0    Dimension   16
+   Eigenvalues for mode    0 contraction:
+   0            0.99819485 : Keep
+   1            0.00056837 : Keep
+   2            0.00056837 : Keep
+   3            0.00056837 : Keep
+   4            0.00003333 : Keep
+   5            0.00003333 : Keep
+   6            0.00003333 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    1    Dimension   16
+   Eigenvalues for mode    1 contraction:
+   0            0.99686652 : Keep
+   1            0.00094228 : Keep
+   2            0.00094228 : Keep
+   3            0.00094228 : Keep
+   4            0.00010190 : Keep
+   5            0.00010190 : Keep
+   6            0.00010190 : Keep
+   7            0.00000032 : Keep
+   8            0.00000032 : Keep
+   9            0.00000032 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    2    Dimension   16
+   Eigenvalues for mode    2 contraction:
+   0            0.99777928 : Keep
+   1            0.00067932 : Keep
+   2            0.00067932 : Keep
+   3            0.00067932 : Keep
+   4            0.00006091 : Keep
+   5            0.00006091 : Keep
+   6            0.00006091 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ State              Energy          Relative          <S2>
+     0 =   -28392.98356325        0.00000000    0.00000000
+     1 =   -28204.26993555      188.71362771    0.00000000
+     2 =   -27722.74311810      670.24044516    0.00000000
+     3 =   -27710.36732248      682.61624077    0.00000000
+     4 =   -27551.04939146      841.93417179    0.00000000
+     5 =   -27525.85252035      867.13104290    0.00000000
+     6 =   -27058.25963950     1334.72392375    0.00000000
+     7 =   -22638.70345558     5754.28010768    2.00000000
+     8 =   -22638.70345558     5754.28010768    2.00000000
+     9 =   -22638.70345558     5754.28010768    2.00000000
+    10 =   -22327.64169344     6065.34186981    2.00000000
+    11 =   -22327.64169344     6065.34186981    2.00000000
+ Tucker optimization: Iteration    3
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+ Recompose target state (SLOW)
+P_dims 1
+Q_dims [15, 15, 15]
+QQ_dims [225, 225, 225]
+QQQ_dims [3375]
+ norm of PPP component   0.99642032
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+0
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+1
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+2
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+ Contract A along index    0     Dimension   15    Operation:  (15, 15, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 46 271
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 15)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 271 496
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 15, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 496 721
+ Contract A along index    0    Dimension   16
+   Eigenvalues for mode    0 contraction:
+   0            0.99819485 : Keep
+   1            0.00056838 : Keep
+   2            0.00056838 : Keep
+   3            0.00056838 : Keep
+   4            0.00003333 : Keep
+   5            0.00003333 : Keep
+   6            0.00003333 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    1    Dimension   16
+   Eigenvalues for mode    1 contraction:
+   0            0.99686651 : Keep
+   1            0.00094228 : Keep
+   2            0.00094228 : Keep
+   3            0.00094228 : Keep
+   4            0.00010190 : Keep
+   5            0.00010190 : Keep
+   6            0.00010190 : Keep
+   7            0.00000032 : Keep
+   8            0.00000032 : Keep
+   9            0.00000032 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    2    Dimension   16
+   Eigenvalues for mode    2 contraction:
+   0            0.99777928 : Keep
+   1            0.00067932 : Keep
+   2            0.00067932 : Keep
+   3            0.00067932 : Keep
+   4            0.00006091 : Keep
+   5            0.00006091 : Keep
+   6            0.00006091 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ State              Energy          Relative          <S2>
+     0 =   -28392.98357558        0.00000000    0.00000000
+     1 =   -28204.26994767      188.71362791    0.00000000
+     2 =   -27722.74311954      670.24045604    0.00000000
+     3 =   -27710.36730306      682.61627252    0.00000000
+     4 =   -27551.04939153      841.93418405    0.00000000
+     5 =   -27525.85254115      867.13103443    0.00000000
+     6 =   -27058.25944512     1334.72413046    0.00000000
+     7 =   -22638.70381707     5754.27975851    2.00000000
+     8 =   -22638.70381707     5754.27975851    2.00000000
+     9 =   -22638.70381707     5754.27975851    2.00000000
+    10 =   -22327.64089648     6065.34267910    2.00000000
+    11 =   -22327.64089648     6065.34267910    2.00000000
+ Tucker optimization: Iteration    4
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+ Recompose target state (SLOW)
+P_dims 1
+Q_dims [15, 15, 15]
+QQ_dims [225, 225, 225]
+QQQ_dims [3375]
+ norm of PPP component   0.99642032
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+0
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+1
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+2
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+ Contract A along index    0     Dimension   15    Operation:  (15, 15, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 46 271
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 15)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 271 496
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 15, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 496 721
+ Contract A along index    0    Dimension   16
+   Eigenvalues for mode    0 contraction:
+   0            0.99819485 : Keep
+   1            0.00056838 : Keep
+   2            0.00056838 : Keep
+   3            0.00056838 : Keep
+   4            0.00003333 : Keep
+   5            0.00003333 : Keep
+   6            0.00003333 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    1    Dimension   16
+   Eigenvalues for mode    1 contraction:
+   0            0.99686651 : Keep
+   1            0.00094228 : Keep
+   2            0.00094228 : Keep
+   3            0.00094228 : Keep
+   4            0.00010190 : Keep
+   5            0.00010190 : Keep
+   6            0.00010190 : Keep
+   7            0.00000032 : Keep
+   8            0.00000032 : Keep
+   9            0.00000032 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    2    Dimension   16
+   Eigenvalues for mode    2 contraction:
+   0            0.99777928 : Keep
+   1            0.00067932 : Keep
+   2            0.00067932 : Keep
+   3            0.00067932 : Keep
+   4            0.00006091 : Keep
+   5            0.00006091 : Keep
+   6            0.00006091 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ State              Energy          Relative          <S2>
+     0 =   -28392.98357667        0.00000000    0.00000000
+     1 =   -28204.26994875      188.71362792    0.00000000
+     2 =   -27722.74311967      670.24045700    0.00000000
+     3 =   -27710.36730132      682.61627535    0.00000000
+     4 =   -27551.04939163      841.93418504    0.00000000
+     5 =   -27525.85254305      867.13103362    0.00000000
+     6 =   -27058.25942774     1334.72414893    0.00000000
+     7 =   -22638.70384921     5754.27972746    2.00000000
+     8 =   -22638.70384921     5754.27972746    2.00000000
+     9 =   -22638.70384921     5754.27972746    2.00000000
+    10 =   -22327.64082484     6065.34275183    2.00000000
+    11 =   -22327.64082484     6065.34275183    2.00000000
+ Tucker optimization: Iteration    5
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+ Recompose target state (SLOW)
+P_dims 1
+Q_dims [15, 15, 15]
+QQ_dims [225, 225, 225]
+QQQ_dims [3375]
+ norm of PPP component   0.99642032
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+0
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+1
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+2
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+ Contract A along index    0     Dimension   15    Operation:  (15, 15, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 46 271
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 15)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 271 496
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 15, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 496 721
+ Contract A along index    0    Dimension   16
+   Eigenvalues for mode    0 contraction:
+   0            0.99819485 : Keep
+   1            0.00056838 : Keep
+   2            0.00056838 : Keep
+   3            0.00056838 : Keep
+   4            0.00003333 : Keep
+   5            0.00003333 : Keep
+   6            0.00003333 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    1    Dimension   16
+   Eigenvalues for mode    1 contraction:
+   0            0.99686651 : Keep
+   1            0.00094228 : Keep
+   2            0.00094228 : Keep
+   3            0.00094228 : Keep
+   4            0.00010190 : Keep
+   5            0.00010190 : Keep
+   6            0.00010190 : Keep
+   7            0.00000032 : Keep
+   8            0.00000032 : Keep
+   9            0.00000032 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    2    Dimension   16
+   Eigenvalues for mode    2 contraction:
+   0            0.99777928 : Keep
+   1            0.00067932 : Keep
+   2            0.00067932 : Keep
+   3            0.00067932 : Keep
+   4            0.00006091 : Keep
+   5            0.00006091 : Keep
+   6            0.00006091 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ State              Energy          Relative          <S2>
+     0 =   -28392.98357677        0.00000000    0.00000000
+     1 =   -28204.26994885      188.71362792    0.00000000
+     2 =   -27722.74311968      670.24045709    0.00000000
+     3 =   -27710.36730116      682.61627560    0.00000000
+     4 =   -27551.04939164      841.93418512    0.00000000
+     5 =   -27525.85254322      867.13103355    0.00000000
+     6 =   -27058.25942619     1334.72415058    0.00000000
+     7 =   -22638.70385207     5754.27972470    2.00000000
+     8 =   -22638.70385207     5754.27972470    2.00000000
+     9 =   -22638.70385207     5754.27972470    2.00000000
+    10 =   -22327.64081844     6065.34275832    2.00000000
+    11 =   -22327.64081844     6065.34275832    2.00000000
+ Tucker optimization: Iteration    6
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+ Recompose target state (SLOW)
+P_dims 1
+Q_dims [15, 15, 15]
+QQ_dims [225, 225, 225]
+QQQ_dims [3375]
+ norm of PPP component   0.99642032
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+0
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+1
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+2
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+ Contract A along index    0     Dimension   15    Operation:  (15, 15, 1)  x(0)  (16, 15)
+ Contract A along index    1     Dimension   15    Operation:  (15, 1, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension    1    Operation:  (1, 16, 16)  x(2)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 46 271
+ Contract A along index    0     Dimension   15    Operation:  (15, 1, 15)  x(0)  (16, 15)
+ Contract A along index    1     Dimension    1    Operation:  (1, 15, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 271 496
+ Contract A along index    0     Dimension    1    Operation:  (1, 15, 15)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   15    Operation:  (15, 15, 16)  x(1)  (16, 15)
+ Contract A along index    2     Dimension   15    Operation:  (15, 16, 16)  x(2)  (16, 15)
+                                       Final shape of tensor:  (16, 16, 16)
+QQ_dims, start, stop 496 721
+ Contract A along index    0    Dimension   16
+   Eigenvalues for mode    0 contraction:
+   0            0.99819485 : Keep
+   1            0.00056838 : Keep
+   2            0.00056838 : Keep
+   3            0.00056838 : Keep
+   4            0.00003333 : Keep
+   5            0.00003333 : Keep
+   6            0.00003333 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    1    Dimension   16
+   Eigenvalues for mode    1 contraction:
+   0            0.99686651 : Keep
+   1            0.00094228 : Keep
+   2            0.00094228 : Keep
+   3            0.00094228 : Keep
+   4            0.00010190 : Keep
+   5            0.00010190 : Keep
+   6            0.00010190 : Keep
+   7            0.00000032 : Keep
+   8            0.00000032 : Keep
+   9            0.00000032 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ Contract A along index    2    Dimension   16
+   Eigenvalues for mode    2 contraction:
+   0            0.99777928 : Keep
+   1            0.00067932 : Keep
+   2            0.00067932 : Keep
+   3            0.00067932 : Keep
+   4            0.00006091 : Keep
+   5            0.00006091 : Keep
+   6            0.00006091 : Keep
+   7            0.00000001 : Keep
+   8            0.00000001 : Keep
+   9            0.00000001 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15           0.00000000 : Keep
+
+ State              Energy          Relative          <S2>
+     0 =   -28392.98357678        0.00000000    0.00000000
+     1 =   -28204.26994886      188.71362792    0.00000000
+     2 =   -27722.74311968      670.24045709    0.00000000
+     3 =   -27710.36730115      682.61627563    0.00000000
+     4 =   -27551.04939164      841.93418513    0.00000000
+     5 =   -27525.85254323      867.13103354    0.00000000
+     6 =   -27058.25942605     1334.72415072    0.00000000
+     7 =   -22638.70385232     5754.27972445    2.00000000
+     8 =   -22638.70385232     5754.27972445    2.00000000
+     9 =   -22638.70385232     5754.27972445    2.00000000
+    10 =   -22327.64081788     6065.34275890    2.00000000
+    11 =   -22327.64081788     6065.34275890    2.00000000
+  Iteration        Energy         Delta
+          0  -28392.98021066              
+          1  -28392.98341330      -3.2e-03
+          2  -28392.98356325      -1.5e-04
+          3  -28392.98357558      -1.2e-05
+          4  -28392.98357667      -1.1e-06
+          5  -28392.98357677      -9.7e-08
+          6  -28392.98357678      -8.6e-09

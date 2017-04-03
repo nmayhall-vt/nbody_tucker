@@ -577,6 +577,7 @@ parser = argparse.ArgumentParser(description='Finds eigenstates of a spin lattic
 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 #parser.add_argument('-d','--dry_run', default=False, action="store_true", help='Run but don\'t submit.', required=False)
+parser.add_argument('-ju','--j_unit', type=str, default="cm", help='What units are the J values in', choices=['cm','ev'],required=False)
 parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
 parser.add_argument('-j','--j12', type=str, default="heis_j12.m", help='File containing matrix of exchange constants', required=False)
 parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='File containing vector of block sizes', required=False)
@@ -618,6 +619,15 @@ assert(len(args['n_p_space']) == n_blocks)
 
 np.random.seed(2)
 
+
+au2ev = 27.21165;
+au2cm = 219474.63;
+convert = au2ev/au2cm;	# convert from wavenumbers to eV
+convert = 1;			# 1 for wavenumbers
+
+if args['j_unit'] == 'cm':
+    j12 = j12 * au2ev/au2cm
+
 print " j12:\n", j12
 print " lattice:\n", lattice 
 print " blocks:\n", blocks
@@ -653,11 +663,7 @@ H_dict = {}
 
 #print v.shape
 #print S2_tot.shape
-au2ev = 27.21165;
-au2cm = 219474.63;
 
-convert = au2ev/au2cm;	# convert from wavenumbers to eV
-convert = 1;			# 1 for wavenumbers
 #S2_eig = np.dot(v.transpose(),np.dot(S2_tot,v))
 #print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
 #for si,i in enumerate(l):
@@ -987,8 +993,6 @@ for it in range(0,maxiter):
 
         v_0 = v[0:P_dim]
         
-        print " norm of PPP component %12.8f" %np.dot(v_0.T,v_0)
-        
         v_0.shape = n_p_states
    
         if 0:
@@ -1089,10 +1093,12 @@ for it in range(0,maxiter):
     #davidson
     davidson = 1
     if davidson == 1:
+        
         n0 = H_sectors[0,0].shape[0] 
         c_0 =  np.dot(vp[0:n0,0].T,vp[0:n0,0])
         ltmp, vtmp = np.linalg.eigh(H0_0)
         davidson_correction = (1-c_0)*(lp[0] - ltmp[0])/c_0
+        print " norm of PPP component %12.8f" %c_0
         print " Davidson correction : %12.8f " %davidson_correction
         #lp[0] += davidson_correction
 

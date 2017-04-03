@@ -1,0 +1,2077 @@
+                  Welcome to Q-Chem
+     A Quantum Leap Into The Future Of Chemistry
+
+
+ Q-Chem 4.3, Q-Chem, Inc., Pleasanton, CA (2015)
+
+ Y. Shao,  Z. Gan,  E. Epifanovsky,  A. T. B. Gilbert,  M. Wormit,  
+ J. Kussmann,  A. W. Lange,  A. Behn,  J. Deng,  X. Feng,  D. Ghosh,  
+ M. Goldey,  P. R. Horn,  L. D. Jacobson,  I. Kaliman,  R. Z. Khaliullin,  
+ T. Kus,  A. Landau,  J. Liu,  E. I. Proynov,  Y. M. Rhee,  R. M. Richard,  
+ M. A. Rohrdanz,  R. P. Steele,  E. J. Sundstrom,  H. L. Woodcock III,  
+ P. M. Zimmerman,  D. Zuev,  B. Albrecht,  E. Alguire,  B. Austin,  
+ S. A. Baeppler,  G. J. O. Beran,  Y. A. Bernard,  E. Berquist,  
+ K. Brandhorst,  K. B. Bravaya,  S. T. Brown,  D. Casanova,  C.-M. Chang,  
+ Y. Chen,  S. H. Chien,  K. D. Closser,  D. L. Crittenden,  M. Diedenhofen,  
+ R. A. DiStasio Jr.,  H. Do,  A. D. Dutoi,  R. G. Edgar,  P.-T. Fang,  
+ S. Fatehi,  Q. Feng,  L. Fusti-Molnar,  A. Ghysels,  
+ A. Golubeva-Zadorozhnaya,  J. Gomes,  A. Gunina,  M. W. D. Hanson-Heine,  
+ P. H. P. Harbach,  A. W. Hauser,  E. G. Hohenstein,  Z. C. Holden,  K. Hui,  
+ T.-C. Jagau,  H. Ji,  B. Kaduk,  K. Khistyaev,  Jaehoon Kim,  Jihan Kim,  
+ R. A. King,  P. Klunzinger,  D. Kosenkov,  T. Kowalczyk,  C. M. Krauter,  
+ K. U. Lao,  A. Laurent,  K. V. Lawler,  S. Lehtola,  S. V. Levchenko,  
+ C. Y. Lin,  Y.-S. Lin,  F. Liu,  E. Livshits,  R. C. Lochan,  A. Luenser,  
+ P. Manohar,  S. F. Manzer,  S.-P. Mao,  N. Mardirossian,  A. V. Marenich,  
+ L. A. Martinez-Martinez,  S. A. Maurer,  N. J. Mayhall,  K. Nanda,  
+ C. M. Oana,  R. Olivares-Amaya,  D. P. O'Neill,  J. A. Parkhill,  
+ T. M. Perrine,  R. Peverati,  P. A. Pieniazek,  F. Plasser,  A. Prociuk,  
+ D. R. Rehn,  E. Rosta,  N. J. Russ,  N. Sergueev,  S. M. Sharada,  
+ S. Sharma,  D. W. Small,  A. Sodt,  T. Stauch,  T. Stein,  D. Stuck,  
+ Y.-C. Su,  A. J. W. Thom,  T. Tsuchimochi,  L. Vogt,  O. Vydrov,  T. Wang,  
+ M. A. Watson,  J. Wenzel,  A. White,  C. F. Williams,  V. Vanovschi,  
+ S. Yeganeh,  S. R. Yost,  Z.-Q. You,  I. Y. Zhang,  X. Zhang,  Y. Zhao,  
+ B. R. Brooks,  G. K. L. Chan,  D. M. Chipman,  C. J. Cramer,  
+ W. A. Goddard III,  M. S. Gordon,  W. J. Hehre,  A. Klamt,  
+ H. F. Schaefer III,  M. W. Schmidt,  C. D. Sherrill,  D. G. Truhlar,  
+ A. Warshel,  X. Xu,  A. Aspuru-Guzik,  R. Baer,  A. T. Bell,  N. A. Besley,  
+ J.-D. Chai,  A. Dreuw,  B. D. Dunietz,  T. R. Furlani,  S. R. Gwaltney,  
+ C.-P. Hsu,  Y. Jung,  J. Kong,  D. S. Lambrecht,  W. Liang,  C. Ochsenfeld,  
+ V. A. Rassolov,  L. V. Slipchenko,  J. E. Subotnik,  T. Van Voorhis,  
+ J. M. Herbert,  A. I. Krylov,  P. M. W. Gill,  M. Head-Gordon
+
+ Contributors to earlier versions of Q-Chem not listed above: 
+ R. D. Adamson,  J. Baker,  E. F. C. Byrd,  A. K. Chakraborty,  C.-L. Cheng,  
+ H. Dachsel,  R. J. Doerksen,  G. Hawkins,  A. Heyden,  S. Hirata,  
+ G. Kedziora,  F. J. Keil,  C. Kelley,  P. P. Korambath,  W. Kurlancheek,  
+ A. M. Lee,  M. S. Lee,  D. Liotard,  I. Lotan,  P. E. Maslen,  N. Nair,  
+ D. Neuhauser,  R. Olson,  B. Peters,  J. Ritchie,  N. E. Schultz,  
+ N. Shenvi,  A. C. Simmonett,  K. S. Thanthiriwatte,  Q. Wu,  W. Zhang
+
+ Please cite Q-Chem as follows:
+ Y. Shao et al., Mol. Phys. 113, 184-215 (2015)
+ DOI: 10.1080/00268976.2014.952696
+
+ Q-Chem 4.3.0 for Intel X86 EM64T Linux
+
+ Parts of Q-Chem use Armadillo 5.200.1 (Boston Tea Smuggler).
+ http://arma.sourceforge.net/
+
+ Q-Chem begins on Fri Mar 24 23:26:12 2017  
+
+
+Host: 0
+
+     Scratch files written to /home/nmayhall/scratch_qchem/1//
+ Dec1416 |home|nmayhall|qcSoftware|qchem|qchem.svn-casman|libmdc|qstr_RNUM -1
+ Using version located at /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/bin/qchem
+
+
+Total Memory Limit in MB = 2000
+Mega-Array Size in MB = 62
+
+Checking the input file for inconsistencies... 	...done.
+
+ Q-Chem warning in module /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/forms1/BasisType.C, line 1452:
+
+ You are not using the predefined 5D/6D in this basis set.
+
+Finally everything over in PARseQInput
+
+--------------------------------------------------------------
+User input:
+--------------------------------------------------------------
+$rem
+	exchange 		hf
+	unrestricted		1
+	basis			6-31g*	
+	aux_basis		rimp2-vdz
+	scf_guess		core	
+	scf_convergence		8
+	purecart		1111
+
+	symmetry		0
+	sym_ignore		1
+
+	!correlation		sf-cas
+	!cas_n_spin_flip		1
+	!cas_local		1
+	gui			2
+$end
+
+$development
+	1sf_heis_projection	1
+$end
+
+$molecule
+0 7
+H         -0.73854       -0.54065        0.08576
+H         -2.09582        0.65549       -0.01146
+H	1.47674	3.07203	0.09828
+H	0.18287	1.9348	0.65668
+H          3.48850       -0.87553       -0.06084
+H          1.93960       -1.06676        0.85992
+He	10	10	10	
+$end
+
+
+--------------------------------------------------------------
+ ----------------------------------------------------------------
+             Standard Nuclear Orientation (Angstroms)
+    I     Atom           X                Y                Z
+ ----------------------------------------------------------------
+    1      H      -0.7385400000    -0.5406500000     0.0857600000
+    2      H      -2.0958200000     0.6554900000    -0.0114600000
+    3      H       1.4767400000     3.0720300000     0.0982800000
+    4      H       0.1828700000     1.9348000000     0.6566800000
+    5      H       3.4885000000    -0.8755300000    -0.0608400000
+    6      H       1.9396000000    -1.0667600000     0.8599200000
+    7      He     10.0000000000    10.0000000000    10.0000000000
+ ----------------------------------------------------------------
+ Nuclear Repulsion Energy =     2.9384051509 hartrees
+ There are        7 alpha and        1 beta electrons
+ Requested basis set is 6-31G(d)
+ There are 14 shells and 14 basis functions
+
+Total QAlloc Memory Limit   2000 MB
+Mega-Array Size        61 MB
+MEM_STATIC part        62 MB
+
+finished with qalloc call
+
+                       Distance Matrix (Angstroms)
+             H (  1)   H (  2)   H (  3)   H (  4)   H (  5)   H (  6)
+   H (  2)  1.811743
+   H (  3)  4.237815  4.314498
+   H (  4)  2.702369  2.697309  1.810857
+   H (  5)  4.242818  5.790604  4.433478  4.397724
+   H (  6)  2.836997  4.473261  4.233665  3.483787  1.812032
+   He(  7) 18.019814 18.271783 14.788062 15.770895 16.183241 16.461600
+
+
+
+ Q-Chem warning in module /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/forms1/BasisType.C, line 1375:
+
+ SAD: How to set up polarization functions for non-Pople basis?
+
+ Requested basis set is rimp2-VDZ
+ There are 41 shells and 93 basis functions
+ Job number = 2, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 2  <1-7|1-7>
+Symmetry turned off temporarily
+ Using the largest function pair in Schwarz integrals
+Total number of integrals generated =             443
+Symmetry turned back on
+ A cutoff of  1.0D-11 yielded     80 shell pairs
+ There are        80 function pairs
+ Job number = 11, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 11  <1-1|8-8>
+
+ -------------------------------------------------------
+ OpenMP Integral Computing Module                       
+ Release: version 1.0, May 2013, Q-Chem Inc. Pittsburgh 
+ -------------------------------------------------------
+ Integral Job Info:
+ Integral job number is                      11
+ Integral operator is                         1
+ short-range coefficients                     0
+ long-range coefficients              100000000
+ Omega coefficients                           0
+ if combine SR and LR in K                    0
+ Integral screening is                        0
+ Integral computing path is                   2
+ max size of driver memory is            800000
+ size of driver memory is                 11780
+ size of scratch memory is               800000
+ max col of scratch BK array                289
+ max len of scratch array in speh3            1
+ max len of scratch index in speh4            2
+ max int batch size is                      520
+ min int batch size is                       52
+ fixed nKL is                               520
+ max L of basis functions is                  0
+ order of int derivative is                   0
+ number of shells is                         14
+ number of basis is                          14
+ number of cartesian basis is                14
+ number of contracted shell pairs            80
+ number of primitive shell pairs            239
+ maxK2 (contraction) of shell pair            9
+ max number of K2 of shell pair               1
+ max number of CS2 of shell pair             38
+ max number of PS2 of shell pair            114
+ mem total for path MDJ                    5472
+ -------------------------------------------------------
+ Smallest overlap matrix eigenvalue = 2.22E-01
+ Multipole matrices computed through 2nd order
+
+  Scale SEOQF with 1.000000e-02/1.000000e-02/1.000000e-02
+
+ Standard Electronic Orientation quadrupole field applied
+ Nucleus-field energy     =     0.0000000002 hartrees
+GuessMan:  IGuess = 1
+ Guess MOs from core Hamiltonian diagonalization
+scfman initvdwdat 
+ An unrestricted Hartree-Fock SCF calculation will be
+ performed using Pulay DIIS extrapolation
+ SCF converges when DIIS error is below 1.0E-08
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Total number of integrals generated =            2947
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 6.75E-01 RMS 6.87E-02
+
+Current DIIS subspace size = 1
+REM_GRID_RESTART_DIIS = 0
+
+ ---------------------------------------
+  Cycle       Energy         DIIS Error
+ ---------------------------------------
+    1      -5.6714449017      6.87E-02  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 5.65E-02 RMS 6.00E-03
+
+Current DIIS subspace size = 2
+REM_GRID_RESTART_DIIS = 0
+
+    2      -5.7896095128      6.00E-03  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 1.73E-03 RMS 3.84E-04
+
+Current DIIS subspace size = 3
+REM_GRID_RESTART_DIIS = 0
+
+    3      -5.7906599377      3.84E-04  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 1.53E-04 RMS 2.91E-05
+
+Current DIIS subspace size = 4
+REM_GRID_RESTART_DIIS = 0
+
+    4      -5.7906744555      2.91E-05  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 4.00E-05 RMS 4.05E-06
+
+Current DIIS subspace size = 5
+REM_GRID_RESTART_DIIS = 0
+
+    5      -5.7906745146      4.05E-06  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 7.03E-06 RMS 7.11E-07
+
+Current DIIS subspace size = 6
+REM_GRID_RESTART_DIIS = 0
+
+    6      -5.7906745150      7.11E-07  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 4.53E-08 RMS 4.73E-09
+
+Current DIIS subspace size = 7
+REM_GRID_RESTART_DIIS = 0
+
+    7      -5.7906745150      4.73E-09  00000 Convergence criterion met
+ ---------------------------------------
+ <S^2> = 12.0000
+ SCF time:  CPU 0.01 s  wall 0.01 s
+ SCF   energy in the final basis set = -5.7906745150
+ Total energy in the final basis set = -5.7906745150
+Symmetry turned off temporarily
+ Analysis of SCF Wavefunction
+
+ --------------------------------------------------------------
+
+                    Orbital Energies (a.u.)
+ --------------------------------------------------------------
+
+ Alpha MOs
+ -- Occupied --
+ -0.914  -0.593  -0.572  -0.560  -0.438  -0.426  -0.415
+ -- Virtual --
+  0.853   0.906   0.940   0.953   1.037   1.056   1.400
+
+ Beta MOs
+ -- Occupied --
+ -0.914
+ -- Virtual --
+  0.017   0.046   0.061   0.161   0.185   0.201   1.068   1.109
+  1.139   1.150   1.221   1.242   1.400
+ --------------------------------------------------------------
+
+          Ground-State Mulliken Net Atomic Charges
+
+     Atom                 Charge (a.u.)    Spin (a.u.)
+  --------------------------------------------------------
+      1 H                    -0.000015       1.000015
+      2 H                    -0.000067       1.000067
+      3 H                    -0.000004       1.000004
+      4 H                     0.000095       0.999905
+      5 H                    -0.000032       1.000032
+      6 H                     0.000022       0.999978
+      7 He                    0.000000       0.000000
+  --------------------------------------------------------
+  Sum of atomic charges =     0.000000
+  Sum of spin   charges =     6.000000
+
+ -----------------------------------------------------------------
+                    Cartesian Multipole Moments
+ -----------------------------------------------------------------
+    Charge (ESU x 10^10)
+                 0.0000
+    Dipole Moment (Debye)
+         X      -0.0005      Y      -0.0004      Z       0.0004
+       Tot       0.0007
+    Quadrupole Moments (Debye-Ang)
+        XX      -9.8195     XY      -0.0666     YY      -9.1916
+        XZ       0.3477     YZ       0.1581     ZZ      -8.8295
+    Octopole Moments (Debye-Ang^2)
+       XXX     -50.3313    XXY     -16.3818    XYY     -16.9747
+       YYY     -45.3280    XXZ     -11.0606    XYZ       0.1167
+       YYZ     -12.1046    XZZ     -15.9794    YZZ     -14.3191
+       ZZZ     -37.6864
+    Hexadecapole Moments (Debye-Ang^3)
+      XXXX    -838.0442   XXXY    -306.3902   XXYY    -266.3491
+      XYYY    -315.1371   YYYY    -764.7341   XXXZ    -314.1907
+      XXYZ    -105.7795   XYYZ    -105.3584   YYYZ    -313.4178
+      XXZZ    -242.6517   XYZZ    -102.3303   YYZZ    -233.2919
+      XZZZ    -318.9983   YZZZ    -314.9102   ZZZZ    -643.7397
+ -----------------------------------------------------------------
+ JobOver = TRUE
+Archival summary:
+1\1\sinatra\SP\HF\6-31G*\e16(7)\nmayhall\FriMar2423:26:122017FriMar2423:26:122017\0\\#,HF,6-31G*,\\0,7\H\H,1,1.81086\H,1,2.69731,2,145.598\H,3,1.81174,1,70.5462,2,-108.686,0\H,4,2.837,3,147.595,1,-11.0395,0\H,5,1.81203,4,130.443,3,89.4024,0\He,2,14.7881,1,119.97,3,-161.002,0\\HF=-5.79067452\\@
+
+ Total job time:  0.06s(wall), 0.06s(cpu) 
+ Fri Mar 24 23:26:12 2017
+
+        *************************************************************
+        *                                                           *
+        *  Thank you very much for using Q-Chem.  Have a nice day.  *
+        *                                                           *
+        *************************************************************
+
+
+*** MISSION COMPLETED -- STARFLEET OUT ***
+
+ 
+User input: 2 of 2 
+ 
+                  Welcome to Q-Chem
+     A Quantum Leap Into The Future Of Chemistry
+
+
+ Q-Chem 4.3, Q-Chem, Inc., Pleasanton, CA (2015)
+
+ Y. Shao,  Z. Gan,  E. Epifanovsky,  A. T. B. Gilbert,  M. Wormit,  
+ J. Kussmann,  A. W. Lange,  A. Behn,  J. Deng,  X. Feng,  D. Ghosh,  
+ M. Goldey,  P. R. Horn,  L. D. Jacobson,  I. Kaliman,  R. Z. Khaliullin,  
+ T. Kus,  A. Landau,  J. Liu,  E. I. Proynov,  Y. M. Rhee,  R. M. Richard,  
+ M. A. Rohrdanz,  R. P. Steele,  E. J. Sundstrom,  H. L. Woodcock III,  
+ P. M. Zimmerman,  D. Zuev,  B. Albrecht,  E. Alguire,  B. Austin,  
+ S. A. Baeppler,  G. J. O. Beran,  Y. A. Bernard,  E. Berquist,  
+ K. Brandhorst,  K. B. Bravaya,  S. T. Brown,  D. Casanova,  C.-M. Chang,  
+ Y. Chen,  S. H. Chien,  K. D. Closser,  D. L. Crittenden,  M. Diedenhofen,  
+ R. A. DiStasio Jr.,  H. Do,  A. D. Dutoi,  R. G. Edgar,  P.-T. Fang,  
+ S. Fatehi,  Q. Feng,  L. Fusti-Molnar,  A. Ghysels,  
+ A. Golubeva-Zadorozhnaya,  J. Gomes,  A. Gunina,  M. W. D. Hanson-Heine,  
+ P. H. P. Harbach,  A. W. Hauser,  E. G. Hohenstein,  Z. C. Holden,  K. Hui,  
+ T.-C. Jagau,  H. Ji,  B. Kaduk,  K. Khistyaev,  Jaehoon Kim,  Jihan Kim,  
+ R. A. King,  P. Klunzinger,  D. Kosenkov,  T. Kowalczyk,  C. M. Krauter,  
+ K. U. Lao,  A. Laurent,  K. V. Lawler,  S. Lehtola,  S. V. Levchenko,  
+ C. Y. Lin,  Y.-S. Lin,  F. Liu,  E. Livshits,  R. C. Lochan,  A. Luenser,  
+ P. Manohar,  S. F. Manzer,  S.-P. Mao,  N. Mardirossian,  A. V. Marenich,  
+ L. A. Martinez-Martinez,  S. A. Maurer,  N. J. Mayhall,  K. Nanda,  
+ C. M. Oana,  R. Olivares-Amaya,  D. P. O'Neill,  J. A. Parkhill,  
+ T. M. Perrine,  R. Peverati,  P. A. Pieniazek,  F. Plasser,  A. Prociuk,  
+ D. R. Rehn,  E. Rosta,  N. J. Russ,  N. Sergueev,  S. M. Sharada,  
+ S. Sharma,  D. W. Small,  A. Sodt,  T. Stauch,  T. Stein,  D. Stuck,  
+ Y.-C. Su,  A. J. W. Thom,  T. Tsuchimochi,  L. Vogt,  O. Vydrov,  T. Wang,  
+ M. A. Watson,  J. Wenzel,  A. White,  C. F. Williams,  V. Vanovschi,  
+ S. Yeganeh,  S. R. Yost,  Z.-Q. You,  I. Y. Zhang,  X. Zhang,  Y. Zhao,  
+ B. R. Brooks,  G. K. L. Chan,  D. M. Chipman,  C. J. Cramer,  
+ W. A. Goddard III,  M. S. Gordon,  W. J. Hehre,  A. Klamt,  
+ H. F. Schaefer III,  M. W. Schmidt,  C. D. Sherrill,  D. G. Truhlar,  
+ A. Warshel,  X. Xu,  A. Aspuru-Guzik,  R. Baer,  A. T. Bell,  N. A. Besley,  
+ J.-D. Chai,  A. Dreuw,  B. D. Dunietz,  T. R. Furlani,  S. R. Gwaltney,  
+ C.-P. Hsu,  Y. Jung,  J. Kong,  D. S. Lambrecht,  W. Liang,  C. Ochsenfeld,  
+ V. A. Rassolov,  L. V. Slipchenko,  J. E. Subotnik,  T. Van Voorhis,  
+ J. M. Herbert,  A. I. Krylov,  P. M. W. Gill,  M. Head-Gordon
+
+ Contributors to earlier versions of Q-Chem not listed above: 
+ R. D. Adamson,  J. Baker,  E. F. C. Byrd,  A. K. Chakraborty,  C.-L. Cheng,  
+ H. Dachsel,  R. J. Doerksen,  G. Hawkins,  A. Heyden,  S. Hirata,  
+ G. Kedziora,  F. J. Keil,  C. Kelley,  P. P. Korambath,  W. Kurlancheek,  
+ A. M. Lee,  M. S. Lee,  D. Liotard,  I. Lotan,  P. E. Maslen,  N. Nair,  
+ D. Neuhauser,  R. Olson,  B. Peters,  J. Ritchie,  N. E. Schultz,  
+ N. Shenvi,  A. C. Simmonett,  K. S. Thanthiriwatte,  Q. Wu,  W. Zhang
+
+ Please cite Q-Chem as follows:
+ Y. Shao et al., Mol. Phys. 113, 184-215 (2015)
+ DOI: 10.1080/00268976.2014.952696
+
+ Q-Chem 4.3.0 for Intel X86 EM64T Linux
+
+ Parts of Q-Chem use Armadillo 5.200.1 (Boston Tea Smuggler).
+ http://arma.sourceforge.net/
+
+ Q-Chem begins on Fri Mar 24 23:26:12 2017  
+
+
+Host: 0
+
+     Scratch files written to /home/nmayhall/scratch_qchem/1//
+ Dec1416 |home|nmayhall|qcSoftware|qchem|qchem.svn-casman|libmdc|qstr_RNUM -1
+ Using version located at /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/bin/qchem
+
+ Turning off symmetry for CASMAN
+
+Total Memory Limit in MB = 2000
+Mega-Array Size in MB = 62
+
+Checking the input file for inconsistencies... 	...done.
+
+ Q-Chem warning in module /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/forms1/BasisType.C, line 1452:
+
+ You are not using the predefined 5D/6D in this basis set.
+
+Finally everything over in PARseQInput
+
+--------------------------------------------------------------
+User input:
+--------------------------------------------------------------
+$rem
+	exchange 		hf
+	unrestricted		0
+	basis			6-31g*	
+	aux_basis		rimp2-vdz
+	scf_guess		read	
+	scf_convergence		8
+	purecart		1111
+
+	symmetry		0
+	sym_ignore		1
+
+	correlation		sf-cas
+	cas_n_spin_flip		1
+	cas_local		1
+	gui			2
+$end
+
+$development
+	1sf_heis_projection	1
+	scf_corresponding_orbs	1
+	heisenberg_n_roots	1
+$end
+
+$molecule
+read
+$end
+
+--------------------------------------------------------------
+ ----------------------------------------------------------------
+             Standard Nuclear Orientation (Angstroms)
+    I     Atom           X                Y                Z
+ ----------------------------------------------------------------
+    1      H      -0.7385400000    -0.5406500000     0.0857600000
+    2      H      -2.0958200000     0.6554900000    -0.0114600000
+    3      H       1.4767400000     3.0720300000     0.0982800000
+    4      H       0.1828700000     1.9348000000     0.6566800000
+    5      H       3.4885000000    -0.8755300000    -0.0608400000
+    6      H       1.9396000000    -1.0667600000     0.8599200000
+    7      He     10.0000000000    10.0000000000    10.0000000000
+ ----------------------------------------------------------------
+ Nuclear Repulsion Energy =     2.9384051509 hartrees
+ There are        7 alpha and        1 beta electrons
+ Requested basis set is 6-31G(d)
+ There are 14 shells and 14 basis functions
+
+Total QAlloc Memory Limit   2000 MB
+Mega-Array Size        61 MB
+MEM_STATIC part        62 MB
+
+finished with qalloc call
+
+                       Distance Matrix (Angstroms)
+             H (  1)   H (  2)   H (  3)   H (  4)   H (  5)   H (  6)
+   H (  2)  1.811743
+   H (  3)  4.237815  4.314498
+   H (  4)  2.702369  2.697309  1.810857
+   H (  5)  4.242818  5.790604  4.433478  4.397724
+   H (  6)  2.836997  4.473261  4.233665  3.483787  1.812032
+   He(  7) 18.019814 18.271783 14.788062 15.770895 16.183241 16.461600
+
+
+
+ Q-Chem warning in module /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/forms1/BasisType.C, line 1375:
+
+ SAD: How to set up polarization functions for non-Pople basis?
+
+ Requested basis set is rimp2-VDZ
+ There are 41 shells and 93 basis functions
+ Job number = 2, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 2  <1-7|1-7>
+Symmetry turned off temporarily
+ Using the largest function pair in Schwarz integrals
+Total number of integrals generated =             443
+Symmetry turned back on
+ A cutoff of  1.0D-12 yielded     80 shell pairs
+ There are        80 function pairs
+ Job number = 11, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 11  <1-1|8-8>
+
+ -------------------------------------------------------
+ OpenMP Integral Computing Module                       
+ Release: version 1.0, May 2013, Q-Chem Inc. Pittsburgh 
+ -------------------------------------------------------
+ Integral Job Info:
+ Integral job number is                      11
+ Integral operator is                         1
+ short-range coefficients                     0
+ long-range coefficients              100000000
+ Omega coefficients                           0
+ if combine SR and LR in K                    0
+ Integral screening is                        0
+ Integral computing path is                   2
+ max size of driver memory is            800000
+ size of driver memory is                 11780
+ size of scratch memory is               800000
+ max col of scratch BK array                289
+ max len of scratch array in speh3            1
+ max len of scratch index in speh4            2
+ max int batch size is                      520
+ min int batch size is                       52
+ fixed nKL is                               520
+ max L of basis functions is                  0
+ order of int derivative is                   0
+ number of shells is                         14
+ number of basis is                          14
+ number of cartesian basis is                14
+ number of contracted shell pairs            80
+ number of primitive shell pairs            239
+ maxK2 (contraction) of shell pair            9
+ max number of K2 of shell pair               1
+ max number of CS2 of shell pair             38
+ max number of PS2 of shell pair            114
+ mem total for path MDJ                    5472
+ -------------------------------------------------------
+ Smallest overlap matrix eigenvalue = 2.22E-01
+ Multipole matrices computed through 2nd order
+
+  Scale SEOQF with 1.000000e-02/1.000000e-02/1.000000e-02
+
+ Standard Electronic Orientation quadrupole field applied
+ Nucleus-field energy     =     0.0000000002 hartrees
+GuessMan:  IGuess = 1000
+ Guess MOs from SCF MO coefficient file
+ Reading MOs from coefficient file
+ Reading MOs from coefficient file
+scfman initvdwdat 
+ A restricted Hartree-Fock SCF calculation will be
+ performed using Geometric Direct Minimization
+ SCF converges when RMS gradient is below 1.0E-08
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Total number of integrals generated =            3028
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+ ---------------------------------------
+  Cycle       Energy        RMS Gradient
+ ---------------------------------------
+    1      -5.7906745150      7.79E-09  00000 Normal BFGS step
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+    2      -5.7906745150      5.90E-10  00000 Convergence criterion met
+ ---------------------------------------
+ SCF time:  CPU 0.00 s  wall 0.00 s
+ Obtaining Corresponding orbitals
+
+ Forming corresponding orbitals block-by-block...
+ Size of singly occupied alpha block:       6 : 6.0000
+ Size of doubly occupied block:             1 : 1.0000
+ Size of singly occupied beta block:        0 : 0.0000
+ Size of unoccupied block:                  7 : 7.0000
+ Use scf_boys =     0 (Canonical)
+                    1 (Boys)
+                    2 (Pipek-Mezey)
+                    3 (ER)
+ Build new fock matrix
+ I'm here
+ I'm here
+ Calling AOints...
+ Job number = 22, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+ done.
+ E(SCF): disk=     -5.790674515017 current=     -5.790674515017 diff=  -3.553e-15
+ SCF   energy in the final basis set = -5.7906745150
+ Total energy in the final basis set = -5.7906745150
+ DevKeyword Parameters: 
+ 1sf_heis_projection                   1
+  heisenberg_n_roots                   1
+scf_corresponding_orbs                   1
+
+
+ ========================================================
+                       In SF-CAS-CI                      
+ ========================================================
+ DevKeyword Parameters: 
+ 1sf_heis_projection                   1
+  heisenberg_n_roots                   1
+scf_corresponding_orbs                   1
+
+ Forming orbitals for SF-CAS calculation.
+NBas   : 14
+NOrb   : 14
+NDOcc  : 1
+NSOcc  : 6
+NDVir  : 7
+ISpin  : 0
+e_hf: -5.79067452
+ Using OPT1 Orbitals: Favg | Favg | Favg 
+ A/B mix in Doubly occupied F  : 0.50000000
+ A/B mix in Singly occupied F  : 0.50000000
+ A/B mix in Doubly unoccupied F: 0.50000000
+ Max of F(beta)ds      : 1.712e-16
+ Max of F(alpha)sv     : 6.664e-12
+ Max of F(average)dv   : 1.958e-12
+ Orbital Energies  (D):
+    1    -0.91413840    -0.91413840
+ Orbital Energies  (S):
+    2    -0.26963677    -0.26963677
+    3    -0.24684395    -0.24684395
+    4    -0.23314438    -0.23314438
+    5    -0.11850135    -0.11850135
+    6    -0.10320578    -0.10320578
+    7    -0.09059543    -0.09059543
+ Orbital Energies  (V):
+    8     0.93996910     0.93996910
+    9     0.98858216     0.98858216
+   10     1.02179909     1.02179909
+   11     1.03485216     1.03485216
+   12     1.11339203     1.11339203
+   13     1.13387196     1.13387196
+   14     1.39984756     1.39984756
+ tr(Pa)     :    7.0000000000
+ tr(Pb)     :    1.0000000000
+ E(core) with new P : -12.62561513
+ E(HF) with new P   :  -5.79067452
+ Difference in Ehf  :   7.1054e-15
+
+ Number of spin flips: 1
+ Use cas_local =    0 (Canonical)
+                    1 (Boys)
+                    2 (Pipek-Mezey)
+                    3 (ER)
+ Using Boys orbitals in casman
+ 
+ 
+ 
+Calling Get_Boys in C++
+ 
+ 
+ 
+Orbital 5 Variance 8.81759094
+Orbital 2 Variance 13.47893352
+Orbital 1 Variance 17.44537800
+Orbital 3 Variance 18.53212127
+Orbital 6 Variance 22.35304936
+Orbital 4 Variance 24.50847330
+          ***** NUMBER OF SADDLE POINTS SO FAR = 0 ******
+
+Initially in boys_jacobi.C before sweep, get_boys, boysval = 56.375905
+In BOYS_JACOBI SWEEPS for get_boys, ending in round     4  because max_diff = 3.418797e-07
+
+
+---> BEGIN 2nd Der Calculation    ******  
+Guessing MaxD =  15 and MinD = 7
+in get_boys.C: p = 0 guessthresh  51.5345536103 numsofar 3 MinD 7
+DimInGuess 3 mineval  50.5345536103 guessthresh  51.5345536103
+round 0 sizeofsub 3 eval0 5.053455e+01 diffeval0 1.000495e+05 length_qM 1.282947e-01 thresh 1.000000e-08
+round 1 sizeofsub 4 eval0 5.053445e+01 diffeval0 1.044631e-04 length_qM 1.731062e-04 thresh 1.000000e-08
+round 2 sizeofsub 5 eval0 5.053445e+01 diffeval0 3.636060e-10 length_qM 7.702334e-07 thresh 1.000000e-08
+Converged to smallest eigenvalue: eval0 5.053445e+01
+
+Success!!! No Negative Eigenvalues: Ending Get Boys in C++ ...Bye Bye
+Orbital 5 Variance 2.78298303
+Orbital 6 Variance 2.78715833
+Orbital 4 Variance 2.79243545
+Orbital 1 Variance 2.79488853
+Orbital 3 Variance 2.79926029
+Orbital 2 Variance 2.80045824
+EXECUTING ORTHO_FUNC DESTRUCTOR
+
+ Dimensions of orbital sub-spaces:    
+ Number Hole Orbs:Alpha:Beta:       1    1    1
+ Number Active Orbs:Alpha:Beta:     6    5    1
+ Number Part Orbs:Alpha:Beta:       7    0    0
+
+ Dimensions in SF-RAS-hp calculation: 
+ Number of active space determinants:  36
+ Number of hole space determinants:    96
+ Number of part space determinants:    672
+ Number of hole-part determinants:     2086
+ Total 1x space:                       804
+ Total singles space:                  2890
+ REM_MEM_TOT: 2000
+ Memory Used: 0
+ Memory Left: 2000
+ Memory Need: 1
+ Constructing 1e MO integrals
+ Form (P|Q)**(-1/2)...
+ Job number = 66, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 66  <2-7|2-7>
+Symmetry turned off temporarily
+Storing 56116.72% of integrals
+Total number of integrals generated =            5082
+Symmetry turned back on
+ Forming (pq|P)...
+ Forming Active-Active (aa|P) integrals...
+
+ Entering first-index batching code with I1Strt =    2 batch size =    6
+ Job number = 65, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 65  <1-1|2-7>
+Symmetry turned off temporarily
+Storing 56116.72% of integrals
+Total number of integrals generated =            7920
+Symmetry turned back on
+ Forming Active-Active B integrals...
+ Contracting B matrices to form 2e integrals. 
+ Forming 2J-K over o,v with exact integrals
+ Calling AOints... Job number = 22, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+Total number of integrals generated =            3028
+ done.
+
+ ROHF energy found on disk: 
+ E(ROHF):          -5.79067452
+-5.79067452
+ First 10 Diagonal elements of H: 
+ 11111_ | 1_____         -5.41737245
+ 11111_ | _1____         -5.27094896
+ 11111_ | __1___         -5.27038383
+ 11111_ | ___1__         -5.33333940
+ 11111_ | ____1_         -5.34054786
+ 11111_ | _____1         -5.78650117
+ 1111_1 | 1_____         -5.33656215
+ 1111_1 | _1____         -5.26233228
+ 1111_1 | __1___         -5.41733254
+ 1111_1 | ___1__         -5.29299880
+ Fill S2_CAS Matrix...  done.
+ Fill H_CAS Matrix...  done.
+
+ Diagonalizing H_CAS 
+ Entering cast_sfcas_to_sfcis
+ ===================================================================
+ Theory           State:          Energy (au)       (eV)       <S2>
+ -------------------------------------------------------------------
+ SF-CAS               1:        -5.8344366408     0.0000     6.0000
+ SF-CAS               2:        -5.8343162585     0.0033     6.0000
+ SF-CAS               3:        -5.8331230138     0.0357     6.0000
+ SF-CAS               4:        -5.7939197131     1.1025     6.0000
+ SF-CAS               5:        -5.7916985093     1.1630     6.0000
+ SF-CAS               6:        -5.7906745150     1.1908    12.0000
+ SF-CAS               7:        -5.4640365818    10.0792     6.0000
+ SF-CAS               8:        -5.4588918799    10.2192     6.0000
+ SF-CAS               9:        -5.4455670878    10.5818     6.0000
+ SF-CAS              10:        -5.4309729038    10.9789     6.0000
+ SF-CAS              11:        -5.4245303508    11.1542     6.0000
+ SF-CAS              12:        -5.4203303288    11.2685     6.0000
+ SF-CAS              13:        -5.4151797360    11.4087     6.0000
+ SF-CAS              14:        -5.4098655521    11.5533     6.0000
+ SF-CAS              15:        -5.4008018341    11.7999     6.0000
+ SF-CAS              16:        -5.3741580961    12.5249     6.0000
+ SF-CAS              17:        -5.3727874793    12.5622     6.0000
+ SF-CAS              18:        -5.3692258978    12.6592     6.0000
+ SF-CAS              19:        -5.3123252723    14.2075     6.0000
+ SF-CAS              20:        -5.3069554399    14.3536     6.0000
+ SF-CAS              21:        -5.3016411818    14.4982     6.0000
+ SF-CAS              22:        -5.2901680609    14.8104     6.0000
+ SF-CAS              23:        -5.2870641286    14.8949     6.0000
+ SF-CAS              24:        -5.2802976670    15.0790     6.0000
+ SF-CAS              25:        -5.2787486312    15.1212     6.0000
+ SF-CAS              26:        -5.2732776087    15.2701     6.0000
+ SF-CAS              27:        -5.2671262754    15.4375     6.0000
+ SF-CAS              28:        -5.2630858382    15.5474     6.0000
+ SF-CAS              29:        -5.2496239096    15.9137     6.0000
+ SF-CAS              30:        -5.2478449794    15.9621     6.0000
+ SF-CAS              31:        -5.1559494956    18.4628     6.0000
+ SF-CAS              32:        -5.1531348055    18.5393     6.0000
+ SF-CAS              33:        -5.1307345458    19.1489     6.0000
+ SF-CAS              34:        -5.1270512349    19.2491     6.0000
+ SF-CAS              35:        -5.1185677476    19.4800     6.0000
+ SF-CAS              36:        -5.1068689505    19.7983     6.0000
+ ===================================================================
+
+              Active Space Coefficients > 0.20
+ -------------------------------------------------------------------
+ State  1                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _____1      -0.356866   7.000
+                              1111_1 | ____1_       0.487011   7.000
+                              111_11 | ___1__       0.315029   7.000
+                              11_111 | __1___      -0.456393   7.000
+                              1_1111 | _1____      -0.292568   7.000
+                              _11111 | 1_____      -0.365022   7.000
+ -------------------------------------------------------------------
+ State  2                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _____1       0.392297   7.000
+                              1111_1 | ____1_       0.485543   7.000
+                              111_11 | ___1__      -0.304995   7.000
+                              11_111 | __1___      -0.457575   7.000
+                              1_1111 | _1____       0.284545   7.000
+                              _11111 | 1_____       0.343878   7.000
+ -------------------------------------------------------------------
+ State  3                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _____1      -0.421443   7.000
+                              111_11 | ___1__      -0.519294   7.000
+                              1_1111 | _1____       0.514610   7.000
+                              _11111 | 1_____      -0.426411   7.000
+ -------------------------------------------------------------------
+ State  4                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _____1       0.544048   7.000
+                              1111_1 | ____1_       0.376535   7.000
+                              11_111 | __1___       0.435724   7.000
+                              _11111 | 1_____      -0.563933   7.000
+ -------------------------------------------------------------------
+ State  5                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              1111_1 | ____1_      -0.398056   7.000
+                              111_11 | ___1__      -0.544254   7.000
+                              11_111 | __1___      -0.415771   7.000
+                              1_1111 | _1____      -0.569300   7.000
+ -------------------------------------------------------------------
+ State  6                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _____1      -0.408248   7.000
+                              1111_1 | ____1_       0.408248   7.000
+                              111_11 | ___1__      -0.408248   7.000
+                              11_111 | __1___       0.408248   7.000
+                              1_1111 | _1____      -0.408248   7.000
+                              _11111 | 1_____       0.408248   7.000
+ -------------------------------------------------------------------
+ State  7                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | 1_____       0.217299   6.000
+                              1111_1 | 1_____      -0.495174   6.000
+                              1111_1 | __1___       0.226847   6.000
+                              1111_1 | _____1      -0.515793   6.000
+                              11_111 | 1_____      -0.327333   6.000
+                              11_111 | ____1_       0.236690   6.000
+                              11_111 | _____1      -0.343859   6.000
+                              _11111 | _____1      -0.233888   6.000
+ -------------------------------------------------------------------
+ State  8                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | __1___      -0.333692   6.000
+                              11111_ | ____1_       0.549574   6.000
+                              111_11 | ____1_      -0.238608   6.000
+                              _11111 | __1___      -0.318053   6.000
+                              _11111 | ____1_       0.520714   6.000
+ -------------------------------------------------------------------
+ State  9                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | ___1__       0.246236   6.000
+                              111_11 | 1_____       0.286849   6.000
+                              111_11 | _1____      -0.251356   6.000
+                              111_11 | ____1_      -0.267320   6.000
+                              111_11 | _____1       0.426144   6.000
+                              1_1111 | 1_____      -0.217508   6.000
+                              1_1111 | ___1__      -0.258431   6.000
+                              1_1111 | ____1_       0.231323   6.000
+                              1_1111 | _____1      -0.314541   6.000
+                              _11111 | ____1_      -0.210566   6.000
+ -------------------------------------------------------------------
+ State  10                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | 1_____       0.353875   6.000
+                              11111_ | _1____      -0.284419   6.000
+                              11111_ | ___1__      -0.432924   6.000
+                              111_11 | _____1       0.221899   6.000
+                              11_111 | ____1_      -0.234340   6.000
+                              _11111 | ___1__      -0.284761   6.000
+                              _11111 | _____1      -0.296064   6.000
+ -------------------------------------------------------------------
+ State  11                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | 1_____       0.317537   6.000
+                              11111_ | _1____       0.226395   6.000
+                              11111_ | ___1__       0.224402   6.000
+                              1111_1 | __1___      -0.263092   6.000
+                              111_11 | _1____      -0.482313   6.000
+                              11_111 | ____1_      -0.287550   6.000
+                              1_1111 | ___1__      -0.424092   6.000
+                              _11111 | _____1      -0.320761   6.000
+ -------------------------------------------------------------------
+ State  12                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              1111_1 | _1____       0.312070   6.000
+                              1111_1 | __1___       0.403795   6.000
+                              1111_1 | ___1__       0.375779   6.000
+                              111_11 | _1____      -0.319873   6.000
+                              11_111 | _1____       0.275737   6.000
+                              11_111 | ___1__       0.290075   6.000
+                              11_111 | ____1_       0.386042   6.000
+                              1_1111 | ___1__      -0.300201   6.000
+ -------------------------------------------------------------------
+ State  13                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | ___1__       0.245954   6.000
+                              1111_1 | 1_____      -0.243599   6.000
+                              1111_1 | _1____       0.319932   6.000
+                              1111_1 | ___1__       0.378308   6.000
+                              111_11 | _1____       0.267659   6.000
+                              11_111 | _1____       0.314108   6.000
+                              11_111 | ___1__       0.345185   6.000
+                              11_111 | ____1_      -0.221949   6.000
+                              1_1111 | ___1__       0.294854   6.000
+                              _11111 | ___1__       0.254141   6.000
+ -------------------------------------------------------------------
+ State  14                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | 1_____       0.423892   6.000
+                              11111_ | ___1__       0.240878   6.000
+                              1111_1 | 1_____       0.236890   6.000
+                              1111_1 | __1___       0.342262   6.000
+                              1111_1 | _____1       0.235358   6.000
+                              11_111 | ____1_       0.325988   6.000
+                              _11111 | _____1      -0.384855   6.000
+ -------------------------------------------------------------------
+ State  15                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              111_11 | 1_____      -0.259221   6.000
+                              111_11 | __1___       0.396903   6.000
+                              111_11 | ____1_      -0.313445   6.000
+                              111_11 | _____1      -0.430254   6.000
+                              1_1111 | __1___      -0.373615   6.000
+                              1_1111 | ____1_       0.289493   6.000
+                              1_1111 | _____1       0.269777   6.000
+                              _11111 | _____1       0.216465   6.000
+ -------------------------------------------------------------------
+ State  16                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | 1_____       0.606775   6.000
+                              _11111 | _____1       0.604170   6.000
+ -------------------------------------------------------------------
+ State  17                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              1111_1 | __1___      -0.655669   6.000
+                              1111_1 | ____1_      -0.213267   7.000
+                              11_111 | __1___       0.220008   7.000
+                              11_111 | ____1_       0.614404   6.000
+ -------------------------------------------------------------------
+ State  18                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              111_11 | _1____      -0.640640   6.000
+                              111_11 | ___1__       0.215140   7.000
+                              1_1111 | _1____      -0.224683   7.000
+                              1_1111 | ___1__       0.666739   6.000
+ -------------------------------------------------------------------
+ State  19                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              1111_1 | 1_____       0.505533   6.000
+                              1111_1 | _1____       0.215416   6.000
+                              1111_1 | _____1      -0.483965   6.000
+                              11_111 | 1_____       0.328866   6.000
+                              11_111 | _1____       0.254423   6.000
+                              11_111 | _____1      -0.318254   6.000
+ -------------------------------------------------------------------
+ State  20                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | __1___      -0.268695   6.000
+                              11111_ | ____1_       0.595483   6.000
+                              _11111 | __1___       0.398789   6.000
+                              _11111 | ____1_      -0.532301   6.000
+ -------------------------------------------------------------------
+ State  21                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | __1___       0.586078   6.000
+                              11111_ | ____1_       0.261757   6.000
+                              _11111 | __1___       0.463961   6.000
+                              _11111 | ____1_       0.398325   6.000
+ -------------------------------------------------------------------
+ State  22                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | ___1__       0.255417   6.000
+                              111_11 | ____1_      -0.319596   6.000
+                              111_11 | _____1       0.389532   6.000
+                              1_1111 | 1_____       0.464340   6.000
+                              1_1111 | __1___       0.223497   6.000
+                              1_1111 | ____1_      -0.299979   6.000
+                              1_1111 | _____1       0.271618   6.000
+                              _11111 | _1____      -0.276722   6.000
+ -------------------------------------------------------------------
+ State  23                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | ___1__       0.325282   6.000
+                              1111_1 | ___1__      -0.368264   6.000
+                              111_11 | _____1      -0.241976   6.000
+                              11_111 | _1____       0.393107   6.000
+                              11_111 | ___1__       0.212302   6.000
+                              11_111 | _____1       0.266198   6.000
+                              1_1111 | 1_____      -0.264105   6.000
+                              _11111 | _1____      -0.339203   6.000
+ -------------------------------------------------------------------
+ State  24                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _1____      -0.339995   6.000
+                              11111_ | ___1__       0.352371   6.000
+                              1111_1 | 1_____       0.218759   6.000
+                              1111_1 | _____1       0.278849   6.000
+                              11_111 | 1_____      -0.390394   6.000
+                              11_111 | _____1      -0.401394   6.000
+                              _11111 | _1____      -0.352429   6.000
+ -------------------------------------------------------------------
+ State  25                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              111_11 | 1_____      -0.408687   6.000
+                              111_11 | ____1_       0.449661   6.000
+                              111_11 | _____1       0.332140   6.000
+                              1_1111 | 1_____       0.265113   6.000
+                              1_1111 | __1___      -0.465337   6.000
+                              1_1111 | _____1      -0.282114   6.000
+                              _11111 | __1___       0.203322   6.000
+ -------------------------------------------------------------------
+ State  26                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _1____       0.406212   6.000
+                              1111_1 | ___1__      -0.375634   6.000
+                              1111_1 | _____1       0.302957   6.000
+                              11_111 | 1_____      -0.380602   6.000
+                              11_111 | _1____       0.427243   6.000
+                              _11111 | ___1__      -0.344819   6.000
+ -------------------------------------------------------------------
+ State  27                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _1____       0.255169   6.000
+                              1111_1 | 1_____       0.221593   6.000
+                              1111_1 | _1____      -0.488756   6.000
+                              1111_1 | ___1__       0.238825   6.000
+                              11_111 | ___1__       0.502630   6.000
+                              11_111 | _____1      -0.210409   6.000
+                              _11111 | ___1__      -0.208054   6.000
+ -------------------------------------------------------------------
+ State  28                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              111_11 | 1_____       0.463002   6.000
+                              111_11 | __1___       0.383848   6.000
+                              111_11 | ____1_       0.237759   6.000
+                              1_1111 | 1_____      -0.230312   6.000
+                              1_1111 | __1___      -0.240712   6.000
+                              1_1111 | ____1_      -0.395651   6.000
+                              1_1111 | _____1       0.247161   6.000
+ -------------------------------------------------------------------
+ State  29                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _1____      -0.405073   6.000
+                              11111_ | ___1__      -0.218118   6.000
+                              1111_1 | _1____      -0.378573   6.000
+                              1111_1 | ___1__      -0.283704   6.000
+                              11_111 | ___1__       0.334218   6.000
+                              _11111 | _1____       0.230323   6.000
+                              _11111 | ___1__       0.555682   6.000
+ -------------------------------------------------------------------
+ State  30                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              111_11 | 1_____      -0.345422   6.000
+                              111_11 | __1___       0.473009   6.000
+                              111_11 | _____1      -0.218480   6.000
+                              1_1111 | 1_____      -0.231646   6.000
+                              1_1111 | __1___       0.300745   6.000
+                              1_1111 | ____1_      -0.375321   6.000
+                              1_1111 | _____1      -0.525724   6.000
+ -------------------------------------------------------------------
+ State  31                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              1111_1 | 1_____       0.302216   6.000
+                              1111_1 | _1____       0.297062   6.000
+                              1111_1 | _____1      -0.281438   6.000
+                              11_111 | 1_____      -0.477233   6.000
+                              11_111 | _1____      -0.333672   6.000
+                              11_111 | ___1__       0.222941   6.000
+                              11_111 | _____1       0.438962   6.000
+ -------------------------------------------------------------------
+ State  32                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | __1___       0.560971   6.000
+                              11111_ | ____1_       0.338967   6.000
+                              _11111 | __1___      -0.571503   6.000
+                              _11111 | ____1_      -0.342759   6.000
+ -------------------------------------------------------------------
+ State  33                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _1____      -0.323266   6.000
+                              11111_ | ___1__       0.226730   6.000
+                              11_111 | 1_____       0.269488   6.000
+                              11_111 | _1____      -0.276858   6.000
+                              11_111 | ___1__       0.316257   6.000
+                              11_111 | _____1      -0.309496   6.000
+                              _11111 | _1____       0.428719   6.000
+                              _11111 | ___1__      -0.342297   6.000
+ -------------------------------------------------------------------
+ State  34                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              111_11 | 1_____      -0.267147   6.000
+                              111_11 | __1___       0.350121   6.000
+                              111_11 | ____1_       0.308783   6.000
+                              111_11 | _____1       0.272960   6.000
+                              1_1111 | 1_____      -0.346058   6.000
+                              1_1111 | __1___       0.368892   6.000
+                              1_1111 | ____1_       0.361530   6.000
+                              1_1111 | _____1       0.388656   6.000
+ -------------------------------------------------------------------
+ State  35                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              111_11 | 1_____      -0.417510   6.000
+                              111_11 | __1___      -0.309914   6.000
+                              111_11 | ____1_      -0.297301   6.000
+                              1_1111 | 1_____      -0.517056   6.000
+                              1_1111 | __1___      -0.329429   6.000
+                              1_1111 | ____1_      -0.348872   6.000
+                              1_1111 | _____1       0.283939   6.000
+ -------------------------------------------------------------------
+ State  36                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                              11111_ | _1____       0.315811   6.000
+                              11111_ | ___1__      -0.230907   6.000
+                              1111_1 | _1____       0.389080   6.000
+                              1111_1 | ___1__      -0.345302   6.000
+                              11_111 | _1____      -0.318973   6.000
+                              11_111 | ___1__       0.322246   6.000
+                              _11111 | _1____      -0.404359   6.000
+                              _11111 | ___1__       0.333407   6.000
+ Memory used to hold InCoreIntegrals (MB) :                    0
+ ------------------------------------------------------------------------------
+                     SF-CAS-CI     : Timing summary (seconds)
+ ------------------------------------------------------------------------------
+     job step          cpu (% of tot)      sys (% of tot)     wall (% of tot)
+ ------------------------------------------------------------------------------
+  make_strings      0.0000E+00 ( 0.0)   0.0000E+00 ( 0.0)   0.2859E-04 ( 0.2)
+  Form (P|Q)^-.5    0.4000E-02 (20.0)   0.0000E+00 ( 0.0)   0.3137E-02 (18.5)
+  Form (aa|P)       0.4000E-02 (20.0)   0.1000E-05 (****)   0.4323E-02 (25.5)
+  Form BaPa Ints    0.0000E+00 ( 0.0)   0.0000E+00 ( 0.0)   0.1274E-03 ( 0.8)
+  Form 2e ints      0.0000E+00 ( 0.0)   0.0000E+00 ( 0.0)   0.6268E-04 ( 0.4)
+  Forming JKh_ov    0.0000E+00 ( 0.0)   0.0000E+00 ( 0.0)   0.1756E-02 (10.4)
+  H_cas diagonal    0.4000E-02 (20.0)   0.0000E+00 ( 0.0)   0.7202E-03 ( 4.3)
+  Fill H_CAS        0.0000E+00 ( 0.0)   0.0000E+00 ( 0.0)   0.4710E-03 ( 2.8)
+  Diag H_CAS        0.4000E-02 (20.0)   0.0000E+00 ( 0.0)   0.4051E-02 (23.9)
+ ------------------------------------------------------------------------------
+   Grand Totals     0.2000E-01          0.1000E-05          0.1694E-01
+ ------------------------------------------------------------------------------
+ Leaving SF_CASCI.
+
+ Leaving CASMAN
+Symmetry turned off temporarily
+ Opening file for writing:/home/nmayhall/scratch_qchem/1/development
+
+ Forming corresponding orbitals block-by-block...
+ Size of singly occupied alpha block:       6 : 6.0000
+ Size of doubly occupied block:             1 : 1.0000
+ Size of singly occupied beta block:        0 : 0.0000
+ Size of unoccupied block:                  7 : 7.0000
+ Use scf_boys =     0 (Canonical)
+                    1 (Boys)
+                    2 (Pipek-Mezey)
+                    3 (ER)
+ Localizing block # 1
+ Using local_orbs_algo: 1
+ 
+ 
+ 
+Calling Get_Boys in C++
+ 
+ 
+ 
+ Localizing block # 2
+ Using local_orbs_algo: 1
+ 
+ 
+ 
+Calling Get_Boys in C++
+ 
+ 
+ 
+Orbital 4 Variance 17.27651311
+Orbital 6 Variance 18.82591268
+Orbital 3 Variance 23.14331588
+Orbital 2 Variance 24.36905585
+Orbital 1 Variance 24.64925735
+Orbital 5 Variance 25.36332832
+          ***** NUMBER OF SADDLE POINTS SO FAR = 0 ******
+
+Initially in boys_jacobi.C before sweep, get_boys, boysval = 27.884069
+In BOYS_JACOBI SWEEPS for get_boys, ending in round     4  because max_diff = 4.659845e-07
+
+
+---> BEGIN 2nd Der Calculation    ******  
+Guessing MaxD =  15 and MinD = 7
+in get_boys.C: p = 0 guessthresh  51.5345536104 numsofar 3 MinD 7
+DimInGuess 3 mineval  50.5345536104 guessthresh  51.5345536104
+round 0 sizeofsub 3 eval0 5.053455e+01 diffeval0 1.000495e+05 length_qM 1.282947e-01 thresh 1.000000e-08
+round 1 sizeofsub 4 eval0 5.053445e+01 diffeval0 1.044631e-04 length_qM 1.731071e-04 thresh 1.000000e-08
+round 2 sizeofsub 5 eval0 5.053445e+01 diffeval0 3.636274e-10 length_qM 7.702388e-07 thresh 1.000000e-08
+Converged to smallest eigenvalue: eval0 5.053445e+01
+
+Success!!! No Negative Eigenvalues: Ending Get Boys in C++ ...Bye Bye
+Orbital 3 Variance 2.78298304
+Orbital 6 Variance 2.78715833
+Orbital 4 Variance 2.79243545
+Orbital 1 Variance 2.79488852
+Orbital 5 Variance 2.79926029
+Orbital 2 Variance 2.80045824
+EXECUTING ORTHO_FUNC DESTRUCTOR
+ Localizing block # 4
+ Using local_orbs_algo: 1
+ 
+ 
+ 
+Calling Get_Boys in C++
+ 
+ 
+ 
+ Localizing block # 6
+ Using local_orbs_algo: 1
+ 
+ 
+ 
+Calling Get_Boys in C++
+ 
+ 
+ 
+Orbital 4 Variance 17.27651311
+Orbital 6 Variance 18.82591268
+Orbital 3 Variance 23.14331588
+Orbital 2 Variance 24.36905585
+Orbital 1 Variance 24.64925735
+Orbital 5 Variance 25.36332832
+          ***** NUMBER OF SADDLE POINTS SO FAR = 0 ******
+
+Initially in boys_jacobi.C before sweep, get_boys, boysval = 27.884069
+In BOYS_JACOBI SWEEPS for get_boys, ending in round     4  because max_diff = 4.659845e-07
+
+
+---> BEGIN 2nd Der Calculation    ******  
+Guessing MaxD =  15 and MinD = 7
+in get_boys.C: p = 0 guessthresh  51.5345536104 numsofar 3 MinD 7
+DimInGuess 3 mineval  50.5345536104 guessthresh  51.5345536104
+round 0 sizeofsub 3 eval0 5.053455e+01 diffeval0 1.000495e+05 length_qM 1.282947e-01 thresh 1.000000e-08
+round 1 sizeofsub 4 eval0 5.053445e+01 diffeval0 1.044631e-04 length_qM 1.731069e-04 thresh 1.000000e-08
+round 2 sizeofsub 5 eval0 5.053445e+01 diffeval0 3.636274e-10 length_qM 7.702383e-07 thresh 1.000000e-08
+Converged to smallest eigenvalue: eval0 5.053445e+01
+
+Success!!! No Negative Eigenvalues: Ending Get Boys in C++ ...Bye Bye
+Orbital 3 Variance 2.78298304
+Orbital 6 Variance 2.78715832
+Orbital 4 Variance 2.79243546
+Orbital 1 Variance 2.79488852
+Orbital 5 Variance 2.79926029
+Orbital 2 Variance 2.80045824
+EXECUTING ORTHO_FUNC DESTRUCTOR
+ Build new fock matrix
+ I'm here
+ I'm here
+ Calling AOints...
+ Job number = 22, Threshold = 1.00E-12
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 56116.72% of integrals
+ done.
+ E(SCF): disk=     -5.790674515017 current=     -5.790674515017 diff=  -1.776e-15
+ Size of singly occupied block:             6 : 6.0000
+
+ Orbital blocks:    D      Sa     Sb     V     
+           From:    1      2      8      8     
+             To:    1      7      7      14    
+
+ Printing amplitudes greater than 0.15
+ Amplitudes in Localized Corresponding Orbital Basis
+
+ State:  0   Relative Energy:   0.0000 eV
+    O  Sa: 2    --> Sa: 2        0.36502209
+    O  Sa: 3    --> Sa: 3       -0.29256759
+    O  Sa: 4    --> Sa: 4       -0.48701081
+    C  Sa: 4    --> Sa: 6        0.16060923
+    O  Sa: 5    --> Sa: 5        0.31502891
+    C  Sa: 6    --> Sa: 4       -0.16206203
+    O  Sa: 6    --> Sa: 6        0.45639316
+    O  Sa: 7    --> Sa: 7       -0.35686576
+    ------------------
+    Open-shell weight:     0.890908
+    Closed-shell weight:   0.109092
+
+
+ State:  1   Relative Energy:   0.0033 eV
+    O  Sa: 2    --> Sa: 2       -0.34387818
+    O  Sa: 3    --> Sa: 3        0.28454521
+    O  Sa: 4    --> Sa: 4       -0.48554319
+    C  Sa: 4    --> Sa: 6        0.16061194
+    O  Sa: 5    --> Sa: 5       -0.30499495
+    C  Sa: 6    --> Sa: 4       -0.16198389
+    O  Sa: 6    --> Sa: 6        0.45757453
+    O  Sa: 7    --> Sa: 7        0.39229658
+    ------------------
+    Open-shell weight:     0.891263
+    Closed-shell weight:   0.108737
+
+
+ State:  2   Relative Energy:   0.0357 eV
+    O  Sa: 2    --> Sa: 2        0.42641093
+    O  Sa: 3    --> Sa: 3        0.51460980
+    C  Sa: 3    --> Sa: 5       -0.17613161
+    C  Sa: 5    --> Sa: 3        0.17744173
+    O  Sa: 5    --> Sa: 5       -0.51929383
+    O  Sa: 7    --> Sa: 7       -0.42144264
+    ------------------
+    Open-shell weight:     0.894060
+    Closed-shell weight:   0.105940
+
+
+ State:  3   Relative Energy:   1.1025 eV
+    O  Sa: 2    --> Sa: 2        0.56393322
+    O  Sa: 3    --> Sa: 3       -0.15903754
+    O  Sa: 4    --> Sa: 4       -0.37653472
+    O  Sa: 6    --> Sa: 6       -0.43572398
+    O  Sa: 7    --> Sa: 7        0.54404813
+    ------------------
+    Open-shell weight:     0.989619
+    Closed-shell weight:   0.010381
+
+
+ State:  4   Relative Energy:   1.1630 eV
+    O  Sa: 2    --> Sa: 2        0.16114086
+    O  Sa: 3    --> Sa: 3       -0.56929960
+    O  Sa: 4    --> Sa: 4        0.39805553
+    O  Sa: 5    --> Sa: 5       -0.54425400
+    O  Sa: 6    --> Sa: 6        0.41577081
+    ------------------
+    Open-shell weight:     0.996801
+    Closed-shell weight:   0.003199
+
+
+ State:  5   Relative Energy:   1.1908 eV
+    O  Sa: 2    --> Sa: 2       -0.40824829
+    O  Sa: 3    --> Sa: 3       -0.40824829
+    O  Sa: 4    --> Sa: 4       -0.40824829
+    O  Sa: 5    --> Sa: 5       -0.40824829
+    O  Sa: 6    --> Sa: 6       -0.40824829
+    O  Sa: 7    --> Sa: 7       -0.40824829
+    ------------------
+    Open-shell weight:     1.000000
+    Closed-shell weight:   0.000000
+
+
+ State:  6   Relative Energy:  10.0792 eV
+    C  Sa: 2    --> Sa: 7       -0.23388775
+    C  Sa: 4    --> Sa: 2        0.49517361
+    C  Sa: 4    --> Sa: 6       -0.22684703
+    C  Sa: 4    --> Sa: 7       -0.51579265
+    C  Sa: 6    --> Sa: 2        0.32733319
+    C  Sa: 6    --> Sa: 4       -0.23668963
+    C  Sa: 6    --> Sa: 7       -0.34385939
+    C  Sa: 7    --> Sa: 2       -0.21729943
+    ------------------
+    Open-shell weight:     0.006882
+    Closed-shell weight:   0.993118
+
+
+ State:  7   Relative Energy:  10.2192 eV
+    C  Sa: 2    --> Sa: 4       -0.52071445
+    C  Sa: 2    --> Sa: 6        0.31805306
+    C  Sa: 3    --> Sa: 4       -0.16022834
+    C  Sa: 5    --> Sa: 4       -0.23860810
+    C  Sa: 5    --> Sa: 6        0.16470836
+    C  Sa: 7    --> Sa: 4       -0.54957432
+    C  Sa: 7    --> Sa: 6        0.33369173
+    ------------------
+    Open-shell weight:     0.009769
+    Closed-shell weight:   0.990231
+
+
+ State:  8   Relative Energy:  10.5818 eV
+    C  Sa: 2    --> Sa: 4        0.21056627
+    C  Sa: 2    --> Sa: 5       -0.17419329
+    C  Sa: 2    --> Sa: 7        0.19981052
+    C  Sa: 3    --> Sa: 2        0.21750785
+    C  Sa: 3    --> Sa: 4       -0.23132292
+    C  Sa: 3    --> Sa: 5        0.25843062
+    C  Sa: 3    --> Sa: 7       -0.31454136
+    C  Sa: 5    --> Sa: 2        0.28684912
+    C  Sa: 5    --> Sa: 3        0.25135624
+    C  Sa: 5    --> Sa: 4       -0.26732016
+    C  Sa: 5    --> Sa: 7       -0.42614430
+    C  Sa: 7    --> Sa: 2        0.17475393
+    C  Sa: 7    --> Sa: 3        0.17248475
+    C  Sa: 7    --> Sa: 5       -0.24623619
+    ------------------
+    Open-shell weight:     0.000286
+    Closed-shell weight:   0.999714
+
+
+ State:  9   Relative Energy:  10.9789 eV
+    C  Sa: 2    --> Sa: 3       -0.19332982
+    C  Sa: 2    --> Sa: 5        0.28476074
+    C  Sa: 2    --> Sa: 7       -0.29606430
+    C  Sa: 3    --> Sa: 7       -0.16626367
+    C  Sa: 4    --> Sa: 6        0.19811108
+    C  Sa: 5    --> Sa: 4       -0.15890219
+    C  Sa: 5    --> Sa: 7       -0.22189945
+    C  Sa: 6    --> Sa: 4        0.23433980
+    C  Sa: 7    --> Sa: 2       -0.35387495
+    C  Sa: 7    --> Sa: 3       -0.28441887
+    C  Sa: 7    --> Sa: 4        0.19863796
+    C  Sa: 7    --> Sa: 5        0.43292387
+    ------------------
+    Open-shell weight:     0.003227
+    Closed-shell weight:   0.996773
+
+
+ State: 10   Relative Energy:  11.1542 eV
+    C  Sa: 2    --> Sa: 7       -0.32076066
+    C  Sa: 3    --> Sa: 5        0.42409199
+    C  Sa: 4    --> Sa: 6        0.26309178
+    C  Sa: 5    --> Sa: 3        0.48231304
+    C  Sa: 6    --> Sa: 4        0.28754955
+    C  Sa: 7    --> Sa: 2       -0.31753686
+    C  Sa: 7    --> Sa: 3        0.22639454
+    C  Sa: 7    --> Sa: 5       -0.22440218
+    ------------------
+    Open-shell weight:     0.001598
+    Closed-shell weight:   0.998402
+
+
+ State: 11   Relative Energy:  11.2685 eV
+    C  Sa: 3    --> Sa: 5        0.30020097
+    C  Sa: 4    --> Sa: 3        0.31206987
+    C  Sa: 4    --> Sa: 5       -0.37577868
+    C  Sa: 4    --> Sa: 6       -0.40379460
+    C  Sa: 5    --> Sa: 3        0.31987284
+    C  Sa: 6    --> Sa: 3        0.27573745
+    C  Sa: 6    --> Sa: 4       -0.38604188
+    C  Sa: 6    --> Sa: 5       -0.29007516
+    C  Sa: 7    --> Sa: 5        0.17650624
+    ------------------
+    Open-shell weight:     0.000610
+    Closed-shell weight:   0.999390
+
+
+ State: 12   Relative Energy:  11.4087 eV
+    C  Sa: 2    --> Sa: 3        0.18610552
+    C  Sa: 2    --> Sa: 5       -0.25414093
+    C  Sa: 3    --> Sa: 5       -0.29485387
+    C  Sa: 4    --> Sa: 2        0.24359941
+    C  Sa: 4    --> Sa: 3        0.31993160
+    C  Sa: 4    --> Sa: 5       -0.37830836
+    C  Sa: 4    --> Sa: 6        0.17978517
+    C  Sa: 5    --> Sa: 3       -0.26765896
+    C  Sa: 6    --> Sa: 3        0.31410809
+    C  Sa: 6    --> Sa: 4        0.22194869
+    C  Sa: 6    --> Sa: 5       -0.34518474
+    C  Sa: 7    --> Sa: 5       -0.24595378
+    ------------------
+    Open-shell weight:     0.002157
+    Closed-shell weight:   0.997843
+
+
+ State: 13   Relative Energy:  11.5533 eV
+    C  Sa: 2    --> Sa: 7       -0.38485532
+    C  Sa: 3    --> Sa: 4       -0.16193485
+    C  Sa: 3    --> Sa: 5       -0.16400180
+    C  Sa: 3    --> Sa: 6        0.16590870
+    C  Sa: 4    --> Sa: 2       -0.23689031
+    C  Sa: 4    --> Sa: 6       -0.34226227
+    C  Sa: 4    --> Sa: 7        0.23535768
+    C  Sa: 5    --> Sa: 3       -0.16027847
+    C  Sa: 5    --> Sa: 4       -0.19076983
+    C  Sa: 5    --> Sa: 6        0.17555591
+    C  Sa: 6    --> Sa: 4       -0.32598828
+    C  Sa: 7    --> Sa: 2       -0.42389190
+    C  Sa: 7    --> Sa: 3        0.16812929
+    C  Sa: 7    --> Sa: 5       -0.24087849
+    ------------------
+    Open-shell weight:     0.000975
+    Closed-shell weight:   0.999025
+
+
+ State: 14   Relative Energy:  11.7999 eV
+    C  Sa: 2    --> Sa: 4        0.15261203
+    C  Sa: 2    --> Sa: 7        0.21646498
+    C  Sa: 3    --> Sa: 2       -0.19558066
+    C  Sa: 3    --> Sa: 4       -0.28949308
+    C  Sa: 3    --> Sa: 5        0.15138596
+    C  Sa: 3    --> Sa: 6        0.37361509
+    C  Sa: 3    --> Sa: 7        0.26977678
+    C  Sa: 5    --> Sa: 2       -0.25922072
+    C  Sa: 5    --> Sa: 4       -0.31344523
+    C  Sa: 5    --> Sa: 6        0.39690253
+    C  Sa: 5    --> Sa: 7        0.43025445
+    ------------------
+    Open-shell weight:     0.004511
+    Closed-shell weight:   0.995489
+
+
+ State: 15   Relative Energy:  12.5249 eV
+    O  Sa: 2    --> Sa: 2        0.19793742
+    C  Sa: 2    --> Sa: 7        0.60417033
+    C  Sa: 4    --> Sa: 2        0.15958009
+    C  Sa: 4    --> Sa: 7        0.19766978
+    C  Sa: 7    --> Sa: 2       -0.60677482
+    O  Sa: 7    --> Sa: 7       -0.18999310
+    ------------------
+    Open-shell weight:     0.077746
+    Closed-shell weight:   0.922254
+
+
+ State: 16   Relative Energy:  12.5622 eV
+    O  Sa: 4    --> Sa: 4        0.21326702
+    C  Sa: 4    --> Sa: 6        0.65566896
+    C  Sa: 6    --> Sa: 4       -0.61440366
+    O  Sa: 6    --> Sa: 6       -0.22000750
+    C  Sa: 6    --> Sa: 7       -0.15273986
+    ------------------
+    Open-shell weight:     0.095182
+    Closed-shell weight:   0.904818
+
+
+ State: 17   Relative Energy:  12.6592 eV
+    O  Sa: 3    --> Sa: 3       -0.22468277
+    C  Sa: 3    --> Sa: 5       -0.66673917
+    C  Sa: 5    --> Sa: 3        0.64064037
+    O  Sa: 5    --> Sa: 5        0.21514002
+    ------------------
+    Open-shell weight:     0.097291
+    Closed-shell weight:   0.902709
+
+
+ State: 18   Relative Energy:  14.2075 eV
+    C  Sa: 4    --> Sa: 2       -0.50553308
+    C  Sa: 4    --> Sa: 3        0.21541617
+    C  Sa: 4    --> Sa: 5        0.16566905
+    C  Sa: 4    --> Sa: 7       -0.48396494
+    C  Sa: 6    --> Sa: 2       -0.32886566
+    C  Sa: 6    --> Sa: 3        0.25442257
+    C  Sa: 6    --> Sa: 7       -0.31825426
+    C  Sa: 7    --> Sa: 2       -0.15249061
+    C  Sa: 7    --> Sa: 6        0.17676232
+    ------------------
+    Open-shell weight:     0.010021
+    Closed-shell weight:   0.989979
+
+
+ State: 19   Relative Energy:  14.3536 eV
+    C  Sa: 2    --> Sa: 4        0.53230140
+    C  Sa: 2    --> Sa: 6       -0.39878926
+    C  Sa: 3    --> Sa: 6       -0.16581463
+    C  Sa: 7    --> Sa: 4       -0.59548307
+    C  Sa: 7    --> Sa: 6        0.26869529
+    ------------------
+    Open-shell weight:     0.002532
+    Closed-shell weight:   0.997468
+
+
+ State: 20   Relative Energy:  14.4982 eV
+    C  Sa: 2    --> Sa: 4       -0.39832510
+    C  Sa: 2    --> Sa: 6       -0.46396104
+    C  Sa: 5    --> Sa: 4       -0.18878341
+    C  Sa: 5    --> Sa: 6       -0.18430009
+    C  Sa: 7    --> Sa: 4       -0.26175653
+    C  Sa: 7    --> Sa: 6       -0.58607752
+    ------------------
+    Open-shell weight:     0.001508
+    Closed-shell weight:   0.998492
+
+
+ State: 21   Relative Energy:  14.8104 eV
+    C  Sa: 2    --> Sa: 3       -0.27672212
+    C  Sa: 3    --> Sa: 2       -0.46433969
+    C  Sa: 3    --> Sa: 4        0.29997869
+    C  Sa: 3    --> Sa: 6       -0.22349736
+    C  Sa: 3    --> Sa: 7        0.27161789
+    C  Sa: 5    --> Sa: 4       -0.31959635
+    C  Sa: 5    --> Sa: 6        0.17610464
+    C  Sa: 5    --> Sa: 7       -0.38953198
+    C  Sa: 6    --> Sa: 7        0.15564084
+    C  Sa: 7    --> Sa: 5       -0.25541698
+    ------------------
+    Open-shell weight:     0.001594
+    Closed-shell weight:   0.998406
+
+
+ State: 22   Relative Energy:  14.8949 eV
+    C  Sa: 2    --> Sa: 3       -0.33920301
+    C  Sa: 2    --> Sa: 5        0.16039960
+    C  Sa: 3    --> Sa: 2        0.26410545
+    C  Sa: 3    --> Sa: 4       -0.18820798
+    C  Sa: 4    --> Sa: 5        0.36826392
+    C  Sa: 5    --> Sa: 7        0.24197597
+    C  Sa: 6    --> Sa: 2       -0.15286611
+    C  Sa: 6    --> Sa: 3        0.39310697
+    C  Sa: 6    --> Sa: 5       -0.21230150
+    C  Sa: 6    --> Sa: 7        0.26619846
+    C  Sa: 7    --> Sa: 5       -0.32528246
+    ------------------
+    Open-shell weight:     0.003853
+    Closed-shell weight:   0.996147
+
+
+ State: 23   Relative Energy:  15.0790 eV
+    C  Sa: 2    --> Sa: 3       -0.35242914
+    C  Sa: 4    --> Sa: 2       -0.21875946
+    C  Sa: 4    --> Sa: 3        0.16406776
+    C  Sa: 4    --> Sa: 7        0.27884894
+    C  Sa: 6    --> Sa: 2        0.39039376
+    C  Sa: 6    --> Sa: 4        0.17923882
+    C  Sa: 6    --> Sa: 5        0.18217448
+    C  Sa: 6    --> Sa: 7       -0.40139377
+    C  Sa: 7    --> Sa: 3       -0.33999488
+    C  Sa: 7    --> Sa: 5       -0.35237129
+    ------------------
+    Open-shell weight:     0.005763
+    Closed-shell weight:   0.994237
+
+
+ State: 24   Relative Energy:  15.1212 eV
+    C  Sa: 2    --> Sa: 6       -0.20332152
+    C  Sa: 3    --> Sa: 2       -0.26511332
+    C  Sa: 3    --> Sa: 6        0.46533686
+    C  Sa: 3    --> Sa: 7       -0.28211356
+    C  Sa: 5    --> Sa: 2       -0.40868670
+    C  Sa: 5    --> Sa: 4        0.44966076
+    C  Sa: 5    --> Sa: 7       -0.33214016
+    C  Sa: 7    --> Sa: 4       -0.16986384
+    ------------------
+    Open-shell weight:     0.001220
+    Closed-shell weight:   0.998780
+
+
+ State: 25   Relative Energy:  15.2701 eV
+    C  Sa: 2    --> Sa: 3        0.19431775
+    C  Sa: 2    --> Sa: 5        0.34481896
+    C  Sa: 4    --> Sa: 5        0.37563448
+    C  Sa: 4    --> Sa: 7        0.30295729
+    C  Sa: 6    --> Sa: 2        0.38060206
+    C  Sa: 6    --> Sa: 3        0.42724256
+    C  Sa: 6    --> Sa: 7       -0.19310491
+    C  Sa: 7    --> Sa: 3        0.40621178
+    C  Sa: 7    --> Sa: 5        0.15433190
+    ------------------
+    Open-shell weight:     0.003160
+    Closed-shell weight:   0.996840
+
+
+ State: 26   Relative Energy:  15.4375 eV
+    C  Sa: 2    --> Sa: 3       -0.17020351
+    C  Sa: 2    --> Sa: 5        0.20805379
+    C  Sa: 3    --> Sa: 4       -0.16895260
+    C  Sa: 3    --> Sa: 6       -0.16200068
+    C  Sa: 4    --> Sa: 2       -0.22159336
+    C  Sa: 4    --> Sa: 3       -0.48875579
+    C  Sa: 4    --> Sa: 5       -0.23882537
+    C  Sa: 5    --> Sa: 2       -0.18071613
+    C  Sa: 5    --> Sa: 6       -0.16888757
+    C  Sa: 6    --> Sa: 3       -0.16944407
+    C  Sa: 6    --> Sa: 5       -0.50263018
+    C  Sa: 6    --> Sa: 7       -0.21040913
+    C  Sa: 7    --> Sa: 3        0.25516871
+    ------------------
+    Open-shell weight:     0.001009
+    Closed-shell weight:   0.998991
+
+
+ State: 27   Relative Energy:  15.5474 eV
+    C  Sa: 2    --> Sa: 6       -0.18256968
+    C  Sa: 3    --> Sa: 2        0.23031232
+    C  Sa: 3    --> Sa: 4        0.39565144
+    C  Sa: 3    --> Sa: 6        0.24071240
+    C  Sa: 3    --> Sa: 7        0.24716075
+    C  Sa: 4    --> Sa: 3       -0.18289659
+    C  Sa: 5    --> Sa: 2        0.46300186
+    C  Sa: 5    --> Sa: 4        0.23775903
+    C  Sa: 5    --> Sa: 6        0.38384812
+    C  Sa: 6    --> Sa: 5       -0.18891378
+    ------------------
+    Open-shell weight:     0.001692
+    Closed-shell weight:   0.998308
+
+
+ State: 28   Relative Energy:  15.9137 eV
+    C  Sa: 2    --> Sa: 3        0.23032283
+    C  Sa: 2    --> Sa: 5       -0.55568201
+    C  Sa: 4    --> Sa: 3       -0.37857290
+    C  Sa: 4    --> Sa: 5        0.28370431
+    C  Sa: 6    --> Sa: 2        0.16144445
+    C  Sa: 6    --> Sa: 3        0.18743696
+    C  Sa: 6    --> Sa: 5       -0.33421835
+    C  Sa: 7    --> Sa: 3       -0.40507307
+    C  Sa: 7    --> Sa: 5        0.21811770
+    ------------------
+    Open-shell weight:     0.000831
+    Closed-shell weight:   0.999169
+
+
+ State: 29   Relative Energy:  15.9621 eV
+    C  Sa: 3    --> Sa: 2        0.23164583
+    C  Sa: 3    --> Sa: 4        0.37532089
+    C  Sa: 3    --> Sa: 6       -0.30074467
+    C  Sa: 3    --> Sa: 7       -0.52572402
+    C  Sa: 5    --> Sa: 2       -0.34542167
+    C  Sa: 5    --> Sa: 6        0.47300903
+    C  Sa: 5    --> Sa: 7        0.21848007
+    ------------------
+    Open-shell weight:     0.000483
+    Closed-shell weight:   0.999517
+
+
+ State: 30   Relative Energy:  18.4628 eV
+    C  Sa: 2    --> Sa: 6       -0.15482109
+    C  Sa: 4    --> Sa: 2       -0.30221562
+    C  Sa: 4    --> Sa: 3        0.29706233
+    C  Sa: 4    --> Sa: 5        0.18382263
+    C  Sa: 4    --> Sa: 7       -0.28143800
+    C  Sa: 6    --> Sa: 2        0.47723338
+    C  Sa: 6    --> Sa: 3       -0.33367219
+    C  Sa: 6    --> Sa: 5       -0.22294124
+    C  Sa: 6    --> Sa: 7        0.43896165
+    C  Sa: 7    --> Sa: 6        0.15055407
+    ------------------
+    Open-shell weight:     0.000596
+    Closed-shell weight:   0.999404
+
+
+ State: 31   Relative Energy:  18.5393 eV
+    C  Sa: 2    --> Sa: 4        0.34275926
+    C  Sa: 2    --> Sa: 6        0.57150307
+    C  Sa: 6    --> Sa: 2        0.15068035
+    C  Sa: 7    --> Sa: 4       -0.33896718
+    C  Sa: 7    --> Sa: 6       -0.56097143
+    ------------------
+    Open-shell weight:     0.001404
+    Closed-shell weight:   0.998596
+
+
+ State: 32   Relative Energy:  19.1489 eV
+    C  Sa: 2    --> Sa: 3        0.42871947
+    C  Sa: 2    --> Sa: 5        0.34229688
+    C  Sa: 4    --> Sa: 2        0.16694831
+    C  Sa: 4    --> Sa: 3        0.15737574
+    C  Sa: 4    --> Sa: 5        0.18365572
+    C  Sa: 4    --> Sa: 7        0.19211814
+    C  Sa: 6    --> Sa: 2       -0.26948847
+    C  Sa: 6    --> Sa: 3       -0.27685799
+    C  Sa: 6    --> Sa: 5       -0.31625736
+    C  Sa: 6    --> Sa: 7       -0.30949571
+    C  Sa: 7    --> Sa: 3       -0.32326564
+    C  Sa: 7    --> Sa: 5       -0.22672965
+    ------------------
+    Open-shell weight:     0.000136
+    Closed-shell weight:   0.999864
+
+
+ State: 33   Relative Energy:  19.2491 eV
+    C  Sa: 3    --> Sa: 2        0.34605780
+    C  Sa: 3    --> Sa: 4       -0.36152954
+    C  Sa: 3    --> Sa: 6       -0.36889169
+    C  Sa: 3    --> Sa: 7        0.38865641
+    C  Sa: 5    --> Sa: 2       -0.26714688
+    C  Sa: 5    --> Sa: 4        0.30878316
+    C  Sa: 5    --> Sa: 6        0.35012061
+    C  Sa: 5    --> Sa: 7       -0.27295981
+    ------------------
+    Open-shell weight:     0.000302
+    Closed-shell weight:   0.999698
+
+
+ State: 34   Relative Energy:  19.4800 eV
+    C  Sa: 3    --> Sa: 2        0.51705549
+    C  Sa: 3    --> Sa: 4        0.34887200
+    C  Sa: 3    --> Sa: 6        0.32942884
+    C  Sa: 3    --> Sa: 7        0.28393945
+    C  Sa: 5    --> Sa: 2       -0.41751035
+    C  Sa: 5    --> Sa: 4       -0.29730088
+    C  Sa: 5    --> Sa: 6       -0.30991429
+    C  Sa: 5    --> Sa: 7       -0.19520793
+    ------------------
+    Open-shell weight:     0.000392
+    Closed-shell weight:   0.999608
+
+
+ State: 35   Relative Energy:  19.7983 eV
+    C  Sa: 2    --> Sa: 3       -0.40435887
+    C  Sa: 2    --> Sa: 5       -0.33340742
+    C  Sa: 4    --> Sa: 3        0.38907984
+    C  Sa: 4    --> Sa: 5        0.34530184
+    C  Sa: 6    --> Sa: 3       -0.31897271
+    C  Sa: 6    --> Sa: 5       -0.32224634
+    C  Sa: 6    --> Sa: 7       -0.18257921
+    C  Sa: 7    --> Sa: 3        0.31581123
+    C  Sa: 7    --> Sa: 5        0.23090680
+    ------------------
+    Open-shell weight:     0.000619
+    Closed-shell weight:   0.999381
+
+
+ Performing population analysis
+ Mulliken Population Analysis of ROHF Active space
+       Atom Z           1      2      3      4      5      6
+          1 1      -0.0235 -0.0000 -0.0010 -0.0008 -0.0000  1.0254
+          2 1       1.0246  0.0000 -0.0011  0.0000 -0.0000 -0.0235
+          3 1      -0.0000  0.0000 -0.0239  0.0000  1.0239 -0.0000
+          4 1      -0.0011  0.0000  1.0260 -0.0000 -0.0239 -0.0011
+          5 1       0.0000  1.0238  0.0000 -0.0237  0.0000  0.0000
+          6 1       0.0000 -0.0238 -0.0000  1.0245 -0.0000 -0.0008
+          7 2       0.0000  0.0000  0.0000  0.0000  0.0000  0.0000
+
+ Primary Atoms
+ MO   1 is on   2
+ MO   2 is on   5
+ MO   3 is on   4
+ MO   4 is on   6
+ MO   5 is on   3
+ MO   6 is on   1
+ Number of blocks found:    6
+ Block    0 has     1 orbitals
+ Block    1 has     1 orbitals
+ Block    2 has     1 orbitals
+ Block    3 has     1 orbitals
+ Block    4 has     1 orbitals
+ Block    5 has     1 orbitals
+
+ State Energies
+      1 =   0.00000000 cm-1
+      2 =  26.42086620 cm-1
+      3 = 288.30780047 cm-1
+      4 = 8892.43771916 cm-1
+      5 = 9379.93558630 cm-1
+      6 = 9604.67636193 cm-1
+
+ Projected eigenvectors
+  -0.3569   0.3923  -0.4214   0.5440   0.1386  -0.4082
+   0.3650  -0.3439   0.4264   0.5639   0.1611  -0.4082
+   0.4564   0.4576   0.0079  -0.4357   0.4158  -0.4082
+  -0.4870  -0.4855  -0.0082  -0.3765   0.3981  -0.4082
+  -0.2926   0.2845   0.5146  -0.1590  -0.5693  -0.4082
+   0.3150  -0.3050  -0.5193  -0.1367  -0.5443  -0.4082
+
+
+ Norms of projected eigenvectors (Projection #1 onto neutral determinant basis)
+      State    0:   0.94387899
+      State    1:   0.94406744
+      State    2:   0.94554743
+      State    3:   0.99479575
+      State    4:   0.99839902
+      State    5:   1.00000000
+
+ Projected eigenvectors (local high-spin)
+  -0.3569   0.3923  -0.4214   0.5440   0.1386  -0.4082
+   0.3650  -0.3439   0.4264   0.5639   0.1611  -0.4082
+   0.4564   0.4576   0.0079  -0.4357   0.4158  -0.4082
+  -0.4870  -0.4855  -0.0082  -0.3765   0.3981  -0.4082
+  -0.2926   0.2845   0.5146  -0.1590  -0.5693  -0.4082
+   0.3150  -0.3050  -0.5193  -0.1367  -0.5443  -0.4082
+
+
+ Norms of projected eigenvectors (Projection #2 onto local high-spin states)
+      State    0:   0.94387899
+      State    1:   0.94406744
+      State    2:   0.94554743
+      State    3:   0.99479575
+      State    4:   0.99839902
+      State    5:   1.00000000
+
+ Overlap of projected eigenvectors
+   8.9091e-01   4.4739e-04  -4.8097e-04  -3.1955e-04   3.6370e-04   3.1468e-10
+   4.4739e-04   8.9126e-01   4.6703e-04  -6.1354e-04  -6.9619e-05  -3.2567e-10
+  -4.8097e-04   4.6703e-04   8.9406e-01  -4.2817e-05  -6.0267e-06  -4.5458e-11
+  -3.1955e-04  -6.1354e-04  -4.2817e-05   9.8962e-01   1.5874e-04  -3.3871e-10
+   3.6370e-04  -6.9619e-05  -6.0267e-06   1.5874e-04   9.9680e-01  -3.4390e-10
+   3.1468e-10  -3.2567e-10  -4.5458e-11  -3.3871e-10  -3.4390e-10   1.0000e+00
+
+
+ Effective Hamiltonian
+   2.0520e-02   2.0529e-02   8.2116e-05   1.2455e-03   6.6315e-05   1.3186e-03
+   2.0529e-02   2.1706e-02   9.2747e-05   1.3605e-03   4.1594e-06   6.8871e-05
+   8.2116e-05   9.2747e-05   2.2498e-02   2.1080e-02   5.1774e-06   4.0455e-06
+   1.2455e-03   1.3605e-03   2.1080e-02   1.9936e-02   3.4839e-06   1.3664e-04
+   6.6315e-05   4.1594e-06   5.1774e-06   3.4839e-06   2.2620e-02   2.1063e-02
+   1.3186e-03   6.8871e-05   4.0455e-06   1.3664e-04   2.1063e-02   2.1171e-02
+
+
+ Energies of Heff (should be the same)
+      1 =   0.00000000 cm-1
+      2 =  26.42086620 cm-1
+      3 = 288.30780047 cm-1
+      4 = 8892.43771916 cm-1
+      5 = 9379.93558630 cm-1
+      6 = 9604.67636193 cm-1
+
+ Exchange coupling constants:
+   	H = J * Sa * Sb 
+   		or
+   	H = -2J' * Sa * Sb 
+        1
+        1
+        1
+        1
+        1
+        1
+
+ J( 0, 1) =          9011.341789  : J'( 0, 1) =         -4505.670894  (cm-1)
+ J( 0, 2) =            36.044819  : J'( 0, 2) =           -18.022409  (cm-1)
+ J( 0, 3) =           546.724976  : J'( 0, 3) =          -273.362488  (cm-1)
+ J( 0, 4) =            29.108831  : J'( 0, 4) =           -14.554416  (cm-1)
+ J( 0, 5) =           578.819230  : J'( 0, 5) =          -289.409615  (cm-1)
+ J( 1, 2) =            40.711391  : J'( 1, 2) =           -20.355696  (cm-1)
+ J( 1, 3) =           597.199380  : J'( 1, 3) =          -298.599690  (cm-1)
+ J( 1, 4) =             1.825752  : J'( 1, 4) =            -0.912876  (cm-1)
+ J( 1, 5) =            30.230821  : J'( 1, 5) =           -15.115410  (cm-1)
+ J( 2, 3) =          9252.960290  : J'( 2, 3) =         -4626.480145  (cm-1)
+ J( 2, 4) =             2.272635  : J'( 2, 4) =            -1.136317  (cm-1)
+ J( 2, 5) =             1.775758  : J'( 2, 5) =            -0.887879  (cm-1)
+ J( 3, 4) =             1.529262  : J'( 3, 4) =            -0.764631  (cm-1)
+ J( 3, 5) =            59.977945  : J'( 3, 5) =           -29.988972  (cm-1)
+ J( 4, 5) =          9245.756959  : J'( 4, 5) =         -4622.878479  (cm-1)
+ We have an S=1/2 lattice with    6 sites, let's directly diagonalize this Hamiltonian
+ Building Heisenberg Hamiltonian
+
+ Diagonalizing Heisenberg Hamiltonian
+ Diagonalizing Heisenberg Hamiltonian for all roots: Matrix size 20x20
+
+ State        Eigenvalue          Relative             <S^2>     Units
+     0   -20635.44429002        0.00000000        0.00000000      cm-1
+     1   -11701.34424879     8934.10004123        2.00000000      cm-1
+     2   -11383.06476119     9252.37952883        2.00000000      cm-1
+     3   -11331.17354219     9304.27074783        2.00000000      cm-1
+     4    -3005.92512646    17629.51916356        0.00000000      cm-1
+     5    -2705.04514964    17930.39914038       -0.00000000      cm-1
+     6    -2696.47180923    17938.97248079        2.00000000      cm-1
+     7    -2541.05491249    18094.38937753        2.00000000      cm-1
+     8    -2245.60640261    18389.83788741        6.00000000      cm-1
+     9    -2219.18553628    18416.25875375        6.00000000      cm-1
+    10    -2149.96052199    18485.48376804       -0.00000000      cm-1
+    11    -2120.69212765    18514.75216237        2.00000000      cm-1
+    12    -1957.29860211    18678.14568791        6.00000000      cm-1
+    13     6184.73130116    26820.17559118        2.00000000      cm-1
+    14     6419.16520996    27054.60949998        0.00000000      cm-1
+    15     6566.67742141    27202.12171143        2.00000000      cm-1
+    16     6646.83131670    27282.27560672        6.00000000      cm-1
+    17     6945.18280083    27580.62709085        2.00000000      cm-1
+    18     7134.32918368    27769.77347370        6.00000000      cm-1
+    19     7359.06995938    27994.51424940       12.00000000      cm-1
+ Analysis of SCF Wavefunction
+
+ --------------------------------------------------------------
+
+                    Orbital Energies (a.u.)
+ --------------------------------------------------------------
+
+ Alpha MOs
+ -- Occupied --
+ -0.914  -0.500  -0.501  -0.503  -0.500  -0.501  -0.500
+ -- Virtual --
+  0.853   0.925   1.010   1.222   1.001   1.020   1.112
+
+ Beta MOs
+ -- Occupied --
+ -0.914
+ -- Virtual --
+  0.148   0.145   0.147   0.147   0.145   0.149   1.027   1.089
+  1.157   1.295   1.149   1.179   1.225
+ --------------------------------------------------------------
+
+          Ground-State Mulliken Net Atomic Charges
+
+     Atom                 Charge (a.u.)
+  ----------------------------------------
+      1 H                    -0.000015
+      2 H                    -0.000067
+      3 H                    -0.000004
+      4 H                     0.000095
+      5 H                    -0.000032
+      6 H                     0.000022
+      7 He                    0.000000
+  ----------------------------------------
+  Sum of atomic charges =     0.000000
+
+ -----------------------------------------------------------------
+                    Cartesian Multipole Moments
+ -----------------------------------------------------------------
+    Charge (ESU x 10^10)
+                 0.0000
+    Dipole Moment (Debye)
+         X      -0.0005      Y      -0.0004      Z       0.0004
+       Tot       0.0007
+    Quadrupole Moments (Debye-Ang)
+        XX      -9.8195     XY      -0.0666     YY      -9.1916
+        XZ       0.3477     YZ       0.1581     ZZ      -8.8295
+    Octopole Moments (Debye-Ang^2)
+       XXX     -50.3313    XXY     -16.3818    XYY     -16.9747
+       YYY     -45.3280    XXZ     -11.0606    XYZ       0.1167
+       YYZ     -12.1046    XZZ     -15.9794    YZZ     -14.3191
+       ZZZ     -37.6864
+    Hexadecapole Moments (Debye-Ang^3)
+      XXXX    -838.0442   XXXY    -306.3902   XXYY    -266.3491
+      XYYY    -315.1371   YYYY    -764.7340   XXXZ    -314.1907
+      XXYZ    -105.7795   XYYZ    -105.3584   YYYZ    -313.4178
+      XXZZ    -242.6517   XYZZ    -102.3303   YYZZ    -233.2919
+      XZZZ    -318.9983   YZZZ    -314.9102   ZZZZ    -643.7397
+ -----------------------------------------------------------------
+ JobOver = TRUE
+Archival summary:
+1\1\sinatra\SP\ROProcedureUnspecified\6-31G*\e16(7)\nmayhall\FriMar2423:26:122017FriMar2423:26:122017\0\\#,ROProcedureUnspecified,6-31G*,\\0,7\H\H,1,1.81086\H,1,2.69731,2,145.598\H,3,1.81174,1,70.5462,2,-108.686,0\H,4,2.837,3,147.595,1,-11.0395,0\H,5,1.81203,4,130.443,3,89.4024,0\He,2,14.7881,1,119.97,3,-161.002,0\\HF=-5.79067452\\@
+
+ Total job time:  0.11s(wall), 0.10s(cpu) 
+ Fri Mar 24 23:26:12 2017
+
+        *************************************************************
+        *                                                           *
+        *  Thank you very much for using Q-Chem.  Have a nice day.  *
+        *                                                           *
+        *************************************************************
+
+
+*** MISSION COMPLETED -- STARFLEET OUT ***
+

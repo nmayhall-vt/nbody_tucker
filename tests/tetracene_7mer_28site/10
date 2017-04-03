@@ -1,0 +1,1599 @@
+ j12:
+[[  0.00000000e+00  -1.48137206e+00  -9.11089589e-04  -5.49181545e-04
+   -2.55552483e-01   7.97505048e-02  -4.45037092e-04  -6.91556197e-04
+   -1.46934400e-04   3.72196622e-04  -2.92129223e-03   3.51208374e-04
+   -4.74498247e-05  -8.52211821e-06  -7.55090131e-05   1.34661107e-04
+   -1.29121283e-06  -5.97157802e-07  -3.82636479e-07   1.14876950e-07
+   -2.37481630e-06  -1.15036672e-05  -6.16090643e-06  -2.09694239e-06
+    5.44553158e-07   2.36378119e-06   1.87796667e-06   5.11782300e-07]
+ [ -1.48137206e+00   0.00000000e+00  -4.68934689e-04   4.18145458e-04
+    7.61477097e-02  -2.24272066e-01   2.46108145e-04  -2.11377417e-05
+    3.53682895e-05   1.90046461e-04  -9.76924582e-05   9.57697104e-06
+    6.20476045e-05   1.61399277e-05   2.01837975e-04  -1.69762643e-04
+   -4.49282954e-07   9.86790288e-07   8.89626076e-08   4.56727228e-08
+    3.32664616e-06  -3.18074573e-06  -1.01504314e-06   2.57511151e-06
+   -1.15083691e-06  -9.95292097e-07   5.11784740e-07  -8.74089186e-07]
+ [ -9.11089589e-04  -4.68934689e-04   0.00000000e+00  -1.41323940e+00
+    3.50181882e-04  -2.27692865e-03  -5.30153477e-01   1.99214715e-01
+   -5.00340084e-06   3.23235744e-06  -1.30558031e-04  -1.43459072e-03
+   -2.12146702e-06  -4.29418931e-06  -4.78421505e-04  -1.17541135e-04
+   -4.42582028e-07  -4.23399271e-06  -1.73020764e-06  -3.02695054e-07
+    2.01697493e-05   1.91816387e-03  -5.65317651e-05   2.26788972e-04
+    2.73041726e-07   1.27524468e-06  -3.82662887e-07   8.89803294e-08]
+ [ -5.49181545e-04   4.18145458e-04  -1.41323940e+00   0.00000000e+00
+   -4.57755834e-04  -2.34291709e-04   2.14386469e-01  -5.19312160e-01
+   -3.67562663e-07   3.43930129e-06   5.59394190e-04  -1.70963710e-04
+    1.00339112e-06  -3.08621447e-07  -1.50978147e-04   3.45181135e-04
+    1.46661270e-06  -1.50152485e-06  -3.02673280e-07   1.01772063e-06
+   -2.09710123e-04  -1.78920568e-03   1.55817572e-04  -1.60334617e-04
+   -7.98658157e-07   4.19299489e-07   1.14900525e-07   4.56689947e-08]
+ [ -2.55552483e-01   7.61477097e-02   3.50181882e-04  -4.57755834e-04
+    0.00000000e+00  -9.89962030e-01  -2.35943537e-04  -2.11823413e-04
+    7.63858415e-05  -1.64798936e-06  -1.22945770e-04   5.17356406e-04
+    2.14272284e-04   6.62234065e-07  -5.79718188e-05  -1.97567663e-04
+   -2.26475896e-06   2.17589782e-06   2.73060201e-07  -7.98683445e-07
+    1.32705702e-05  -7.07760061e-06  -6.06269494e-07   3.42506623e-06
+   -4.23611965e-07  -8.16308271e-07   5.44545819e-07  -1.15087458e-06]
+ [  7.97505048e-02  -2.24272066e-01  -2.27692865e-03  -2.34291709e-04
+   -9.89962030e-01   0.00000000e+00  -7.68953361e-04  -1.83879000e-03
+   -3.82446964e-04  -2.64100738e-03  -2.36708889e-03   1.66441699e-03
+    4.45690892e-04   5.57394459e-05   1.49912093e-03  -1.68674120e-03
+    1.41619915e-07   5.67133438e-06   1.27526577e-06   4.19352584e-07
+   -1.07398310e-05  -2.88686599e-05  -9.30471673e-06  -3.40762827e-06
+   -8.16295571e-07  -1.26743244e-06   2.36376422e-06  -9.95277670e-07]
+ [ -4.45037092e-04   2.46108145e-04  -5.30153477e-01   2.14386469e-01
+   -2.35943537e-04  -7.68953361e-04   0.00000000e+00  -1.41205177e+00
+   -7.71903306e-07   3.39743592e-06   8.39388969e-04  -7.69224261e-04
+    1.18815050e-06  -9.50697831e-07  -1.54034442e-04   5.36600832e-04
+    2.25594760e-06  -2.51830935e-06  -4.42537115e-07   1.46662004e-06
+   -7.45974153e-05  -3.10210236e-03  -3.09073410e-03  -3.73661032e-05
+   -2.26474213e-06   1.41656526e-07  -1.29123994e-06  -4.49281097e-07]
+ [ -6.91556197e-04  -2.11377417e-05   1.99214715e-01  -5.19312160e-01
+   -2.11823413e-04  -1.83879000e-03  -1.41205177e+00   0.00000000e+00
+   -9.93525036e-06  -3.45880963e-06  -6.64566059e-04  -5.46082498e-03
+   -6.68618657e-06  -1.06066503e-05  -1.38054464e-03  -1.30252418e-04
+   -2.51831841e-06  -1.04782820e-05  -4.23401312e-06  -1.50150812e-06
+    5.63276822e-04   1.09766896e-03   3.14923678e-04  -5.63511615e-07
+    2.17592919e-06   5.67136353e-06  -5.97142194e-07   9.86791888e-07]
+ [ -1.46934400e-04   3.53682895e-05  -5.00340084e-06  -3.67562663e-07
+    7.63858415e-05  -3.82446964e-04  -7.71903306e-07  -9.93525036e-06
+    0.00000000e+00  -1.48233149e+00  -8.45786710e-04  -5.81917444e-04
+   -2.55786050e-01   7.92713312e-02  -4.82626504e-04  -6.44590811e-04
+   -3.09073411e-03   3.14923822e-04  -5.65318110e-05   1.55817389e-04
+   -1.26043439e-06  -2.52399298e-06  -1.52619661e-06  -1.45652549e-07
+   -6.06265782e-07  -9.30464582e-06  -6.16089178e-06  -1.01509185e-06]
+ [  3.72196622e-04   1.90046461e-04   3.23235744e-06   3.43930129e-06
+   -1.64798936e-06  -2.64100738e-03   3.39743592e-06  -3.45880963e-06
+   -1.48233149e+00   0.00000000e+00  -3.65185563e-04   5.36032017e-04
+    7.60136832e-02  -2.23931936e-01   2.28189848e-04   1.02527088e-05
+   -3.73660491e-05  -5.63340875e-07   2.26788810e-04  -1.60334536e-04
+    1.15687594e-06   1.06651048e-07  -1.45652559e-07   8.76645102e-07
+    3.42503803e-06  -3.40759493e-06  -2.09692531e-06   2.57510338e-06]
+ [ -2.92129223e-03  -9.76924582e-05  -1.30558031e-04   5.59394190e-04
+   -1.22945770e-04  -2.36708889e-03   8.39388969e-04  -6.64566059e-04
+   -8.45786710e-04  -3.65185563e-04   0.00000000e+00  -1.41278915e+00
+    1.91545985e-04  -2.28562618e-03  -5.27602768e-01   2.08556912e-01
+   -1.54034528e-04  -1.38054353e-03  -4.78420615e-04  -1.50978114e-04
+   -2.93485394e-04  -8.63810729e-04  -4.82626599e-04   2.28189894e-04
+   -5.79718774e-05   1.49912239e-03  -7.55088351e-05   2.01838050e-04]
+ [  3.51208374e-04   9.57697104e-06  -1.43459072e-03  -1.70963710e-04
+    5.17356406e-04   1.66441699e-03  -7.69224261e-04  -5.46082498e-03
+   -5.81917444e-04   5.36032017e-04  -1.41278915e+00   0.00000000e+00
+   -5.25055116e-04  -1.39402210e-04   2.08556322e-01  -5.20657792e-01
+    5.36600661e-04  -1.30251700e-04  -1.17540792e-04   3.45180907e-04
+   -3.55423111e-04  -1.98360753e-03  -6.44591159e-04   1.02523674e-05
+   -1.97567356e-04  -1.68674002e-03   1.34660686e-04  -1.69762365e-04]
+ [ -4.74498247e-05   6.20476045e-05  -2.12146702e-06   1.00339112e-06
+    2.14272284e-04   4.45690892e-04   1.18815050e-06  -6.68618657e-06
+   -2.55786050e-01   7.60136832e-02   1.91545985e-04  -5.25055116e-04
+    0.00000000e+00  -9.89017322e-01  -2.93486355e-04  -3.55423782e-04
+   -7.45972104e-05   5.63276814e-04   2.01695000e-05  -2.09709982e-04
+   -3.67599337e-07  -6.93141275e-07  -1.26045690e-06   1.15689035e-06
+    1.32705713e-05  -1.07398695e-05  -2.37477139e-06   3.32662030e-06]
+ [ -8.52211821e-06   1.61399277e-05  -4.29418931e-06  -3.08621447e-07
+    6.62234065e-07   5.57394459e-05  -9.50697831e-07  -1.06066503e-05
+    7.92713312e-02  -2.23931936e-01  -2.28562618e-03  -1.39402210e-04
+   -9.89017322e-01   0.00000000e+00  -8.63810791e-04  -1.98360621e-03
+   -3.10210083e-03   1.09767089e-03   1.91816163e-03  -1.78920526e-03
+   -6.93148888e-07  -2.14975414e-06  -2.52400353e-06   1.06609259e-07
+   -7.07761752e-06  -2.88685585e-05  -1.15036894e-05  -3.18075122e-06]
+ [ -7.55090131e-05   2.01837975e-04  -4.78421505e-04  -1.50978147e-04
+   -5.79718188e-05   1.49912093e-03  -1.54034442e-04  -1.38054464e-03
+   -4.82626504e-04   2.28189848e-04  -5.27602768e-01   2.08556322e-01
+   -2.93486355e-04  -8.63810791e-04   0.00000000e+00  -1.41278914e+00
+    8.39388273e-04  -6.64565146e-04  -1.30557595e-04   5.59393803e-04
+    1.91545893e-04  -2.28562698e-03  -8.45786833e-04  -3.65186418e-04
+   -1.22945550e-04  -2.36708652e-03  -2.92129286e-03  -9.76928721e-05]
+ [  1.34661107e-04  -1.69762643e-04  -1.17541135e-04   3.45181135e-04
+   -1.97567663e-04  -1.68674120e-03   5.36600832e-04  -1.30252418e-04
+   -6.44590811e-04   1.02527088e-05   2.08556912e-01  -5.20657792e-01
+   -3.55423782e-04  -1.98360621e-03  -1.41278914e+00   0.00000000e+00
+   -7.69223855e-04  -5.46082237e-03  -1.43458862e-03  -1.70963295e-04
+   -5.25054574e-04  -1.39402047e-04  -5.81917612e-04   5.36032107e-04
+    5.17355813e-04   1.66442010e-03   3.51207880e-04   9.57685997e-06]
+ [ -1.29121283e-06  -4.49282954e-07  -4.42582028e-07   1.46661270e-06
+   -2.26475896e-06   1.41619915e-07   2.25594760e-06  -2.51831841e-06
+   -3.09073411e-03  -3.73660491e-05  -1.54034528e-04   5.36600661e-04
+   -7.45972104e-05  -3.10210083e-03   8.39388273e-04  -7.69223855e-04
+    0.00000000e+00  -1.41205179e+00  -5.30153454e-01   2.14386430e-01
+    1.18813574e-06  -9.50702222e-07  -7.71875508e-07   3.39738315e-06
+   -2.35943460e-04  -7.68953117e-04  -4.45036788e-04   2.46107876e-04]
+ [ -5.97157802e-07   9.86790288e-07  -4.23399271e-06  -1.50152485e-06
+    2.17589782e-06   5.67133438e-06  -2.51830935e-06  -1.04782820e-05
+    3.14923822e-04  -5.63340875e-07  -1.38054353e-03  -1.30251700e-04
+    5.63276814e-04   1.09767089e-03  -6.64565146e-04  -5.46082237e-03
+   -1.41205179e+00   0.00000000e+00   1.99214767e-01  -5.19312135e-01
+   -6.68619381e-06  -1.06066693e-05  -9.93525123e-06  -3.45876215e-06
+   -2.11823288e-04  -1.83878960e-03  -6.91555878e-04  -2.11378317e-05]
+ [ -3.82636479e-07   8.89626076e-08  -1.73020764e-06  -3.02673280e-07
+    2.73060201e-07   1.27526577e-06  -4.42537115e-07  -4.23401312e-06
+   -5.65318110e-05   2.26788810e-04  -4.78420615e-04  -1.17540792e-04
+    2.01695000e-05   1.91816163e-03  -1.30557595e-04  -1.43458862e-03
+   -5.30153454e-01   1.99214767e-01   0.00000000e+00  -1.41323939e+00
+   -2.12147259e-06  -4.29418845e-06  -5.00337836e-06   3.23231723e-06
+    3.50181842e-04  -2.27692695e-03  -9.11088937e-04  -4.68935098e-04]
+ [  1.14876950e-07   4.56727228e-08  -3.02695054e-07   1.01772063e-06
+   -7.98683445e-07   4.19352584e-07   1.46662004e-06  -1.50150812e-06
+    1.55817389e-04  -1.60334536e-04  -1.50978114e-04   3.45180907e-04
+   -2.09709982e-04  -1.78920526e-03   5.59393803e-04  -1.70963295e-04
+    2.14386430e-01  -5.19312135e-01  -1.41323939e+00   0.00000000e+00
+    1.00333330e-06  -3.08627016e-07  -3.67625513e-07   3.43934030e-06
+   -4.57755894e-04  -2.34290879e-04  -5.49181053e-04   4.18145261e-04]
+ [ -2.37481630e-06   3.32664616e-06   2.01697493e-05  -2.09710123e-04
+    1.32705702e-05  -1.07398310e-05  -7.45974153e-05   5.63276822e-04
+   -1.26043439e-06   1.15687594e-06  -2.93485394e-04  -3.55423111e-04
+   -3.67599337e-07  -6.93148888e-07   1.91545893e-04  -5.25054574e-04
+    1.18813574e-06  -6.68619381e-06  -2.12147259e-06   1.00333330e-06
+    0.00000000e+00  -9.89017327e-01  -2.55786049e-01   7.60136867e-02
+    2.14272253e-04   4.45690970e-04  -4.74497936e-05   6.20476116e-05]
+ [ -1.15036672e-05  -3.18074573e-06   1.91816387e-03  -1.78920568e-03
+   -7.07760061e-06  -2.88686599e-05  -3.10210236e-03   1.09766896e-03
+   -2.52399298e-06   1.06651048e-07  -8.63810729e-04  -1.98360753e-03
+   -6.93141275e-07  -2.14975414e-06  -2.28562698e-03  -1.39402047e-04
+   -9.50702222e-07  -1.06066693e-05  -4.29418845e-06  -3.08627016e-07
+   -9.89017327e-01   0.00000000e+00   7.92713302e-02  -2.23931937e-01
+    6.62220835e-07   5.57394182e-05  -8.52208807e-06   1.61399562e-05]
+ [ -6.16090643e-06  -1.01504314e-06  -5.65317651e-05   1.55817572e-04
+   -6.06269494e-07  -9.30471673e-06  -3.09073410e-03   3.14923678e-04
+   -1.52619661e-06  -1.45652559e-07  -4.82626599e-04  -6.44591159e-04
+   -1.26045690e-06  -2.52400353e-06  -8.45786833e-04  -5.81917612e-04
+   -7.71875508e-07  -9.93525123e-06  -5.00337836e-06  -3.67625513e-07
+   -2.55786049e-01   7.92713302e-02   0.00000000e+00  -1.48233149e+00
+    7.63857437e-05  -3.82446910e-04  -1.46934524e-04   3.53682439e-05]
+ [ -2.09694239e-06   2.57511151e-06   2.26788972e-04  -1.60334617e-04
+    3.42506623e-06  -3.40762827e-06  -3.73661032e-05  -5.63511615e-07
+   -1.45652549e-07   8.76645102e-07   2.28189894e-04   1.02523674e-05
+    1.15689035e-06   1.06609259e-07  -3.65186418e-04   5.36032107e-04
+    3.39738315e-06  -3.45876215e-06   3.23231723e-06   3.43934030e-06
+    7.60136867e-02  -2.23931937e-01  -1.48233149e+00   0.00000000e+00
+   -1.64802039e-06  -2.64100736e-03   3.72196725e-04   1.90046437e-04]
+ [  5.44553158e-07  -1.15083691e-06   2.73041726e-07  -7.98658157e-07
+   -4.23611965e-07  -8.16295571e-07  -2.26474213e-06   2.17592919e-06
+   -6.06265782e-07   3.42503803e-06  -5.79718774e-05  -1.97567356e-04
+    1.32705713e-05  -7.07761752e-06  -1.22945550e-04   5.17355813e-04
+   -2.35943460e-04  -2.11823288e-04   3.50181842e-04  -4.57755894e-04
+    2.14272253e-04   6.62220835e-07   7.63857437e-05  -1.64802039e-06
+    0.00000000e+00  -9.89962015e-01  -2.55552480e-01   7.61477111e-02]
+ [  2.36378119e-06  -9.95292097e-07   1.27524468e-06   4.19299489e-07
+   -8.16308271e-07  -1.26743244e-06   1.41656526e-07   5.67136353e-06
+   -9.30464582e-06  -3.40759493e-06   1.49912239e-03  -1.68674002e-03
+   -1.07398695e-05  -2.88685585e-05  -2.36708652e-03   1.66442010e-03
+   -7.68953117e-04  -1.83878960e-03  -2.27692695e-03  -2.34290879e-04
+    4.45690970e-04   5.57394182e-05  -3.82446910e-04  -2.64100736e-03
+   -9.89962015e-01   0.00000000e+00   7.97505020e-02  -2.24272064e-01]
+ [  1.87796667e-06   5.11784740e-07  -3.82662887e-07   1.14900525e-07
+    5.44545819e-07   2.36376422e-06  -1.29123994e-06  -5.97142194e-07
+   -6.16089178e-06  -2.09692531e-06  -7.55088351e-05   1.34660686e-04
+   -2.37477139e-06  -1.15036894e-05  -2.92129286e-03   3.51207880e-04
+   -4.45036788e-04  -6.91555878e-04  -9.11088937e-04  -5.49181053e-04
+   -4.74497936e-05  -8.52208807e-06  -1.46934524e-04   3.72196725e-04
+   -2.55552480e-01   7.97505020e-02   0.00000000e+00  -1.48137205e+00]
+ [  5.11782300e-07  -8.74089186e-07   8.89803294e-08   4.56689947e-08
+   -1.15087458e-06  -9.95277670e-07  -4.49281097e-07   9.86791888e-07
+   -1.01509185e-06   2.57510338e-06   2.01838050e-04  -1.69762365e-04
+    3.32662030e-06  -3.18075122e-06  -9.76928721e-05   9.57685997e-06
+    2.46107876e-04  -2.11378317e-05  -4.68935098e-04   4.18145261e-04
+    6.20476116e-05   1.61399562e-05   3.53682439e-05   1.90046437e-04
+    7.61477111e-02  -2.24272064e-01  -1.48137205e+00   0.00000000e+00]]
+ lattice:
+[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+ blocks:
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]
+ [12 13 14 15]
+ [16 17 18 19]
+ [20 21 22 23]
+ [24 25 26 27]]
+ n_blocks:
+7
+[0 1 2 3]
+[4 5 6 7]
+[ 8  9 10 11]
+[12 13 14 15]
+[16 17 18 19]
+[20 21 22 23]
+[24 25 26 27]
+ Generate initial guess vectors
+ Guess eigenstates
+ -4.34191722
+ -1.51543923
+ -1.51543923
+ -1.51543923
+ -1.37917284
+ -1.37917284
+ -1.37917284
+  1.44579470
+  1.44655081
+  1.44655081
+  1.44655081
+  1.44806126
+  1.44806126
+  1.44806126
+  1.44806126
+  1.44806126
+ Guess eigenstates
+ -3.60302088
+ -1.62309719
+ -1.62309719
+ -1.62309719
+ -0.77891799
+ -0.77891799
+ -0.77891799
+  1.19795158
+  1.19948052
+  1.19948052
+  1.19948052
+  1.20253465
+  1.20253465
+  1.20253465
+  1.20253465
+  1.20253465
+ Guess eigenstates
+ -4.34268101
+ -1.51710382
+ -1.51710382
+ -1.51710382
+ -1.37801749
+ -1.37801749
+ -1.37801749
+  1.44630351
+  1.44693256
+  1.44693256
+  1.44693256
+  1.44818875
+  1.44818875
+  1.44818875
+  1.44818875
+  1.44818875
+ Guess eigenstates
+ -3.60270987
+ -1.62467563
+ -1.62467563
+ -1.62467563
+ -0.77713230
+ -0.77713230
+ -0.77713230
+  1.19740708
+  1.19915654
+  1.19915654
+  1.19915654
+  1.20265140
+  1.20265140
+  1.20265140
+  1.20265140
+  1.20265140
+ Guess eigenstates
+ -4.53989663
+ -2.14421632
+ -2.14421632
+ -2.14421632
+ -0.68124069
+ -0.68124069
+ -0.68124069
+  1.07874106
+  1.09487922
+  1.09487922
+  1.09487922
+  1.73057779
+  1.73057779
+  1.73057779
+  1.73057779
+  1.73057779
+ Guess eigenstates
+ -3.77160396
+ -1.82257182
+ -1.82257182
+ -1.82257182
+ -0.64920818
+ -0.64920818
+ -0.64920818
+  0.97582218
+  1.07388911
+  1.07388911
+  1.07388911
+  1.39789089
+  1.39789089
+  1.39789089
+  1.39789089
+  1.39789089
+ Guess eigenstates
+ -3.77171982
+ -1.82114799
+ -1.82114799
+ -1.82114799
+ -0.65060548
+ -0.65060548
+ -0.65060548
+  0.97645942
+  1.07412327
+  1.07412327
+  1.07412327
+  1.39763020
+  1.39763020
+  1.39763020
+  1.39763020
+  1.39763020
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Tucker optimization: Iteration    0
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+     Size of Hamitonian block:  (10, 10)
+     Size of Hamitonian block:  (1, 10)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(1, 4)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(1, 4)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(1, 5)|H|(1, 5)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(1, 5)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(1, 6)|H|(1, 6)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(1, 6)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(1, 7)|H|(1, 7)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(1, 7)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(2, 4)|H|(2, 4)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(2, 4)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(2, 5)|H|(2, 5)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(2, 5)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(2, 6)|H|(2, 6)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(2, 6)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(2, 7)|H|(2, 7)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(2, 7)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(3, 4)|H|(3, 4)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(3, 4)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(3, 5)|H|(3, 5)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(3, 5)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(3, 6)|H|(3, 6)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(3, 6)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(3, 7)|H|(3, 7)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(3, 7)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(4, 5)|H|(4, 5)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(4, 5)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(4, 6)|H|(4, 6)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(4, 6)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(4, 7)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(4, 7)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(5, 6)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(5, 6)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(5, 7)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(5, 7)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(6, 7)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <0|H|(6, 7)>
+     Size of Hamitonian block:  (1, 100)
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (1, 100)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(3, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(3, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(3, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 3)|H|(3, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 4)|H|1>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(1, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(1, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(1, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(2, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(3, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 4)|H|4>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(4, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(4, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 4)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 5)|H|1>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 5)|H|(1, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 5)|H|(1, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 5)|H|(2, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 5)|H|(3, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 5)|H|(4, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 5)|H|5>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 5)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 5)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 6)|H|1>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 6)|H|(1, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 6)|H|(2, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 6)|H|(3, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 6)|H|(4, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 6)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 6)|H|6>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 6)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 7)|H|1>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(1, 7)|H|(2, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 7)|H|(3, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 7)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 7)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 7)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(1, 7)|H|7>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(3, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(3, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(3, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 3)|H|(3, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 4)|H|2>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 4)|H|(2, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 4)|H|(2, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 4)|H|(2, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 4)|H|(3, 4)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 4)|H|4>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 4)|H|(4, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 4)|H|(4, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 4)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 5)|H|2>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 5)|H|(2, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 5)|H|(2, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 5)|H|(3, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 5)|H|(4, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 5)|H|5>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 5)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 5)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 6)|H|2>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 6)|H|(2, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 6)|H|(3, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 6)|H|(4, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 6)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 6)|H|6>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 6)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 7)|H|2>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(2, 7)|H|(3, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 7)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 7)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 7)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(2, 7)|H|7>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(3, 4)|H|3>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(3, 4)|H|(3, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 4)|H|(3, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 4)|H|(3, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 4)|H|4>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(3, 4)|H|(4, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 4)|H|(4, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 4)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 5)|H|3>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(3, 5)|H|(3, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 5)|H|(3, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 5)|H|(4, 5)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 5)|H|5>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(3, 5)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 5)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 6)|H|3>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(3, 6)|H|(3, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 6)|H|(4, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 6)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 6)|H|6>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(3, 6)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 7)|H|3>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(3, 7)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 7)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 7)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(3, 7)|H|7>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(4, 5)|H|4>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(4, 5)|H|(4, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 5)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 5)|H|5>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(4, 5)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 5)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 6)|H|4>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(4, 6)|H|(4, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 6)|H|(5, 6)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 6)|H|6>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(4, 6)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 7)|H|4>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(4, 7)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 7)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(4, 7)|H|7>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(5, 6)|H|5>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(5, 6)|H|(5, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(5, 6)|H|6>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(5, 6)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(5, 7)|H|5>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(5, 7)|H|(6, 7)>
+     Size of Hamitonian block:  (100, 100)
+     Size of Hamitonian block:  (100, 100)
+
+ Form Hamiltonian for <(5, 7)|H|7>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(6, 7)|H|6>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+
+ Form Hamiltonian for <(6, 7)|H|7>
+     Size of Hamitonian block:  (10, 100)
+     Size of Hamitonian block:  (10, 100)
+(1, 71) (1, 100)
+(1, 171) (1, 100)
+(1, 271) (1, 100)
+(1, 371) (1, 100)
+(1, 471) (1, 100)
+(1, 571) (1, 100)
+(1, 671) (1, 100)
+(1, 771) (1, 100)
+(1, 871) (1, 100)
+(1, 971) (1, 100)
+(1, 1071) (1, 100)
+(1, 1171) (1, 100)
+(1, 1271) (1, 100)
+(1, 1371) (1, 100)
+(1, 1471) (1, 100)
+(1, 1571) (1, 100)
+(1, 1671) (1, 100)
+(1, 1771) (1, 100)
+(1, 1871) (1, 100)
+(1, 1971) (1, 100)
+(1, 2071) (1, 100)
+(1, 71) (1, 100)
+(1, 171) (1, 100)
+(1, 271) (1, 100)
+(1, 371) (1, 100)
+(1, 471) (1, 100)
+(1, 571) (1, 100)
+(1, 671) (1, 100)
+(1, 771) (1, 100)
+(1, 871) (1, 100)
+(1, 971) (1, 100)
+(1, 1071) (1, 100)
+(1, 1171) (1, 100)
+(1, 1271) (1, 100)
+(1, 1371) (1, 100)
+(1, 1471) (1, 100)
+(1, 1571) (1, 100)
+(1, 1671) (1, 100)
+(1, 1771) (1, 100)
+(1, 1871) (1, 100)
+(1, 1971) (1, 100)
+(1, 2071) (1, 100)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (2171, 2171)
+ Recompose target state (SLOW)
+P_dims 1
+Q_dims [10, 10, 10, 10, 10, 10, 10]
+QQ_dims [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+QQQ_dims [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000]
+ norm of PPP component   0.89045143
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 1, 1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 1, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+0
+ Contract A along index    0     Dimension   10    Operation:  (10, 1, 1, 1, 1, 1, 1)  x(0)  (16, 10)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 1, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+1
+ Contract A along index    0     Dimension    1    Operation:  (1, 10, 1, 1, 1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   10    Operation:  (10, 1, 1, 1, 1, 1, 16)  x(1)  (16, 10)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+2
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 10, 1, 1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 10, 1, 1, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   10    Operation:  (10, 1, 1, 1, 1, 16, 16)  x(2)  (16, 10)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+3
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 10, 1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 10, 1, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 10, 1, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension   10    Operation:  (10, 1, 1, 1, 16, 16, 16)  x(3)  (16, 10)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+4
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 1, 10, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 10, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 10, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 10, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension   10    Operation:  (10, 1, 1, 16, 16, 16, 16)  x(4)  (16, 10)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+5
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 1, 1, 10, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 1, 10, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 10, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 10, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 10, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension   10    Operation:  (10, 1, 16, 16, 16, 16, 16)  x(5)  (16, 10)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+6
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 1, 1, 1, 10)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 1, 1, 10, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 1, 10, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 10, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 10, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 10, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension   10    Operation:  (10, 16, 16, 16, 16, 16, 16)  x(6)  (16, 10)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+ Contract A along index    0     Dimension   10    Operation:  (10, 10, 1, 1, 1, 1, 1)  x(0)  (16, 10)
+ Contract A along index    1     Dimension   10    Operation:  (10, 1, 1, 1, 1, 1, 16)  x(1)  (16, 10)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 71 171
+ Contract A along index    0     Dimension   10    Operation:  (10, 1, 10, 1, 1, 1, 1)  x(0)  (16, 10)
+ Contract A along index    1     Dimension    1    Operation:  (1, 10, 1, 1, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   10    Operation:  (10, 1, 1, 1, 1, 16, 16)  x(2)  (16, 10)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 171 271
+ Contract A along index    0     Dimension   10    Operation:  (10, 1, 1, 10, 1, 1, 1)  x(0)  (16, 10)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 10, 1, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 10, 1, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension   10    Operation:  (10, 1, 1, 1, 16, 16, 16)  x(3)  (16, 10)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 271 371
+ Contract A along index    0     Dimension   10    Operation:  (10, 1, 1, 1, 10, 1, 1)  x(0)  (16, 10)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 10, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 10, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 10, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension   10    Operation:  (10, 1, 1, 16, 16, 16, 16)  x(4)  (16, 10)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 371 471
+ Contract A along index    0     Dimension   10    Operation:  (10, 1, 1, 1, 1, 10, 1)  x(0)  (16, 10)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 1, 10, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 10, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 10, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 10, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension   10    Operation:  (10, 1, 16, 16, 16, 16, 16)  x(5)  (16, 10)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 471 571
+ Contract A along index    0     Dimension   10    Operation:  (10, 1, 1, 1, 1, 1, 10)  x(0)  (16, 10)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 1, 1, 10, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 1, 10, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 10, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 10, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 10, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension   10    Operation:  (10, 16, 16, 16, 16, 16, 16)  x(6)  (16, 10)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 571 671
+ Contract A along index    0     Dimension    1    Operation:  (1, 10, 10, 1, 1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   10    Operation:  (10, 10, 1, 1, 1, 1, 16)  x(1)  (16, 10)
+ Contract A along index    2     Dimension   10    Operation:  (10, 1, 1, 1, 1, 16, 16)  x(2)  (16, 10)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 671 771
+ Contract A along index    0     Dimension    1    Operation:  (1, 10, 1, 10, 1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   10    Operation:  (10, 1, 10, 1, 1, 1, 16)  x(1)  (16, 10)
+ Contract A along index    2     Dimension    1    Operation:  (1, 10, 1, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension   10    Operation:  (10, 1, 1, 1, 16, 16, 16)  x(3)  (16, 10)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 771 871
+ Contract A along index    0     Dimension    1    Operation:  (1, 10, 1, 1, 10, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   10    Operation:  (10, 1, 1, 10, 1, 1, 16)  x(1)  (16, 10)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 10, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 10, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension   10    Operation:  (10, 1, 1, 16, 16, 16, 16)  x(4)  (16, 10)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 871 971
+ Contract A along index    0     Dimension    1    Operation:  (1, 10, 1, 1, 1, 10, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   10    Operation:  (10, 1, 1, 1, 10, 1, 16)  x(1)  (16, 10)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 10, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 10, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 10, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension   10    Operation:  (10, 1, 16, 16, 16, 16, 16)  x(5)  (16, 10)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 971 1071
+ Contract A along index    0     Dimension    1    Operation:  (1, 10, 1, 1, 1, 1, 10)  x(0)  (16, 1)
+ Contract A along index    1     Dimension   10    Operation:  (10, 1, 1, 1, 1, 10, 16)  x(1)  (16, 10)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 1, 10, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 10, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 10, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 10, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension   10    Operation:  (10, 16, 16, 16, 16, 16, 16)  x(6)  (16, 10)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1071 1171
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 10, 10, 1, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 10, 10, 1, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   10    Operation:  (10, 10, 1, 1, 1, 16, 16)  x(2)  (16, 10)
+ Contract A along index    3     Dimension   10    Operation:  (10, 1, 1, 1, 16, 16, 16)  x(3)  (16, 10)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1171 1271
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 10, 1, 10, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 10, 1, 10, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   10    Operation:  (10, 1, 10, 1, 1, 16, 16)  x(2)  (16, 10)
+ Contract A along index    3     Dimension    1    Operation:  (1, 10, 1, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension   10    Operation:  (10, 1, 1, 16, 16, 16, 16)  x(4)  (16, 10)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1271 1371
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 10, 1, 1, 10, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 10, 1, 1, 10, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   10    Operation:  (10, 1, 1, 10, 1, 16, 16)  x(2)  (16, 10)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 10, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 10, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension   10    Operation:  (10, 1, 16, 16, 16, 16, 16)  x(5)  (16, 10)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1371 1471
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 10, 1, 1, 1, 10)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 10, 1, 1, 1, 10, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension   10    Operation:  (10, 1, 1, 1, 10, 16, 16)  x(2)  (16, 10)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 1, 10, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 10, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 10, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension   10    Operation:  (10, 16, 16, 16, 16, 16, 16)  x(6)  (16, 10)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1471 1571
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 10, 10, 1, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 10, 10, 1, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 10, 10, 1, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension   10    Operation:  (10, 10, 1, 1, 16, 16, 16)  x(3)  (16, 10)
+ Contract A along index    4     Dimension   10    Operation:  (10, 1, 1, 16, 16, 16, 16)  x(4)  (16, 10)
+ Contract A along index    5     Dimension    1    Operation:  (1, 1, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1571 1671
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 10, 1, 10, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 10, 1, 10, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 10, 1, 10, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension   10    Operation:  (10, 1, 10, 1, 16, 16, 16)  x(3)  (16, 10)
+ Contract A along index    4     Dimension    1    Operation:  (1, 10, 1, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension   10    Operation:  (10, 1, 16, 16, 16, 16, 16)  x(5)  (16, 10)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1671 1771
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 10, 1, 1, 10)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 10, 1, 1, 10, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 10, 1, 1, 10, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension   10    Operation:  (10, 1, 1, 10, 16, 16, 16)  x(3)  (16, 10)
+ Contract A along index    4     Dimension    1    Operation:  (1, 1, 10, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension    1    Operation:  (1, 10, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension   10    Operation:  (10, 16, 16, 16, 16, 16, 16)  x(6)  (16, 10)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1771 1871
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 1, 10, 10, 1)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 10, 10, 1, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 10, 10, 1, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 10, 10, 1, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension   10    Operation:  (10, 10, 1, 16, 16, 16, 16)  x(4)  (16, 10)
+ Contract A along index    5     Dimension   10    Operation:  (10, 1, 16, 16, 16, 16, 16)  x(5)  (16, 10)
+ Contract A along index    6     Dimension    1    Operation:  (1, 16, 16, 16, 16, 16, 16)  x(6)  (16, 1)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1871 1971
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 1, 10, 1, 10)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 10, 1, 10, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 10, 1, 10, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 10, 1, 10, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension   10    Operation:  (10, 1, 10, 16, 16, 16, 16)  x(4)  (16, 10)
+ Contract A along index    5     Dimension    1    Operation:  (1, 10, 16, 16, 16, 16, 16)  x(5)  (16, 1)
+ Contract A along index    6     Dimension   10    Operation:  (10, 16, 16, 16, 16, 16, 16)  x(6)  (16, 10)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 1971 2071
+ Contract A along index    0     Dimension    1    Operation:  (1, 1, 1, 1, 1, 10, 10)  x(0)  (16, 1)
+ Contract A along index    1     Dimension    1    Operation:  (1, 1, 1, 1, 10, 10, 16)  x(1)  (16, 1)
+ Contract A along index    2     Dimension    1    Operation:  (1, 1, 1, 10, 10, 16, 16)  x(2)  (16, 1)
+ Contract A along index    3     Dimension    1    Operation:  (1, 1, 10, 10, 16, 16, 16)  x(3)  (16, 1)
+ Contract A along index    4     Dimension    1    Operation:  (1, 10, 10, 16, 16, 16, 16)  x(4)  (16, 1)
+ Contract A along index    5     Dimension   10    Operation:  (10, 10, 16, 16, 16, 16, 16)  x(5)  (16, 10)
+ Contract A along index    6     Dimension   10    Operation:  (10, 16, 16, 16, 16, 16, 16)  x(6)  (16, 10)
+                                       Final shape of tensor:  (16, 16, 16, 16, 16, 16, 16)
+QQ_dims, start, stop 2071 2171
+ Contract A along index    0    Dimension   16
+   Eigenvalues for mode    0 contraction:
+   0            0.94524621 : Keep
+   1            0.01481257 : Keep
+   2            0.01481257 : Keep
+   3            0.01481257 : Keep
+   4            0.00336082 : Keep
+   5            0.00336082 : Keep
+   6            0.00336082 : Keep
+   7            0.00006142 : Keep
+   8            0.00005740 : Keep
+   9            0.00005740 : Keep
+   10           0.00005740 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15          -0.00000000 : Keep
+
+ Contract A along index    1    Dimension   16
+   Eigenvalues for mode    1 contraction:
+   0            0.94524494 : Keep
+   1            0.01481275 : Keep
+   2            0.01481275 : Keep
+   3            0.01481275 : Keep
+   4            0.00336107 : Keep
+   5            0.00336107 : Keep
+   6            0.00336107 : Keep
+   7            0.00006142 : Keep
+   8            0.00005740 : Keep
+   9            0.00005740 : Keep
+   10           0.00005740 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14          -0.00000000 : Keep
+   15          -0.00000000 : Keep
+
+ Contract A along index    2    Dimension   16
+   Eigenvalues for mode    2 contraction:
+   0            0.94520855 : Keep
+   1            0.01483173 : Keep
+   2            0.01483173 : Keep
+   3            0.01483173 : Keep
+   4            0.00335426 : Keep
+   5            0.00335426 : Keep
+   6            0.00335426 : Keep
+   7            0.00006137 : Keep
+   8            0.00005737 : Keep
+   9            0.00005737 : Keep
+   10           0.00005737 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14          -0.00000000 : Keep
+   15          -0.00000000 : Keep
+
+ Contract A along index    3    Dimension   16
+   Eigenvalues for mode    3 contraction:
+   0            0.94520787 : Keep
+   1            0.01483177 : Keep
+   2            0.01483177 : Keep
+   3            0.01483177 : Keep
+   4            0.00335444 : Keep
+   5            0.00335444 : Keep
+   6            0.00335444 : Keep
+   7            0.00006137 : Keep
+   8            0.00005737 : Keep
+   9            0.00005737 : Keep
+   10           0.00005737 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13           0.00000000 : Keep
+   14           0.00000000 : Keep
+   15          -0.00000000 : Keep
+
+ Contract A along index    4    Dimension   16
+   Eigenvalues for mode    4 contraction:
+   0            0.99999839 : Keep
+   1            0.00000050 : Keep
+   2            0.00000050 : Keep
+   3            0.00000050 : Keep
+   4            0.00000004 : Keep
+   5            0.00000004 : Keep
+   6            0.00000004 : Keep
+   7            0.00000000 : Keep
+   8            0.00000000 : Keep
+   9            0.00000000 : Keep
+   10           0.00000000 : Keep
+   11           0.00000000 : Keep
+   12           0.00000000 : Keep
+   13          -0.00000000 : Keep
+   14          -0.00000000 : Keep
+   15          -0.00000000 : Keep
+
+ Contract A along index    5    Dimension   16

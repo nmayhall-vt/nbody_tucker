@@ -1,0 +1,84 @@
+$rem
+	exchange 		hf
+	unrestricted		1
+	basis			6-31g*	
+	aux_basis		rimp2-vdz
+	scf_guess		core	
+	scf_convergence		8
+	scf_max_cycles		200
+	purecart		1111
+	
+	symmetry		0
+	sym_ignore		1
+
+	!correlation		sf-cas
+	!cas_n_spin_flip		1
+	!cas_local		1
+	gui			2
+$end
+
+$development
+	1sf_heis_projection	1
+$end
+
+$molecule
+0 25
+H	-2.3064588	2.7319194	-0.2251962
+H	-2.0919708	1.3313889	0.1504089
+H	-3.3983226	1.7605755	-0.3575826
+H	-2.9517453	2.1856311	0.9748755
+H	0.738558	-0.5595642	-0.0444771
+H	-0.6259842	-0.0282366	-0.1116018
+H	-0.3697245	-1.2986811	0.5723217
+H	-0.2659878	-1.2170817	-0.8896392
+H	0.8677854	1.680669	0.2657205
+H	-0.1424628	2.0083383	-0.7458237
+H	0.8979822	2.9846232	-0.4064337
+H	-0.1657179	2.6807436	0.5572395
+H	-2.5533063	-1.4752854	-0.5938677
+H	-2.6660502	-0.7401942	0.6705504
+H	-3.6949689	-1.716147	0.295812
+H	-3.5873604	-0.4468608	-0.4324671
+H	-0.0406458	0.7115202	1.9806606
+H	-1.0958409	1.6998579	2.231955
+H	-0.7839099	0.6855759	3.2452407
+H	-1.4471217	0.2953584	1.9965366
+H	-0.694332	0.5810616	-2.3132385
+H	-2.0345094	0.2735289	-1.8029223
+H	-1.8420939	0.5644728	-3.2274693
+H	-1.7103069	1.6370586	-2.2346442
+He	10	10	10	
+He	-10	10	10	
+$end
+
+
+@@@
+$rem
+	exchange 		hf
+	unrestricted		0
+	basis			6-31g*	
+	aux_basis		rimp2-vdz
+	scf_guess		read	
+	scf_convergence		8
+	scf_max_cycles		200
+	purecart		1111
+	
+	symmetry		0
+	sym_ignore		1
+
+	correlation		sf-cas
+	cas_n_spin_flip		1
+	cas_local		1
+	gui			2
+$end
+
+$development
+	1sf_heis_projection	1
+	scf_corresponding_orbs	1
+        heisenberg_n_roots	0
+$end
+
+$molecule
+read
+$end
+

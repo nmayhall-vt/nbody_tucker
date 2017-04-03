@@ -1,0 +1,2657 @@
+                  Welcome to Q-Chem
+     A Quantum Leap Into The Future Of Chemistry
+
+
+ Q-Chem 4.3, Q-Chem, Inc., Pleasanton, CA (2015)
+
+ Y. Shao,  Z. Gan,  E. Epifanovsky,  A. T. B. Gilbert,  M. Wormit,  
+ J. Kussmann,  A. W. Lange,  A. Behn,  J. Deng,  X. Feng,  D. Ghosh,  
+ M. Goldey,  P. R. Horn,  L. D. Jacobson,  I. Kaliman,  R. Z. Khaliullin,  
+ T. Kus,  A. Landau,  J. Liu,  E. I. Proynov,  Y. M. Rhee,  R. M. Richard,  
+ M. A. Rohrdanz,  R. P. Steele,  E. J. Sundstrom,  H. L. Woodcock III,  
+ P. M. Zimmerman,  D. Zuev,  B. Albrecht,  E. Alguire,  B. Austin,  
+ S. A. Baeppler,  G. J. O. Beran,  Y. A. Bernard,  E. Berquist,  
+ K. Brandhorst,  K. B. Bravaya,  S. T. Brown,  D. Casanova,  C.-M. Chang,  
+ Y. Chen,  S. H. Chien,  K. D. Closser,  D. L. Crittenden,  M. Diedenhofen,  
+ R. A. DiStasio Jr.,  H. Do,  A. D. Dutoi,  R. G. Edgar,  P.-T. Fang,  
+ S. Fatehi,  Q. Feng,  L. Fusti-Molnar,  A. Ghysels,  
+ A. Golubeva-Zadorozhnaya,  J. Gomes,  A. Gunina,  M. W. D. Hanson-Heine,  
+ P. H. P. Harbach,  A. W. Hauser,  E. G. Hohenstein,  Z. C. Holden,  K. Hui,  
+ T.-C. Jagau,  H. Ji,  B. Kaduk,  K. Khistyaev,  Jaehoon Kim,  Jihan Kim,  
+ R. A. King,  P. Klunzinger,  D. Kosenkov,  T. Kowalczyk,  C. M. Krauter,  
+ K. U. Lao,  A. Laurent,  K. V. Lawler,  S. Lehtola,  S. V. Levchenko,  
+ C. Y. Lin,  Y.-S. Lin,  F. Liu,  E. Livshits,  R. C. Lochan,  A. Luenser,  
+ P. Manohar,  S. F. Manzer,  S.-P. Mao,  N. Mardirossian,  A. V. Marenich,  
+ L. A. Martinez-Martinez,  S. A. Maurer,  N. J. Mayhall,  K. Nanda,  
+ C. M. Oana,  R. Olivares-Amaya,  D. P. O'Neill,  J. A. Parkhill,  
+ T. M. Perrine,  R. Peverati,  P. A. Pieniazek,  F. Plasser,  A. Prociuk,  
+ D. R. Rehn,  E. Rosta,  N. J. Russ,  N. Sergueev,  S. M. Sharada,  
+ S. Sharma,  D. W. Small,  A. Sodt,  T. Stauch,  T. Stein,  D. Stuck,  
+ Y.-C. Su,  A. J. W. Thom,  T. Tsuchimochi,  L. Vogt,  O. Vydrov,  T. Wang,  
+ M. A. Watson,  J. Wenzel,  A. White,  C. F. Williams,  V. Vanovschi,  
+ S. Yeganeh,  S. R. Yost,  Z.-Q. You,  I. Y. Zhang,  X. Zhang,  Y. Zhao,  
+ B. R. Brooks,  G. K. L. Chan,  D. M. Chipman,  C. J. Cramer,  
+ W. A. Goddard III,  M. S. Gordon,  W. J. Hehre,  A. Klamt,  
+ H. F. Schaefer III,  M. W. Schmidt,  C. D. Sherrill,  D. G. Truhlar,  
+ A. Warshel,  X. Xu,  A. Aspuru-Guzik,  R. Baer,  A. T. Bell,  N. A. Besley,  
+ J.-D. Chai,  A. Dreuw,  B. D. Dunietz,  T. R. Furlani,  S. R. Gwaltney,  
+ C.-P. Hsu,  Y. Jung,  J. Kong,  D. S. Lambrecht,  W. Liang,  C. Ochsenfeld,  
+ V. A. Rassolov,  L. V. Slipchenko,  J. E. Subotnik,  T. Van Voorhis,  
+ J. M. Herbert,  A. I. Krylov,  P. M. W. Gill,  M. Head-Gordon
+
+ Contributors to earlier versions of Q-Chem not listed above: 
+ R. D. Adamson,  J. Baker,  E. F. C. Byrd,  A. K. Chakraborty,  C.-L. Cheng,  
+ H. Dachsel,  R. J. Doerksen,  G. Hawkins,  A. Heyden,  S. Hirata,  
+ G. Kedziora,  F. J. Keil,  C. Kelley,  P. P. Korambath,  W. Kurlancheek,  
+ A. M. Lee,  M. S. Lee,  D. Liotard,  I. Lotan,  P. E. Maslen,  N. Nair,  
+ D. Neuhauser,  R. Olson,  B. Peters,  J. Ritchie,  N. E. Schultz,  
+ N. Shenvi,  A. C. Simmonett,  K. S. Thanthiriwatte,  Q. Wu,  W. Zhang
+
+ Please cite Q-Chem as follows:
+ Y. Shao et al., Mol. Phys. 113, 184-215 (2015)
+ DOI: 10.1080/00268976.2014.952696
+
+ Q-Chem 4.3.0 for Intel X86 EM64T Linux
+
+ Parts of Q-Chem use Armadillo 5.200.1 (Boston Tea Smuggler).
+ http://arma.sourceforge.net/
+
+ Q-Chem begins on Sun Mar 26 11:28:23 2017  
+
+
+Host: 0
+
+     Scratch files written to /home/nmayhall/scratch_qchem/qchem13079//
+ Dec1416 |home|nmayhall|qcSoftware|qchem|qchem.svn-casman|libmdc|qstr_RNUM -1
+ Using version located at /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/bin/qchem
+
+
+Total Memory Limit in MB = 2000
+Mega-Array Size in MB = 62
+
+Checking the input file for inconsistencies... 	...done.
+
+ Q-Chem warning in module /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/forms1/BasisType.C, line 1452:
+
+ You are not using the predefined 5D/6D in this basis set.
+
+Finally everything over in PARseQInput
+
+--------------------------------------------------------------
+User input:
+--------------------------------------------------------------
+$rem
+	exchange 		hf
+	unrestricted		1
+	basis			6-31g*	
+	aux_basis		rimp2-vdz
+	scf_guess		core	
+	scf_convergence		8
+	purecart		1111
+
+	symmetry		0
+	sym_ignore		1
+
+	!correlation		sf-cas
+	!cas_n_spin_flip		1
+	!cas_local		1
+	gui			2
+$end
+
+$development
+	1sf_heis_projection	1
+$end
+
+$molecule
+0 1
+H         -0.73854       -0.54065        0.08576
+H         -2.31340       -1.01748       -0.67017
+H         -2.09582        0.65549       -0.01146
+H         -2.21044       -0.75437        1.11995
+H	1.47674	3.17203	0.09828
+H	0.1685	3.76022	1.20546
+H	0.18287	2.0348	0.65668
+H	-0.21686	3.35528	-0.51743
+H          3.48850       -0.87553       -0.06084
+H          2.29649        0.48578       -0.00191
+H          1.93960       -1.06676        0.85992
+H          1.91588       -1.00965       -0.95022
+He	10	10	10	
+He	-10	10	10	
+$end
+
+
+--------------------------------------------------------------
+ ----------------------------------------------------------------
+             Standard Nuclear Orientation (Angstroms)
+    I     Atom           X                Y                Z
+ ----------------------------------------------------------------
+    1      H      -0.7385400000    -0.5406500000     0.0857600000
+    2      H      -2.3134000000    -1.0174800000    -0.6701700000
+    3      H      -2.0958200000     0.6554900000    -0.0114600000
+    4      H      -2.2104400000    -0.7543700000     1.1199500000
+    5      H       1.4767400000     3.1720300000     0.0982800000
+    6      H       0.1685000000     3.7602200000     1.2054600000
+    7      H       0.1828700000     2.0348000000     0.6566800000
+    8      H      -0.2168600000     3.3552800000    -0.5174300000
+    9      H       3.4885000000    -0.8755300000    -0.0608400000
+   10      H       2.2964900000     0.4857800000    -0.0019100000
+   11      H       1.9396000000    -1.0667600000     0.8599200000
+   12      H       1.9158800000    -1.0096500000    -0.9502200000
+   13      He     10.0000000000    10.0000000000    10.0000000000
+   14      He    -10.0000000000    10.0000000000    10.0000000000
+ ----------------------------------------------------------------
+ Nuclear Repulsion Energy =    12.9150084829 hartrees
+ There are        8 alpha and        8 beta electrons
+ Requested basis set is 6-31G(d)
+ There are 28 shells and 28 basis functions
+
+Total QAlloc Memory Limit   2000 MB
+Mega-Array Size        61 MB
+MEM_STATIC part        62 MB
+
+finished with qalloc call
+
+                       Distance Matrix (Angstroms)
+             H (  1)   H (  2)   H (  3)   H (  4)   H (  5)   H (  6)
+   H (  2)  1.810796
+   H (  3)  1.811743  1.811096
+   H (  4)  1.811550  1.812280  1.811334
+   H (  5)  4.323380  5.701550  4.371293  5.482310
+   H (  6)  4.535850  5.701248  4.030805  5.103743  1.811990
+   H (  7)  2.794260  4.160325  2.746149  3.704325  1.810857  1.810646
+   H (  8)  3.976715  4.851787  3.327967  4.852278  1.811342  1.811306
+   H (  9)  4.242818  5.835536  5.790604  5.821242  4.522747  5.840898
+   H ( 10)  3.205098  4.894635  4.395598  4.807178  2.810332  4.087547
+   H ( 11)  2.836997  4.520134  4.473261  4.169896  4.331475  5.153245
+   H ( 12)  2.887761  4.238549  4.443838  4.623558  4.333433  5.518329
+   He( 13) 18.019814 19.668686 18.271783 18.536629 14.741479 14.592367
+   He( 14) 17.180573 17.155792 15.812187 15.974636 16.624704 14.821511
+             H (  7)   H (  8)   H (  9)   H ( 10)   H ( 11)   H ( 12)
+   H (  8)  1.811625
+   H (  9)  4.462291  5.642510
+   H ( 10)  2.701961  3.849249  1.810394
+   H ( 11)  3.570305  5.108997  1.812032  1.811216
+   H ( 12)  3.854105  4.877346  1.811662  1.811206  1.811196
+   He( 13) 15.719990 16.098226 16.183241 15.808310 16.461600 17.506362
+   He( 14) 15.950952 15.826511 20.035900 18.486813 18.669984 19.573143
+             He( 13)
+   He( 14) 20.000000
+
+
+ Q-Chem warning in module /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/forms1/BasisType.C, line 1375:
+
+ SAD: How to set up polarization functions for non-Pople basis?
+
+ Requested basis set is rimp2-VDZ
+ There are 82 shells and 186 basis functions
+ Job number = 2, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 2  <1-7|1-7>
+Symmetry turned off temporarily
+ Using the largest function pair in Schwarz integrals
+Total number of integrals generated =            1014
+Symmetry turned back on
+ A cutoff of  1.0D-11 yielded    288 shell pairs
+ There are       288 function pairs
+ Job number = 11, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 11  <1-1|8-8>
+
+ -------------------------------------------------------
+ OpenMP Integral Computing Module                       
+ Release: version 1.0, May 2013, Q-Chem Inc. Pittsburgh 
+ -------------------------------------------------------
+ Integral Job Info:
+ Integral job number is                      11
+ Integral operator is                         1
+ short-range coefficients                     0
+ long-range coefficients              100000000
+ Omega coefficients                           0
+ if combine SR and LR in K                    0
+ Integral screening is                        0
+ Integral computing path is                   2
+ max size of driver memory is            800000
+ size of driver memory is                 11780
+ size of scratch memory is               800000
+ max col of scratch BK array                289
+ max len of scratch array in speh3            1
+ max len of scratch index in speh4            2
+ max int batch size is                      520
+ min int batch size is                       52
+ fixed nKL is                               520
+ max L of basis functions is                  0
+ order of int derivative is                   0
+ number of shells is                         28
+ number of basis is                          28
+ number of cartesian basis is                28
+ number of contracted shell pairs           288
+ number of primitive shell pairs            812
+ maxK2 (contraction) of shell pair            9
+ max number of K2 of shell pair               1
+ max number of CS2 of shell pair            147
+ max number of PS2 of shell pair            441
+ mem total for path MDJ                    6780
+ -------------------------------------------------------
+ Smallest overlap matrix eigenvalue = 1.90E-01
+ Multipole matrices computed through 2nd order
+
+  Scale SEOQF with 1.000000e-02/1.000000e-02/1.000000e-02
+
+ Standard Electronic Orientation quadrupole field applied
+ Nucleus-field energy     =     0.0000000004 hartrees
+GuessMan:  IGuess = 1
+ Guess MOs from core Hamiltonian diagonalization
+scfman initvdwdat 
+ An unrestricted Hartree-Fock SCF calculation will be
+ performed using Pulay DIIS extrapolation
+ SCF converges when DIIS error is below 1.0E-08
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Total number of integrals generated =           37592
+ MakeJK  time:  CPU       0.01 s  wall       0.01 s
+Fock build time:  0.01 s (CPU) 0.01 s (wall)
+DIIS Errors:  Max 6.75E-01 RMS 7.45E-02
+
+Current DIIS subspace size = 1
+REM_GRID_RESTART_DIIS = 0
+
+ ---------------------------------------
+  Cycle       Energy         DIIS Error
+ ---------------------------------------
+    1      -9.7551609521      7.45E-02  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 1.99E-01 RMS 3.44E-02
+
+Current DIIS subspace size = 2
+REM_GRID_RESTART_DIIS = 0
+
+    2     -10.4307351316      3.44E-02  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 1.30E-01 RMS 2.14E-02
+
+Current DIIS subspace size = 3
+REM_GRID_RESTART_DIIS = 0
+
+    3     -10.7644610788      2.14E-02  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 1.31E-01 RMS 2.42E-02
+
+Current DIIS subspace size = 4
+REM_GRID_RESTART_DIIS = 0
+
+    4     -10.7420566113      2.42E-02  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 2.14E-02 RMS 4.37E-03
+
+Current DIIS subspace size = 5
+REM_GRID_RESTART_DIIS = 0
+
+    5     -11.0077533696      4.37E-03  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 1.22E-02 RMS 2.63E-03
+
+Current DIIS subspace size = 6
+REM_GRID_RESTART_DIIS = 0
+
+    6     -11.0327582910      2.63E-03  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 5.81E-03 RMS 1.55E-03
+
+Current DIIS subspace size = 7
+REM_GRID_RESTART_DIIS = 0
+
+    7     -11.0429939858      1.55E-03  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 4.13E-03 RMS 6.30E-04
+
+Current DIIS subspace size = 8
+REM_GRID_RESTART_DIIS = 0
+
+    8     -11.0479439639      6.30E-04  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 2.66E-03 RMS 4.04E-04
+
+Current DIIS subspace size = 9
+REM_GRID_RESTART_DIIS = 0
+
+    9     -11.0483651373      4.04E-04  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 1.12E-03 RMS 1.92E-04
+
+Current DIIS subspace size = 10
+REM_GRID_RESTART_DIIS = 0
+
+   10     -11.0487541352      1.92E-04  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 2.58E-04 RMS 5.43E-05
+
+Current DIIS subspace size = 11
+REM_GRID_RESTART_DIIS = 0
+
+   11     -11.0488188160      5.43E-05  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 9.14E-05 RMS 2.37E-05
+
+Current DIIS subspace size = 12
+REM_GRID_RESTART_DIIS = 0
+
+   12     -11.0488227122      2.37E-05  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 5.11E-05 RMS 1.13E-05
+
+Current DIIS subspace size = 13
+REM_GRID_RESTART_DIIS = 0
+
+   13     -11.0488233242      1.13E-05  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 2.98E-05 RMS 6.84E-06
+
+Current DIIS subspace size = 14
+REM_GRID_RESTART_DIIS = 0
+
+   14     -11.0488234892      6.84E-06  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 9.75E-06 RMS 2.84E-06
+
+Current DIIS subspace size = 15
+REM_GRID_RESTART_DIIS = 0
+
+   15     -11.0488235690      2.84E-06  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 5.31E-06 RMS 1.14E-06
+
+Current DIIS subspace size = 15
+REM_GRID_RESTART_DIIS = 0
+
+   16     -11.0488235827      1.14E-06  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 3.08E-06 RMS 5.00E-07
+
+Current DIIS subspace size = 15
+REM_GRID_RESTART_DIIS = 0
+
+   17     -11.0488235844      5.00E-07  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 1.44E-06 RMS 2.43E-07
+
+Current DIIS subspace size = 15
+REM_GRID_RESTART_DIIS = 0
+
+   18     -11.0488235847      2.43E-07  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 5.26E-07 RMS 9.11E-08
+
+Current DIIS subspace size = 15
+REM_GRID_RESTART_DIIS = 0
+
+   19     -11.0488235848      9.11E-08  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 8.52E-08 RMS 2.01E-08
+
+Current DIIS subspace size = 15
+REM_GRID_RESTART_DIIS = 0
+
+   20     -11.0488235848      2.01E-08  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 2.91E-08 RMS 6.50E-09
+
+Current DIIS subspace size = 15
+REM_GRID_RESTART_DIIS = 0
+
+   21     -11.0488235848      6.50E-09  00000 Convergence criterion met
+ ---------------------------------------
+ <S^2> = 0.0000
+ SCF time:  CPU 0.09 s  wall 0.09 s
+ SCF   energy in the final basis set = -11.0488235848
+ Total energy in the final basis set = -11.0488235848
+Symmetry turned off temporarily
+ Analysis of SCF Wavefunction
+
+ --------------------------------------------------------------
+
+                    Orbital Energies (a.u.)
+ --------------------------------------------------------------
+
+ Alpha MOs
+ -- Occupied --
+ -0.914  -0.914  -0.529  -0.509  -0.500  -0.281  -0.269  -0.253
+ -- Virtual --
+ -0.055  -0.031  -0.025  -0.007   0.001   0.014   0.909   0.944
+  0.959   0.984   1.006   1.016   1.046   1.075   1.091   1.143
+  1.236   1.272   1.400   1.400
+
+ Beta MOs
+ -- Occupied --
+ -0.914  -0.914  -0.529  -0.509  -0.500  -0.281  -0.269  -0.253
+ -- Virtual --
+ -0.055  -0.031  -0.025  -0.007   0.001   0.014   0.909   0.944
+  0.959   0.984   1.006   1.016   1.046   1.075   1.091   1.143
+  1.236   1.272   1.400   1.400
+ --------------------------------------------------------------
+
+          Ground-State Mulliken Net Atomic Charges
+
+     Atom                 Charge (a.u.)    Spin (a.u.)
+  --------------------------------------------------------
+      1 H                     0.000971       0.000000
+      2 H                    -0.033923       0.000000
+      3 H                    -0.010189       0.000000
+      4 H                     0.010972       0.000000
+      5 H                    -0.000948       0.000000
+      6 H                     0.036540       0.000000
+      7 H                    -0.031701       0.000000
+      8 H                    -0.008594       0.000000
+      9 H                     0.025074       0.000000
+     10 H                    -0.016689       0.000000
+     11 H                     0.002896       0.000000
+     12 H                     0.025592       0.000000
+     13 He                    0.000000       0.000000
+     14 He                    0.000000       0.000000
+  --------------------------------------------------------
+  Sum of atomic charges =    -0.000000
+  Sum of spin   charges =     0.000000
+
+ -----------------------------------------------------------------
+                    Cartesian Multipole Moments
+ -----------------------------------------------------------------
+    Charge (ESU x 10^10)
+                -0.0000
+    Dipole Moment (Debye)
+         X       0.8598      Y       0.0049      Z       0.1885
+       Tot       0.8802
+    Quadrupole Moments (Debye-Ang)
+        XX     -18.3418     XY      -1.9350     YY     -17.7859
+        XZ       1.3313     YZ       0.3226     ZZ     -19.9200
+    Octopole Moments (Debye-Ang^2)
+       XXX     -14.0337    XXY     -43.0393    XYY      -5.4855
+       YYY     -84.5327    XXZ     -25.5978    XYZ       5.8005
+       YYZ     -13.7858    XZZ      -1.5374    YZZ     -36.3842
+       ZZZ     -71.6595
+    Hexadecapole Moments (Debye-Ang^3)
+      XXXX   -1638.2576   XXXY     -31.8780   XXYY    -536.0837
+      XYYY     -17.1150   YYYY   -1592.9737   XXXZ      12.6075
+      XXYZ    -214.8614   XYYZ      10.2220   YYYZ    -606.0505
+      XXZZ    -488.6808   XYZZ      -4.6835   YYZZ    -502.1257
+      XZZZ       4.6943   YZZZ    -646.8776   ZZZZ   -1321.8752
+ -----------------------------------------------------------------
+ JobOver = TRUE
+Archival summary:
+1\1\sinatra\SP\HF\6-31G*\e212\nmayhall\SunMar2611:28:232017SunMar2611:28:232017\0\\#,HF,6-31G*,\\0,1\H\H,1,1.81065\H,1,1.81086,2,60.0452\H,2,1.81131,1,60.0237,3,-70.5123,0\H,1,2.70196,2,128.785,3,-29.6714,0\H,5,1.81039,1,162.568,2,-125.022,0\H,5,1.81121,1,115.886,2,162.914,0\H,7,1.8112,5,60.0005,1,90.2209,0\H,1,2.74615,2,123.078,3,140.571,0\H,9,1.8111,1,130.703,2,-175.903,0\H,10,1.8108,9,60.0291,1,-16.4918,0\H,9,1.81133,1,106.947,2,119.346,0\He,2,14.5924,1,125.789,3,67.2233,0\He,2,14.8215,1,125.906,3,-178.746,0\\HF=-11.0488236\\@
+
+ Total job time:  0.14s(wall), 0.14s(cpu) 
+ Sun Mar 26 11:28:23 2017
+
+        *************************************************************
+        *                                                           *
+        *  Thank you very much for using Q-Chem.  Have a nice day.  *
+        *                                                           *
+        *************************************************************
+
+
+*** MISSION COMPLETED -- STARFLEET OUT ***
+
+ 
+User input: 2 of 2 
+ 
+                  Welcome to Q-Chem
+     A Quantum Leap Into The Future Of Chemistry
+
+
+ Q-Chem 4.3, Q-Chem, Inc., Pleasanton, CA (2015)
+
+ Y. Shao,  Z. Gan,  E. Epifanovsky,  A. T. B. Gilbert,  M. Wormit,  
+ J. Kussmann,  A. W. Lange,  A. Behn,  J. Deng,  X. Feng,  D. Ghosh,  
+ M. Goldey,  P. R. Horn,  L. D. Jacobson,  I. Kaliman,  R. Z. Khaliullin,  
+ T. Kus,  A. Landau,  J. Liu,  E. I. Proynov,  Y. M. Rhee,  R. M. Richard,  
+ M. A. Rohrdanz,  R. P. Steele,  E. J. Sundstrom,  H. L. Woodcock III,  
+ P. M. Zimmerman,  D. Zuev,  B. Albrecht,  E. Alguire,  B. Austin,  
+ S. A. Baeppler,  G. J. O. Beran,  Y. A. Bernard,  E. Berquist,  
+ K. Brandhorst,  K. B. Bravaya,  S. T. Brown,  D. Casanova,  C.-M. Chang,  
+ Y. Chen,  S. H. Chien,  K. D. Closser,  D. L. Crittenden,  M. Diedenhofen,  
+ R. A. DiStasio Jr.,  H. Do,  A. D. Dutoi,  R. G. Edgar,  P.-T. Fang,  
+ S. Fatehi,  Q. Feng,  L. Fusti-Molnar,  A. Ghysels,  
+ A. Golubeva-Zadorozhnaya,  J. Gomes,  A. Gunina,  M. W. D. Hanson-Heine,  
+ P. H. P. Harbach,  A. W. Hauser,  E. G. Hohenstein,  Z. C. Holden,  K. Hui,  
+ T.-C. Jagau,  H. Ji,  B. Kaduk,  K. Khistyaev,  Jaehoon Kim,  Jihan Kim,  
+ R. A. King,  P. Klunzinger,  D. Kosenkov,  T. Kowalczyk,  C. M. Krauter,  
+ K. U. Lao,  A. Laurent,  K. V. Lawler,  S. Lehtola,  S. V. Levchenko,  
+ C. Y. Lin,  Y.-S. Lin,  F. Liu,  E. Livshits,  R. C. Lochan,  A. Luenser,  
+ P. Manohar,  S. F. Manzer,  S.-P. Mao,  N. Mardirossian,  A. V. Marenich,  
+ L. A. Martinez-Martinez,  S. A. Maurer,  N. J. Mayhall,  K. Nanda,  
+ C. M. Oana,  R. Olivares-Amaya,  D. P. O'Neill,  J. A. Parkhill,  
+ T. M. Perrine,  R. Peverati,  P. A. Pieniazek,  F. Plasser,  A. Prociuk,  
+ D. R. Rehn,  E. Rosta,  N. J. Russ,  N. Sergueev,  S. M. Sharada,  
+ S. Sharma,  D. W. Small,  A. Sodt,  T. Stauch,  T. Stein,  D. Stuck,  
+ Y.-C. Su,  A. J. W. Thom,  T. Tsuchimochi,  L. Vogt,  O. Vydrov,  T. Wang,  
+ M. A. Watson,  J. Wenzel,  A. White,  C. F. Williams,  V. Vanovschi,  
+ S. Yeganeh,  S. R. Yost,  Z.-Q. You,  I. Y. Zhang,  X. Zhang,  Y. Zhao,  
+ B. R. Brooks,  G. K. L. Chan,  D. M. Chipman,  C. J. Cramer,  
+ W. A. Goddard III,  M. S. Gordon,  W. J. Hehre,  A. Klamt,  
+ H. F. Schaefer III,  M. W. Schmidt,  C. D. Sherrill,  D. G. Truhlar,  
+ A. Warshel,  X. Xu,  A. Aspuru-Guzik,  R. Baer,  A. T. Bell,  N. A. Besley,  
+ J.-D. Chai,  A. Dreuw,  B. D. Dunietz,  T. R. Furlani,  S. R. Gwaltney,  
+ C.-P. Hsu,  Y. Jung,  J. Kong,  D. S. Lambrecht,  W. Liang,  C. Ochsenfeld,  
+ V. A. Rassolov,  L. V. Slipchenko,  J. E. Subotnik,  T. Van Voorhis,  
+ J. M. Herbert,  A. I. Krylov,  P. M. W. Gill,  M. Head-Gordon
+
+ Contributors to earlier versions of Q-Chem not listed above: 
+ R. D. Adamson,  J. Baker,  E. F. C. Byrd,  A. K. Chakraborty,  C.-L. Cheng,  
+ H. Dachsel,  R. J. Doerksen,  G. Hawkins,  A. Heyden,  S. Hirata,  
+ G. Kedziora,  F. J. Keil,  C. Kelley,  P. P. Korambath,  W. Kurlancheek,  
+ A. M. Lee,  M. S. Lee,  D. Liotard,  I. Lotan,  P. E. Maslen,  N. Nair,  
+ D. Neuhauser,  R. Olson,  B. Peters,  J. Ritchie,  N. E. Schultz,  
+ N. Shenvi,  A. C. Simmonett,  K. S. Thanthiriwatte,  Q. Wu,  W. Zhang
+
+ Please cite Q-Chem as follows:
+ Y. Shao et al., Mol. Phys. 113, 184-215 (2015)
+ DOI: 10.1080/00268976.2014.952696
+
+ Q-Chem 4.3.0 for Intel X86 EM64T Linux
+
+ Parts of Q-Chem use Armadillo 5.200.1 (Boston Tea Smuggler).
+ http://arma.sourceforge.net/
+
+ Q-Chem begins on Sun Mar 26 11:28:23 2017  
+
+
+Host: 0
+
+     Scratch files written to /home/nmayhall/scratch_qchem/qchem13079//
+ Dec1416 |home|nmayhall|qcSoftware|qchem|qchem.svn-casman|libmdc|qstr_RNUM -1
+ Using version located at /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/bin/qchem
+
+ Turning off symmetry for CASMAN
+
+Total Memory Limit in MB = 2000
+Mega-Array Size in MB = 62
+
+Checking the input file for inconsistencies... 	...done.
+
+ Q-Chem warning in module /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/forms1/BasisType.C, line 1452:
+
+ You are not using the predefined 5D/6D in this basis set.
+
+Finally everything over in PARseQInput
+
+--------------------------------------------------------------
+User input:
+--------------------------------------------------------------
+$rem
+	exchange 		hf
+	unrestricted		0
+	basis			6-31g*	
+	aux_basis		rimp2-vdz
+	scf_guess		read	
+	scf_convergence		8
+	purecart		1111
+
+	symmetry		0
+	sym_ignore		1
+
+	correlation		sf-cas
+	!cas_n_spin_flip		1
+	cas_local		1
+	gui			2
+
+	cas_change_num_beta	-5
+	cas_change_num_alpha	5
+$end
+
+$development
+	1sf_heis_projection	1
+	scf_corresponding_orbs	1
+	heisenberg_n_roots	1
+	ras_active_occ		6
+	ras_active_vir		6
+$end
+
+$molecule
+read
+$end
+
+--------------------------------------------------------------
+ ----------------------------------------------------------------
+             Standard Nuclear Orientation (Angstroms)
+    I     Atom           X                Y                Z
+ ----------------------------------------------------------------
+    1      H      -0.7385400000    -0.5406500000     0.0857600000
+    2      H      -2.3134000000    -1.0174800000    -0.6701700000
+    3      H      -2.0958200000     0.6554900000    -0.0114600000
+    4      H      -2.2104400000    -0.7543700000     1.1199500000
+    5      H       1.4767400000     3.1720300000     0.0982800000
+    6      H       0.1685000000     3.7602200000     1.2054600000
+    7      H       0.1828700000     2.0348000000     0.6566800000
+    8      H      -0.2168600000     3.3552800000    -0.5174300000
+    9      H       3.4885000000    -0.8755300000    -0.0608400000
+   10      H       2.2964900000     0.4857800000    -0.0019100000
+   11      H       1.9396000000    -1.0667600000     0.8599200000
+   12      H       1.9158800000    -1.0096500000    -0.9502200000
+   13      He     10.0000000000    10.0000000000    10.0000000000
+   14      He    -10.0000000000    10.0000000000    10.0000000000
+ ----------------------------------------------------------------
+ Nuclear Repulsion Energy =    12.9150084829 hartrees
+ There are        8 alpha and        8 beta electrons
+ Requested basis set is 6-31G(d)
+ There are 28 shells and 28 basis functions
+
+Total QAlloc Memory Limit   2000 MB
+Mega-Array Size        61 MB
+MEM_STATIC part        62 MB
+
+finished with qalloc call
+
+                       Distance Matrix (Angstroms)
+             H (  1)   H (  2)   H (  3)   H (  4)   H (  5)   H (  6)
+   H (  2)  1.810796
+   H (  3)  1.811743  1.811096
+   H (  4)  1.811550  1.812280  1.811334
+   H (  5)  4.323380  5.701550  4.371293  5.482310
+   H (  6)  4.535850  5.701248  4.030805  5.103743  1.811990
+   H (  7)  2.794260  4.160325  2.746149  3.704325  1.810857  1.810646
+   H (  8)  3.976715  4.851787  3.327967  4.852278  1.811342  1.811306
+   H (  9)  4.242818  5.835536  5.790604  5.821242  4.522747  5.840898
+   H ( 10)  3.205098  4.894635  4.395598  4.807178  2.810332  4.087547
+   H ( 11)  2.836997  4.520134  4.473261  4.169896  4.331475  5.153245
+   H ( 12)  2.887761  4.238549  4.443838  4.623558  4.333433  5.518329
+   He( 13) 18.019814 19.668686 18.271783 18.536629 14.741479 14.592367
+   He( 14) 17.180573 17.155792 15.812187 15.974636 16.624704 14.821511
+             H (  7)   H (  8)   H (  9)   H ( 10)   H ( 11)   H ( 12)
+   H (  8)  1.811625
+   H (  9)  4.462291  5.642510
+   H ( 10)  2.701961  3.849249  1.810394
+   H ( 11)  3.570305  5.108997  1.812032  1.811216
+   H ( 12)  3.854105  4.877346  1.811662  1.811206  1.811196
+   He( 13) 15.719990 16.098226 16.183241 15.808310 16.461600 17.506362
+   He( 14) 15.950952 15.826511 20.035900 18.486813 18.669984 19.573143
+             He( 13)
+   He( 14) 20.000000
+
+
+ Q-Chem warning in module /home/nmayhall/qcSoftware/qchem/qchem.svn-casman/forms1/BasisType.C, line 1375:
+
+ SAD: How to set up polarization functions for non-Pople basis?
+
+ Requested basis set is rimp2-VDZ
+ There are 82 shells and 186 basis functions
+ Job number = 2, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 2  <1-7|1-7>
+Symmetry turned off temporarily
+ Using the largest function pair in Schwarz integrals
+Total number of integrals generated =            1014
+Symmetry turned back on
+ A cutoff of  1.0D-11 yielded    288 shell pairs
+ There are       288 function pairs
+ Job number = 11, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 11  <1-1|8-8>
+
+ -------------------------------------------------------
+ OpenMP Integral Computing Module                       
+ Release: version 1.0, May 2013, Q-Chem Inc. Pittsburgh 
+ -------------------------------------------------------
+ Integral Job Info:
+ Integral job number is                      11
+ Integral operator is                         1
+ short-range coefficients                     0
+ long-range coefficients              100000000
+ Omega coefficients                           0
+ if combine SR and LR in K                    0
+ Integral screening is                        0
+ Integral computing path is                   2
+ max size of driver memory is            800000
+ size of driver memory is                 11780
+ size of scratch memory is               800000
+ max col of scratch BK array                289
+ max len of scratch array in speh3            1
+ max len of scratch index in speh4            2
+ max int batch size is                      520
+ min int batch size is                       52
+ fixed nKL is                               520
+ max L of basis functions is                  0
+ order of int derivative is                   0
+ number of shells is                         28
+ number of basis is                          28
+ number of cartesian basis is                28
+ number of contracted shell pairs           288
+ number of primitive shell pairs            812
+ maxK2 (contraction) of shell pair            9
+ max number of K2 of shell pair               1
+ max number of CS2 of shell pair            147
+ max number of PS2 of shell pair            441
+ mem total for path MDJ                    6780
+ -------------------------------------------------------
+ Smallest overlap matrix eigenvalue = 1.90E-01
+ Multipole matrices computed through 2nd order
+
+  Scale SEOQF with 1.000000e-02/1.000000e-02/1.000000e-02
+
+ Standard Electronic Orientation quadrupole field applied
+ Nucleus-field energy     =     0.0000000004 hartrees
+GuessMan:  IGuess = 1000
+ Guess MOs from SCF MO coefficient file
+ Reading MOs from coefficient file
+ Reading MOs from coefficient file
+scfman initvdwdat 
+ A restricted Hartree-Fock SCF calculation will be
+ performed using Pulay DIIS extrapolation
+ SCF converges when DIIS error is below 1.0E-08
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Total number of integrals generated =           37592
+ MakeJK  time:  CPU       0.01 s  wall       0.01 s
+Fock build time:  0.01 s (CPU) 0.01 s (wall)
+DIIS Errors:  Max 1.18E-08 RMS 2.42E-09
+
+Current DIIS subspace size = 1
+REM_GRID_RESTART_DIIS = 0
+
+ ---------------------------------------
+  Cycle       Energy         DIIS Error
+ ---------------------------------------
+    1     -11.0488235848      2.42E-09  00000
+Finding J and K together
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Reusing in-core integrals buffer for job 22
+ MakeJK  time:  CPU       0.00 s  wall       0.00 s
+Fock build time:  0.00 s (CPU) 0.00 s (wall)
+DIIS Errors:  Max 8.04E-09 RMS 1.63E-09
+
+Current DIIS subspace size = 2
+REM_GRID_RESTART_DIIS = 0
+
+    2     -11.0488235848      1.63E-09  00000 Convergence criterion met
+ ---------------------------------------
+ SCF time:  CPU 0.02 s  wall 0.01 s
+ Obtaining Corresponding orbitals
+
+ Forming corresponding orbitals block-by-block...
+ Size of singly occupied alpha block:       0 : 0.0000
+ Size of doubly occupied block:             8 : 8.0000
+ Size of singly occupied beta block:        0 : 0.0000
+ Size of unoccupied block:                 20 : 20.0000
+ Use scf_boys =     0 (Canonical)
+                    1 (Boys)
+                    2 (Pipek-Mezey)
+                    3 (ER)
+ Build new fock matrix
+ I'm here
+ I'm here
+ Calling AOints...
+ Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+ done.
+ E(SCF): disk=    -11.048823584826 current=    -11.048823584826 diff=   1.599e-14
+ SCF   energy in the final basis set = -11.0488235848
+ Total energy in the final basis set = -11.0488235848
+ DevKeyword Parameters: 
+ 1sf_heis_projection                   1
+  heisenberg_n_roots                   1
+      ras_active_occ                   6
+      ras_active_vir                   6
+scf_corresponding_orbs                   1
+
+
+ ========================================================
+                       In SF-CAS-CI                      
+ ========================================================
+ DevKeyword Parameters: 
+ 1sf_heis_projection                   1
+  heisenberg_n_roots                   1
+      ras_active_occ                   6
+      ras_active_vir                   6
+scf_corresponding_orbs                   1
+
+ Forming orbitals for SF-CAS calculation.
+ Number of spin flips: 0
+ Use cas_local =    0 (Canonical)
+                    1 (Boys)
+                    2 (Pipek-Mezey)
+                    3 (ER)
+ Using Boys orbitals in casman
+ 
+ 
+ 
+Calling Get_Boys in C++
+ 
+ 
+ 
+Orbital 9 Variance 8.4580944089
+Orbital 5 Variance 10.8663453154
+Orbital 10 Variance 17.4109871555
+Orbital 3 Variance 17.5673771014
+Orbital 6 Variance 20.4668471728
+Orbital 4 Variance 20.6864379976
+Orbital 1 Variance 23.7268259998
+Orbital 12 Variance 24.4204430074
+Orbital 2 Variance 24.5023491255
+Orbital 8 Variance 27.2913380977
+Orbital 11 Variance 29.0141489207
+Orbital 7 Variance 29.4618339825
+          ***** NUMBER OF SADDLE POINTS SO FAR = 0 ******
+
+Initially in boys_jacobi.C before sweep, get_boys, boysval = 125.025084
+In BOYS_JACOBI SWEEPS for get_boys, ending in round     5  because max_diff = 6.243045e-07
+
+
+---> BEGIN 2nd Der Calculation    ******  
+Guessing MaxD =  20 and MinD = 10
+in get_boys.C: p = 0 guessthresh  53.7227727820 numsofar 18 MinD 10
+in get_boys.C: p = 1 guessthresh  53.2227727820 numsofar 18 MinD 10
+in get_boys.C: p = 2 guessthresh  52.9727727820 numsofar 12 MinD 10
+in get_boys.C: p = 3 guessthresh  52.8477727820 numsofar 4 MinD 10
+DimInGuess 4 mineval  52.7227727820 guessthresh  52.8477727820
+round 0 sizeofsub 4 eval0 5.195856e+01 diffeval0 1.000510e+05 length_qM 1.434322e+00 thresh 1.000000e-08
+round 1 sizeofsub 5 eval0 5.118043e+01 diffeval0 7.781253e-01 length_qM 2.000919e-01 thresh 1.000000e-08
+round 2 sizeofsub 6 eval0 5.117403e+01 diffeval0 6.404930e-03 length_qM 2.807347e-01 thresh 1.000000e-08
+round 3 sizeofsub 7 eval0 5.116137e+01 diffeval0 1.265935e-02 length_qM 6.002217e-01 thresh 1.000000e-08
+round 4 sizeofsub 8 eval0 5.115857e+01 diffeval0 2.804615e-03 length_qM 1.485396e-02 thresh 1.000000e-08
+round 5 sizeofsub 9 eval0 5.115856e+01 diffeval0 1.438856e-06 length_qM 7.739145e-04 thresh 1.000000e-08
+round 6 sizeofsub 10 eval0 5.115856e+01 diffeval0 2.642659e-07 length_qM 1.742085e-03 thresh 1.000000e-08
+round 7 sizeofsub 11 eval0 5.115856e+01 diffeval0 3.106406e-08 length_qM 6.446247e-04 thresh 1.000000e-08
+round 8 sizeofsub 12 eval0 5.115856e+01 diffeval0 4.618364e-09 length_qM 8.963315e-05 thresh 1.000000e-08
+round 9 sizeofsub 13 eval0 5.115856e+01 diffeval0 3.596980e-09 length_qM 1.550242e-04 thresh 1.000000e-08
+round 10 sizeofsub 14 eval0 5.115856e+01 diffeval0 1.394227e-09 length_qM 9.636933e-05 thresh 1.000000e-08
+round 11 sizeofsub 15 eval0 5.115856e+01 diffeval0 4.499086e-10 length_qM 1.219060e-04 thresh 1.000000e-08
+round 12 sizeofsub 16 eval0 5.115856e+01 diffeval0 4.316831e-10 length_qM 1.326809e-05 thresh 1.000000e-08
+round 13 sizeofsub 17 eval0 5.115856e+01 diffeval0 3.375078e-12 length_qM 5.231769e-06 thresh 1.000000e-08
+round 14 sizeofsub 18 eval0 5.115856e+01 diffeval0 3.552714e-13 length_qM 1.902786e-06 thresh 1.000000e-08
+round 15 sizeofsub 19 eval0 5.115856e+01 diffeval0 5.115908e-13 length_qM 9.853650e-07 thresh 1.000000e-08
+Converged to smallest eigenvalue: eval0 5.115856e+01
+
+Success!!! No Negative Eigenvalues: Ending Get Boys in C++ ...Bye Bye
+Orbital 7 Variance 3.2906275542
+Orbital 8 Variance 3.2913055546
+Orbital 9 Variance 3.2940729016
+Orbital 12 Variance 3.2998521911
+Orbital 4 Variance 3.3012435298
+Orbital 5 Variance 3.3026355717
+Orbital 2 Variance 3.3046901534
+Orbital 1 Variance 3.3054987615
+Orbital 3 Variance 3.3102218877
+Orbital 10 Variance 3.3106104939
+Orbital 11 Variance 3.3128908454
+Orbital 6 Variance 3.3280111133
+EXECUTING ORTHO_FUNC DESTRUCTOR
+
+ Dimensions of orbital sub-spaces:    
+ Number Hole Orbs:Alpha:Beta:       2    2    2
+ Number Active Orbs:Alpha:Beta:    12   11    1
+ Number Part Orbs:Alpha:Beta:      14    0    0
+
+ Dimensions in SF-RAS-hp calculation: 
+ Number of active space determinants:  144
+ Number of hole space determinants:    1608
+ Number of part space determinants:    11256
+ Number of hole-part determinants:     130060
+ Total 1x space:                       13008
+ Total singles space:                  143068
+ REM_MEM_TOT: 2000
+ Memory Used: 0
+ Memory Left: 2000
+ Memory Need: 2
+ Constructing 1e MO integrals
+ Form (P|Q)**(-1/2)...
+ Job number = 66, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 66  <2-7|2-7>
+Symmetry turned off temporarily
+Storing 4368.95% of integrals
+Total number of integrals generated =           19965
+Symmetry turned back on
+ Forming (pq|P)...
+ Forming Active-Active (aa|P) integrals...
+
+ Entering first-index batching code with I1Strt =    3 batch size =   12
+ Job number = 65, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 65  <1-1|2-7>
+Symmetry turned off temporarily
+Storing 4368.95% of integrals
+Total number of integrals generated =           57024
+Symmetry turned back on
+ Forming Active-Active B integrals...
+ Contracting B matrices to form 2e integrals. 
+ Forming 2J-K over o,v with exact integrals
+ Calling AOints... Job number = 22, Threshold = 1.00E-11
+Integral type ranges set in mkLRange.C for JobNum: 22  <1-1|1-1>
+Storing 4368.95% of integrals
+Total number of integrals generated =           37592
+ done.
+
+ ROHF energy found on disk: 
+ E(ROHF):       -11.0488235848
+-11.0488235848
+ First 10 Diagonal elements of H: 
+ 11111111111_ | 1___________      -12.7116291554
+ 11111111111_ | _1__________      -12.7076517876
+ 11111111111_ | __1_________      -12.8544443338
+ 11111111111_ | ___1________      -12.7766701719
+ 11111111111_ | ____1_______      -12.7024874177
+ 11111111111_ | _____1______      -12.8549212257
+ 11111111111_ | ______1_____      -12.7517343540
+ 11111111111_ | _______1____      -12.7789198523
+ 11111111111_ | ________1___      -12.7731809107
+ 11111111111_ | _________1__      -12.8536511615
+ Fill S2_CAS Matrix...  done.
+ Fill H_CAS Matrix...  done.
+
+ Diagonalizing H_CAS 
+ Entering cast_sfcas_to_sfcis
+ ===================================================================
+ Theory           State:          Energy (au)       (eV)       <S2>
+ -------------------------------------------------------------------
+ SF-CAS               1:       -13.2634783075     0.0000    30.0000
+ SF-CAS               2:       -13.2616932330     0.0486    30.0000
+ SF-CAS               3:       -13.2606624511     0.0766    30.0000
+ SF-CAS               4:       -13.2598790779     0.0979    30.0000
+ SF-CAS               5:       -13.2595811162     0.1060    30.0000
+ SF-CAS               6:       -13.2590549982     0.1204    30.0000
+ SF-CAS               7:       -13.2588934739     0.1248    30.0000
+ SF-CAS               8:       -13.2584962599     0.1356    30.0000
+ SF-CAS               9:       -13.2583181324     0.1404    30.0000
+ SF-CAS              10:       -13.1960099961     1.8359    30.0000
+ SF-CAS              11:       -13.1955955999     1.8472    30.0000
+ SF-CAS              12:       -13.1934778236     1.9048    42.0000
+ SF-CAS              13:       -12.9898127339     7.4469    30.0000
+ SF-CAS              14:       -12.9880902169     7.4938    30.0000
+ SF-CAS              15:       -12.9838203671     7.6100    30.0000
+ SF-CAS              16:       -12.9779382875     7.7700    30.0000
+ SF-CAS              17:       -12.9770129604     7.7952    30.0000
+ SF-CAS              18:       -12.9768138859     7.8006    30.0000
+ SF-CAS              19:       -12.9753209133     7.8412    30.0000
+ SF-CAS              20:       -12.9740471764     7.8759    30.0000
+ SF-CAS              21:       -12.9730167908     7.9039    30.0000
+ SF-CAS              22:       -12.9680371096     8.0394    30.0000
+ SF-CAS              23:       -12.9675557519     8.0525    30.0000
+ SF-CAS              24:       -12.9626457892     8.1861    30.0000
+ SF-CAS              25:       -12.9599204406     8.2603    30.0000
+ SF-CAS              26:       -12.9579086826     8.3151    30.0000
+ SF-CAS              27:       -12.9549237936     8.3963    30.0000
+ SF-CAS              28:       -12.9494113986     8.5463    30.0000
+ SF-CAS              29:       -12.9464691330     8.6263    30.0000
+ SF-CAS              30:       -12.9427282464     8.7281    30.0000
+ SF-CAS              31:       -12.9385153372     8.8428    30.0000
+ SF-CAS              32:       -12.9320185580     9.0196    30.0000
+ SF-CAS              33:       -12.9286426018     9.1114    30.0000
+ SF-CAS              34:       -12.9278676341     9.1325    30.0000
+ SF-CAS              35:       -12.9219758413     9.2928    30.0000
+ SF-CAS              36:       -12.9183249823     9.3922    30.0000
+ SF-CAS              37:       -12.9161485617     9.4514    30.0000
+ SF-CAS              38:       -12.9151737264     9.4779    30.0000
+ SF-CAS              39:       -12.9134712063     9.5243    30.0000
+ SF-CAS              40:       -12.8743932843    10.5876    30.0000
+ SF-CAS              41:       -12.8717666928    10.6591    30.0000
+ SF-CAS              42:       -12.8706321508    10.6900    30.0000
+ SF-CAS              43:       -12.8689295999    10.7363    30.0000
+ SF-CAS              44:       -12.8674350874    10.7770    30.0000
+ SF-CAS              45:       -12.8667302062    10.7962    30.0000
+ SF-CAS              46:       -12.8659361362    10.8178    30.0000
+ SF-CAS              47:       -12.8650140900    10.8429    30.0000
+ SF-CAS              48:       -12.8645450896    10.8556    30.0000
+ SF-CAS              49:       -12.8632425667    10.8911    30.0000
+ SF-CAS              50:       -12.8621531656    10.9207    30.0000
+ SF-CAS              51:       -12.8615710269    10.9366    30.0000
+ SF-CAS              52:       -12.8613203427    10.9434    30.0000
+ SF-CAS              53:       -12.8600772752    10.9772    30.0000
+ SF-CAS              54:       -12.8598799160    10.9826    30.0000
+ SF-CAS              55:       -12.8461178160    11.3571    30.0000
+ SF-CAS              56:       -12.8455863139    11.3715    30.0000
+ SF-CAS              57:       -12.8413938662    11.4856    30.0000
+ SF-CAS              58:       -12.7875753063    12.9501    30.0000
+ SF-CAS              59:       -12.7853453751    13.0108    30.0000
+ SF-CAS              60:       -12.7817313003    13.1091    30.0000
+ SF-CAS              61:       -12.7770231311    13.2372    30.0000
+ SF-CAS              62:       -12.7742189060    13.3136    30.0000
+ SF-CAS              63:       -12.7728051565    13.3520    30.0000
+ SF-CAS              64:       -12.7654682004    13.5517    30.0000
+ SF-CAS              65:       -12.7633558921    13.6092    30.0000
+ SF-CAS              66:       -12.7613995784    13.6624    30.0000
+ SF-CAS              67:       -12.7571379205    13.7784    30.0000
+ SF-CAS              68:       -12.7546772779    13.8453    30.0000
+ SF-CAS              69:       -12.7518626657    13.9219    30.0000
+ SF-CAS              70:       -12.7492074290    13.9942    30.0000
+ SF-CAS              71:       -12.7488080280    14.0050    30.0000
+ SF-CAS              72:       -12.7453254229    14.0998    30.0000
+ SF-CAS              73:       -12.7438817950    14.1391    30.0000
+ SF-CAS              74:       -12.7427923229    14.1687    30.0000
+ SF-CAS              75:       -12.7411914615    14.2123    30.0000
+ SF-CAS              76:       -12.7400643260    14.2430    30.0000
+ SF-CAS              77:       -12.7385915635    14.2830    30.0000
+ SF-CAS              78:       -12.7352744842    14.3733    30.0000
+ SF-CAS              79:       -12.7341982113    14.4026    30.0000
+ SF-CAS              80:       -12.7315377513    14.4750    30.0000
+ SF-CAS              81:       -12.7301400004    14.5130    30.0000
+ SF-CAS              82:       -12.7287794345    14.5500    30.0000
+ SF-CAS              83:       -12.7280859049    14.5689    30.0000
+ SF-CAS              84:       -12.7250504995    14.6515    30.0000
+ SF-CAS              85:       -12.7243506958    14.6706    30.0000
+ SF-CAS              86:       -12.7229617056    14.7083    30.0000
+ SF-CAS              87:       -12.7222431093    14.7279    30.0000
+ SF-CAS              88:       -12.7202820809    14.7813    30.0000
+ SF-CAS              89:       -12.7184581717    14.8309    30.0000
+ SF-CAS              90:       -12.7174367982    14.8587    30.0000
+ SF-CAS              91:       -12.7164732995    14.8849    30.0000
+ SF-CAS              92:       -12.7154154467    14.9137    30.0000
+ SF-CAS              93:       -12.7137725752    14.9584    30.0000
+ SF-CAS              94:       -12.7133523851    14.9698    30.0000
+ SF-CAS              95:       -12.7118093399    15.0118    30.0000
+ SF-CAS              96:       -12.7103131002    15.0525    30.0000
+ SF-CAS              97:       -12.7074893971    15.1294    30.0000
+ SF-CAS              98:       -12.7064167084    15.1586    30.0000
+ SF-CAS              99:       -12.7039169552    15.2266    30.0000
+ SF-CAS             100:       -12.7007044612    15.3140    30.0000
+ SF-CAS             101:       -12.7001856694    15.3281    30.0000
+ SF-CAS             102:       -12.6992139589    15.3546    30.0000
+ SF-CAS             103:       -12.6965857955    15.4261    30.0000
+ SF-CAS             104:       -12.6941518896    15.4923    30.0000
+ SF-CAS             105:       -12.6924815085    15.5378    30.0000
+ SF-CAS             106:       -12.6913363145    15.5689    30.0000
+ SF-CAS             107:       -12.6906098896    15.5887    30.0000
+ SF-CAS             108:       -12.6894532725    15.6202    30.0000
+ SF-CAS             109:       -12.6894054802    15.6215    30.0000
+ SF-CAS             110:       -12.6872474823    15.6802    30.0000
+ SF-CAS             111:       -12.6857099740    15.7220    30.0000
+ SF-CAS             112:       -12.6828559062    15.7997    30.0000
+ SF-CAS             113:       -12.6809049994    15.8528    30.0000
+ SF-CAS             114:       -12.6760309747    15.9854    30.0000
+ SF-CAS             115:       -12.6747505914    16.0203    30.0000
+ SF-CAS             116:       -12.6686308857    16.1868    30.0000
+ SF-CAS             117:       -12.6672210567    16.2251    30.0000
+ SF-CAS             118:       -12.6497351186    16.7010    30.0000
+ SF-CAS             119:       -12.6488586715    16.7248    30.0000
+ SF-CAS             120:       -12.6480821808    16.7459    30.0000
+ SF-CAS             121:       -12.6465542119    16.7875    30.0000
+ SF-CAS             122:       -12.6456271477    16.8127    30.0000
+ SF-CAS             123:       -12.6451916397    16.8246    30.0000
+ SF-CAS             124:       -12.6421084302    16.9085    30.0000
+ SF-CAS             125:       -12.6399707138    16.9667    30.0000
+ SF-CAS             126:       -12.6386489114    17.0026    30.0000
+ SF-CAS             127:       -12.4980474140    20.8286    30.0000
+ SF-CAS             128:       -12.4920873042    20.9908    30.0000
+ SF-CAS             129:       -12.4891725900    21.0701    30.0000
+ SF-CAS             130:       -12.4786325820    21.3569    30.0000
+ SF-CAS             131:       -12.4767841145    21.4072    30.0000
+ SF-CAS             132:       -12.4715807547    21.5488    30.0000
+ SF-CAS             133:       -12.4662127569    21.6949    30.0000
+ SF-CAS             134:       -12.4639794206    21.7557    30.0000
+ SF-CAS             135:       -12.4579555652    21.9196    30.0000
+ SF-CAS             136:       -12.4555583347    21.9848    30.0000
+ SF-CAS             137:       -12.4543630992    22.0174    30.0000
+ SF-CAS             138:       -12.4520119387    22.0813    30.0000
+ SF-CAS             139:       -12.4467296482    22.2251    30.0000
+ SF-CAS             140:       -12.4438261394    22.3041    30.0000
+ SF-CAS             141:       -12.4419234080    22.3559    30.0000
+ SF-CAS             142:       -12.4315648467    22.6377    30.0000
+ SF-CAS             143:       -12.4275064831    22.7482    30.0000
+ SF-CAS             144:       -12.4223372146    22.8888    30.0000
+ ===================================================================
+
+              Active Space Coefficients > 0.20
+ -------------------------------------------------------------------
+ State  1                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___________1      -0.306713  31.000
+                  1111111_1111 | _______1____       0.528430  31.000
+                  111111_11111 | ______1_____       0.330682  31.000
+                  11111_111111 | _____1______       0.240589  31.000
+                  1111_1111111 | ____1_______       0.319081  31.000
+ -------------------------------------------------------------------
+ State  2                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___________1      -0.453643  31.000
+                  111111_11111 | ______1_____      -0.388068  31.000
+                  11111_111111 | _____1______       0.346922  31.000
+                  11_111111111 | __1_________      -0.203922  31.000
+                  1_1111111111 | _1__________      -0.268961  31.000
+                  _11111111111 | 1___________       0.338893  31.000
+ -------------------------------------------------------------------
+ State  3                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___________1      -0.398584  31.000
+                  111111111_11 | _________1__       0.372482  31.000
+                  1111111_1111 | _______1____      -0.367416  31.000
+                  111111_11111 | ______1_____       0.275851  31.000
+                  111_11111111 | ___1________       0.206947  31.000
+                  1_1111111111 | _1__________       0.336509  31.000
+ -------------------------------------------------------------------
+ State  4                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __________1_      -0.278858  31.000
+                  111111111_11 | _________1__      -0.204908  31.000
+                  1111111_1111 | _______1____      -0.223045  31.000
+                  111111_11111 | ______1_____       0.413786  31.000
+                  1111_1111111 | ____1_______      -0.275399  31.000
+                  1_1111111111 | _1__________      -0.328414  31.000
+                  _11111111111 | 1___________      -0.454825  31.000
+ -------------------------------------------------------------------
+ State  5                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __________1_      -0.322284  31.000
+                  111111111_11 | _________1__       0.506579  31.000
+                  1111111_1111 | _______1____       0.238183  31.000
+                  11_111111111 | __1_________       0.302457  31.000
+                  1_1111111111 | _1__________      -0.442027  31.000
+ -------------------------------------------------------------------
+ State  6                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ________1___      -0.216036  31.000
+                  111111_11111 | ______1_____       0.238627  31.000
+                  11111_111111 | _____1______      -0.358775  31.000
+                  111_11111111 | ___1________       0.415656  31.000
+                  11_111111111 | __1_________      -0.380069  31.000
+                  _11111111111 | 1___________       0.390180  31.000
+ -------------------------------------------------------------------
+ State  7                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ___1________      -0.218908  30.000
+                  11111111_111 | ________1___      -0.664780  31.000
+                  111_11111111 | ___1________      -0.559511  31.000
+ -------------------------------------------------------------------
+ State  8                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___________1      -0.297379  31.000
+                  111111111_11 | _________1__       0.283933  31.000
+                  11111111_111 | ________1___       0.214943  31.000
+                  11111_111111 | _____1______      -0.460806  31.000
+                  11_111111111 | __1_________      -0.471419  31.000
+                  _11111111111 | 1___________      -0.247630  31.000
+ -------------------------------------------------------------------
+ State  9                       Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __________1_       0.517912  31.000
+                  1111111_1111 | _______1____       0.251050  31.000
+                  1111_1111111 | ____1_______      -0.566045  31.000
+                  1_1111111111 | _1__________      -0.292514  31.000
+ -------------------------------------------------------------------
+ State  10                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __________1_       0.417292  31.000
+                  11111111_111 | ________1___      -0.231710  31.000
+                  1111111_1111 | _______1____      -0.376020  31.000
+                  111111_11111 | ______1_____      -0.205329  31.000
+                  1111_1111111 | ____1_______       0.420704  31.000
+                  111_11111111 | ___1________       0.230517  31.000
+                  1_1111111111 | _1__________      -0.403959  31.000
+                  _11111111111 | 1___________      -0.232661  31.000
+ -------------------------------------------------------------------
+ State  11                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___________1       0.344274  31.000
+                  111111111_11 | _________1__       0.362653  31.000
+                  11111111_111 | ________1___       0.334409  31.000
+                  111111_11111 | ______1_____       0.332707  31.000
+                  11111_111111 | _____1______       0.374702  31.000
+                  111_11111111 | ___1________      -0.332041  31.000
+                  11_111111111 | __1_________      -0.374146  31.000
+                  _11111111111 | 1___________       0.351775  31.000
+ -------------------------------------------------------------------
+ State  12                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___________1       0.288675  31.000
+                  1111111111_1 | __________1_      -0.288675  31.000
+                  111111111_11 | _________1__       0.288675  31.000
+                  11111111_111 | ________1___      -0.288675  31.000
+                  1111111_1111 | _______1____       0.288675  31.000
+                  111111_11111 | ______1_____      -0.288675  31.000
+                  11111_111111 | _____1______       0.288675  31.000
+                  1111_1111111 | ____1_______      -0.288675  31.000
+                  111_11111111 | ___1________       0.288675  31.000
+                  11_111111111 | __1_________      -0.288675  31.000
+                  1_1111111111 | _1__________       0.288675  31.000
+                  _11111111111 | 1___________      -0.288675  31.000
+ -------------------------------------------------------------------
+ State  13                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111_1111 | _1__________       0.220921  30.000
+                  1111111_1111 | __1_________       0.214369  30.000
+                  1111111_1111 | ____1_______      -0.237511  30.000
+                  1111111_1111 | _________1__      -0.271387  30.000
+                  1111111_1111 | __________1_      -0.205908  30.000
+                  1111111_1111 | ___________1      -0.327918  30.000
+ -------------------------------------------------------------------
+ State  14                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | 1___________      -0.205940  30.000
+                  11111111111_ | __1_________       0.247648  30.000
+                  11111111111_ | ___1________       0.316435  30.000
+                  11111111111_ | _____1______       0.252783  30.000
+                  11111111111_ | ______1_____       0.302524  30.000
+                  11111111111_ | ________1___       0.309593  30.000
+                  11111111111_ | _________1__      -0.238044  30.000
+ -------------------------------------------------------------------
+ State  15                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111_11111 | _1__________       0.285911  30.000
+                  111111_11111 | ____1_______      -0.209727  30.000
+                  111111_11111 | _______1____      -0.343327  30.000
+                  111111_11111 | __________1_      -0.234478  30.000
+                  1_1111111111 | _______1____      -0.258594  30.000
+ -------------------------------------------------------------------
+ State  16                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _______1____      -0.218945  30.000
+                  111111_11111 | ___1________      -0.204735  30.000
+                  1_1111111111 | _______1____       0.239711  30.000
+                  _11111111111 | ___1________      -0.231775  30.000
+                  _11111111111 | ________1___      -0.235827  30.000
+ -------------------------------------------------------------------
+ State  17                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _______1____      -0.293203  30.000
+                  1111111_1111 | __________1_       0.236367  30.000
+                  1111_1111111 | _1__________      -0.335725  30.000
+                  1111_1111111 | ____1_______      -0.239487  31.000
+                  1111_1111111 | _______1____       0.291324  30.000
+                  1111_1111111 | __________1_       0.247901  30.000
+ -------------------------------------------------------------------
+ State  18                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | _____1______      -0.234574  31.000
+                  11111_111111 | _________1__      -0.354700  30.000
+                  11111_111111 | ___________1      -0.336353  30.000
+                  11_111111111 | __1_________      -0.243933  31.000
+                  11_111111111 | _____1______       0.202414  30.000
+                  11_111111111 | _________1__      -0.312159  30.000
+                  11_111111111 | ___________1      -0.371109  30.000
+ -------------------------------------------------------------------
+ State  19                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _________1__      -0.203364  30.000
+                  11111111_111 | ___1________      -0.236056  30.000
+                  111111_11111 | 1___________      -0.233798  30.000
+                  111_11111111 | ________1___       0.230326  30.000
+                  _11111111111 | ______1_____      -0.274584  30.000
+ -------------------------------------------------------------------
+ State  20                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _1__________      -0.250739  30.000
+                  111111111_11 | __1_________       0.205622  30.000
+                  111111111_11 | _____1______       0.207343  30.000
+                  111111111_11 | ___________1      -0.290130  30.000
+                  1111111_1111 | ____1_______       0.231581  30.000
+                  1111_1111111 | _______1____      -0.249810  30.000
+ -------------------------------------------------------------------
+ State  21                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | 1___________      -0.347606  30.000
+                  11111111_111 | ___1________       0.242880  30.000
+                  11111111_111 | ______1_____       0.410631  30.000
+                  11111111_111 | ________1___      -0.272097  31.000
+                  111_11111111 | 1___________      -0.352536  30.000
+                  111_11111111 | ___1________      -0.263990  31.000
+                  111_11111111 | ______1_____       0.394326  30.000
+                  111_11111111 | ________1___       0.222877  30.000
+ -------------------------------------------------------------------
+ State  22                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | __1_________       0.255738  30.000
+                  111111111_11 | _____1______       0.257686  30.000
+                  111111111_11 | _______1____      -0.241877  30.000
+                  111111111_11 | __________1_      -0.210797  30.000
+                  1111111_1111 | ______1_____       0.221051  30.000
+ -------------------------------------------------------------------
+ State  23                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111_1111 | _________1__      -0.200507  30.000
+                  1_1111111111 | ____1_______       0.257656  30.000
+                  1_1111111111 | __________1_       0.243042  30.000
+ -------------------------------------------------------------------
+ State  24                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _______1____      -0.278399  30.000
+                  11111111111_ | __________1_      -0.204159  30.000
+                  111111111_11 | _1__________      -0.200897  30.000
+                  111111111_11 | ____1_______       0.206133  30.000
+                  111111111_11 | _______1____       0.271160  30.000
+                  111111111_11 | __________1_       0.234906  30.000
+ -------------------------------------------------------------------
+ State  25                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | __1_________       0.223701  30.000
+                  11111111_111 | _____1______       0.233902  30.000
+                  11111111_111 | _________1__      -0.239437  30.000
+                  11111111_111 | ___________1      -0.320378  30.000
+                  111_11111111 | __1_________       0.280929  30.000
+                  111_11111111 | _____1______       0.266495  30.000
+                  111_11111111 | _________1__      -0.286586  30.000
+                  111_11111111 | ___________1      -0.421873  30.000
+ -------------------------------------------------------------------
+ State  26                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111_11111 | _1__________       0.230964  30.000
+                  111111_11111 | ____1_______      -0.201051  30.000
+                  111111_11111 | _______1____      -0.282710  30.000
+                  111111_11111 | __________1_      -0.208935  30.000
+ -------------------------------------------------------------------
+ State  27                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___1________       0.228497  30.000
+                  11111111111_ | ______1_____       0.210131  30.000
+                  11111111111_ | ________1___       0.221836  30.000
+                  111111111_11 | _______1____      -0.214721  30.000
+                  1111111_1111 | ______1_____      -0.227338  30.000
+                  1_1111111111 | ______1_____      -0.235437  30.000
+ -------------------------------------------------------------------
+ State  28                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _1__________      -0.200788  30.000
+                  11111111111_ | ____1_______       0.201367  30.000
+                  11111111111_ | _______1____       0.289383  30.000
+                  11111111111_ | __________1_       0.217620  30.000
+ -------------------------------------------------------------------
+ State  29                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111_1111 | ______1_____       0.226330  30.000
+                  1_1111111111 | ____1_______      -0.205512  30.000
+                  1_1111111111 | ___________1      -0.200405  30.000
+ -------------------------------------------------------------------
+ State  30                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111_11111 | __1_________       0.202552  30.000
+                  111111_11111 | _____1______       0.203303  30.000
+                  111111_11111 | ___________1      -0.265550  30.000
+                  1_1111111111 | 1___________      -0.206350  30.000
+                  1_1111111111 | ______1_____       0.283278  30.000
+ -------------------------------------------------------------------
+ State  31                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __1_________      -0.287200  30.000
+                  1111111111_1 | _____1______      -0.287360  30.000
+                  1111111111_1 | _________1__       0.381838  30.000
+                  1111111111_1 | ___________1       0.325298  30.000
+                  1111_1111111 | __1_________       0.211688  30.000
+                  1111_1111111 | _____1______       0.201533  30.000
+                  1111_1111111 | _________1__      -0.247919  30.000
+                  1111_1111111 | ___________1      -0.255671  30.000
+ -------------------------------------------------------------------
+ State  32                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | _1__________       0.317143  30.000
+                  11111111_111 | ____1_______      -0.271270  30.000
+                  11111111_111 | _______1____      -0.321580  30.000
+                  11111111_111 | __________1_      -0.286356  30.000
+                  111_11111111 | _1__________       0.322129  30.000
+                  111_11111111 | ____1_______      -0.283494  30.000
+                  111_11111111 | _______1____      -0.347787  30.000
+                  111_11111111 | __________1_      -0.285690  30.000
+ -------------------------------------------------------------------
+ State  33                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  _11111111111 | __1_________       0.258587  30.000
+                  _11111111111 | _____1______       0.259244  30.000
+                  _11111111111 | _________1__      -0.275209  30.000
+                  _11111111111 | ___________1      -0.309841  30.000
+ -------------------------------------------------------------------
+ State  34                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | ___1________      -0.226157  30.000
+                  11111_111111 | ______1_____      -0.251437  30.000
+                  11111_111111 | _______1____       0.225549  30.000
+                  11111_111111 | ________1___      -0.231731  30.000
+                  11_111111111 | 1___________       0.236415  30.000
+                  11_111111111 | ___1________      -0.294460  30.000
+                  11_111111111 | ______1_____      -0.294192  30.000
+                  11_111111111 | ________1___      -0.274358  30.000
+ -------------------------------------------------------------------
+ State  35                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ___1________       0.204848  30.000
+                  1111111111_1 | ______1_____       0.244524  30.000
+                  1111111111_1 | ________1___       0.208267  30.000
+                  111111111_11 | 1___________       0.200791  30.000
+                  111111111_11 | ___1________      -0.238500  30.000
+                  111111111_11 | ______1_____      -0.227816  30.000
+                  111111111_11 | ________1___      -0.239841  30.000
+ -------------------------------------------------------------------
+ State  36                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | _1__________      -0.232979  30.000
+                  11111_111111 | ____1_______       0.242378  30.000
+                  11111_111111 | _______1____       0.277241  30.000
+                  11111_111111 | __________1_       0.269795  30.000
+                  11_111111111 | _1__________      -0.203973  30.000
+                  11_111111111 | ___1________       0.210379  30.000
+                  11_111111111 | ____1_______       0.228191  30.000
+                  11_111111111 | _______1____       0.245916  30.000
+                  11_111111111 | ________1___       0.202104  30.000
+                  11_111111111 | __________1_       0.237601  30.000
+ -------------------------------------------------------------------
+ State  37                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | ________1___      -0.206003  30.000
+ -------------------------------------------------------------------
+ State  38                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111_1111111 | ______1_____      -0.208602  30.000
+                  _11111111111 | _1__________       0.274965  30.000
+                  _11111111111 | ____1_______      -0.230401  30.000
+                  _11111111111 | _______1____      -0.256362  30.000
+                  _11111111111 | __________1_      -0.230152  30.000
+ -------------------------------------------------------------------
+ State  39                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111_11111 | ___________1       0.226606  30.000
+                  1111_1111111 | __1_________      -0.221062  30.000
+                  1111_1111111 | _____1______      -0.209542  30.000
+                  1111_1111111 | _________1__       0.263469  30.000
+                  1111_1111111 | ___________1       0.209751  30.000
+                  1_1111111111 | _________1__      -0.222316  30.000
+                  1_1111111111 | ___________1      -0.205577  30.000
+                  _11111111111 | ___________1       0.223972  30.000
+ -------------------------------------------------------------------
+ State  40                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | __1_________      -0.204764  30.000
+                  11111111111_ | _________1__      -0.236578  30.000
+                  1111111111_1 | ____1_______       0.226357  30.000
+                  1111111_1111 | _1__________       0.374787  30.000
+                  1111111_1111 | __________1_       0.358691  30.000
+                  1111_1111111 | _1__________       0.299645  30.000
+                  1111_1111111 | __________1_       0.346352  30.000
+ -------------------------------------------------------------------
+ State  41                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | __1_________       0.282096  30.000
+                  11111111111_ | _________1__       0.321008  30.000
+                  111111111_11 | ___________1       0.207639  30.000
+                  111111_11111 | ___1________      -0.206224  30.000
+                  11111_111111 | __1_________       0.283447  30.000
+                  11111_111111 | _________1__       0.262958  30.000
+                  11_111111111 | _____1______      -0.224832  30.000
+ -------------------------------------------------------------------
+ State  42                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | 1___________       0.264720  30.000
+                  111111_11111 | ___1________      -0.425314  30.000
+                  111111_11111 | ________1___       0.410849  30.000
+                  111_11111111 | 1___________       0.230288  30.000
+                  111_11111111 | ______1_____       0.208492  30.000
+                  _11111111111 | ___1________      -0.338178  30.000
+                  _11111111111 | ________1___       0.377176  30.000
+ -------------------------------------------------------------------
+ State  43                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ___1________       0.275911  30.000
+                  1111111_1111 | _1__________      -0.217537  30.000
+                  1111111_1111 | __________1_      -0.200133  30.000
+                  111111_11111 | 1___________      -0.432167  30.000
+                  111111_11111 | ________1___      -0.263245  30.000
+                  111_11111111 | 1___________      -0.273135  30.000
+                  111_11111111 | ________1___      -0.276426  30.000
+                  1_1111111111 | _______1____       0.239254  30.000
+ -------------------------------------------------------------------
+ State  44                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _________1__       0.211447  30.000
+                  1111111111_1 | ____1_______       0.249329  30.000
+                  1111111111_1 | _______1____      -0.296499  30.000
+                  111111111_11 | _____1______      -0.246589  30.000
+                  111111111_11 | ___________1      -0.232901  30.000
+                  111111_11111 | 1___________       0.252990  30.000
+                  1_1111111111 | ____1_______      -0.251686  30.000
+                  1_1111111111 | _______1____       0.286553  30.000
+ -------------------------------------------------------------------
+ State  45                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | __1_________      -0.268239  30.000
+                  11111111111_ | _____1______       0.341998  30.000
+                  1111111111_1 | _1__________       0.254228  30.000
+                  111111111_11 | __1_________       0.234022  30.000
+                  111111111_11 | _____1______      -0.224283  30.000
+                  1111111_1111 | ____1_______       0.394172  30.000
+                  1111111_1111 | __________1_      -0.213849  30.000
+                  11_111111111 | _________1__      -0.230770  30.000
+                  1_1111111111 | ____1_______       0.241294  30.000
+                  1_1111111111 | __________1_      -0.310732  30.000
+ -------------------------------------------------------------------
+ State  46                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | __1_________       0.237252  30.000
+                  11111111111_ | _____1______      -0.400318  30.000
+                  111111111_11 | __1_________      -0.249711  30.000
+                  1111111_1111 | ____1_______       0.328138  30.000
+                  1111111_1111 | __________1_      -0.215946  30.000
+                  11_111111111 | _____1______       0.285675  30.000
+                  11_111111111 | _________1__       0.314775  30.000
+                  1_1111111111 | ____1_______       0.256841  30.000
+                  1_1111111111 | __________1_      -0.248163  30.000
+ -------------------------------------------------------------------
+ State  47                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ____1_______      -0.225192  30.000
+                  111111111_11 | __1_________       0.214058  30.000
+                  111111111_11 | _____1______      -0.377737  30.000
+                  11111_111111 | __1_________       0.293343  30.000
+                  11111_111111 | _________1__       0.227564  30.000
+                  1111_1111111 | _1__________       0.204386  30.000
+                  11_111111111 | _____1______       0.291785  30.000
+                  11_111111111 | ___________1       0.268234  30.000
+                  1_1111111111 | _______1____      -0.219488  30.000
+ -------------------------------------------------------------------
+ State  48                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | 1___________       0.444912  30.000
+                  11111111_111 | ___1________       0.236638  30.000
+                  11111111_111 | ______1_____       0.213326  30.000
+                  111_11111111 | 1___________       0.444827  30.000
+                  111_11111111 | ______1_____       0.260976  30.000
+                  _11111111111 | ___1________       0.368021  30.000
+                  _11111111111 | ________1___      -0.321510  30.000
+ -------------------------------------------------------------------
+ State  49                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _1__________      -0.327145  30.000
+                  1111111111_1 | ____1_______      -0.352736  30.000
+                  1111111_1111 | ____1_______      -0.201142  30.000
+                  1111_1111111 | _______1____      -0.267429  30.000
+                  1111_1111111 | __________1_       0.374723  30.000
+                  111_11111111 | ________1___       0.208101  30.000
+                  1_1111111111 | _______1____       0.227634  30.000
+                  1_1111111111 | __________1_      -0.390089  30.000
+ -------------------------------------------------------------------
+ State  50                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _________1__       0.248623  30.000
+                  111111111_11 | __1_________      -0.376764  30.000
+                  111111111_11 | ___________1      -0.312291  30.000
+                  11111_111111 | __1_________      -0.300835  30.000
+                  11111_111111 | ___________1      -0.321529  30.000
+                  11_111111111 | _____1______      -0.243051  30.000
+                  11_111111111 | _________1__      -0.242182  30.000
+                  _11111111111 | ______1_____      -0.206194  30.000
+ -------------------------------------------------------------------
+ State  51                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111_11111 | 1___________       0.278996  30.000
+                  111111_11111 | ___1________       0.239103  30.000
+                  111_11111111 | ______1_____       0.342536  30.000
+                  111_11111111 | ________1___      -0.213928  30.000
+                  _11111111111 | ______1_____      -0.444030  30.000
+                  _11111111111 | ________1___       0.234621  30.000
+ -------------------------------------------------------------------
+ State  52                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ___1________       0.434140  30.000
+                  11111111_111 | ______1_____      -0.512880  30.000
+                  111111_11111 | ________1___       0.314486  30.000
+                  111_11111111 | ______1_____      -0.261003  30.000
+                  111_11111111 | ________1___       0.289270  30.000
+                  _11111111111 | ___1________       0.220708  30.000
+                  _11111111111 | ______1_____      -0.257850  30.000
+ -------------------------------------------------------------------
+ State  53                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _1__________      -0.364199  30.000
+                  1111111111_1 | _______1____      -0.397652  30.000
+                  1111111_1111 | ____1_______       0.255194  30.000
+                  1111111_1111 | __________1_      -0.262812  30.000
+                  1111_1111111 | _1__________       0.340638  30.000
+                  1111_1111111 | _______1____       0.437039  30.000
+                  1_1111111111 | ____1_______       0.216114  30.000
+ -------------------------------------------------------------------
+ State  54                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | __1_________      -0.309025  30.000
+                  11111111111_ | _____1______       0.251616  30.000
+                  111111111_11 | __1_________       0.242388  30.000
+                  111111111_11 | _____1______      -0.221648  30.000
+                  11111_111111 | _________1__       0.331197  30.000
+                  11111_111111 | ___________1      -0.413181  30.000
+                  11_111111111 | _________1__       0.394683  30.000
+                  11_111111111 | ___________1      -0.428987  30.000
+ -------------------------------------------------------------------
+ State  55                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | __1_________       0.221242  30.000
+                  11111111111_ | _________1__      -0.276260  30.000
+                  111111111_11 | _____1______       0.210892  30.000
+                  111111111_11 | ___________1      -0.286375  30.000
+                  11111_111111 | __1_________      -0.268497  30.000
+                  11111_111111 | _________1__       0.213198  30.000
+                  11_111111111 | _____1______       0.277264  30.000
+                  11_111111111 | ___________1      -0.210137  30.000
+ -------------------------------------------------------------------
+ State  56                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ____1_______       0.209573  30.000
+                  11111111_111 | 1___________       0.223842  30.000
+                  11111111_111 | ___1________      -0.209135  30.000
+                  11111111_111 | ______1_____      -0.217437  30.000
+                  1111111_1111 | _1__________       0.218070  30.000
+                  111111_11111 | 1___________       0.210529  30.000
+                  111111_11111 | ___1________      -0.221384  30.000
+                  111111_11111 | ________1___      -0.209358  30.000
+                  1111_1111111 | __________1_       0.203769  30.000
+                  111_11111111 | 1___________      -0.211321  30.000
+                  111_11111111 | ______1_____       0.223752  30.000
+                  111_11111111 | ________1___       0.214100  30.000
+                  1_1111111111 | _______1____       0.204680  30.000
+                  _11111111111 | ___1________       0.204522  30.000
+                  _11111111111 | ______1_____       0.206694  30.000
+                  _11111111111 | ________1___       0.212824  30.000
+ -------------------------------------------------------------------
+ State  57                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+ -------------------------------------------------------------------
+ State  58                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111_1111 | ______1_____       0.262847  30.000
+                  1111111_1111 | _________1__       0.488820  30.000
+                  1111111_1111 | ___________1      -0.540906  30.000
+ -------------------------------------------------------------------
+ State  59                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111_11111 | _1__________      -0.495595  30.000
+                  111111_11111 | _____1______       0.245161  30.000
+                  111111_11111 | _______1____      -0.565815  30.000
+ -------------------------------------------------------------------
+ State  60                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ____1_______       0.235770  30.000
+                  11111111111_ | ______1_____       0.387974  30.000
+                  11111111111_ | _______1____      -0.390692  30.000
+                  11111111111_ | ________1___      -0.334434  30.000
+                  11111111111_ | __________1_       0.304086  30.000
+                  111111111_11 | _______1____       0.259827  30.000
+                  111111111_11 | __________1_      -0.231144  30.000
+ -------------------------------------------------------------------
+ State  61                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___1________       0.623719  30.000
+                  11111111111_ | ________1___      -0.462263  30.000
+                  1111111_1111 | ___1________       0.245446  30.000
+                  11111_111111 | ___1________       0.223605  30.000
+ -------------------------------------------------------------------
+ State  62                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | ______1_____      -0.233152  30.000
+                  111111111_11 | _______1____       0.386209  30.000
+                  111111111_11 | __________1_      -0.305133  30.000
+                  1111111_1111 | ______1_____      -0.344361  30.000
+                  1111111_1111 | ________1___       0.209231  30.000
+                  1_1111111111 | ______1_____      -0.236390  30.000
+ -------------------------------------------------------------------
+ State  63                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | __1_________      -0.226388  30.000
+                  11111111_111 | _____1______      -0.295177  30.000
+                  11111111_111 | ___________1      -0.426715  30.000
+                  111_11111111 | __1_________      -0.268273  30.000
+                  111_11111111 | _____1______      -0.308803  30.000
+                  111_11111111 | _______1____       0.226230  30.000
+                  111_11111111 | ___________1      -0.501494  30.000
+ -------------------------------------------------------------------
+ State  64                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | _______1____      -0.256727  30.000
+                  1111111_1111 | __1_________      -0.272329  30.000
+                  1111111_1111 | _________1__      -0.242663  30.000
+                  111111_11111 | _1__________       0.232482  30.000
+                  1_1111111111 | ______1_____      -0.366804  30.000
+ -------------------------------------------------------------------
+ State  65                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ___________1       0.206172  30.000
+                  1111111_1111 | 1___________      -0.253872  30.000
+                  1111111_1111 | ______1_____      -0.262109  30.000
+                  111111_11111 | _1__________      -0.323649  30.000
+                  111111_11111 | ____1_______      -0.219104  30.000
+                  111111_11111 | __________1_      -0.315953  30.000
+                  111111_11111 | ___________1      -0.214447  30.000
+ -------------------------------------------------------------------
+ State  66                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ______1_____      -0.251770  30.000
+                  111111111_11 | _______1____       0.251701  30.000
+                  1111111_1111 | __1_________      -0.393151  30.000
+                  1111111_1111 | _____1______      -0.234890  30.000
+                  1111111_1111 | _________1__      -0.284968  30.000
+                  1111111_1111 | ___________1      -0.220134  30.000
+                  1_1111111111 | ______1_____       0.248423  30.000
+ -------------------------------------------------------------------
+ State  67                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _1__________      -0.310144  30.000
+                  11111111111_ | ______1_____      -0.266184  30.000
+                  11111111111_ | _______1____      -0.351731  30.000
+                  11111111111_ | ________1___       0.249432  30.000
+                  111111111_11 | _1__________       0.200931  30.000
+                  _11111111111 | _______1____      -0.215939  30.000
+ -------------------------------------------------------------------
+ State  68                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ___________1       0.250445  30.000
+                  111111_11111 | ___________1      -0.230851  30.000
+                  111_11111111 | ___________1      -0.201086  30.000
+                  1_1111111111 | 1___________      -0.222440  30.000
+                  1_1111111111 | ______1_____      -0.271607  30.000
+ -------------------------------------------------------------------
+ State  69                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _________1__      -0.395536  30.000
+                  1111111111_1 | ___________1       0.358635  30.000
+                  1_1111111111 | _________1__       0.225368  30.000
+                  1_1111111111 | ___________1      -0.230539  30.000
+ -------------------------------------------------------------------
+ State  70                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _________1__       0.200146  30.000
+                  111111_11111 | _1__________       0.207812  30.000
+                  111111_11111 | __________1_       0.263014  30.000
+                  111_11111111 | ___________1      -0.212584  30.000
+                  1_1111111111 | ______1_____       0.260093  30.000
+                  _11111111111 | ___________1       0.211990  30.000
+ -------------------------------------------------------------------
+ State  71                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | _1__________      -0.285091  30.000
+                  11111111_111 | _______1____      -0.306607  30.000
+                  11111111_111 | _________1__       0.410236  30.000
+                  11111111_111 | ___________1      -0.255596  30.000
+                  111_11111111 | _1__________      -0.298016  30.000
+                  111_11111111 | _______1____      -0.334560  30.000
+                  111_11111111 | _________1__       0.421889  30.000
+ -------------------------------------------------------------------
+ State  72                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | ___1________      -0.303206  30.000
+                  111111111_11 | ________1___       0.295590  30.000
+                  1111111_1111 | ___1________      -0.407681  30.000
+                  1111111_1111 | _____1______      -0.246200  30.000
+                  1111111_1111 | ________1___       0.397298  30.000
+                  1_1111111111 | ___1________      -0.207656  30.000
+ -------------------------------------------------------------------
+ State  73                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | 1___________       0.202593  30.000
+                  11111111111_ | ____1_______      -0.201412  30.000
+                  11111111111_ | __________1_       0.263174  30.000
+                  111111111_11 | _1__________      -0.297136  30.000
+                  111111111_11 | ____1_______       0.431211  30.000
+                  111111111_11 | __________1_      -0.496979  30.000
+ -------------------------------------------------------------------
+ State  74                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _________1__      -0.297063  30.000
+                  111111_11111 | ___________1       0.237690  30.000
+                  1111_1111111 | _________1__       0.322624  30.000
+                  1111_1111111 | ___________1      -0.306033  30.000
+                  1_1111111111 | ___________1       0.216215  30.000
+                  _11111111111 | ___________1       0.271064  30.000
+ -------------------------------------------------------------------
+ State  75                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _____1______      -0.214411  30.000
+                  1111111_1111 | __1_________       0.341616  30.000
+                  1111111_1111 | _____1______      -0.469290  30.000
+                  1111111_1111 | ________1___      -0.238022  30.000
+                  111111_11111 | __1_________      -0.262830  30.000
+                  111111_11111 | _____1______       0.270268  30.000
+                  1111_1111111 | _____1______      -0.200221  30.000
+ -------------------------------------------------------------------
+ State  76                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | ____1_______       0.205719  30.000
+                  11111_111111 | ______1_____       0.307436  30.000
+                  11111_111111 | _______1____      -0.339400  30.000
+                  11111_111111 | __________1_       0.316436  30.000
+                  11_111111111 | ____1_______       0.253998  30.000
+                  11_111111111 | ______1_____       0.376433  30.000
+                  11_111111111 | _______1____      -0.323252  30.000
+                  11_111111111 | __________1_       0.251386  30.000
+ -------------------------------------------------------------------
+ State  77                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | 1___________       0.465008  30.000
+                  11111111111_ | _1__________       0.211699  30.000
+                  111111111_11 | ____1_______      -0.286395  30.000
+ -------------------------------------------------------------------
+ State  78                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ____1_______       0.210429  30.000
+                  11111111111_ | __________1_      -0.247885  30.000
+                  111111111_11 | _1__________      -0.281635  30.000
+                  111111_11111 | ____1_______      -0.358890  30.000
+                  111111_11111 | __________1_       0.263997  30.000
+ -------------------------------------------------------------------
+ State  79                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | _1__________      -0.308872  30.000
+                  111111_11111 | ____1_______       0.308843  30.000
+                  111111_11111 | __________1_      -0.339153  30.000
+                  11_111111111 | _1__________       0.214924  30.000
+ -------------------------------------------------------------------
+ State  80                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111_11111 | ___________1      -0.210019  30.000
+                  1111_1111111 | 1___________      -0.237117  30.000
+                  1111_1111111 | _________1__       0.227156  30.000
+                  1111_1111111 | ___________1      -0.284429  30.000
+                  1_1111111111 | _________1__      -0.310456  30.000
+ -------------------------------------------------------------------
+ State  81                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | 1___________      -0.216699  30.000
+                  1111111111_1 | __1_________      -0.267476  30.000
+                  1111111111_1 | _____1______      -0.204530  30.000
+                  1111111111_1 | ___________1      -0.220041  30.000
+                  111111_11111 | ____1_______      -0.223194  30.000
+                  111111_11111 | __________1_       0.279670  30.000
+                  1_1111111111 | 1___________       0.277201  30.000
+ -------------------------------------------------------------------
+ State  82                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | __1_________       0.421983  30.000
+                  11111111_111 | _____1______      -0.337382  30.000
+                  111_11111111 | __1_________       0.575623  30.000
+                  111_11111111 | _____1______      -0.414523  30.000
+ -------------------------------------------------------------------
+ State  83                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ____1_______      -0.249116  30.000
+                  11111111111_ | __________1_       0.335015  30.000
+                  111111111_11 | ____1_______      -0.215719  30.000
+                  11111_111111 | ____1_______      -0.207075  30.000
+                  11_111111111 | ____1_______       0.228557  30.000
+                  11_111111111 | __________1_      -0.217485  30.000
+                  _11111111111 | __________1_       0.242812  30.000
+ -------------------------------------------------------------------
+ State  84                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | ___1________      -0.414050  30.000
+                  11111_111111 | ________1___       0.356634  30.000
+                  11_111111111 | ___1________      -0.580056  30.000
+                  11_111111111 | ________1___       0.428964  30.000
+ -------------------------------------------------------------------
+ State  85                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ____1_______      -0.233544  30.000
+                  11111111111_ | __________1_       0.205975  30.000
+                  111111_11111 | ___________1      -0.200669  30.000
+                  1111_1111111 | _________1__       0.205410  30.000
+                  _11111111111 | _1__________      -0.223523  30.000
+                  _11111111111 | _________1__       0.287901  30.000
+                  _11111111111 | ___________1      -0.253708  30.000
+ -------------------------------------------------------------------
+ State  86                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ______1_____       0.266712  30.000
+                  1111_1111111 | __1_________       0.222294  30.000
+                  1111_1111111 | ______1_____      -0.257401  30.000
+                  1111_1111111 | _________1__       0.212438  30.000
+                  1_1111111111 | __1_________      -0.251983  30.000
+                  _11111111111 | _________1__      -0.217387  30.000
+ -------------------------------------------------------------------
+ State  87                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ___1________      -0.338784  30.000
+                  1111111111_1 | ________1___       0.398027  30.000
+                  1111_1111111 | ___1________      -0.211620  30.000
+                  1_1111111111 | ___1________       0.434540  30.000
+                  1_1111111111 | ________1___      -0.432736  30.000
+ -------------------------------------------------------------------
+ State  88                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _1__________      -0.223534  30.000
+                  111111111_11 | 1___________       0.269382  30.000
+                  111111111_11 | ________1___       0.247887  30.000
+                  1111111_1111 | 1___________       0.342615  30.000
+                  1_1111111111 | __1_________      -0.224103  30.000
+                  _11111111111 | ____1_______      -0.212714  30.000
+ -------------------------------------------------------------------
+ State  89                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ______1_____      -0.263827  30.000
+                  11111111_111 | __1_________       0.200203  30.000
+                  1111111_1111 | __1_________      -0.202503  30.000
+                  1111111_1111 | _____1______       0.220578  30.000
+                  111111_11111 | __1_________      -0.243892  30.000
+                  111111_11111 | _____1______       0.212838  30.000
+                  1111_1111111 | ______1_____       0.248517  30.000
+                  1_1111111111 | __1_________      -0.257585  30.000
+                  1_1111111111 | _____1______       0.314060  30.000
+ -------------------------------------------------------------------
+ State  90                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __1_________      -0.284334  30.000
+                  1111111111_1 | ______1_____      -0.280022  30.000
+                  1111111_1111 | _____1______      -0.207531  30.000
+                  1111_1111111 | 1___________       0.329030  30.000
+                  1111_1111111 | __1_________       0.278794  30.000
+                  1111_1111111 | ______1_____       0.264305  30.000
+                  1_1111111111 | _____1______      -0.326804  30.000
+ -------------------------------------------------------------------
+ State  91                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | _______1____       0.228059  30.000
+                  11111111_111 | __________1_      -0.429543  30.000
+                  111_11111111 | _1__________      -0.299933  30.000
+                  111_11111111 | _______1____       0.251115  30.000
+                  111_11111111 | __________1_      -0.441902  30.000
+ -------------------------------------------------------------------
+ State  92                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | 1___________      -0.220847  30.000
+                  11111111111_ | _1__________       0.213616  30.000
+                  111111111_11 | 1___________       0.231360  30.000
+                  11111111_111 | _______1____      -0.207359  30.000
+                  11111111_111 | __________1_       0.366821  30.000
+                  111_11111111 | ____1_______      -0.214906  30.000
+                  111_11111111 | __________1_       0.240011  30.000
+                  _11111111111 | ____1_______       0.204174  30.000
+ -------------------------------------------------------------------
+ State  93                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | ___1________       0.227301  30.000
+                  11111_111111 | _1__________      -0.344092  30.000
+                  11111_111111 | _______1____      -0.265435  30.000
+                  11_111111111 | _1__________      -0.339453  30.000
+                  11_111111111 | _______1____      -0.318705  30.000
+                  11_111111111 | ________1___       0.243305  30.000
+ -------------------------------------------------------------------
+ State  94                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | ___1________      -0.348455  30.000
+                  111111111_11 | ________1___       0.294429  30.000
+                  1111111_1111 | ___1________       0.201360  30.000
+                  1111111_1111 | ________1___      -0.263802  30.000
+                  11111_111111 | ___1________      -0.266198  30.000
+                  11111_111111 | ________1___       0.356443  30.000
+                  1_1111111111 | ___1________       0.216606  30.000
+                  1_1111111111 | ________1___      -0.266964  30.000
+ -------------------------------------------------------------------
+ State  95                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | _1__________      -0.387131  30.000
+                  11111111_111 | ____1_______      -0.346995  30.000
+                  11111_111111 | _1__________      -0.263381  30.000
+                  11111_111111 | _______1____      -0.202759  30.000
+                  111_11111111 | _1__________      -0.314144  30.000
+                  111_11111111 | ____1_______      -0.298406  30.000
+                  11_111111111 | _1__________      -0.202399  30.000
+                  11_111111111 | _______1____      -0.231887  30.000
+ -------------------------------------------------------------------
+ State  96                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __1_________      -0.342408  30.000
+                  1111111111_1 | _____1______       0.454823  30.000
+                  11111111_111 | __1_________       0.262842  30.000
+                  1111_1111111 | __1_________       0.213058  30.000
+                  1111_1111111 | _____1______      -0.324570  30.000
+                  _11111111111 | __1_________       0.243815  30.000
+ -------------------------------------------------------------------
+ State  97                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | ____1_______      -0.343826  30.000
+                  11111_111111 | __________1_       0.403436  30.000
+                  11_111111111 | ____1_______      -0.332091  30.000
+                  11_111111111 | __________1_       0.320316  30.000
+                  _11111111111 | __1_________       0.296236  30.000
+                  _11111111111 | _____1______      -0.221013  30.000
+ -------------------------------------------------------------------
+ State  98                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | __1_________       0.219637  30.000
+                  11111_111111 | ____1_______       0.317538  30.000
+                  11111_111111 | __________1_      -0.328047  30.000
+                  11_111111111 | ____1_______       0.321739  30.000
+                  11_111111111 | __________1_      -0.328549  30.000
+                  _11111111111 | __1_________       0.352353  30.000
+                  _11111111111 | _____1______      -0.279064  30.000
+ -------------------------------------------------------------------
+ State  99                      Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __1_________       0.237523  30.000
+                  1111111111_1 | ___1________       0.328236  30.000
+                  1111111111_1 | _____1______      -0.246871  30.000
+                  1111111111_1 | ________1___      -0.384986  30.000
+                  1111_1111111 | ___1________      -0.434861  30.000
+                  1111_1111111 | _____1______       0.202857  30.000
+                  1111_1111111 | ________1___       0.431047  30.000
+ -------------------------------------------------------------------
+ State  100                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ____1_______       0.346798  30.000
+                  11111111_111 | __________1_      -0.225989  30.000
+                  111111_11111 | _________1__      -0.250734  30.000
+                  111_11111111 | ____1_______       0.362605  30.000
+                  111_11111111 | _____1______      -0.291250  30.000
+                  111_11111111 | _______1____      -0.249261  30.000
+                  111_11111111 | _________1__      -0.359539  30.000
+ -------------------------------------------------------------------
+ State  101                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ____1_______       0.258746  30.000
+                  11111111_111 | _________1__      -0.300644  30.000
+                  111111_11111 | __1_________       0.232292  30.000
+                  111111_11111 | _________1__       0.374595  30.000
+                  1111_1111111 | _________1__       0.222060  30.000
+                  111_11111111 | ____1_______       0.205193  30.000
+ -------------------------------------------------------------------
+ State  102                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | 1___________       0.413188  30.000
+                  11111_111111 | ___1________       0.203623  30.000
+                  11_111111111 | 1___________       0.570092  30.000
+                  11_111111111 | ___1________       0.234428  30.000
+                  11_111111111 | ________1___       0.294731  30.000
+ -------------------------------------------------------------------
+ State  103                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | __________1_       0.243744  30.000
+                  11111111_111 | _______1____       0.214212  30.000
+                  11111111_111 | __________1_      -0.218359  30.000
+                  111_11111111 | __________1_       0.285837  30.000
+                  _11111111111 | _______1____       0.271773  30.000
+                  _11111111111 | __________1_      -0.500241  30.000
+ -------------------------------------------------------------------
+ State  104                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | _1__________       0.242593  30.000
+                  111111111_11 | ______1_____      -0.306678  30.000
+                  1111111_1111 | 1___________      -0.205847  30.000
+                  11111_111111 | 1___________       0.237880  30.000
+ -------------------------------------------------------------------
+ State  105                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | 1___________      -0.217147  30.000
+                  1111111111_1 | __1_________       0.205556  30.000
+                  1111111111_1 | ___1________      -0.209502  30.000
+                  1111_1111111 | __1_________       0.207485  30.000
+                  1_1111111111 | 1___________       0.275239  30.000
+                  1_1111111111 | __1_________      -0.204543  30.000
+                  1_1111111111 | ___________1      -0.341927  30.000
+                  _11111111111 | _1__________      -0.220000  30.000
+ -------------------------------------------------------------------
+ State  106                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _1__________      -0.275520  30.000
+                  111111_11111 | __1_________       0.253055  30.000
+                  111111_11111 | _____1______      -0.235628  30.000
+                  1111_1111111 | __1_________       0.261421  30.000
+                  1111_1111111 | _____1______      -0.219699  30.000
+                  1_1111111111 | __1_________      -0.234580  30.000
+                  1_1111111111 | _____1______       0.266996  30.000
+                  _11111111111 | _1__________       0.268407  30.000
+ -------------------------------------------------------------------
+ State  107                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | 1___________      -0.200358  30.000
+                  1111111111_1 | ___________1       0.264685  30.000
+                  1111_1111111 | ___________1       0.231130  30.000
+                  1_1111111111 | _________1__       0.206143  30.000
+ -------------------------------------------------------------------
+ State  108                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _1__________       0.205358  30.000
+                  111111_11111 | _____1______      -0.326075  30.000
+                  1111_1111111 | _____1______      -0.342149  30.000
+                  1_1111111111 | _____1______       0.312290  30.000
+                  1_1111111111 | ___________1       0.205179  30.000
+                  _11111111111 | _____1______      -0.212120  30.000
+ -------------------------------------------------------------------
+ State  109                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | ______1_____      -0.246321  30.000
+                  11111_111111 | _______1____      -0.264075  30.000
+                  11_111111111 | _1__________      -0.222772  30.000
+ -------------------------------------------------------------------
+ State  110                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | 1___________      -0.446194  30.000
+                  111111111_11 | ______1_____      -0.300164  30.000
+                  1111111_1111 | 1___________       0.233893  30.000
+                  11111_111111 | 1___________      -0.310589  30.000
+                  11_111111111 | 1___________       0.245326  30.000
+                  11_111111111 | ______1_____       0.205776  30.000
+                  1_1111111111 | 1___________       0.218823  30.000
+ -------------------------------------------------------------------
+ State  111                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | _______1____      -0.252839  30.000
+                  _11111111111 | ____1_______       0.336508  30.000
+                  _11111111111 | _________1__      -0.237256  30.000
+ -------------------------------------------------------------------
+ State  112                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ____1_______       0.237256  30.000
+                  11111111_111 | _________1__      -0.226883  30.000
+                  111_11111111 | _________1__       0.217586  30.000
+                  _11111111111 | ____1_______       0.315176  30.000
+                  _11111111111 | _____1______      -0.285749  30.000
+                  _11111111111 | _______1____      -0.309022  30.000
+                  _11111111111 | _________1__      -0.218710  30.000
+ -------------------------------------------------------------------
+ State  113                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | 1___________      -0.346152  30.000
+                  1111111111_1 | ___1________      -0.233929  30.000
+                  1111111111_1 | ________1___      -0.212484  30.000
+                  1111111111_1 | ___________1       0.212954  30.000
+                  1111_1111111 | 1___________       0.513413  30.000
+                  1111_1111111 | ___1________       0.260397  30.000
+                  1111_1111111 | ________1___       0.248748  30.000
+                  1111_1111111 | ___________1      -0.371651  30.000
+ -------------------------------------------------------------------
+ State  114                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111_111111 | 1___________      -0.267366  30.000
+                  11111_111111 | _1__________       0.360839  30.000
+                  11111_111111 | ____1_______       0.301298  30.000
+                  11111_111111 | ______1_____      -0.412891  30.000
+                  11_111111111 | _1__________       0.354035  30.000
+                  11_111111111 | ____1_______       0.282455  30.000
+                  11_111111111 | ______1_____      -0.386895  30.000
+ -------------------------------------------------------------------
+ State  115                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  _11111111111 | ___________1      -0.228740  30.000
+ -------------------------------------------------------------------
+ State  116                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  _11111111111 | _______1____       0.215398  30.000
+                  _11111111111 | _________1__       0.202698  30.000
+                  _11111111111 | ___________1       0.225698  30.000
+ -------------------------------------------------------------------
+ State  117                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ______1_____       0.215453  30.000
+                  1111111_1111 | 1___________       0.204402  30.000
+                  1111_1111111 | ______1_____       0.234896  30.000
+ -------------------------------------------------------------------
+ State  118                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ___1________       0.375892  30.000
+                  111111_11111 | ___1________       0.408137  30.000
+                  111111_11111 | ________1___      -0.398354  30.000
+                  111_11111111 | ________1___       0.362263  30.000
+                  _11111111111 | ___1________      -0.392831  30.000
+                  _11111111111 | ________1___       0.379056  30.000
+ -------------------------------------------------------------------
+ State  119                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | __1_________      -0.425719  30.000
+                  11111111111_ | _____1______       0.351048  30.000
+                  111111111_11 | __1_________      -0.408431  30.000
+                  111111111_11 | _____1______       0.349104  30.000
+                  11111_111111 | __1_________       0.380046  30.000
+                  11_111111111 | _____1______       0.306526  30.000
+ -------------------------------------------------------------------
+ State  120                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ____1_______      -0.230636  30.000
+                  1111111_1111 | ____1_______       0.290022  30.000
+                  1111111_1111 | __________1_      -0.443579  30.000
+                  1111_1111111 | __________1_       0.408677  30.000
+                  1_1111111111 | ____1_______      -0.268381  30.000
+                  1_1111111111 | __________1_       0.429866  30.000
+ -------------------------------------------------------------------
+ State  121                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _________1__       0.279972  30.000
+                  1111111111_1 | _1__________       0.273019  30.000
+                  1111111_1111 | _1__________      -0.286408  30.000
+                  11111_111111 | _________1__      -0.252783  30.000
+                  1111_1111111 | _1__________       0.266717  30.000
+                  11_111111111 | _________1__       0.258862  30.000
+ -------------------------------------------------------------------
+ State  122                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | 1___________       0.322158  30.000
+                  111111_11111 | 1___________       0.344710  30.000
+                  111_11111111 | 1___________      -0.322691  30.000
+ -------------------------------------------------------------------
+ State  123                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _1__________      -0.236154  30.000
+                  1111111111_1 | ____1_______      -0.277003  30.000
+                  1111111_1111 | _1__________       0.271009  30.000
+                  1111111_1111 | ____1_______       0.277885  30.000
+                  1111_1111111 | _1__________      -0.219893  30.000
+                  1_1111111111 | ____1_______      -0.257550  30.000
+ -------------------------------------------------------------------
+ State  124                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _1__________      -0.206659  30.000
+                  1111111111_1 | _______1____      -0.310528  30.000
+                  1111_1111111 | _1__________      -0.217114  30.000
+                  1111_1111111 | _______1____      -0.295374  30.000
+                  1_1111111111 | _______1____      -0.298949  30.000
+ -------------------------------------------------------------------
+ State  125                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | ___________1      -0.202712  30.000
+                  11111111_111 | ______1_____      -0.314281  30.000
+                  11111_111111 | ___________1       0.200459  30.000
+                  111_11111111 | ______1_____       0.315540  30.000
+                  11_111111111 | ___________1      -0.201763  30.000
+                  _11111111111 | ______1_____       0.310671  30.000
+ -------------------------------------------------------------------
+ State  126                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111111_11 | ___________1       0.281936  30.000
+                  11111_111111 | ___________1      -0.269319  30.000
+                  11_111111111 | ___________1       0.273566  30.000
+                  1_1111111111 | _______1____      -0.200160  30.000
+ -------------------------------------------------------------------
+ State  127                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | _______1____      -0.252325  30.000
+                  11111111_111 | ___________1       0.219138  30.000
+                  111111_11111 | _______1____      -0.200772  30.000
+                  111111_11111 | ___________1       0.235930  30.000
+                  111_11111111 | _______1____       0.238637  30.000
+                  111_11111111 | ___________1      -0.215819  30.000
+                  _11111111111 | _____1______      -0.214955  30.000
+                  _11111111111 | _______1____       0.272632  30.000
+                  _11111111111 | ___________1      -0.283808  30.000
+ -------------------------------------------------------------------
+ State  128                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _______1____       0.245109  30.000
+                  11111111111_ | __________1_      -0.210885  30.000
+                  111111111_11 | ______1_____      -0.217240  30.000
+                  111111111_11 | _______1____       0.233320  30.000
+                  11111_111111 | ______1_____       0.223567  30.000
+                  11111_111111 | _______1____      -0.303032  30.000
+                  11111_111111 | __________1_       0.234299  30.000
+                  11_111111111 | ______1_____      -0.224646  30.000
+                  11_111111111 | _______1____       0.280801  30.000
+                  11_111111111 | __________1_      -0.232079  30.000
+ -------------------------------------------------------------------
+ State  129                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | _________1__      -0.266410  30.000
+                  1111111111_1 | ___________1       0.286214  30.000
+                  1111111_1111 | _________1__       0.236914  30.000
+                  1111111_1111 | ___________1      -0.240594  30.000
+                  1111_1111111 | _________1__      -0.299683  30.000
+                  1111_1111111 | ___________1       0.309907  30.000
+                  1_1111111111 | _________1__      -0.311151  30.000
+                  1_1111111111 | ___________1       0.302960  30.000
+ -------------------------------------------------------------------
+ State  130                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ______1_____      -0.321891  30.000
+                  1111111_1111 | ______1_____       0.263913  30.000
+                  1111_1111111 | ______1_____      -0.333867  30.000
+                  1_1111111111 | ______1_____      -0.262156  30.000
+                  _11111111111 | _________1__      -0.202864  30.000
+ -------------------------------------------------------------------
+ State  131                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  111111_11111 | ___________1      -0.209620  30.000
+                  _11111111111 | _1__________       0.201516  30.000
+                  _11111111111 | ___________1       0.235515  30.000
+ -------------------------------------------------------------------
+ State  132                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ___1________      -0.298513  30.000
+                  11111111111_ | ________1___       0.233599  30.000
+                  111111111_11 | ___1________      -0.376551  30.000
+                  111111111_11 | ________1___       0.289505  30.000
+                  11111_111111 | ___1________       0.378313  30.000
+                  11111_111111 | ________1___      -0.287320  30.000
+                  11_111111111 | ___1________      -0.364152  30.000
+                  11_111111111 | ________1___       0.299303  30.000
+ -------------------------------------------------------------------
+ State  133                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __1_________       0.282040  30.000
+                  1111111111_1 | _________1__       0.212590  30.000
+                  1111111_1111 | __1_________      -0.249426  30.000
+                  1111_1111111 | 1___________       0.201345  30.000
+                  1111_1111111 | __1_________       0.291923  30.000
+                  1111_1111111 | _________1__       0.237476  30.000
+                  1_1111111111 | __1_________       0.300346  30.000
+                  1_1111111111 | _________1__       0.249387  30.000
+ -------------------------------------------------------------------
+ State  134                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _1__________       0.290371  30.000
+                  11111111111_ | _______1____       0.211781  30.000
+                  111111111_11 | _1__________       0.284321  30.000
+                  111111111_11 | _______1____       0.207288  30.000
+                  11111_111111 | _1__________      -0.325071  30.000
+                  11111_111111 | _______1____      -0.263664  30.000
+                  11_111111111 | _1__________       0.317341  30.000
+                  11_111111111 | _______1____       0.246249  30.000
+ -------------------------------------------------------------------
+ State  135                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | ____1_______      -0.250819  30.000
+                  11111111111_ | __________1_       0.229120  30.000
+                  111111111_11 | ____1_______      -0.235606  30.000
+                  111111111_11 | __________1_       0.232018  30.000
+                  11111111_111 | __________1_       0.247722  30.000
+                  111111_11111 | __________1_       0.225688  30.000
+                  11111_111111 | ____1_______       0.274367  30.000
+                  11111_111111 | __________1_      -0.278058  30.000
+                  111_11111111 | __________1_      -0.249712  30.000
+                  11_111111111 | ____1_______      -0.262520  30.000
+                  11_111111111 | __________1_       0.277548  30.000
+                  _11111111111 | __________1_      -0.276026  30.000
+ -------------------------------------------------------------------
+ State  136                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | _1__________      -0.217350  30.000
+                  11111111_111 | ____1_______      -0.207664  30.000
+                  11111_111111 | ____1_______       0.201125  30.000
+                  111_11111111 | _1__________       0.217405  30.000
+                  111_11111111 | ____1_______       0.200585  30.000
+                  _11111111111 | _1__________       0.219353  30.000
+                  _11111111111 | ____1_______       0.220776  30.000
+ -------------------------------------------------------------------
+ State  137                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ___1________       0.203455  30.000
+                  1111_1111111 | ___1________       0.203772  30.000
+                  1111_1111111 | _____1______       0.205196  30.000
+                  1111_1111111 | ________1___      -0.202102  30.000
+                  1_1111111111 | _____1______       0.200105  30.000
+ -------------------------------------------------------------------
+ State  138                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | ___1________       0.252219  30.000
+                  1111111111_1 | ________1___      -0.265286  30.000
+                  11111111_111 | __1_________       0.228856  30.000
+                  1111111_1111 | ___1________      -0.224718  30.000
+                  1111111_1111 | ________1___       0.246321  30.000
+                  111111_11111 | __1_________       0.229342  30.000
+                  1111_1111111 | ___1________       0.252311  30.000
+                  1111_1111111 | ________1___      -0.278322  30.000
+                  111_11111111 | __1_________      -0.219194  30.000
+                  1_1111111111 | ___1________       0.231790  30.000
+                  1_1111111111 | ________1___      -0.249468  30.000
+                  _11111111111 | __1_________      -0.254378  30.000
+ -------------------------------------------------------------------
+ State  139                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ____1_______       0.232641  30.000
+                  11111111_111 | __________1_      -0.237901  30.000
+                  111111_11111 | ____1_______       0.205504  30.000
+                  111111_11111 | __________1_      -0.213114  30.000
+                  111_11111111 | ____1_______      -0.227953  30.000
+                  111_11111111 | __________1_       0.241264  30.000
+                  _11111111111 | ____1_______      -0.231714  30.000
+                  _11111111111 | __________1_       0.245057  30.000
+ -------------------------------------------------------------------
+ State  140                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | 1___________      -0.316638  30.000
+                  111111111_11 | 1___________      -0.361517  30.000
+                  11111_111111 | 1___________       0.363104  30.000
+                  11_111111111 | 1___________      -0.363127  30.000
+ -------------------------------------------------------------------
+ State  141                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | __1_________      -0.215889  30.000
+                  1111111111_1 | _____1______       0.262157  30.000
+                  1111111_1111 | __1_________       0.210435  30.000
+                  1111111_1111 | _____1______      -0.262315  30.000
+                  111111_11111 | __1_________       0.217730  30.000
+                  111111_11111 | _____1______      -0.222099  30.000
+                  1111_1111111 | __1_________      -0.220336  30.000
+                  1111_1111111 | _____1______       0.278229  30.000
+                  1_1111111111 | __1_________      -0.238090  30.000
+                  1_1111111111 | _____1______       0.290758  30.000
+                  _11111111111 | __1_________      -0.205965  30.000
+                  _11111111111 | _____1______       0.203901  30.000
+ -------------------------------------------------------------------
+ State  142                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111_111 | ____1_______       0.218045  30.000
+                  11111111_111 | _________1__      -0.269745  30.000
+                  111111_11111 | _____1______      -0.202551  30.000
+                  111111_11111 | _________1__      -0.273339  30.000
+                  111_11111111 | ____1_______      -0.212134  30.000
+                  111_11111111 | _________1__       0.269931  30.000
+                  _11111111111 | ____1_______      -0.224302  30.000
+                  _11111111111 | _____1______       0.215307  30.000
+                  _11111111111 | _________1__       0.300129  30.000
+ -------------------------------------------------------------------
+ State  143                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  1111111111_1 | 1___________       0.315794  30.000
+                  1111111111_1 | ___________1      -0.208666  30.000
+                  1111111_1111 | 1___________      -0.297413  30.000
+                  1111_1111111 | 1___________       0.319850  30.000
+                  1111_1111111 | ___________1      -0.221903  30.000
+                  1_1111111111 | 1___________       0.288733  30.000
+                  1_1111111111 | ___________1      -0.216839  30.000
+ -------------------------------------------------------------------
+ State  144                     Configuration         Coeff.   <S^2>
+ -------------------------------------------------------------------
+                  11111111111_ | _1__________      -0.245120  30.000
+                  11111111111_ | ____1_______      -0.207844  30.000
+                  11111111111_ | ______1_____       0.238879  30.000
+                  111111111_11 | 1___________       0.203154  30.000
+                  111111111_11 | _1__________      -0.241733  30.000
+                  111111111_11 | ______1_____       0.271820  30.000
+                  11111_111111 | _1__________       0.266391  30.000
+                  11111_111111 | ____1_______       0.222373  30.000
+                  11111_111111 | ______1_____      -0.283536  30.000
+                  11_111111111 | _1__________      -0.262399  30.000
+                  11_111111111 | ____1_______      -0.212420  30.000
+                  11_111111111 | ______1_____       0.281216  30.000
+ Memory used to hold InCoreIntegrals (MB) :                    0
+ ------------------------------------------------------------------------------
+                     SF-CAS-CI     : Timing summary (seconds)
+ ------------------------------------------------------------------------------
+     job step          cpu (% of tot)      sys (% of tot)     wall (% of tot)
+ ------------------------------------------------------------------------------
+  make_strings      0.0000E+00 ( 0.0)   0.0000E+00 ( 0.0)   0.9082E-04 ( 0.1)
+  Form (P|Q)^-.5    0.1200E-01 (14.3)   0.1000E-05 (****)   0.1170E-01 (14.3)
+  Form (aa|P)       0.2000E-01 (23.8)   0.0000E+00 ( 0.0)   0.2033E-01 (24.8)
+  Form BaPa Ints    0.0000E+00 ( 0.0)   0.0000E+00 ( 0.0)   0.9252E-03 ( 1.1)
+  Form 2e ints      0.4000E-02 ( 4.8)   0.0000E+00 ( 0.0)   0.7170E-03 ( 0.9)
+  Forming JKh_ov    0.1200E-01 (14.3)   0.0000E+00 ( 0.0)   0.1192E-01 (14.6)
+  H_cas diagonal    0.4000E-02 ( 4.8)   0.0000E+00 ( 0.0)   0.5330E-02 ( 6.5)
+  Fill H_CAS        0.8000E-02 ( 9.5)   0.0000E+00 ( 0.0)   0.7623E-02 ( 9.3)
+  Diag H_CAS        0.1600E-01 (19.0)   0.0000E+00 ( 0.0)   0.1705E-01 (20.8)
+ ------------------------------------------------------------------------------
+   Grand Totals     0.8400E-01          0.1000E-05          0.8189E-01
+ ------------------------------------------------------------------------------
+ Leaving SF_CASCI.
+
+ Leaving CASMAN
+Symmetry turned off temporarily
+ Analysis of SCF Wavefunction
+
+ --------------------------------------------------------------
+
+                    Orbital Energies (a.u.)
+ --------------------------------------------------------------
+
+ Alpha MOs
+ -- Occupied --
+  0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000
+ -- Virtual --
+  0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000
+  0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000
+  0.000   0.000   0.000   0.000
+ --------------------------------------------------------------
+
+          Ground-State Mulliken Net Atomic Charges
+
+     Atom                 Charge (a.u.)
+  ----------------------------------------
+      1 H                     0.000970
+      2 H                    -0.033923
+      3 H                    -0.010189
+      4 H                     0.010972
+      5 H                    -0.000948
+      6 H                     0.036540
+      7 H                    -0.031701
+      8 H                    -0.008595
+      9 H                     0.025074
+     10 H                    -0.016690
+     11 H                     0.002896
+     12 H                     0.025592
+     13 He                    0.000000
+     14 He                    0.000000
+  ----------------------------------------
+  Sum of atomic charges =     0.000000
+
+ -----------------------------------------------------------------
+                    Cartesian Multipole Moments
+ -----------------------------------------------------------------
+    Charge (ESU x 10^10)
+                 0.0000
+    Dipole Moment (Debye)
+         X       0.8598      Y       0.0049      Z       0.1885
+       Tot       0.8802
+    Quadrupole Moments (Debye-Ang)
+        XX     -18.3418     XY      -1.9350     YY     -17.7859
+        XZ       1.3313     YZ       0.3226     ZZ     -19.9200
+    Octopole Moments (Debye-Ang^2)
+       XXX     -14.0337    XXY     -43.0393    XYY      -5.4855
+       YYY     -84.5327    XXZ     -25.5978    XYZ       5.8005
+       YYZ     -13.7858    XZZ      -1.5374    YZZ     -36.3842
+       ZZZ     -71.6595
+    Hexadecapole Moments (Debye-Ang^3)
+      XXXX   -1638.2575   XXXY     -31.8780   XXYY    -536.0837
+      XYYY     -17.1150   YYYY   -1592.9737   XXXZ      12.6075
+      XXYZ    -214.8614   XYYZ      10.2220   YYYZ    -606.0506
+      XXZZ    -488.6808   XYZZ      -4.6835   YYZZ    -502.1257
+      XZZZ       4.6943   YZZZ    -646.8776   ZZZZ   -1321.8752
+ -----------------------------------------------------------------
+ JobOver = TRUE
+Archival summary:
+1\1\sinatra\SP\ProcedureUnspecified\6-31G*\e212\nmayhall\SunMar2611:28:232017SunMar2611:28:232017\0\\#,ProcedureUnspecified,6-31G*,\\0,1\H\H,1,1.81065\H,1,1.81086,2,60.0452\H,2,1.81131,1,60.0237,3,-70.5123,0\H,1,2.70196,2,128.785,3,-29.6714,0\H,5,1.81039,1,162.568,2,-125.022,0\H,5,1.81121,1,115.886,2,162.914,0\H,7,1.8112,5,60.0005,1,90.2209,0\H,1,2.74615,2,123.078,3,140.571,0\H,9,1.8111,1,130.703,2,-175.903,0\H,10,1.8108,9,60.0291,1,-16.4918,0\H,9,1.81133,1,106.947,2,119.346,0\He,2,14.5924,1,125.789,3,67.2233,0\He,2,14.8215,1,125.906,3,-178.746,0\\HF=-11.0488236\\@
+
+ Total job time:  0.16s(wall), 0.16s(cpu) 
+ Sun Mar 26 11:28:23 2017
+
+        *************************************************************
+        *                                                           *
+        *  Thank you very much for using Q-Chem.  Have a nice day.  *
+        *                                                           *
+        *************************************************************
+
+
+*** MISSION COMPLETED -- STARFLEET OUT ***
+

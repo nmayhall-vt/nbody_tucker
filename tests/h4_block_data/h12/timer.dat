@@ -1,0 +1,59 @@
+
+Host: sinatra
+
+Timers On : Sun Mar 26 11:08:09 2017
+Timers Off: Sun Mar 26 11:08:18 2017
+
+Wall Time:        9.00 seconds
+
+HF: Form H  :       0.00u       0.00s       0.00w      1 call
+HF: Form S/X:       0.00u       0.00s       0.00w      1 call
+HF: Guess   :       0.00u       0.00s       0.00w      1 call
+HF: Form G  :       0.02u       0.05s       0.00w     21 calls
+JK: D       :       0.00u       0.00s       0.00w     21 calls
+JK: JK      :       0.02u       0.05s       0.00w     21 calls
+HF: Form F  :       0.00u       0.00s       0.00w     21 calls
+HF: DIIS    :       0.01u       0.02s       0.00w     21 calls
+DIISManager::add_entry:       0.00u       0.00s       0.00w     21 calls
+HF: Form C  :       0.01u       0.02s       0.00w     21 calls
+HF: Form D  :       0.00u       0.00s       0.00w     21 calls
+DIISManager::extrapolate:       0.01u       0.01s       0.00w     20 calls
+DIISManager::extrapolate: bMatrix setup:       0.00u       0.00s       0.00w     20 calls
+DIISManager::extrapolate: bMatrix pseudoinverse:       0.00u       0.00s       0.00w     20 calls
+DIISManager::extrapolate: form new data:       0.00u       0.01s       0.00w     20 calls
+CIWave: CIvect write:       0.10u       0.12s       0.00w    102 calls
+CIWave: CIvect read:       0.30u       0.76s       1.00w    775 calls
+CIWave: s2  :       1.02u       0.03s       4.00w     13 calls
+CIWave: s3  :       4.70u       0.00s       2.00w     13 calls
+
+***********************************************************
+
+Host: sinatra
+
+Timers On : Sun Mar 26 11:11:43 2017
+Timers Off: Sun Mar 26 11:14:26 2017
+
+Wall Time:      163.00 seconds
+
+HF: Form H  :       0.00u       0.00s       0.00w      1 call
+HF: Form S/X:       0.00u       0.00s       0.00w      1 call
+HF: Guess   :       0.00u       0.00s       0.00w      1 call
+HF: Form G  :       0.03u       0.01s       0.00w     21 calls
+JK: D       :       0.00u       0.00s       0.00w     21 calls
+JK: JK      :       0.03u       0.01s       0.00w     21 calls
+HF: Form F  :       0.00u       0.00s       0.00w     21 calls
+HF: DIIS    :       0.00u       0.01s       0.00w     21 calls
+DIISManager::add_entry:       0.00u       0.00s       0.00w     21 calls
+HF: Form C  :       0.01u       0.02s       0.00w     21 calls
+HF: Form D  :       0.00u       0.00s       0.00w     21 calls
+DIISManager::extrapolate:       0.00u       0.01s       0.00w     20 calls
+DIISManager::extrapolate: bMatrix setup:       0.00u       0.00s       0.00w     20 calls
+DIISManager::extrapolate: bMatrix pseudoinverse:       0.00u       0.01s       0.00w     20 calls
+DIISManager::extrapolate: form new data:       0.00u       0.00s       0.00w     20 calls
+CIWave: CIvect write:       0.82u       2.56s       5.00w   2181 calls
+CIWave: CIvect read:      20.28u      37.12s      53.00w  66180 calls
+CIWave: s2  :       9.91u       0.15s       9.00w    130 calls
+CIWave: s3  :      47.10u       0.09s      48.00w    130 calls
+CIWave: opdm:       5.20u       0.04s       6.00w      2 calls
+
+***********************************************************
