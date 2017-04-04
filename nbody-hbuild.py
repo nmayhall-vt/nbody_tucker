@@ -604,6 +604,13 @@ lattice = np.loadtxt(args['lattice']).astype(int)
 blocks = np.loadtxt(args['blocks']).astype(int)
 n_sites = len(lattice)
 n_blocks = len(blocks)
+    
+if len(blocks.shape) == 1:
+    print 'blocks',blocks
+    
+    blocks.shape = (1,len(blocks.transpose()))
+    n_blocks = len(blocks)
+
 
 n_p_states = args['n_p_space'] 
 n_q_states = args['n_q_space'] 
@@ -685,7 +692,9 @@ H_dict = {}
 dims_tot = []
 dim_tot = 1
 for bi,b in enumerate(blocks):
-    print b
+    print "here:",b,bi
+for bi,b in enumerate(blocks):
+    print "here:",b,bi
     block_dim = np.power(2,b.shape[0])
     dims_tot.extend([block_dim])
     dim_tot *= block_dim
