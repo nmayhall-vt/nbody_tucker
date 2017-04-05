@@ -1,0 +1,351 @@
+ j12:
+[[ 0.         -0.38718484 -0.34120801 -0.38943754  0.          0.          0.
+   0.          0.          0.          0.          0.          0.          0.
+   0.          0.        ]
+ [-0.38718484  0.         -0.38557877 -0.37725072  0.          0.          0.
+   0.          0.          0.          0.          0.          0.          0.
+   0.          0.        ]
+ [-0.34120801 -0.38557877  0.         -0.39375128  0.          0.          0.
+   0.          0.          0.          0.          0.          0.          0.
+   0.          0.        ]
+ [-0.38943754 -0.37725072 -0.39375128  0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.         -0.38718484
+  -0.34120801 -0.38943754  0.          0.          0.          0.          0.
+   0.          0.          0.        ]
+ [ 0.          0.          0.          0.         -0.38718484  0.
+  -0.38557877 -0.37725072  0.          0.          0.          0.          0.
+   0.          0.          0.        ]
+ [ 0.          0.          0.          0.         -0.34120801 -0.38557877
+   0.         -0.39375128  0.          0.          0.          0.          0.
+   0.          0.          0.        ]
+ [ 0.          0.          0.          0.         -0.38943754 -0.37725072
+  -0.39375128  0.          0.          0.          0.          0.          0.
+   0.          0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.
+   0.          0.         -0.38718484 -0.34120801 -0.38943754  0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.
+   0.         -0.38718484  0.         -0.38557877 -0.37725072  0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.
+   0.         -0.34120801 -0.38557877  0.         -0.39375128  0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.
+   0.         -0.38943754 -0.37725072 -0.39375128  0.          0.          0.
+   0.          0.        ]
+ [ 0.          0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+  -0.38718484 -0.34120801 -0.38943754]
+ [ 0.          0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.         -0.38718484
+   0.         -0.38557877 -0.37725072]
+ [ 0.          0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.         -0.34120801
+  -0.38557877  0.         -0.39375128]
+ [ 0.          0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.         -0.38943754
+  -0.37725072 -0.39375128  0.        ]]
+ lattice:
+[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+ blocks:
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]
+ [12 13 14 15]]
+ n_blocks:
+4
+here: [0 1 2 3] 0
+here: [4 5 6 7] 1
+here: [ 8  9 10 11] 2
+here: [12 13 14 15] 3
+here: [0 1 2 3] 0
+here: [4 5 6 7] 1
+here: [ 8  9 10 11] 2
+here: [12 13 14 15] 3
+ Generate initial guess vectors
+ Guess eigenstates
+ -1.19694344
+ -1.07746771
+ -0.42094225
+ -0.42094225
+ -0.42094225
+ -0.39322534
+ -0.39322534
+ -0.39322534
+ -0.32303799
+ -0.32303799
+ -0.32303799
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+ Guess eigenstates
+ -1.19694344
+ -1.07746771
+ -0.42094225
+ -0.42094225
+ -0.42094225
+ -0.39322534
+ -0.39322534
+ -0.39322534
+ -0.32303799
+ -0.32303799
+ -0.32303799
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+ Guess eigenstates
+ -1.19694344
+ -1.07746771
+ -0.42094225
+ -0.42094225
+ -0.42094225
+ -0.39322534
+ -0.39322534
+ -0.39322534
+ -0.32303799
+ -0.32303799
+ -0.32303799
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+ Guess eigenstates
+ -1.19694344
+ -1.07746771
+ -0.42094225
+ -0.42094225
+ -0.42094225
+ -0.39322534
+ -0.39322534
+ -0.39322534
+ -0.32303799
+ -0.32303799
+ -0.32303799
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Tucker optimization: Iteration    0
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 4)|H|(1, 4)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 4)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 4)|H|(2, 4)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 4)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(3, 4)|H|(3, 4)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(3, 4)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(3, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 4)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 4)|H|(2, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 4)|H|(3, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 4)|H|4>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(3, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(2, 4)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 4)|H|(3, 4)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(2, 4)|H|4>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(3, 4)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(3, 4)|H|4>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 61) (1, 225)
+(1, 286) (1, 225)
+(1, 511) (1, 225)
+(1, 736) (1, 225)
+(1, 961) (1, 225)
+(1, 1186) (1, 225)
+(1, 61) (1, 225)
+(1, 286) (1, 225)
+(1, 511) (1, 225)
+(1, 736) (1, 225)
+(1, 961) (1, 225)
+(1, 1186) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (1411, 1411)
+ norm of PPP component   1.00000000
+ Davidson correction :   0.00000000 
+ State              Energy          Relative          <S2>
+     0 =       -4.78777378        0.00000000    0.00000000
+     1 =       -4.66829804        0.11947573    0.00000000
+     2 =       -4.66829804        0.11947573    0.00000000
+     3 =       -4.66829804        0.11947573    0.00000000
+     4 =       -4.66829804        0.11947573    0.00000000
+     5 =       -4.54882231        0.23895147    0.00000000
+     6 =       -4.54882231        0.23895147    0.00000000
+     7 =       -4.54882231        0.23895147    0.00000000
+     8 =       -4.54882231        0.23895147    0.00000000
+     9 =       -4.54882231        0.23895147    0.00000000
+    10 =       -4.54882231        0.23895147    0.00000000
+    11 =       -4.01177258        0.77600119    2.00000000
+  Iteration        Energy         Delta
+          0   -4.78777378              

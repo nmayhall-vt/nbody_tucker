@@ -1102,14 +1102,37 @@ for it in range(0,maxiter):
     #davidson
     davidson = 1
     if davidson == 1:
-        
         n0 = H_sectors[0,0].shape[0] 
+
         c_0 =  np.dot(vp[0:n0,0].T,vp[0:n0,0])
         ltmp, vtmp = np.linalg.eigh(H0_0)
         davidson_correction = (1-c_0)*(lp[0] - ltmp[0])/c_0
         print " norm of PPP component %12.8f" %c_0
         print " Davidson correction : %12.8f " %davidson_correction
         #lp[0] += davidson_correction
+    
+    #pt2
+    do_pt2 = 1
+    if do_pt2 == 1:
+        n0 = H_sectors[0,0].shape[0] 
+        Hpp = Htest[0:n0, 0:n0]
+        Hpq = Htest[0:n0, n0::]
+        Dqq = np.diag(Htest)[n0::]
+    
+        print Hpp.shape
+        print Hpq.shape
+        print Dqq.shape
+        
+        H0 = Hpp
+        l0,v0 = np.linalg.eigh(H0)
+        e0 = l0[0]
+
+        Dqq = 1/(e0-Dqq) 
+        H2 = Hpp + Hpq.dot(np.diag(Dqq)).dot(Hpq.T)
+
+        l2,v2 = np.linalg.eigh(H2)
+        print "Zeroth-order energy: %12.8f" %l0[0]
+        print "Second-order energy: %12.8f" %l2[0]
 
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(lp):

@@ -1,0 +1,121 @@
+ j12:
+[[  0.00000000e+00  -3.87184839e-01  -3.41208013e-01  -3.89437535e-01
+   -2.05409342e-03  -2.26570224e-03  -4.24668257e-02  -5.15228446e-04]
+ [ -3.87184839e-01   0.00000000e+00  -3.85578768e-01  -3.77250723e-01
+    2.58929112e-04   2.16980749e-04   1.53225218e-03   4.63325955e-05]
+ [ -3.41208013e-01  -3.85578768e-01   0.00000000e+00  -3.93751277e-01
+   -5.41279340e-04  -1.61145696e-03  -3.87352328e-02  -6.38801778e-03]
+ [ -3.89437535e-01  -3.77250723e-01  -3.93751277e-01   0.00000000e+00
+    6.44951574e-05  -2.92877546e-05  -3.52937542e-04  -2.43169165e-04]
+ [ -2.05409342e-03   2.58929112e-04  -5.41279340e-04   6.44951574e-05
+    0.00000000e+00  -3.85761035e-01  -3.60614172e-01  -3.90534149e-01]
+ [ -2.26570224e-03   2.16980749e-04  -1.61145696e-03  -2.92877546e-05
+   -3.85761035e-01   0.00000000e+00  -3.95118551e-01  -3.83764092e-01]
+ [ -4.24668257e-02   1.53225218e-03  -3.87352328e-02  -3.52937542e-04
+   -3.60614172e-01  -3.95118551e-01   0.00000000e+00  -3.65223233e-01]
+ [ -5.15228446e-04   4.63325955e-05  -6.38801778e-03  -2.43169165e-04
+   -3.90534149e-01  -3.83764092e-01  -3.65223233e-01   0.00000000e+00]]
+ lattice:
+[1 1 1 1 1 1 1 1]
+ blocks:
+[[0 1 2 3]
+ [4 5 6 7]]
+ n_blocks:
+2
+here: [0 1 2 3] 0
+here: [4 5 6 7] 1
+here: [0 1 2 3] 0
+here: [4 5 6 7] 1
+ Generate initial guess vectors
+ Guess eigenstates
+ -1.19694344
+ -1.07746771
+ -0.42094225
+ -0.42094225
+ -0.42094225
+ -0.39322534
+ -0.39322534
+ -0.39322534
+ -0.32303799
+ -0.32303799
+ -0.32303799
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+  1.13720558
+ Guess eigenstates
+ -1.17890761
+ -1.10210763
+ -0.41381121
+ -0.41381121
+ -0.41381121
+ -0.38827646
+ -0.38827646
+ -0.38827646
+ -0.33841994
+ -0.33841994
+ -0.33841994
+  1.14050762
+  1.14050762
+  1.14050762
+  1.14050762
+  1.14050762
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Tucker optimization: Iteration    0
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 31) (1, 225)
+(1, 31) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (256, 256)
+ norm of PPP component   0.99869047
+ Davidson correction :  -0.00000262 
+(1, 1)
+(1, 255)
+(255,)
+Zeroth-order energy:  -2.37585105
+Second-order energy:  -2.37781913
+ State              Energy          Relative          <S2>
+     0 =       -2.37785236        0.00000000    0.00000000
+     1 =       -2.30115361        0.07669875    0.00000000
+     2 =       -2.25641592        0.12143644    0.00000000
+     3 =       -2.17961856        0.19823381    0.00000000
+     4 =       -1.62869041        0.74916196    2.00000000
+     5 =       -1.62869041        0.74916196    2.00000000
+     6 =       -1.62869041        0.74916196    2.00000000
+     7 =       -1.62242616        0.75542620    2.00000000
+     8 =       -1.62242616        0.75542620    2.00000000
+     9 =       -1.62242616        0.75542620    2.00000000
+    10 =       -1.57870012        0.79915225    2.00000000
+    11 =       -1.57870012        0.79915225    2.00000000
+  Iteration        Energy         Delta
+          0   -2.37785236              
