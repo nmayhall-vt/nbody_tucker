@@ -897,7 +897,7 @@ for it in range(0,maxiter):
                                 if bbi == bbj:
                                     diff[bbi] = 0
                         diff2 = []
-                        for bbi in diff.keys():
+                        for bbi in sorted(diff.keys()):     #added this sort after the fact, not completely sure this is not going to cause problems
                             if diff[bbi] == 1:
                                 diff2.extend([bbi])
                        
