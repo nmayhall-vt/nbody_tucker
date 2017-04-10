@@ -1,0 +1,219 @@
+ j12:
+[[  0.00000000e+00  -3.21432415e+03  -3.19885869e+03 ...,  -1.95902663e-01
+   -1.57265020e+00  -1.71830545e-01]
+ [ -3.21432415e+03   0.00000000e+00  -3.19878713e+03 ...,  -5.69647858e-02
+   -7.55640064e-01  -5.66839911e-02]
+ [ -3.19885869e+03  -3.19878713e+03   0.00000000e+00 ...,  -7.73525139e-01
+   -1.30566216e+01  -5.30219439e-01]
+ ..., 
+ [ -1.95902663e-01  -5.69647858e-02  -7.73525139e-01 ...,   0.00000000e+00
+   -3.27594762e+03  -3.17699714e+03]
+ [ -1.57265020e+00  -7.55640064e-01  -1.30566216e+01 ...,  -3.27594762e+03
+    0.00000000e+00  -3.12499527e+03]
+ [ -1.71830545e-01  -5.66839911e-02  -5.30219439e-01 ...,  -3.17699714e+03
+   -3.12499527e+03   0.00000000e+00]]
+ lattice:
+[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]
+ blocks:
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]
+ [12 13 14 15]
+ [16 17 18 19]
+ [20 21 22 23]
+ [24 25 26 27]
+ [28 29 30 31]]
+ n_blocks:
+8
+[0 1 2 3]
+[4 5 6 7]
+[ 8  9 10 11]
+[12 13 14 15]
+[16 17 18 19]
+[20 21 22 23]
+[24 25 26 27]
+[28 29 30 31]
+ Generate initial guess vectors
+ Guess eigenstates
+-9652.05579633
+-9470.03018294
+-3297.77019440
+-3297.77019440
+-3297.77019440
+-3188.22244313
+-3188.22244313
+-3188.22244313
+-3075.05035211
+-3075.05035211
+-3075.05035211
+9561.04298963
+9561.04298963
+9561.04298963
+9561.04298963
+9561.04298963
+ Guess eigenstates
+-9855.52944812
+-9254.28918803
+-3417.71801923
+-3417.71801923
+-3417.71801923
+-3214.94749229
+-3214.94749229
+-3214.94749229
+-2922.24380655
+-2922.24380655
+-2922.24380655
+9554.90931807
+9554.90931807
+9554.90931807
+9554.90931807
+9554.90931807
+ Guess eigenstates
+-9927.16373027
+-9176.82747425
+-3450.68362421
+-3450.68362421
+-3450.68362421
+-3249.70820297
+-3249.70820297
+-3249.70820297
+-2851.60377509
+-2851.60377509
+-2851.60377509
+9551.99560226
+9551.99560226
+9551.99560226
+9551.99560226
+9551.99560226
+ Guess eigenstates
+-9712.91874806
+-9384.38409329
+-3447.99801896
+-3447.99801896
+-3447.99801896
+-3204.20415069
+-3204.20415069
+-3204.20415069
+-2896.44925103
+-2896.44925103
+-2896.44925103
+9548.65142068
+9548.65142068
+9548.65142068
+9548.65142068
+9548.65142068
+ Guess eigenstates
+-9704.44421678
+-9352.62626980
+-3507.40661187
+-3507.40661187
+-3507.40661187
+-3153.67708179
+-3153.67708179
+-3153.67708179
+-2867.45154964
+-2867.45154964
+-2867.45154964
+9528.53524329
+9528.53524329
+9528.53524329
+9528.53524329
+9528.53524329
+ Guess eigenstates
+-10038.82759748
+-9114.58787116
+-3517.69999994
+-3517.69999994
+-3517.69999994
+-3241.59606496
+-3241.59606496
+-3241.59606496
+-2817.41166942
+-2817.41166942
+-2817.41166942
+9576.70773432
+9576.70773432
+9576.70773432
+9576.70773432
+9576.70773432
+ Guess eigenstates
+-9626.22082783
+-9414.70704436
+-3398.36824789
+-3398.36824789
+-3398.36824789
+-3189.68569354
+-3189.68569354
+-3189.68569354
+-2932.40999467
+-2932.40999467
+-2932.40999467
+9520.46393609
+9520.46393609
+9520.46393609
+9520.46393609
+9520.46393609
+ Guess eigenstates
+-9771.21515588
+-9343.20847235
+-3353.19893935
+-3353.19893935
+-3353.19893935
+-3205.12202551
+-3205.12202551
+-3205.12202551
+-2998.89084926
+-2998.89084926
+-2998.89084926
+9557.21181411
+9557.21181411
+9557.21181412
+9557.21181412
+9557.21181412
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Tucker optimization: Iteration    0
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (1, 1)
+ norm of PPP component   1.00000000
+ Davidson correction :   0.00000000 
+ State              Energy          Relative          <S2>
+     0 =   -78288.37552074        0.00000000    0.00000000
+  Iteration        Energy         Delta
+          0  -78288.37552074              

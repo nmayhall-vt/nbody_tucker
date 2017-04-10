@@ -47,6 +47,7 @@ def tucker_decompose(A,thresh,n_keep_max):
                 keep.extend([si])
             else:
                 print "   %-4i   %16.8f : Toss"%(si,i)
+        print "   %5s  %16.8f" %("Trace", AA.trace())
         print
         U = U[:,keep]
 
@@ -222,6 +223,9 @@ def form_gramian1(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, tra
     
     tuck_factors_l = []
     tuck_factors_r = []
+            
+    for d in range(n_dims):
+        print "   here: ", A.shape[d] ,tuck_factors_A[d].shape[1] 
 
     for d in range(n_dims):
         if (trans1,trans2) == (0,0):
@@ -242,7 +246,7 @@ def form_gramian1(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, tra
                 
                 continue
 
-            assert( tuck_factors_A[d].shape[0] == tuck_factors_A[d].shape[0]) 
+            assert( tuck_factors_A[d].shape[0] == tuck_factors_B[d].shape[0]) 
             assert( A.shape[d] == tuck_factors_A[d].shape[1] )
             assert( B.shape[d] == tuck_factors_B[d].shape[1] )
             
@@ -276,7 +280,9 @@ def form_gramian1(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, tra
     tuck_factors_C.extend( [tuck_factors_l] ) 
     tuck_factors_C.extend( [tuck_factors_r] ) 
 
-    print " Forming the gramiam:  ", "A(",A_inds,") B(",B_inds,")", 
+    print " Forming the gramiam:  ", "A(",A_inds,") B(",B_inds,")"
+    print "   ", A.shape
+    print "   ", B.shape
     AA= np.tensordot(A,B,axes=(A_inds,B_inds))
     print " = ", AA.shape
     AA = tuck_factors_l[0].dot(AA).dot(tuck_factors_r[0].T)
@@ -284,5 +290,45 @@ def form_gramian1(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, tra
     #return AA, tuck_factors_C
 
            
+def form_1fdm(A, B, open_dims):
+    """
+        This assumes that A and B share a Tucker basis, such that we don't need to actually contract with the tucker factors
+    
+    Form grammian tensor, where open_dims = 1
+         __Ua--Ub__
+        |          |
+        |__      __|
+        |          |
+        A__Ua--Ub__B
+        |          |
+        |__Ua--Ub__|
 
+    A is a ndarray numpy tensor
+    B is a ndarray numpy tensor
+    open_dims tells us which dimension to not contract over
+
+    """
+    n_dims = len(A.shape)
+
+    A_inds = range(n_dims) 
+    B_inds = range(n_dims)
+
+    ind_contract_list = []
+            
+    for d in range(n_dims):
+        in_open = 0
+        for dd in open_dims:
+            if d==dd:
+                in_open = 1
+        if in_open != 1:
+            ind_contract_list.extend([d])
+
+    #print A.shape, B.shape, ind_contract_list
+    AB= np.tensordot(A,B,axes=(ind_contract_list,ind_contract_list))
+    return AB
+
+    
+        
+
+    
 #def form_tot_gramiam1(v,P_dims, Q_dims, QQ_dims, blocks, 

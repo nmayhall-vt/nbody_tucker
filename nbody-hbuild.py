@@ -590,6 +590,7 @@ parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='Fi
 parser.add_argument('-np','--n_p_space', type=int, nargs="+", help='Number of vectors in block P space', required=False)
 parser.add_argument('-nq','--n_q_space', type=int, nargs="+", help='Number of vectors in block Q space', required=False)
 parser.add_argument('-nb','--n_body_order', type=int, default="0", help='n_body spaces', required=False)
+parser.add_argument('-nr','--n_roots', type=int, default="10", help='Number of eigenvectors to find in compressed space', required=False)
 parser.add_argument('--n_print', type=int, default="10", help='number of states to print', required=False)
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
@@ -937,7 +938,14 @@ for it in range(0,maxiter):
    
     print " Dimensions of Full Hamiltonian      ", H_tot.shape
     print " Dimensions of Subspace Hamiltonian  ", Htest.shape
-    lp,vp = np.linalg.eigh(Htest)
+
+    lp = np.array([])
+    vp = np.array([])
+
+    if Htest.shape[0] > 3000:
+        lp,vp = scipy.sparse.linalg.eigsh(Htest, k=args["n_roots"] )
+    else:
+        lp,vp = np.linalg.eigh(Htest)
 
     s2 = vp.T.dot(S2test).dot(vp)
     #print 
@@ -959,81 +967,281 @@ for it in range(0,maxiter):
     #    last_vector = cp.deepcopy(vp[:,target_state])
 
 
-    if it<maxiter-1 :
-        print " Recompose target state (SLOW)"
-        n0 = H_sectors[0,0].shape[0] 
+    #
+    # Get dimensions of all the spaces
+    #
+    n0 = H_sectors[0,0].shape[0] 
+    
+    P_dim = n0
+    Q_dims = [] # dimension of Q space for each block i.e., Q_dims[3] is the dimension of this space |abcDef...> 
+    QQ_dims = [] # dimension of Q space for each block-dimer i.e., QQ_dims[3] is the dimension of this space |AbcdEf...> 
+    QQQ_dims = []
+
+    #   These arrays of pairs indicate where each P,Q,QQ, etc block starts and stops in the compressed CI space
+    ci_startstop     = {}
+
+    ci_startstop[-1] = (0,n0)
+
+    start = n0 
+    for bi,b in enumerate(blocks):
+        q_dim = n0 / p_states[bi].shape[1] * q_states[bi].shape[1]
+        Q_dims.extend([q_dim])
        
-        P_dim = n0
-        Q_dims = [] # dimension of Q space for each block i.e., Q_dims[3] is the dimension of this space |abcDef...> 
-        QQ_dims = [] # dimension of Q space for each block-dimer i.e., QQ_dims[3] is the dimension of this space |AbcdEf...> 
-        QQQ_dims = []
+        ci_startstop[bi] = (start,start+q_dim)
 
-        for bi,b in enumerate(blocks):
-            q_dim = n0 / p_states[bi].shape[1] * q_states[bi].shape[1]
-            Q_dims.extend([q_dim])
+        start = start + q_dim
 
-        for bi,b in enumerate(blocks):
-            for bbi,bb in enumerate(blocks):
-                if bbi > bi:
-                    q_dim = n0 / p_states[bi].shape[1] / p_states[bbi].shape[1] * q_states[bi].shape[1] * q_states[bbi].shape[1]
-                    QQ_dims.extend([q_dim])
-
-        for bi,b in enumerate(blocks):
-            for bbi,bb in enumerate(blocks):
-                if bbi > bi:
-                    for bbbi,bbb in enumerate(blocks):
-                        if bbbi > bbi:
-                            q_dim = n0 
-                            q_dim = q_dim / p_states[bi].shape[1]   * q_states[bi].shape[1]
-                            q_dim = q_dim / p_states[bbi].shape[1]  * q_states[bbi].shape[1]
-                            q_dim = q_dim / p_states[bbbi].shape[1] * q_states[bbbi].shape[1]
-                            QQQ_dims.extend([q_dim])
-        
-        print "P_dims", P_dim
-        print "Q_dims", Q_dims
-        print "QQ_dims", QQ_dims
-        print "QQQ_dims", QQQ_dims
-   
-        v = cp.deepcopy(vp[:,target_state])
-
-
-        
-        
-
-        v_0 = v[0:P_dim]
-        
-        v_0.shape = n_p_states
-   
-        if 0:
-            grams = {}
-            for fi,f in enumerate(blocks):
-                grams[fi] = form_gramian1(v_0,vecs0, v_0, vecs0, [fi])
-         
-              
+    for bi,b in enumerate(blocks):
+        for bbi,bb in enumerate(blocks):
+            if bbi > bi:
+                q_dim = n0 / p_states[bi].shape[1] / p_states[bbi].shape[1] * q_states[bi].shape[1] * q_states[bbi].shape[1]
+                QQ_dims.extend([q_dim])
                 
-                if n_body_order >= 1:
+                ci_startstop[(bi,bbi)] = (start,start+q_dim)
+        
+                start = start + q_dim
+
+
+    for bi,b in enumerate(blocks):
+        for bbi,bb in enumerate(blocks):
+            if bbi > bi:
+                for bbbi,bbb in enumerate(blocks):
+                    if bbbi > bbi:
+                        q_dim = n0 
+                        q_dim = q_dim / p_states[bi].shape[1]   * q_states[bi].shape[1]
+                        q_dim = q_dim / p_states[bbi].shape[1]  * q_states[bbi].shape[1]
+                        q_dim = q_dim / p_states[bbbi].shape[1] * q_states[bbbi].shape[1]
+                        QQQ_dims.extend([q_dim])
+                
+                        ci_startstop[(bi,bbi,bbbi)] = (start,start+q_dim)
+        
+                        start = start + q_dim
+    
+    print
+    print " Dimensions of all the spaces"
+    print " P_dims  ", P_dim
+    print " Q_dims  ", Q_dims
+    print " QQ_dims ", QQ_dims
+    print " QQQ_dims", QQQ_dims
+    print
+    if 1:
+
+        #
+        #   (A a1 a2 a3) (B b1 b2 b3) = AB a1 b1
+        v = cp.deepcopy(vp[:,target_state])
+        
+        v_0 = v[0:P_dim]
+        v_0.shape = n_p_states
+        grams = {}
+        #
+        # PP terms
+        print " P,P block" 
+        for fi,f in enumerate(blocks):
+            print " Get gramian for block", fi,
+            gram_tmp = form_1fdm(v_0, v_0, [fi])
+            print " size: ", gram_tmp.shape,
+            print " trace: %16.12f"% gram_tmp.trace()
+    
+            grams[fi] = vecs0[fi].dot(gram_tmp).dot(vecs0[fi].T)
+     
+        #
+        # P,Q terms
+        if n_body_order >= 1:
+            print
+            print " P,Q block" 
+            
+            for bi,b in enumerate(blocks):
+                print " Q = ", bi
+                start = ci_startstop[bi][0] 
+                stop  = ci_startstop[bi][1] 
+                v1 = cp.deepcopy(vp[start:stop,target_state])
+                
+                dims_curr = cp.deepcopy(n_p_states)
+                dims_curr[bi] = q_states[bi].shape[1]
+                
+                v1.shape = dims_curr
+            
+                print "   Get gramian for block: ", bi, 
+                gram_tmp = form_1fdm(v_0, v1, [bi])
+                print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                print " trace: %16.12f"% gram_tmp.trace()
+                
+                gram_tmp = vecs0[bi].dot(gram_tmp).dot(vecsQ[bi][bi].T)
+
+                grams[bi] += gram_tmp + gram_tmp.T
+       
+        #
+        # Q,Q terms
+        if n_body_order >= 1:
+            print
+            print " Q,Q block" 
+            
+            
+            for bi,b in enumerate(blocks):
+                print " Q = ", bi
+                start = ci_startstop[bi][0] 
+                stop  = ci_startstop[bi][1] 
+                v1 = cp.deepcopy(vp[start:stop,target_state])
+                #print " Norm of Q: ", np.linalg.norm(v1)
+                
+                dims_curr = cp.deepcopy(n_p_states)
+                dims_curr[bi] = q_states[bi].shape[1]
+                
+                v1.shape = dims_curr
+            
+                for fi,f in enumerate(blocks):
+                    print "   Get gramian for block: ", fi, 
+                    gram_tmp = form_1fdm(v1, v1, [fi])
+                    print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                    print " trace: %16.12f"% gram_tmp.trace()
                     
-                    start = P_dim
-                    
-                    for bi,b in enumerate(blocks):
-                        stop = start + Q_dims[bi]
+                    grams[fi] += vecsQ[bi][fi].dot(gram_tmp).dot(vecsQ[bi][fi].T)
+       
+        
+        #
+        # Q,QQ terms 
+        if n_body_order >= 2:
+            #   These terms will only give a nonzero contribution to the 1fdm when one of the Q blocks coincide
+            #
+            #      i.e.,  
+            #           D2 = |b><B| { <Acd|Acd> + <aCd|aCd> + <acD|acD> }
+            #
+            print
+            print " Q,QQ block" 
+            
+            start1 = P_dim  #indexing for Q blocks
+            start2 = P_dim  #indexing for QQ blocks
+
+            for di,d in enumerate(Q_dims):
+                start2 += d
+            
+            block_dimer_index = 0
+            
+            for bi,b in enumerate(blocks):
+                stop1 = start1 + Q_dims[bi]
+                for bbi,bb in enumerate(blocks):
+                    if bbi > bi:
+                        print " QQ = ", (bi,bbi)
+                        
+                        start2 = ci_startstop[(bi,bbi)][0] 
+                        stop2  = ci_startstop[(bi,bbi)][1] 
+                        
+                        v2 = cp.deepcopy(vp[start2:stop2,target_state])
+                        
+                        dims_curr2 = cp.deepcopy(n_p_states)
+                        dims_curr2[bi]  = q_states[bi].shape[1]
+                        dims_curr2[bbi] = q_states[bbi].shape[1]
+                        
+                        v2.shape = dims_curr2
+
+                        #CASE 1: Q,QQ' (i.e., B,BD) this only has a contribution to dD 1fdm
+                        start1 = ci_startstop[bi][0] 
+                        stop1  = ci_startstop[bi][1] 
+                        
+                        v1 = cp.deepcopy(vp[start1:stop1,target_state])
+                        dims_curr1 = cp.deepcopy(n_p_states)
+                        dims_curr1[bi]  = q_states[bi].shape[1]
+                        v1.shape = dims_curr1
+                        
+                        print "   Get gramian for block: ", bbi, 
+                        gram_tmp = form_1fdm(v1, v2, [bbi])
+                        print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                        print " trace: %16.12f"% gram_tmp.trace()
+                            
+                        gram_tmp = vecsQ[(bi)][bbi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][bbi].T)
+
+                        grams[bbi] -= gram_tmp + gram_tmp.T      # why is this negative?!!
+
+                        
+                        
+                        #CASE 2: Q,Q'Q (i.e., B,AB) this only has a contribution to aA 1fdm
+                        start1 = ci_startstop[bbi][0] 
+                        stop1  = ci_startstop[bbi][1] 
+                        
+                        v1 = cp.deepcopy(vp[start1:stop1,target_state])
+                        dims_curr1 = cp.deepcopy(n_p_states)
+                        dims_curr1[bbi]  = q_states[bbi].shape[1]
+                        v1.shape = dims_curr1
+                        
+                        print "   Get gramian for block: ", bi, 
+                        gram_tmp = form_1fdm(v1, v2, [bi])
+                        print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                        print " trace: %16.12f"% gram_tmp.trace()
+                            
+                        gram_tmp = vecsQ[(bbi)][bi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][bi].T)
+
+
+                        grams[bi] -= gram_tmp + gram_tmp.T      # why is this negative?!!
+                  
+                        block_dimer_index += 1
+
+
+        #
+        # QQ,QQ terms
+        #if 0:
+        if n_body_order >= 2:
+            print
+            print " QQ,QQ block" 
+            
+          
+            block_dimer_index = 0
+            for bi,b in enumerate(blocks):
+                for bbi,bb in enumerate(blocks):
+                    if bbi > bi:
+                        print " QQ = ", (bi,bbi)
+                        start = ci_startstop[(bi,bbi)][0] 
+                        stop  = ci_startstop[(bi,bbi)][1] 
                         v1 = cp.deepcopy(vp[start:stop,target_state])
                         
-                        dim_b = cp.deepcopy(n_p_states)
-                        dim_b[bi] = q_states[bi].shape[1]
+                        dims_curr = cp.deepcopy(n_p_states)
+                        dims_curr[bi]  = q_states[bi].shape[1]
+                        dims_curr[bbi] = q_states[bbi].shape[1]
                         
-                        v1.shape = dim_b
-                
-                        #grams[fi] += form_gramian1(v_0, vecs0,    v1, vecsQ[bi], [fi])
-                        #grams[fi] += form_gramian1(v1, vecsQ[bi], v1, vecsQ[bi], [fi])
-                
-                        start = stop
-         
-                lx,vx = np.linalg.eigh(grams[fi])
-                print lx
-         
-         
-            exit(-1)
+                        v1.shape = dims_curr
+                     
+                        for fi,f in enumerate(blocks):
+                            print "   Get gramian for block: ", fi, 
+                            gram_tmp = form_1fdm(v1, v1, [fi])
+                            print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                            print " trace: %16.12f"% gram_tmp.trace()
+                            
+                            grams[fi] += vecsQQ[(bi,bbi)][fi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][fi].T)
+                  
+                  
+                        block_dimer_index += 1
+     
+
+        p_states = []
+        q_states = []
+        print "    Eigenvalues of each 1fdm:" 
+        for fi,f in enumerate(blocks):
+            lx,vx = np.linalg.eigh(grams[fi])
+        
+            sort_ind = np.argsort(lx)[::-1]
+            lx = lx[sort_ind]
+            vx = vx[:,sort_ind]
+            
+            print "         Fragment: ", fi
+            for si,i in enumerate(lx):
+                print "   %-4i   %16.8f "%(si,i)
+            print "         trace: %-16.8f" % grams[fi].trace()
+            print 
+            #print lx
+            
+            p_states.extend([vx[:,0:n_p_states[bi]]])
+            q_states.extend([vx[:,n_p_states[bi]:n_p_states[bi]+n_q_states[bi]]])
+     
+
+
+    #if it<maxiter-1 :
+    if 0 :
+        print " Recompose target state (SLOW)"
+   
+        v = cp.deepcopy(vp[:,target_state])
+        
+        v_0 = v[0:P_dim]
+        v_0.shape = n_p_states
+   
         vec_curr = transform_tensor(v_0, vecs0)
     
         #change_tucker_basis(last_vector, last_tucker_basis, 
@@ -1058,6 +1266,7 @@ for it in range(0,maxiter):
                 vec_curr += transform_tensor(v_tmp, vecs_b)
                 start = stop
         
+        #if 0:
         if n_body_order >= 2:
             
             block_dimer_index = 0
@@ -1107,8 +1316,8 @@ for it in range(0,maxiter):
         c_0 =  np.dot(vp[0:n0,0].T,vp[0:n0,0])
         ltmp, vtmp = np.linalg.eigh(H0_0)
         davidson_correction = (1-c_0)*(lp[0] - ltmp[0])/c_0
-        print " norm of PPP component %12.8f" %c_0
-        print " Davidson correction : %12.8f " %davidson_correction
+        print " Norm of low-entanglement reference component %12.8f" %c_0
+        print " Davidson correction :                        %12.8f " %davidson_correction
         #lp[0] += davidson_correction
     
     #pt2
@@ -1118,10 +1327,6 @@ for it in range(0,maxiter):
         Hpp = Htest[0:n0, 0:n0]
         Hpq = Htest[0:n0, n0::]
         Dqq = np.diag(Htest)[n0::]
-    
-        print Hpp.shape
-        print Hpq.shape
-        print Dqq.shape
         
         H0 = Hpp
         l0,v0 = np.linalg.eigh(H0)
@@ -1131,8 +1336,8 @@ for it in range(0,maxiter):
         H2 = Hpp + Hpq.dot(np.diag(Dqq)).dot(Hpq.T)
 
         l2,v2 = np.linalg.eigh(H2)
-        print "Zeroth-order energy: %12.8f" %l0[0]
-        print "Second-order energy: %12.8f" %l2[0]
+        print " Zeroth-order energy: %12.8f" %l0[0]
+        print " Second-order energy: %12.8f" %l2[0]
 
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(lp):
