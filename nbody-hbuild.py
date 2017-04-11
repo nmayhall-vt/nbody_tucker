@@ -498,9 +498,15 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
     # }}}
 
 def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
-    # {{{
-    Htest = H_sectors[0,0]
+    #{{{
+    Htest = np.array([])
+
+
+    if n_body_order == 0:
+        Htest = H_sectors[0,0]
+
     if n_body_order == 1:
+        Htest = H_sectors[0,0]
         # Singles
         for bi in range(n_blocks+1):
             row_i = np.array([])
@@ -518,53 +524,161 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
     
     
     if n_body_order == 2:
+        
+        #
+        #   Get dimensionality
+        #
+        n0 = 0
+        n1 = 0
+        n2 = 0
+
+        n0 = H_sectors[0,0].shape[0]
+        for bi in range(1,n_blocks+1):
+            n1 += H_sectors[bi,bi].shape[0]
+        for bi in range(1,n_blocks+1):
+            for bj in range(bi+1,n_blocks+1):
+                n2 += H_sectors[(bi,bj),(bi,bj)].shape[0]
+
+        nd = n0 + n1 + n2
+
+        print "Dimensions: ", n0, n1, n2, " = ", nd
+
+        Htest = np.empty([nd,nd])
+
+        row = np.empty([n0,nd])
+        
         # 0,0 
-        row_0 = H_sectors[0,0]
+
+
+        col_start = 0
+        
+        col_stop = col_start + n0
+        row[0::,col_start:col_stop] = H_sectors[0,0]
+        col_start = col_stop
+
+        #row_0 = H_sectors[0,0]
         # 0,S
         for bi in range(1,n_blocks+1):
-            row_0 = np.hstack( ( row_0, H_sectors[0,bi] ) )
+            #row = np.hstack( ( row_0, H_sectors[0,bi] ) )
+
+            col_stop = col_start + H_sectors[0,bi].shape[1]
+            
+            row[0::,col_start:col_stop] = H_sectors[0,bi]
+
+            col_start = col_stop
+            #row_0 = np.hstack( ( row_0, H_sectors[0,bi] ) )
         # 0,D
         for bi in range(1,n_blocks+1):
             for bj in range(bi+1, n_blocks+1):
                 bij = (bi,bj)
-                print row_0.shape, H_sectors[0,bij].shape
+                #print row_0.shape, H_sectors[0,bij].shape
                 
-                row_0 = np.hstack( ( row_0, H_sectors[0,(bi,bj)] ) )
+                #row_0 = np.hstack( ( row_0, H_sectors[0,(bi,bj)] ) )
+                
+                col_stop = col_start + H_sectors[0,bij].shape[1]
+                row[0::,col_start:col_stop] = H_sectors[0,bij]
+                col_start = col_stop
     
-        Htest = row_0
     
+        row_start = 0
+        row_stop  = row_start + n0
+        
+        Htest[row_start:row_stop,0::] = row
+        #Htest[row_start:row_stop,0::] = row_0 
+       
+        row_start = row_stop
+        
+        
         
         # Singles
         for bi in range(1,n_blocks+1):
+            
+            col_start = 0
+            
+            row_stop = row_start + H_sectors[bi,0].shape[0]
+            
+            row = np.empty([row_stop-row_start,nd])
+
             # bi,0
-            row_i = H_sectors[bi,0] 
+            col_stop = col_start + H_sectors[bi,0].shape[1]
+            row[0::,col_start:col_stop] = H_sectors[bi,0]
+            col_start = col_stop
+            
+            #row_i = H_sectors[bi,0] 
+            
             # bi,bj 
             for bj in range(1,n_blocks+1):
-                row_i = np.hstack((row_i,H_sectors[bi,bj]))
+                col_stop = col_start + H_sectors[bi,bj].shape[1]
+                row[0::,col_start:col_stop] = H_sectors[bi,bj]
+                col_start = col_stop
+                
+                #row_i = np.hstack((row_i,H_sectors[bi,bj]))
             # bi,bjk 
             for bj in range(1,n_blocks+1):
                 for bk in range(bj+1,n_blocks+1):
-                    row_i = np.hstack((row_i,H_sectors[bi,(bj,bk)]))
+                    col_stop = col_start + H_sectors[bi,(bj,bk)].shape[1]
+                    row[0::,col_start:col_stop] = H_sectors[bi,(bj,bk)]
+                    col_start = col_stop
+                
+                    #row_i = np.hstack((row_i,H_sectors[bi,(bj,bk)]))
             
-            Htest = np.vstack((Htest,row_i))
+            #Htest = np.vstack((Htest,row_i))
+           
+                
+            Htest[row_start:row_stop,0::] = row 
+            #Htest[row_start:row_stop,0::] = row_i 
     
+            row_start = row_stop
+    
+        
+        
     
         #Doubles 
         for bi in range(1,n_blocks+1):
             for bj in range(bi+1,n_blocks+1):
+            
+                col_start = 0
+        
+            
+                bij = (bi,bj)
+
+                row_stop = row_start + H_sectors[bij,0].shape[0]
+            
+                row = np.empty([row_stop-row_start,nd])
+
                 # bij,0
-                row_ij = H_sectors[(bi,bj),0]                                       #<ij|H|0>
+                col_stop = col_start + H_sectors[bij,0].shape[1]
+                row[0::,col_start:col_stop] = H_sectors[bij,0]
+                col_start = col_stop
+            
+                #row_ij = H_sectors[(bi,bj),0]                                       #<ij|H|0>
                 # bij,bk
                 for bk in range(1,n_blocks+1):
-                    row_ij = np.hstack( (row_ij, H_sectors[(bi,bj),bk]) )           #<ij|H|k>
+                    col_stop = col_start + H_sectors[bij,bk].shape[1]
+                    row[0::,col_start:col_stop] = H_sectors[bij,bk]
+                    col_start = col_stop
+            
+                    #row_ij = np.hstack( (row_ij, H_sectors[(bi,bj),bk]) )           #<ij|H|k>
                 # bij,bkl
                 for bk in range(1,n_blocks+1):
                     for bl in range(bk+1,n_blocks+1):
-                        row_ij = np.hstack( (row_ij, H_sectors[(bi,bj),(bk,bl)]) )  #<ij|H|kl>
+                        bkl = (bk,bl)
+
+                        col_stop = col_start + H_sectors[bij,bkl].shape[1]
+                        row[0::,col_start:col_stop] = H_sectors[bij,bkl]
+                        col_start = col_stop
+            
+                        #row_ij = np.hstack( (row_ij, H_sectors[(bi,bj),(bk,bl)]) )  #<ij|H|kl>
                 
-                Htest = np.vstack((Htest,row_ij))
+                #Htest = np.vstack((Htest,row_ij))
+                
+                Htest[row_start:row_stop,0::] = row
+                #Htest[row_start:row_stop,0::] = row_ij 
+    
+                row_start = row_stop
+
     return Htest
-    # }}}
+    #}}}
 
 
 
