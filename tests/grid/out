@@ -1,0 +1,4570 @@
+ j12:
+[[  0.00000000e+00  -6.17180790e+02  -6.22970135e+00  -7.17828034e+02
+    9.14398093e+00   1.29323173e-01  -8.48216028e+00   1.21806129e-01
+    6.12436866e-04  -7.25425673e+02   1.04272924e+01   1.13953796e-01]
+ [ -6.17180790e+02   0.00000000e+00  -6.17090914e+02   9.14349047e+00
+   -6.81500350e+02   9.14370596e+00   1.56619645e-01  -6.51875770e+00
+    1.56674166e-01   8.50580236e+00  -5.88001988e+02   8.50593741e+00]
+ [ -6.22970135e+00  -6.17090914e+02   0.00000000e+00   1.29251022e-01
+    9.14346757e+00  -7.17821881e+02   6.12329060e-04   1.21845529e-01
+   -8.48229811e+00   1.13889895e-01   1.04264556e+01  -7.25407408e+02]
+ [ -7.17828034e+02   9.14349047e+00   1.29251022e-01   0.00000000e+00
+   -6.17103736e+02  -6.22982409e+00  -7.25416346e+02   1.04267842e+01
+    1.13897559e-01  -8.48226819e+00   1.21838903e-01   6.12538032e-04]
+ [  9.14398093e+00  -6.81500350e+02   9.14346757e+00  -6.17103736e+02
+    0.00000000e+00  -6.17180365e+02   8.50604296e+00  -5.88017463e+02
+    8.50603064e+00   1.56669060e-01  -6.51858360e+00   1.56613406e-01]
+ [  1.29323173e-01   9.14370596e+00  -7.17821881e+02  -6.22982409e+00
+   -6.17180365e+02   0.00000000e+00   1.13957354e-01   1.04272980e+01
+   -7.25432875e+02   6.12591754e-04   1.21792861e-01  -8.48197728e+00]
+ [ -8.48216028e+00   1.56619645e-01   6.12329060e-04  -7.25416346e+02
+    8.50604296e+00   1.13957354e-01   0.00000000e+00  -7.39328362e+02
+   -8.93987723e+00  -1.16566333e-01   2.01928047e-03  -3.75275459e-05]
+ [  1.21806129e-01  -6.51875770e+00   1.21845529e-01   1.04267842e+01
+   -5.88017463e+02   1.04272980e+01  -7.39328362e+02   0.00000000e+00
+   -7.39270850e+02   2.01923328e-03  -6.96154008e-02   2.01929298e-03]
+ [  6.12436866e-04   1.56674166e-01  -8.48229811e+00   1.13897559e-01
+    8.50603064e+00  -7.25432875e+02  -8.93987723e+00  -7.39270850e+02
+    0.00000000e+00  -3.75733001e-05   2.01916514e-03  -1.16565134e-01]
+ [ -7.25425673e+02   8.50580236e+00   1.13889895e-01  -8.48226819e+00
+    1.56669060e-01   6.12591754e-04  -1.16566333e-01   2.01923328e-03
+   -3.75733001e-05   0.00000000e+00  -7.39285894e+02  -8.94007449e+00]
+ [  1.04272924e+01  -5.88001988e+02   1.04264556e+01   1.21838903e-01
+   -6.51858360e+00   1.21792861e-01   2.01928047e-03  -6.96154008e-02
+    2.01916514e-03  -7.39285894e+02   0.00000000e+00  -7.39331459e+02]
+ [  1.13953796e-01   8.50593741e+00  -7.25407408e+02   6.12538032e-04
+    1.56613406e-01  -8.48197728e+00  -3.75275459e-05   2.01929298e-03
+   -1.16565134e-01  -8.94007449e+00  -7.39331459e+02   0.00000000e+00]]
+ lattice:
+[1 1 1 1 1 1 1 1 1 1 1 1]
+ blocks:
+[[ 6  3  0  9]
+ [ 7  4  1 10]
+ [ 8  5  2 11]]
+ n_blocks:
+3
+here: [6 3 0 9] 0
+here: [ 7  4  1 10] 1
+here: [ 8  5  2 11] 2
+here: [6 3 0 9] 0
+here: [ 7  4  1 10] 1
+here: [ 8  5  2 11] 2
+ Generate initial guess vectors
+ Guess eigenstates
+-2334.75248527
+-1373.42337725
+-1373.42337725
+-1373.42337725
+-374.93092352
+-374.93092352
+-374.93092352
+149.00143703
+655.47877665
+655.47877665
+655.47877665
+1092.87552412
+1092.87552412
+1092.87552412
+1092.87552412
+1092.87552412
+ Guess eigenstates
+-1946.23957678
+-1236.59729236
+-1236.59729236
+-1236.59729236
+-253.74341360
+-253.74341360
+-253.74341360
+ 75.61281812
+555.02732663
+555.02732663
+555.02732663
+935.31337933
+935.31337933
+935.31337933
+935.31337933
+935.31337933
+ Guess eigenstates
+-2334.74715893
+-1373.41538887
+-1373.41538887
+-1373.41538887
+-374.93305527
+-374.93305527
+-374.93305527
+149.00415455
+655.47694195
+655.47694195
+655.47694195
+1092.87150219
+1092.87150219
+1092.87150219
+1092.87150219
+1092.87150219
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Tucker optimization: Iteration    0
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.464139664209
+ Get gramian for block 1  size:  (1, 1)  trace:   0.464139664209
+ Get gramian for block 2  size:  (1, 1)  trace:   0.464139664209
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000454524816
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000454524816
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000454524816
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000440564155
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000440564155
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000440564155
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000454516158
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000454516158
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000454516158
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253005479455
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253005479455
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253005479455
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.028508694725
+   Get gramian for block:  1  size:     1 x 1      trace:   0.028508694725
+   Get gramian for block:  2  size:    15 x 15     trace:   0.028508694725
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.252996556481
+   Get gramian for block:  1  size:    15 x 15     trace:   0.252996556481
+   Get gramian for block:  2  size:    15 x 15     trace:   0.252996556481
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71828129 
+   1            0.07507382 
+   2            0.07507382 
+   3            0.07507382 
+   4            0.01161064 
+   5            0.01161064 
+   6            0.01161064 
+   7            0.00325441 
+   8            0.00312854 
+   9            0.00312854 
+   10           0.00312854 
+   11           0.00180506 
+   12           0.00180506 
+   13           0.00180506 
+   14           0.00180506 
+   15           0.00180506 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49385020 
+   1            0.13166124 
+   2            0.13166124 
+   3            0.13166124 
+   4            0.02279244 
+   5            0.02279244 
+   6            0.02279244 
+   7            0.00624730 
+   8            0.00616382 
+   9            0.00616382 
+   10           0.00616382 
+   11           0.00360999 
+   12           0.00360999 
+   13           0.00360999 
+   14           0.00360999 
+   15           0.00360999 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71829021 
+   1            0.07507167 
+   2            0.07507167 
+   3            0.07507167 
+   4            0.01161022 
+   5            0.01161022 
+   6            0.01161022 
+   7            0.00325422 
+   8            0.00312838 
+   9            0.00312838 
+   10           0.00312838 
+   11           0.00180495 
+   12           0.00180495 
+   13           0.00180495 
+   14           0.00180495 
+   15           0.00180495 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46413966
+ Davidson correction :                        -2657.98210200 
+ Zeroth-order energy: -6615.73922098
+ Second-order energy: -9862.84896423
+ State              Energy          Relative          <S2>
+     0 =    -8917.97142198        0.00000000    0.00000000
+     1 =    -7648.46999761     1269.50142438    2.00000000
+     2 =    -7648.46999761     1269.50142438    2.00000000
+     3 =    -7648.46999761     1269.50142438    2.00000000
+     4 =    -6860.23418166     2057.73724032    0.00000000
+     5 =    -6554.70488705     2363.26653493    2.00000000
+     6 =    -6554.70488705     2363.26653493    2.00000000
+     7 =    -6554.70488705     2363.26653493    2.00000000
+     8 =    -6504.90494069     2413.06648129    2.00000000
+     9 =    -6504.90494069     2413.06648129    2.00000000
+    10 =    -6504.90494069     2413.06648129    2.00000000
+    11 =    -6299.93916833     2618.03225366    2.00000000
+ Tucker optimization: Iteration    1
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.464167266065
+ Get gramian for block 1  size:  (1, 1)  trace:   0.464167266065
+ Get gramian for block 2  size:  (1, 1)  trace:   0.464167266065
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000174868553
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000174868553
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000174868553
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000047169027
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000047169027
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000047169027
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000174869454
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000174869454
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000174869454
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253147532184
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253147532184
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253147532184
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029149647798
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029149647798
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029149647798
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253138646920
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253138646920
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253138646920
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71763239 
+   1            0.07551101 
+   2            0.07551101 
+   3            0.07551101 
+   4            0.01145933 
+   5            0.01145933 
+   6            0.01145933 
+   7            0.00313531 
+   8            0.00313531 
+   9            0.00313531 
+   10           0.00304425 
+   11           0.00180129 
+   12           0.00180129 
+   13           0.00180129 
+   14           0.00180129 
+   15           0.00180129 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49368814 
+   1            0.13206345 
+   2            0.13206345 
+   3            0.13206345 
+   4            0.02253329 
+   5            0.02253329 
+   6            0.02253329 
+   7            0.00617880 
+   8            0.00617880 
+   9            0.00617880 
+   10           0.00597300 
+   11           0.00360245 
+   12           0.00360245 
+   13           0.00360245 
+   14           0.00360245 
+   15           0.00360245 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71764127 
+   1            0.07550886 
+   2            0.07550886 
+   3            0.07550886 
+   4            0.01145891 
+   5            0.01145891 
+   6            0.01145891 
+   7            0.00313515 
+   8            0.00313515 
+   9            0.00313515 
+   10           0.00304406 
+   11           0.00180118 
+   12           0.00180118 
+   13           0.00180118 
+   14           0.00180118 
+   15           0.00180118 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46416727
+ Davidson correction :                        -2664.78122891 
+ Zeroth-order energy: -6612.78844226
+ Second-order energy: -10000.23948028
+ State              Energy          Relative          <S2>
+     0 =    -8921.16592528        0.00000000    0.00000000
+     1 =    -7649.08946344     1272.07646184    2.00000000
+     2 =    -7649.08946344     1272.07646184    2.00000000
+     3 =    -7649.08946344     1272.07646184    2.00000000
+     4 =    -6853.78209066     2067.38383462    0.00000000
+     5 =    -6550.77836808     2370.38755720    2.00000000
+     6 =    -6550.77836808     2370.38755720    2.00000000
+     7 =    -6550.77836808     2370.38755720    2.00000000
+     8 =    -6515.82621652     2405.33970876    2.00000000
+     9 =    -6515.82621652     2405.33970876    2.00000000
+    10 =    -6515.82621652     2405.33970876    2.00000000
+    11 =    -6297.59147508     2623.57445020    2.00000000
+ Tucker optimization: Iteration    2
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.464039535932
+ Get gramian for block 1  size:  (1, 1)  trace:   0.464039535932
+ Get gramian for block 2  size:  (1, 1)  trace:   0.464039535932
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000055804433
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000055804433
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000055804433
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000015732888
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000015732888
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000015732888
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000055806365
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000055806365
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000055806365
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253201512507
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253201512507
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253201512507
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029438967909
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029438967909
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029438967909
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253192639966
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253192639966
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253192639966
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71733698 
+   1            0.07571307 
+   2            0.07571307 
+   3            0.07571307 
+   4            0.01137630 
+   5            0.01137630 
+   6            0.01137630 
+   7            0.00314051 
+   8            0.00314051 
+   9            0.00314051 
+   10           0.00297866 
+   11           0.00179895 
+   12           0.00179895 
+   13           0.00179895 
+   14           0.00179895 
+   15           0.00179895 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49359744 
+   1            0.13225581 
+   2            0.13225581 
+   3            0.13225581 
+   4            0.02238534 
+   5            0.02238534 
+   6            0.02238534 
+   7            0.00618996 
+   8            0.00618996 
+   9            0.00618996 
+   10           0.00592036 
+   11           0.00359777 
+   12           0.00359777 
+   13           0.00359777 
+   14           0.00359777 
+   15           0.00359777 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71734586 
+   1            0.07571092 
+   2            0.07571092 
+   3            0.07571092 
+   4            0.01137589 
+   5            0.01137589 
+   6            0.01137589 
+   7            0.00314034 
+   8            0.00314034 
+   9            0.00314034 
+   10           0.00297847 
+   11           0.00179884 
+   12           0.00179884 
+   13           0.00179884 
+   14           0.00179884 
+   15           0.00179884 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46403954
+ Davidson correction :                        -2671.35818935 
+ Zeroth-order energy: -6609.07139690
+ Second-order energy: -9626.59523938
+ State              Energy          Relative          <S2>
+     0 =    -8921.95806970        0.00000000    0.00000000
+     1 =    -7649.09310737     1272.86496233    2.00000000
+     2 =    -7649.09310737     1272.86496233    2.00000000
+     3 =    -7649.09310737     1272.86496233    2.00000000
+     4 =    -6848.89270268     2073.06536702    0.00000000
+     5 =    -6547.62670782     2374.33136188    2.00000000
+     6 =    -6547.62670782     2374.33136188    2.00000000
+     7 =    -6547.62670782     2374.33136188    2.00000000
+     8 =    -6519.86612993     2402.09193977    2.00000000
+     9 =    -6519.86612993     2402.09193977    2.00000000
+    10 =    -6519.86612993     2402.09193977    2.00000000
+    11 =    -6295.76447682     2626.19359288    2.00000000
+ Tucker optimization: Iteration    3
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463926306941
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463926306941
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463926306941
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000017900706
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000017900706
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000017900706
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000005012222
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000005012222
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000005012222
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000017901797
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000017901797
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000017901797
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253220252379
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253220252379
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253220252379
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029601236076
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029601236076
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029601236076
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253211389879
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253211389879
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253211389879
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71717128 
+   1            0.07582256 
+   2            0.07582256 
+   3            0.07582256 
+   4            0.01132921 
+   5            0.01132921 
+   6            0.01132921 
+   7            0.00314329 
+   8            0.00314329 
+   9            0.00314329 
+   10           0.00295602 
+   11           0.00179750 
+   12           0.00179750 
+   13           0.00179750 
+   14           0.00179750 
+   15           0.00179750 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49356567 
+   1            0.13235607 
+   2            0.13235607 
+   3            0.13235607 
+   4            0.02230123 
+   5            0.02230123 
+   6            0.02230123 
+   7            0.00619599 
+   8            0.00619599 
+   9            0.00619599 
+   10           0.00590001 
+   11           0.00359489 
+   12           0.00359489 
+   13           0.00359489 
+   14           0.00359489 
+   15           0.00359489 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71718015 
+   1            0.07582042 
+   2            0.07582042 
+   3            0.07582042 
+   4            0.01132879 
+   5            0.01132879 
+   6            0.01132879 
+   7            0.00314313 
+   8            0.00314313 
+   9            0.00314313 
+   10           0.00295584 
+   11           0.00179740 
+   12           0.00179740 
+   13           0.00179740 
+   14           0.00179740 
+   15           0.00179740 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46392631
+ Davidson correction :                        -2676.05428583 
+ Zeroth-order energy: -6606.23644278
+ Second-order energy: -9935.40249866
+ State              Energy          Relative          <S2>
+     0 =    -8922.13442112        0.00000000    0.00000000
+     1 =    -7648.96618428     1273.16823683    2.00000000
+     2 =    -7648.96618428     1273.16823683    2.00000000
+     3 =    -7648.96618428     1273.16823683    2.00000000
+     4 =    -6845.88958469     2076.24483643    0.00000000
+     5 =    -6545.60808275     2376.52633837    2.00000000
+     6 =    -6545.60808275     2376.52633837    2.00000000
+     7 =    -6545.60808275     2376.52633837    2.00000000
+     8 =    -6521.85771128     2400.27670983    2.00000000
+     9 =    -6521.85771128     2400.27670983    2.00000000
+    10 =    -6521.85771128     2400.27670983    2.00000000
+    11 =    -6294.60267875     2627.53174237    2.00000000
+ Tucker optimization: Iteration    4
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463849450307
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463849450307
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463849450307
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000005739828
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000005739828
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000005739828
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000001603454
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000001603454
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000001603454
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000005740315
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000005740315
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000005740315
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253227042778
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253227042778
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253227042778
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029692234450
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029692234450
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029692234450
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253218188869
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253218188869
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253218188869
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71707841 
+   1            0.07588280 
+   2            0.07588280 
+   3            0.07588280 
+   4            0.01130253 
+   5            0.01130253 
+   6            0.01130253 
+   7            0.00314483 
+   8            0.00314483 
+   9            0.00314483 
+   10           0.00294788 
+   11           0.00179665 
+   12           0.00179665 
+   13           0.00179665 
+   14           0.00179665 
+   15           0.00179665 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49355391 
+   1            0.13240997 
+   2            0.13240997 
+   3            0.13240997 
+   4            0.02225351 
+   5            0.02225351 
+   6            0.02225351 
+   7            0.00619934 
+   8            0.00619934 
+   9            0.00619934 
+   10           0.00589175 
+   11           0.00359318 
+   12           0.00359318 
+   13           0.00359318 
+   14           0.00359318 
+   15           0.00359318 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71708726 
+   1            0.07588066 
+   2            0.07588066 
+   3            0.07588066 
+   4            0.01130212 
+   5            0.01130212 
+   6            0.01130212 
+   7            0.00314466 
+   8            0.00314466 
+   9            0.00314466 
+   10           0.00294769 
+   11           0.00179655 
+   12           0.00179655 
+   13           0.00179655 
+   14           0.00179655 
+   15           0.00179655 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46384945
+ Davidson correction :                        -2679.01596441 
+ Zeroth-order energy: -6604.40044631
+ Second-order energy: -9740.65439816
+ State              Energy          Relative          <S2>
+     0 =    -8922.14512301        0.00000000    0.00000000
+     1 =    -7648.85314450     1273.29197851    2.00000000
+     2 =    -7648.85314450     1273.29197851    2.00000000
+     3 =    -7648.85314450     1273.29197851    2.00000000
+     4 =    -6844.11081915     2078.03430386    0.00000000
+     5 =    -6544.38784110     2377.75728190    2.00000000
+     6 =    -6544.38784110     2377.75728190    2.00000000
+     7 =    -6544.38784110     2377.75728190    2.00000000
+     8 =    -6522.88314231     2399.26198070    2.00000000
+     9 =    -6522.88314231     2399.26198070    2.00000000
+    10 =    -6522.88314231     2399.26198070    2.00000000
+    11 =    -6293.90325913     2628.24186387    2.00000000
+ Tucker optimization: Iteration    5
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463801842892
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463801842892
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463801842892
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000001840463
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000001840463
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000001840463
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000513536
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000513536
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000513536
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000001840659
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000001840659
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000001840659
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253229663310
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253229663310
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253229663310
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029743483114
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029743483114
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029743483114
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253220816026
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253220816026
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253220816026
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71702611 
+   1            0.07591634 
+   2            0.07591634 
+   3            0.07591634 
+   4            0.01128743 
+   5            0.01128743 
+   6            0.01128743 
+   7            0.00314568 
+   8            0.00314568 
+   9            0.00314568 
+   10           0.00294477 
+   11           0.00179615 
+   12           0.00179615 
+   13           0.00179615 
+   14           0.00179615 
+   15           0.00179615 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354925 
+   1            0.13243958 
+   2            0.13243958 
+   3            0.13243958 
+   4            0.02222645 
+   5            0.02222645 
+   6            0.02222645 
+   7            0.00620120 
+   8            0.00620120 
+   9            0.00620120 
+   10           0.00588811 
+   11           0.00359219 
+   12           0.00359219 
+   13           0.00359219 
+   14           0.00359219 
+   15           0.00359219 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71703496 
+   1            0.07591420 
+   2            0.07591420 
+   3            0.07591420 
+   4            0.01128702 
+   5            0.01128702 
+   6            0.01128702 
+   7            0.00314552 
+   8            0.00314552 
+   9            0.00314552 
+   10           0.00294458 
+   11           0.00179605 
+   12           0.00179605 
+   13           0.00179605 
+   14           0.00179605 
+   15           0.00179605 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46380184
+ Davidson correction :                        -2680.79022457 
+ Zeroth-order energy: -6603.28689465
+ Second-order energy: -9777.97594477
+ State              Energy          Relative          <S2>
+     0 =    -8922.12262745        0.00000000    0.00000000
+     1 =    -7648.77597877     1273.34664868    2.00000000
+     2 =    -7648.77597877     1273.34664868    2.00000000
+     3 =    -7648.77597877     1273.34664868    2.00000000
+     4 =    -6843.07871005     2079.04391740    0.00000000
+     5 =    -6543.67212025     2378.45050720    2.00000000
+     6 =    -6543.67212025     2378.45050720    2.00000000
+     7 =    -6543.67212025     2378.45050720    2.00000000
+     8 =    -6523.43115685     2398.69147060    2.00000000
+     9 =    -6523.43115685     2398.69147060    2.00000000
+    10 =    -6523.43115685     2398.69147060    2.00000000
+    11 =    -6293.49395685     2628.62867060    2.00000000
+ Tucker optimization: Iteration    6
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463773575308
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463773575308
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463773575308
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000590158
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000590158
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000590158
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000164568
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000164568
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000164568
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000590232
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000590232
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000590232
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253230754476
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253230754476
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253230754476
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029772413386
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029772413386
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029772413386
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253221911872
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253221911872
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253221911872
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71699659 
+   1            0.07593515 
+   2            0.07593515 
+   3            0.07593515 
+   4            0.01127888 
+   5            0.01127888 
+   6            0.01127888 
+   7            0.00314617 
+   8            0.00314617 
+   9            0.00314617 
+   10           0.00294349 
+   11           0.00179587 
+   12           0.00179587 
+   13           0.00179587 
+   14           0.00179587 
+   15           0.00179587 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354725 
+   1            0.13245605 
+   2            0.13245605 
+   3            0.13245605 
+   4            0.02221112 
+   5            0.02221112 
+   6            0.02221112 
+   7            0.00620225 
+   8            0.00620225 
+   9            0.00620225 
+   10           0.00588638 
+   11           0.00359162 
+   12           0.00359162 
+   13           0.00359162 
+   14           0.00359162 
+   15           0.00359162 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71700544 
+   1            0.07593301 
+   2            0.07593301 
+   3            0.07593301 
+   4            0.01127846 
+   5            0.01127846 
+   6            0.01127846 
+   7            0.00314600 
+   8            0.00314600 
+   9            0.00314600 
+   10           0.00294330 
+   11           0.00179577 
+   12           0.00179577 
+   13           0.00179577 
+   14           0.00179577 
+   15           0.00179577 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46377358
+ Davidson correction :                        -2681.82608926 
+ Zeroth-order energy: -6602.63265666
+ Second-order energy: -9754.20695477
+ State              Energy          Relative          <S2>
+     0 =    -8922.10073301        0.00000000    0.00000000
+     1 =    -7648.72807126     1273.37266175    2.00000000
+     2 =    -7648.72807126     1273.37266175    2.00000000
+     3 =    -7648.72807126     1273.37266175    2.00000000
+     4 =    -6842.48631194     2079.61442106    0.00000000
+     5 =    -6543.25888838     2378.84184463    2.00000000
+     6 =    -6543.25888838     2378.84184463    2.00000000
+     7 =    -6543.25888838     2378.84184463    2.00000000
+     8 =    -6523.73101658     2398.36971643    2.00000000
+     9 =    -6523.73101658     2398.36971643    2.00000000
+    10 =    -6523.73101658     2398.36971643    2.00000000
+    11 =    -6293.25794312     2628.84278989    2.00000000
+ Tucker optimization: Iteration    7
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463757148511
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463757148511
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463757148511
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000189244
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000189244
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000189244
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000052754
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000052754
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000052754
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000189271
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000189271
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000189271
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231246390
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231246390
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231246390
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029788766928
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029788766928
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029788766928
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222406903
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222406903
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222406903
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71697991 
+   1            0.07594574 
+   2            0.07594574 
+   3            0.07594574 
+   4            0.01127403 
+   5            0.01127403 
+   6            0.01127403 
+   7            0.00314644 
+   8            0.00314644 
+   9            0.00314644 
+   10           0.00294292 
+   11           0.00179571 
+   12           0.00179571 
+   13           0.00179571 
+   14           0.00179571 
+   15           0.00179571 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354632 
+   1            0.13246528 
+   2            0.13246528 
+   3            0.13246528 
+   4            0.02220244 
+   5            0.02220244 
+   6            0.02220244 
+   7            0.00620285 
+   8            0.00620285 
+   9            0.00620285 
+   10           0.00588551 
+   11           0.00359130 
+   12           0.00359130 
+   13           0.00359130 
+   14           0.00359130 
+   15           0.00359130 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71698875 
+   1            0.07594361 
+   2            0.07594361 
+   3            0.07594361 
+   4            0.01127362 
+   5            0.01127362 
+   6            0.01127362 
+   7            0.00314627 
+   8            0.00314627 
+   9            0.00314627 
+   10           0.00294273 
+   11           0.00179560 
+   12           0.00179560 
+   13           0.00179560 
+   14           0.00179560 
+   15           0.00179560 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46375715
+ Davidson correction :                        -2682.42266592 
+ Zeroth-order energy: -6602.25459275
+ Second-order energy: -9956.64717389
+ State              Energy          Relative          <S2>
+     0 =    -8922.08539925        0.00000000    0.00000000
+     1 =    -7648.69959348     1273.38580576    2.00000000
+     2 =    -7648.69959348     1273.38580576    2.00000000
+     3 =    -7648.69959348     1273.38580576    2.00000000
+     4 =    -6842.14830783     2079.93709141    0.00000000
+     5 =    -6543.02233756     2379.06306169    2.00000000
+     6 =    -6543.02233756     2379.06306169    2.00000000
+     7 =    -6543.02233756     2379.06306169    2.00000000
+     8 =    -6523.89746626     2398.18793299    2.00000000
+     9 =    -6523.89746626     2398.18793299    2.00000000
+    10 =    -6523.89746626     2398.18793299    2.00000000
+    11 =    -6293.12293690     2628.96246234    2.00000000
+ Tucker optimization: Iteration    8
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463747711825
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463747711825
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463747711825
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000060685
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000060685
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000060685
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000016914
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000016914
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000016914
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000060695
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000060695
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000060695
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231484519
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231484519
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231484519
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029798018333
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029798018333
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029798018333
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222647030
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222647030
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222647030
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71697047 
+   1            0.07595172 
+   2            0.07595172 
+   3            0.07595172 
+   4            0.01127129 
+   5            0.01127129 
+   6            0.01127129 
+   7            0.00314659 
+   8            0.00314659 
+   9            0.00314659 
+   10           0.00294264 
+   11           0.00179562 
+   12           0.00179562 
+   13           0.00179562 
+   14           0.00179562 
+   15           0.00179562 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354586 
+   1            0.13247047 
+   2            0.13247047 
+   3            0.13247047 
+   4            0.02219752 
+   5            0.02219752 
+   6            0.02219752 
+   7            0.00620318 
+   8            0.00620318 
+   9            0.00620318 
+   10           0.00588505 
+   11           0.00359111 
+   12           0.00359111 
+   13           0.00359111 
+   14           0.00359111 
+   15           0.00359111 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71697931 
+   1            0.07594959 
+   2            0.07594959 
+   3            0.07594959 
+   4            0.01127088 
+   5            0.01127088 
+   6            0.01127088 
+   7            0.00314643 
+   8            0.00314643 
+   9            0.00314643 
+   10           0.00294246 
+   11           0.00179551 
+   12           0.00179551 
+   13           0.00179551 
+   14           0.00179551 
+   15           0.00179551 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46374771
+ Davidson correction :                        -2682.76370018 
+ Zeroth-order energy: -6602.03807100
+ Second-order energy: -9830.85568454
+ State              Energy          Relative          <S2>
+     0 =    -8922.07577482        0.00000000    0.00000000
+     1 =    -7648.68303475     1273.39274007    2.00000000
+     2 =    -7648.68303475     1273.39274007    2.00000000
+     3 =    -7648.68303475     1273.39274007    2.00000000
+     4 =    -6841.95608779     2080.11968702    0.00000000
+     5 =    -6542.88756617     2379.18820865    2.00000000
+     6 =    -6542.88756617     2379.18820865    2.00000000
+     7 =    -6542.88756617     2379.18820865    2.00000000
+     8 =    -6523.99064848     2398.08512634    2.00000000
+     9 =    -6523.99064848     2398.08512634    2.00000000
+    10 =    -6523.99064848     2398.08512634    2.00000000
+    11 =    -6293.04605050     2629.02972431    2.00000000
+ Tucker optimization: Iteration    9
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463742324850
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463742324850
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463742324850
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000019460
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000019460
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000019460
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000005423
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000005423
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000005423
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000019464
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000019464
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000019464
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231606384
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231606384
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231606384
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029803254278
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029803254278
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029803254278
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222770140
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222770140
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222770140
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71696513 
+   1            0.07595510 
+   2            0.07595510 
+   3            0.07595510 
+   4            0.01126974 
+   5            0.01126974 
+   6            0.01126974 
+   7            0.00314668 
+   8            0.00314668 
+   9            0.00314668 
+   10           0.00294250 
+   11           0.00179556 
+   12           0.00179556 
+   13           0.00179556 
+   14           0.00179556 
+   15           0.00179556 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354562 
+   1            0.13247341 
+   2            0.13247341 
+   3            0.13247341 
+   4            0.02219474 
+   5            0.02219474 
+   6            0.02219474 
+   7            0.00620337 
+   8            0.00620337 
+   9            0.00620337 
+   10           0.00588480 
+   11           0.00359101 
+   12           0.00359101 
+   13           0.00359101 
+   14           0.00359101 
+   15           0.00359101 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71697397 
+   1            0.07595297 
+   2            0.07595297 
+   3            0.07595297 
+   4            0.01126932 
+   5            0.01126932 
+   6            0.01126932 
+   7            0.00314651 
+   8            0.00314651 
+   9            0.00314651 
+   10           0.00294232 
+   11           0.00179546 
+   12           0.00179546 
+   13           0.00179546 
+   14           0.00179546 
+   15           0.00179546 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46374232
+ Davidson correction :                        -2682.95785015 
+ Zeroth-order energy: -6601.91467859
+ Second-order energy: -9854.74765061
+ State              Energy          Relative          <S2>
+     0 =    -8922.07002285        0.00000000    0.00000000
+     1 =    -7648.67351921     1273.39650364    2.00000000
+     2 =    -7648.67351921     1273.39650364    2.00000000
+     3 =    -7648.67351921     1273.39650364    2.00000000
+     4 =    -6841.84697546     2080.22304739    0.00000000
+     5 =    -6542.81098515     2379.25903770    2.00000000
+     6 =    -6542.81098515     2379.25903770    2.00000000
+     7 =    -6542.81098515     2379.25903770    2.00000000
+     8 =    -6524.04307144     2398.02695141    2.00000000
+     9 =    -6524.04307144     2398.02695141    2.00000000
+    10 =    -6524.04307144     2398.02695141    2.00000000
+    11 =    -6293.00237151     2629.06765134    2.00000000
+ Tucker optimization: Iteration   10
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463739260450
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463739260450
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463739260450
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000006241
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000006241
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000006241
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000001739
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000001739
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000001739
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000006242
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000006242
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000006242
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231671221
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231671221
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231671221
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029806218368
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029806218368
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029806218368
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222835740
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222835740
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222835740
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71696211 
+   1            0.07595702 
+   2            0.07595702 
+   3            0.07595702 
+   4            0.01126886 
+   5            0.01126886 
+   6            0.01126886 
+   7            0.00314672 
+   8            0.00314672 
+   9            0.00314672 
+   10           0.00294243 
+   11           0.00179553 
+   12           0.00179553 
+   13           0.00179553 
+   14           0.00179553 
+   15           0.00179553 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354549 
+   1            0.13247507 
+   2            0.13247507 
+   3            0.13247507 
+   4            0.02219316 
+   5            0.02219316 
+   6            0.02219316 
+   7            0.00620348 
+   8            0.00620348 
+   9            0.00620348 
+   10           0.00588466 
+   11           0.00359095 
+   12           0.00359095 
+   13           0.00359095 
+   14           0.00359095 
+   15           0.00359095 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71697094 
+   1            0.07595488 
+   2            0.07595488 
+   3            0.07595488 
+   4            0.01126844 
+   5            0.01126844 
+   6            0.01126844 
+   7            0.00314656 
+   8            0.00314656 
+   9            0.00314656 
+   10           0.00294225 
+   11           0.00179543 
+   12           0.00179543 
+   13           0.00179543 
+   14           0.00179543 
+   15           0.00179543 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373926
+ Davidson correction :                        -2683.06812420 
+ Zeroth-order energy: -6601.84455317
+ Second-order energy: -9848.43880134
+ State              Energy          Relative          <S2>
+     0 =    -8922.06666881        0.00000000    0.00000000
+     1 =    -7648.66808626     1273.39858256    2.00000000
+     2 =    -7648.66808626     1273.39858256    2.00000000
+     3 =    -7648.66808626     1273.39858256    2.00000000
+     4 =    -6841.78510291     2080.28156590    0.00000000
+     5 =    -6542.76753429     2379.29913452    2.00000000
+     6 =    -6542.76753429     2379.29913452    2.00000000
+     7 =    -6542.76753429     2379.29913452    2.00000000
+     8 =    -6524.07264734     2397.99402147    2.00000000
+     9 =    -6524.07264734     2397.99402147    2.00000000
+    10 =    -6524.07264734     2397.99402147    2.00000000
+    11 =    -6292.97759199     2629.08907682    2.00000000
+ Tucker optimization: Iteration   11
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463737520683
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463737520683
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463737520683
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000002001
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000002001
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000002001
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000558
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000558
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000558
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000002002
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000002002
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000002002
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231706594
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231706594
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231706594
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029807896590
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029807896590
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029807896590
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222871573
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222871573
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222871573
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71696040 
+   1            0.07595810 
+   2            0.07595810 
+   3            0.07595810 
+   4            0.01126836 
+   5            0.01126836 
+   6            0.01126836 
+   7            0.00314675 
+   8            0.00314675 
+   9            0.00314675 
+   10           0.00294239 
+   11           0.00179552 
+   12           0.00179552 
+   13           0.00179552 
+   14           0.00179552 
+   15           0.00179552 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354542 
+   1            0.13247600 
+   2            0.13247600 
+   3            0.13247600 
+   4            0.02219227 
+   5            0.02219227 
+   6            0.02219227 
+   7            0.00620354 
+   8            0.00620354 
+   9            0.00620354 
+   10           0.00588458 
+   11           0.00359091 
+   12           0.00359091 
+   13           0.00359091 
+   14           0.00359091 
+   15           0.00359091 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696923 
+   1            0.07595596 
+   2            0.07595596 
+   3            0.07595596 
+   4            0.01126795 
+   5            0.01126795 
+   6            0.01126795 
+   7            0.00314659 
+   8            0.00314659 
+   9            0.00314659 
+   10           0.00294221 
+   11           0.00179541 
+   12           0.00179541 
+   13           0.00179541 
+   14           0.00179541 
+   15           0.00179541 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373752
+ Davidson correction :                        -2683.13067673 
+ Zeroth-order energy: -6601.80476185
+ Second-order energy: -9715.05109859
+ State              Energy          Relative          <S2>
+     0 =    -8922.06473842        0.00000000    0.00000000
+     1 =    -7648.66499539     1273.39974303    2.00000000
+     2 =    -7648.66499539     1273.39974303    2.00000000
+     3 =    -7648.66499539     1273.39974303    2.00000000
+     4 =    -6841.75003839     2080.31470003    0.00000000
+     5 =    -6542.74290164     2379.32183678    2.00000000
+     6 =    -6542.74290164     2379.32183678    2.00000000
+     7 =    -6542.74290164     2379.32183678    2.00000000
+     8 =    -6524.08936038     2397.97537805    2.00000000
+     9 =    -6524.08936038     2397.97537805    2.00000000
+    10 =    -6524.08936038     2397.97537805    2.00000000
+    11 =    -6292.96354532     2629.10119311    2.00000000
+ Tucker optimization: Iteration   12
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463736534051
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463736534051
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463736534051
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000000642
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000642
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000642
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000179
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000179
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000179
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000642
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000642
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000000642
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231726192
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231726192
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231726192
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029808846849
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029808846849
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029808846849
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222891446
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222891446
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222891446
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71695943 
+   1            0.07595871 
+   2            0.07595871 
+   3            0.07595871 
+   4            0.01126808 
+   5            0.01126808 
+   6            0.01126808 
+   7            0.00314677 
+   8            0.00314677 
+   9            0.00314677 
+   10           0.00294237 
+   11           0.00179551 
+   12           0.00179551 
+   13           0.00179551 
+   14           0.00179551 
+   15           0.00179551 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354538 
+   1            0.13247653 
+   2            0.13247653 
+   3            0.13247653 
+   4            0.02219176 
+   5            0.02219176 
+   6            0.02219176 
+   7            0.00620357 
+   8            0.00620357 
+   9            0.00620357 
+   10           0.00588454 
+   11           0.00359089 
+   12           0.00359089 
+   13           0.00359089 
+   14           0.00359089 
+   15           0.00359089 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696826 
+   1            0.07595658 
+   2            0.07595658 
+   3            0.07595658 
+   4            0.01126766 
+   5            0.01126766 
+   6            0.01126766 
+   7            0.00314661 
+   8            0.00314661 
+   9            0.00314661 
+   10           0.00294218 
+   11           0.00179540 
+   12           0.00179540 
+   13           0.00179540 
+   14           0.00179540 
+   15           0.00179540 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373653
+ Davidson correction :                        -2683.16613341 
+ Zeroth-order energy: -6601.78220278
+ Second-order energy: -9994.16293244
+ State              Energy          Relative          <S2>
+     0 =    -8922.06363532        0.00000000    0.00000000
+     1 =    -7648.66324050     1273.40039482    2.00000000
+     2 =    -7648.66324050     1273.40039482    2.00000000
+     3 =    -7648.66324050     1273.40039482    2.00000000
+     4 =    -6841.73017315     2080.33346216    0.00000000
+     5 =    -6542.72894381     2379.33469151    2.00000000
+     6 =    -6542.72894381     2379.33469151    2.00000000
+     7 =    -6542.72894381     2379.33469151    2.00000000
+     8 =    -6524.09881341     2397.96482190    2.00000000
+     9 =    -6524.09881341     2397.96482190    2.00000000
+    10 =    -6524.09881341     2397.96482190    2.00000000
+    11 =    -6292.95558625     2629.10804907    2.00000000
+ Tucker optimization: Iteration   13
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463735974876
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463735974876
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463735974876
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000000206
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000206
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000206
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000057
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000057
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000057
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000206
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000206
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000000206
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231737149
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231737149
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231737149
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029809384939
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029809384939
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029809384939
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222902567
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222902567
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222902567
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71695888 
+   1            0.07595906 
+   2            0.07595906 
+   3            0.07595906 
+   4            0.01126792 
+   5            0.01126792 
+   6            0.01126792 
+   7            0.00314678 
+   8            0.00314678 
+   9            0.00314678 
+   10           0.00294235 
+   11           0.00179550 
+   12           0.00179550 
+   13           0.00179550 
+   14           0.00179550 
+   15           0.00179550 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354536 
+   1            0.13247683 
+   2            0.13247683 
+   3            0.13247683 
+   4            0.02219148 
+   5            0.02219148 
+   6            0.02219148 
+   7            0.00620359 
+   8            0.00620359 
+   9            0.00620359 
+   10           0.00588451 
+   11           0.00359088 
+   12           0.00359088 
+   13           0.00359088 
+   14           0.00359088 
+   15           0.00359088 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696771 
+   1            0.07595692 
+   2            0.07595692 
+   3            0.07595692 
+   4            0.01126751 
+   5            0.01126751 
+   6            0.01126751 
+   7            0.00314661 
+   8            0.00314661 
+   9            0.00314661 
+   10           0.00294217 
+   11           0.00179540 
+   12           0.00179540 
+   13           0.00179540 
+   14           0.00179540 
+   15           0.00179540 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373597
+ Davidson correction :                        -2683.18622300 
+ Zeroth-order energy: -6601.76941959
+ Second-order energy: -10023.31342424
+ State              Energy          Relative          <S2>
+     0 =    -8922.06300745        0.00000000    0.00000000
+     1 =    -7648.66224526     1273.40076219    2.00000000
+     2 =    -7648.66224526     1273.40076219    2.00000000
+     3 =    -7648.66224526     1273.40076219    2.00000000
+     4 =    -6841.71892093     2080.34408652    0.00000000
+     5 =    -6542.72103687     2379.34197058    2.00000000
+     6 =    -6542.72103687     2379.34197058    2.00000000
+     7 =    -6542.72103687     2379.34197058    2.00000000
+     8 =    -6524.10416292     2397.95884453    2.00000000
+     9 =    -6524.10416292     2397.95884453    2.00000000
+    10 =    -6524.10416292     2397.95884453    2.00000000
+    11 =    -6292.95107764     2629.11192981    2.00000000
+ Tucker optimization: Iteration   14
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463735658075
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463735658075
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463735658075
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000000066
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000066
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000066
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000018
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000018
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000018
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000066
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000066
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000000066
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231743309
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231743309
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231743309
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029809689643
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029809689643
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029809689643
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222908823
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222908823
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222908823
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71695857 
+   1            0.07595925 
+   2            0.07595925 
+   3            0.07595925 
+   4            0.01126783 
+   5            0.01126783 
+   6            0.01126783 
+   7            0.00314678 
+   8            0.00314678 
+   9            0.00314678 
+   10           0.00294235 
+   11           0.00179550 
+   12           0.00179550 
+   13           0.00179550 
+   14           0.00179550 
+   15           0.00179550 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354535 
+   1            0.13247700 
+   2            0.13247700 
+   3            0.13247700 
+   4            0.02219131 
+   5            0.02219131 
+   6            0.02219131 
+   7            0.00620360 
+   8            0.00620360 
+   9            0.00620360 
+   10           0.00588450 
+   11           0.00359088 
+   12           0.00359088 
+   13           0.00359088 
+   14           0.00359088 
+   15           0.00359088 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696740 
+   1            0.07595712 
+   2            0.07595712 
+   3            0.07595712 
+   4            0.01126741 
+   5            0.01126741 
+   6            0.01126741 
+   7            0.00314662 
+   8            0.00314662 
+   9            0.00314662 
+   10           0.00294216 
+   11           0.00179539 
+   12           0.00179539 
+   13           0.00179539 
+   14           0.00179539 
+   15           0.00179539 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373566
+ Davidson correction :                        -2683.19760301 
+ Zeroth-order energy: -6601.76217796
+ Second-order energy: -9754.20816474
+ State              Energy          Relative          <S2>
+     0 =    -8922.06265087        0.00000000    0.00000000
+     1 =    -7648.66168120     1273.40096967    2.00000000
+     2 =    -7648.66168120     1273.40096967    2.00000000
+     3 =    -7648.66168120     1273.40096967    2.00000000
+     4 =    -6841.71254803     2080.35010284    0.00000000
+     5 =    -6542.71655837     2379.34609250    2.00000000
+     6 =    -6542.71655837     2379.34609250    2.00000000
+     7 =    -6542.71655837     2379.34609250    2.00000000
+     8 =    -6524.10719112     2397.95545975    2.00000000
+     9 =    -6524.10719112     2397.95545975    2.00000000
+    10 =    -6524.10719112     2397.95545975    2.00000000
+    11 =    -6292.94852399     2629.11412688    2.00000000
+ Tucker optimization: Iteration   15
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463735478627
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463735478627
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463735478627
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000000021
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000021
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000021
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000006
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000006
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000006
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000021
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000021
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000000021
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231746782
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231746782
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231746782
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029809862191
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029809862191
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029809862191
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222912352
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222912352
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222912352
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71695839 
+   1            0.07595937 
+   2            0.07595937 
+   3            0.07595937 
+   4            0.01126778 
+   5            0.01126778 
+   6            0.01126778 
+   7            0.00314679 
+   8            0.00314679 
+   9            0.00314679 
+   10           0.00294234 
+   11           0.00179550 
+   12           0.00179550 
+   13           0.00179550 
+   14           0.00179550 
+   15           0.00179550 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354534 
+   1            0.13247710 
+   2            0.13247710 
+   3            0.13247710 
+   4            0.02219122 
+   5            0.02219122 
+   6            0.02219122 
+   7            0.00620361 
+   8            0.00620361 
+   9            0.00620361 
+   10           0.00588449 
+   11           0.00359087 
+   12           0.00359087 
+   13           0.00359087 
+   14           0.00359087 
+   15           0.00359087 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696723 
+   1            0.07595723 
+   2            0.07595723 
+   3            0.07595723 
+   4            0.01126736 
+   5            0.01126736 
+   6            0.01126736 
+   7            0.00314662 
+   8            0.00314662 
+   9            0.00314662 
+   10           0.00294216 
+   11           0.00179539 
+   12           0.00179539 
+   13           0.00179539 
+   14           0.00179539 
+   15           0.00179539 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373548
+ Davidson correction :                        -2683.20404850 
+ Zeroth-order energy: -6601.75807625
+ Second-order energy: -9804.89529340
+ State              Energy          Relative          <S2>
+     0 =    -8922.06244861        0.00000000    0.00000000
+     1 =    -7648.66136162     1273.40108699    2.00000000
+     2 =    -7648.66136162     1273.40108699    2.00000000
+     3 =    -7648.66136162     1273.40108699    2.00000000
+     4 =    -6841.70893884     2080.35350977    0.00000000
+     5 =    -6542.71402195     2379.34842666    2.00000000
+     6 =    -6542.71402195     2379.34842666    2.00000000
+     7 =    -6542.71402195     2379.34842666    2.00000000
+     8 =    -6524.10890558     2397.95354303    2.00000000
+     9 =    -6524.10890558     2397.95354303    2.00000000
+    10 =    -6524.10890558     2397.95354303    2.00000000
+    11 =    -6292.94707774     2629.11537088    2.00000000
+ Tucker optimization: Iteration   16
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463735376992
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463735376992
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463735376992
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000000007
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000007
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000007
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000002
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000002
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000002
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000007
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000007
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000000007
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231748744
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231748744
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231748744
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029809959902
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029809959902
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029809959902
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222914347
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222914347
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222914347
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71695829 
+   1            0.07595943 
+   2            0.07595943 
+   3            0.07595943 
+   4            0.01126775 
+   5            0.01126775 
+   6            0.01126775 
+   7            0.00314679 
+   8            0.00314679 
+   9            0.00314679 
+   10           0.00294234 
+   11           0.00179550 
+   12           0.00179550 
+   13           0.00179550 
+   14           0.00179550 
+   15           0.00179550 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354534 
+   1            0.13247716 
+   2            0.13247716 
+   3            0.13247716 
+   4            0.02219117 
+   5            0.02219117 
+   6            0.02219117 
+   7            0.00620361 
+   8            0.00620361 
+   9            0.00620361 
+   10           0.00588449 
+   11           0.00359087 
+   12           0.00359087 
+   13           0.00359087 
+   14           0.00359087 
+   15           0.00359087 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696713 
+   1            0.07595729 
+   2            0.07595729 
+   3            0.07595729 
+   4            0.01126733 
+   5            0.01126733 
+   6            0.01126733 
+   7            0.00314662 
+   8            0.00314662 
+   9            0.00314662 
+   10           0.00294216 
+   11           0.00179539 
+   12           0.00179539 
+   13           0.00179539 
+   14           0.00179539 
+   15           0.00179539 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373538
+ Davidson correction :                        -2683.20769888 
+ Zeroth-order energy: -6601.75575323
+ Second-order energy: -9972.90995593
+ State              Energy          Relative          <S2>
+     0 =    -8922.06233397        0.00000000    0.00000000
+     1 =    -7648.66118060     1273.40115337    2.00000000
+     2 =    -7648.66118060     1273.40115337    2.00000000
+     3 =    -7648.66118060     1273.40115337    2.00000000
+     4 =    -6841.70689490     2080.35543907    0.00000000
+     5 =    -6542.71258552     2379.34974846    2.00000000
+     6 =    -6542.71258552     2379.34974846    2.00000000
+     7 =    -6542.71258552     2379.34974846    2.00000000
+     8 =    -6524.10987634     2397.95245763    2.00000000
+     9 =    -6524.10987634     2397.95245763    2.00000000
+    10 =    -6524.10987634     2397.95245763    2.00000000
+    11 =    -6292.94625869     2629.11607528    2.00000000
+ Tucker optimization: Iteration   17
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463735319433
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463735319433
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463735319433
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000000002
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000002
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000002
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000001
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000001
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000001
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000002
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000002
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000000002
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231749853
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231749853
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231749853
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029810015234
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029810015234
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029810015234
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222915475
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222915475
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222915475
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71695823 
+   1            0.07595946 
+   2            0.07595946 
+   3            0.07595946 
+   4            0.01126773 
+   5            0.01126773 
+   6            0.01126773 
+   7            0.00314679 
+   8            0.00314679 
+   9            0.00314679 
+   10           0.00294234 
+   11           0.00179550 
+   12           0.00179550 
+   13           0.00179550 
+   14           0.00179550 
+   15           0.00179550 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354533 
+   1            0.13247719 
+   2            0.13247719 
+   3            0.13247719 
+   4            0.02219114 
+   5            0.02219114 
+   6            0.02219114 
+   7            0.00620362 
+   8            0.00620362 
+   9            0.00620362 
+   10           0.00588448 
+   11           0.00359087 
+   12           0.00359087 
+   13           0.00359087 
+   14           0.00359087 
+   15           0.00359087 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696707 
+   1            0.07595733 
+   2            0.07595733 
+   3            0.07595733 
+   4            0.01126732 
+   5            0.01126732 
+   6            0.01126732 
+   7            0.00314662 
+   8            0.00314662 
+   9            0.00314662 
+   10           0.00294216 
+   11           0.00179539 
+   12           0.00179539 
+   13           0.00179539 
+   14           0.00179539 
+   15           0.00179539 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373532
+ Davidson correction :                        -2683.20976616 
+ Zeroth-order energy: -6601.75443764
+ Second-order energy: -9998.88707665
+ State              Energy          Relative          <S2>
+     0 =    -8922.06226902        0.00000000    0.00000000
+     1 =    -7648.66107808     1273.40119094    2.00000000
+     2 =    -7648.66107808     1273.40119094    2.00000000
+     3 =    -7648.66107808     1273.40119094    2.00000000
+     4 =    -6841.70573741     2080.35653161    0.00000000
+     5 =    -6542.71177205     2379.35049697    2.00000000
+     6 =    -6542.71177205     2379.35049697    2.00000000
+     7 =    -6542.71177205     2379.35049697    2.00000000
+     8 =    -6524.11042604     2397.95184298    2.00000000
+     9 =    -6524.11042604     2397.95184298    2.00000000
+    10 =    -6524.11042604     2397.95184298    2.00000000
+    11 =    -6292.94579486     2629.11647416    2.00000000
+ Tucker optimization: Iteration   18
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463735286836
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463735286836
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463735286836
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000000001
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000001
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000001
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000000
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000000
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000001
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000001
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000000001
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231750481
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231750481
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231750481
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029810046568
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029810046568
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029810046568
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222916114
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222916114
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222916114
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71695820 
+   1            0.07595948 
+   2            0.07595948 
+   3            0.07595948 
+   4            0.01126772 
+   5            0.01126772 
+   6            0.01126772 
+   7            0.00314679 
+   8            0.00314679 
+   9            0.00314679 
+   10           0.00294234 
+   11           0.00179550 
+   12           0.00179550 
+   13           0.00179550 
+   14           0.00179550 
+   15           0.00179550 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354533 
+   1            0.13247720 
+   2            0.13247720 
+   3            0.13247720 
+   4            0.02219112 
+   5            0.02219112 
+   6            0.02219112 
+   7            0.00620362 
+   8            0.00620362 
+   9            0.00620362 
+   10           0.00588448 
+   11           0.00359087 
+   12           0.00359087 
+   13           0.00359087 
+   14           0.00359087 
+   15           0.00359087 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696704 
+   1            0.07595735 
+   2            0.07595735 
+   3            0.07595735 
+   4            0.01126731 
+   5            0.01126731 
+   6            0.01126731 
+   7            0.00314663 
+   8            0.00314663 
+   9            0.00314663 
+   10           0.00294216 
+   11           0.00179539 
+   12           0.00179539 
+   13           0.00179539 
+   14           0.00179539 
+   15           0.00179539 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373529
+ Davidson correction :                        -2683.21093688 
+ Zeroth-order energy: -6601.75369260
+ Second-order energy: -9998.00580186
+ State              Energy          Relative          <S2>
+     0 =    -8922.06223223        0.00000000    0.00000000
+     1 =    -7648.66102001     1273.40121221    2.00000000
+     2 =    -7648.66102001     1273.40121221    2.00000000
+     3 =    -7648.66102001     1273.40121221    2.00000000
+     4 =    -6841.70508193     2080.35715030    0.00000000
+     5 =    -6542.71131138     2379.35092085    2.00000000
+     6 =    -6542.71131138     2379.35092085    2.00000000
+     7 =    -6542.71131138     2379.35092085    2.00000000
+     8 =    -6524.11073731     2397.95149492    2.00000000
+     9 =    -6524.11073731     2397.95149492    2.00000000
+    10 =    -6524.11073731     2397.95149492    2.00000000
+    11 =    -6292.94553219     2629.11670004    2.00000000
+ Tucker optimization: Iteration   19
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (1, 1)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+     Size of Hamitonian block:  (15, 15)
+     Size of Hamitonian block:  (1, 15)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 2)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 2)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(1, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(2, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <0|H|(2, 3)>
+     Size of Hamitonian block:  (1, 225)
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (1, 225)
+
+ Form Hamiltonian for <(1, 2)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(1, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 2)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 2)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|1>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(1, 3)|H|(2, 3)>
+     Size of Hamitonian block:  (225, 225)
+     Size of Hamitonian block:  (225, 225)
+
+ Form Hamiltonian for <(1, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|2>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+
+ Form Hamiltonian for <(2, 3)|H|3>
+     Size of Hamitonian block:  (15, 225)
+     Size of Hamitonian block:  (15, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+(1, 46) (1, 225)
+(1, 271) (1, 225)
+(1, 496) (1, 225)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (721, 721)
+
+ Dimensions of all the spaces
+ P_dims   1
+ Q_dims   [15, 15, 15]
+ QQ_dims  [225, 225, 225]
+ QQQ_dims [3375]
+
+ P,P block
+ Get gramian for block 0  size:  (1, 1)  trace:   0.463735268376
+ Get gramian for block 1  size:  (1, 1)  trace:   0.463735268376
+ Get gramian for block 2  size:  (1, 1)  trace:   0.463735268376
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     1 x 15     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    15 x 15     trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000000
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000000
+   Get gramian for block:  1  size:    15 x 15     trace:   0.000000000000
+   Get gramian for block:  2  size:     1 x 1      trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  0  size:     1 x 1      trace:   0.000000000000
+   Get gramian for block:  1  size:     1 x 1      trace:   0.000000000000
+   Get gramian for block:  2  size:    15 x 15     trace:   0.000000000000
+
+ Q,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:  -0.000000000000
+ QQ =  (0, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:   0.000000000000
+   Get gramian for block:  0  size:     1 x 15     trace:   0.000000000000
+ QQ =  (1, 2)
+   Get gramian for block:  2  size:     1 x 15     trace:  -0.000000000000
+   Get gramian for block:  1  size:     1 x 15     trace:  -0.000000000000
+
+ QQ,QQ block
+ QQ =  (0, 1)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.253231750836
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253231750836
+   Get gramian for block:  2  size:     1 x 1      trace:   0.253231750836
+ QQ =  (0, 2)
+   Get gramian for block:  0  size:    15 x 15     trace:   0.029810064312
+   Get gramian for block:  1  size:     1 x 1      trace:   0.029810064312
+   Get gramian for block:  2  size:    15 x 15     trace:   0.029810064312
+ QQ =  (1, 2)
+   Get gramian for block:  0  size:     1 x 1      trace:   0.253222916475
+   Get gramian for block:  1  size:    15 x 15     trace:   0.253222916475
+   Get gramian for block:  2  size:    15 x 15     trace:   0.253222916475
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.71695818 
+   1            0.07595950 
+   2            0.07595950 
+   3            0.07595950 
+   4            0.01126772 
+   5            0.01126772 
+   6            0.01126772 
+   7            0.00314679 
+   8            0.00314679 
+   9            0.00314679 
+   10           0.00294234 
+   11           0.00179550 
+   12           0.00179550 
+   13           0.00179550 
+   14           0.00179550 
+   15           0.00179550 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49354533 
+   1            0.13247721 
+   2            0.13247721 
+   3            0.13247721 
+   4            0.02219111 
+   5            0.02219111 
+   6            0.02219111 
+   7            0.00620362 
+   8            0.00620362 
+   9            0.00620362 
+   10           0.00588448 
+   11           0.00359087 
+   12           0.00359087 
+   13           0.00359087 
+   14           0.00359087 
+   15           0.00359087 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.71696702 
+   1            0.07595736 
+   2            0.07595736 
+   3            0.07595736 
+   4            0.01126730 
+   5            0.01126730 
+   6            0.01126730 
+   7            0.00314663 
+   8            0.00314663 
+   9            0.00314663 
+   10           0.00294216 
+   11           0.00179539 
+   12           0.00179539 
+   13           0.00179539 
+   14           0.00179539 
+   15           0.00179539 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.46373527
+ Davidson correction :                        -2683.21159985 
+ Zeroth-order energy: -6601.75327069
+ Second-order energy: -9836.41699232
+ State              Energy          Relative          <S2>
+     0 =    -8922.06221139        0.00000000    0.00000000
+     1 =    -7648.66098713     1273.40122426    2.00000000
+     2 =    -7648.66098713     1273.40122426    2.00000000
+     3 =    -7648.66098713     1273.40122426    2.00000000
+     4 =    -6841.70471073     2080.35750066    0.00000000
+     5 =    -6542.71105051     2379.35116088    2.00000000
+     6 =    -6542.71105051     2379.35116088    2.00000000
+     7 =    -6542.71105051     2379.35116088    2.00000000
+     8 =    -6524.11091358     2397.95129781    2.00000000
+     9 =    -6524.11091358     2397.95129781    2.00000000
+    10 =    -6524.11091358     2397.95129781    2.00000000
+    11 =    -6292.94538344     2629.11682795    2.00000000
+  Iteration        Energy         Delta
+          0  -8917.97142198              
+          1  -8921.16592528      -3.2e+00
+          2  -8921.95806970      -7.9e-01
+          3  -8922.13442112      -1.8e-01
+          4  -8922.14512301      -1.1e-02
+          5  -8922.12262745       2.2e-02
+          6  -8922.10073301       2.2e-02
+          7  -8922.08539925       1.5e-02
+          8  -8922.07577482       9.6e-03
+          9  -8922.07002285       5.8e-03
+         10  -8922.06666881       3.4e-03
+         11  -8922.06473842       1.9e-03
+         12  -8922.06363532       1.1e-03
+         13  -8922.06300745       6.3e-04
+         14  -8922.06265087       3.6e-04
+         15  -8922.06244861       2.0e-04
+         16  -8922.06233397       1.1e-04
+         17  -8922.06226902       6.5e-05
+         18  -8922.06223223       3.7e-05
+         19  -8922.06221139       2.1e-05

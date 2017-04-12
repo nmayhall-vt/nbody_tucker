@@ -1,0 +1,2354 @@
+ j12:
+[[  0.00000000e+00  -6.17180790e+02  -6.22970135e+00  -7.17828034e+02
+    9.14398093e+00   1.29323173e-01  -8.48216028e+00   1.21806129e-01
+    6.12436866e-04  -7.25425673e+02   1.04272924e+01   1.13953796e-01]
+ [ -6.17180790e+02   0.00000000e+00  -6.17090914e+02   9.14349047e+00
+   -6.81500350e+02   9.14370596e+00   1.56619645e-01  -6.51875770e+00
+    1.56674166e-01   8.50580236e+00  -5.88001988e+02   8.50593741e+00]
+ [ -6.22970135e+00  -6.17090914e+02   0.00000000e+00   1.29251022e-01
+    9.14346757e+00  -7.17821881e+02   6.12329060e-04   1.21845529e-01
+   -8.48229811e+00   1.13889895e-01   1.04264556e+01  -7.25407408e+02]
+ [ -7.17828034e+02   9.14349047e+00   1.29251022e-01   0.00000000e+00
+   -6.17103736e+02  -6.22982409e+00  -7.25416346e+02   1.04267842e+01
+    1.13897559e-01  -8.48226819e+00   1.21838903e-01   6.12538032e-04]
+ [  9.14398093e+00  -6.81500350e+02   9.14346757e+00  -6.17103736e+02
+    0.00000000e+00  -6.17180365e+02   8.50604296e+00  -5.88017463e+02
+    8.50603064e+00   1.56669060e-01  -6.51858360e+00   1.56613406e-01]
+ [  1.29323173e-01   9.14370596e+00  -7.17821881e+02  -6.22982409e+00
+   -6.17180365e+02   0.00000000e+00   1.13957354e-01   1.04272980e+01
+   -7.25432875e+02   6.12591754e-04   1.21792861e-01  -8.48197728e+00]
+ [ -8.48216028e+00   1.56619645e-01   6.12329060e-04  -7.25416346e+02
+    8.50604296e+00   1.13957354e-01   0.00000000e+00  -7.39328362e+02
+   -8.93987723e+00  -1.16566333e-01   2.01928047e-03  -3.75275459e-05]
+ [  1.21806129e-01  -6.51875770e+00   1.21845529e-01   1.04267842e+01
+   -5.88017463e+02   1.04272980e+01  -7.39328362e+02   0.00000000e+00
+   -7.39270850e+02   2.01923328e-03  -6.96154008e-02   2.01929298e-03]
+ [  6.12436866e-04   1.56674166e-01  -8.48229811e+00   1.13897559e-01
+    8.50603064e+00  -7.25432875e+02  -8.93987723e+00  -7.39270850e+02
+    0.00000000e+00  -3.75733001e-05   2.01916514e-03  -1.16565134e-01]
+ [ -7.25425673e+02   8.50580236e+00   1.13889895e-01  -8.48226819e+00
+    1.56669060e-01   6.12591754e-04  -1.16566333e-01   2.01923328e-03
+   -3.75733001e-05   0.00000000e+00  -7.39285894e+02  -8.94007449e+00]
+ [  1.04272924e+01  -5.88001988e+02   1.04264556e+01   1.21838903e-01
+   -6.51858360e+00   1.21792861e-01   2.01928047e-03  -6.96154008e-02
+    2.01916514e-03  -7.39285894e+02   0.00000000e+00  -7.39331459e+02]
+ [  1.13953796e-01   8.50593741e+00  -7.25407408e+02   6.12538032e-04
+    1.56613406e-01  -8.48197728e+00  -3.75275459e-05   2.01929298e-03
+   -1.16565134e-01  -8.94007449e+00  -7.39331459e+02   0.00000000e+00]]
+ lattice:
+[1 1 1 1 1 1 1 1 1 1 1 1]
+ blocks:
+[[ 6  3  0  9]
+ [ 7  4  1 10]
+ [ 8  5  2 11]]
+ n_blocks:
+3
+here: [6 3 0 9] 0
+here: [ 7  4  1 10] 1
+here: [ 8  5  2 11] 2
+here: [6 3 0 9] 0
+here: [ 7  4  1 10] 1
+here: [ 8  5  2 11] 2
+ Generate initial guess vectors
+ Guess eigenstates
+-2334.75248527
+-1373.42337725
+-1373.42337725
+-1373.42337725
+-374.93092352
+-374.93092352
+-374.93092352
+149.00143703
+655.47877665
+655.47877665
+655.47877665
+1092.87552412
+1092.87552412
+1092.87552412
+1092.87552412
+1092.87552412
+ Guess eigenstates
+-1946.23957678
+-1236.59729236
+-1236.59729236
+-1236.59729236
+-253.74341360
+-253.74341360
+-253.74341360
+ 75.61281812
+555.02732663
+555.02732663
+555.02732663
+935.31337933
+935.31337933
+935.31337933
+935.31337933
+935.31337933
+ Guess eigenstates
+-2334.74715893
+-1373.41538887
+-1373.41538887
+-1373.41538887
+-374.93305527
+-374.93305527
+-374.93305527
+149.00415455
+655.47694195
+655.47694195
+655.47694195
+1092.87150219
+1092.87150219
+1092.87150219
+1092.87150219
+1092.87150219
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Generate sub-block Hamiltonian
+ Tucker optimization: Iteration    0
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.931410179069
+ Get gramian for block 1  size:  (4, 4)  trace:   0.931410179069
+ Get gramian for block 2  size:  (4, 4)  trace:   0.931410179069
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000230745
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000727642
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000016131
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.009775988673
+   Get gramian for block:  1  size:     4 x 4      trace:   0.009775988673
+   Get gramian for block:  2  size:     4 x 4      trace:   0.009775988673
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.049037901179
+   Get gramian for block:  1  size:    12 x 12     trace:   0.049037901179
+   Get gramian for block:  2  size:     4 x 4      trace:   0.049037901179
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.009775931079
+   Get gramian for block:  1  size:     4 x 4      trace:   0.009775931079
+   Get gramian for block:  2  size:    12 x 12     trace:   0.009775931079
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68121604 
+   1            0.10453876 
+   2            0.10453876 
+   3            0.10453876 
+   4            0.00105731 
+   5            0.00105731 
+   6            0.00105731 
+   7            0.00025043 
+   8            0.00022785 
+   9            0.00022785 
+   10           0.00022785 
+   11           0.00021235 
+   12           0.00021235 
+   13           0.00021235 
+   14           0.00021235 
+   15           0.00021235 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49344405 
+   1            0.15791926 
+   2            0.15791926 
+   3            0.15791926 
+   4            0.00645859 
+   5            0.00645859 
+   6            0.00645859 
+   7            0.00645859 
+   8            0.00645859 
+   9            0.00034053 
+   10           0.00005490 
+   11           0.00005490 
+   12           0.00005490 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68122043 
+   1            0.10453730 
+   2            0.10453730 
+   3            0.10453730 
+   4            0.00105732 
+   5            0.00105732 
+   6            0.00105732 
+   7            0.00025043 
+   8            0.00022785 
+   9            0.00022785 
+   10           0.00022785 
+   11           0.00021235 
+   12           0.00021235 
+   13           0.00021235 
+   14           0.00021235 
+   15           0.00021235 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.93141018
+ Davidson correction :                        -21.20110795 
+ Zeroth-order energy: -8344.14366506
+ Second-order energy: -8566.61230181
+ State              Energy          Relative          <S2>
+     0 =    -8632.04247404        0.00000000    0.00000000
+     1 =    -7959.76389646      672.27857759    2.00000000
+     2 =    -7959.76389646      672.27857759    2.00000000
+     3 =    -7959.76389646      672.27857759    2.00000000
+     4 =    -6668.71287467     1963.32959938    2.00000000
+     5 =    -6668.71287467     1963.32959938    2.00000000
+     6 =    -6668.71287467     1963.32959938    2.00000000
+     7 =    -6620.11642106     2011.92605298    6.00000000
+     8 =    -6620.11642106     2011.92605298    6.00000000
+     9 =    -6620.11642106     2011.92605298    6.00000000
+    10 =    -6620.11642106     2011.92605298    6.00000000
+    11 =    -6620.11642106     2011.92605298    6.00000000
+ Tucker optimization: Iteration    1
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.958424878092
+ Get gramian for block 1  size:  (4, 4)  trace:   0.958424878092
+ Get gramian for block 2  size:  (4, 4)  trace:   0.958424878092
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000020877
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000533972
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003953874828
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003953874828
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003953874828
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033667385815
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033667385815
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033667385815
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003953861266
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003953861266
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003953861266
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68336147 
+   1            0.10433940 
+   2            0.10433940 
+   3            0.10433940 
+   4            0.00066695 
+   5            0.00066695 
+   6            0.00066695 
+   7            0.00023074 
+   8            0.00023074 
+   9            0.00023074 
+   10           0.00023074 
+   11           0.00023074 
+   12           0.00011840 
+   13           0.00011840 
+   14           0.00011840 
+   15           0.00011056 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49766480 
+   1            0.15628543 
+   2            0.15628543 
+   3            0.15628543 
+   4            0.00667333 
+   5            0.00667333 
+   6            0.00667333 
+   7            0.00667333 
+   8            0.00667333 
+   9            0.00010969 
+   10           0.00000086 
+   11           0.00000086 
+   12           0.00000086 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68336575 
+   1            0.10433798 
+   2            0.10433798 
+   3            0.10433798 
+   4            0.00066696 
+   5            0.00066696 
+   6            0.00066696 
+   7            0.00023074 
+   8            0.00023074 
+   9            0.00023074 
+   10           0.00023074 
+   11           0.00023074 
+   12           0.00011840 
+   13           0.00011840 
+   14           0.00011840 
+   15           0.00011056 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95842488
+ Davidson correction :                         -7.97178535 
+ Zeroth-order energy: -8460.77819671
+ Second-order energy: -8598.49103903
+ State              Energy          Relative          <S2>
+     0 =    -8644.55053575        0.00000000    0.00000000
+     1 =    -7961.71329873      682.83723701    2.00000000
+     2 =    -7961.71329873      682.83723701    2.00000000
+     3 =    -7961.71329873      682.83723701    2.00000000
+     4 =    -6690.04134400     1954.50919174    2.00000000
+     5 =    -6690.04134400     1954.50919174    2.00000000
+     6 =    -6690.04134400     1954.50919174    2.00000000
+     7 =    -6611.08672158     2033.46381416    6.00000000
+     8 =    -6611.08672158     2033.46381416    6.00000000
+     9 =    -6611.08672158     2033.46381416    6.00000000
+    10 =    -6611.08672158     2033.46381416    6.00000000
+    11 =    -6611.08672158     2033.46381416    6.00000000
+ Tucker optimization: Iteration    2
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959499642182
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959499642182
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959499642182
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000182177
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000340162
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003339215743
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003339215743
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003339215743
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033821937312
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033821937312
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033821937312
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003339204764
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003339204764
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003339204764
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68390535 
+   1            0.10425929 
+   2            0.10425929 
+   3            0.10425929 
+   4            0.00059124 
+   5            0.00059124 
+   6            0.00059124 
+   7            0.00023279 
+   8            0.00023279 
+   9            0.00023279 
+   10           0.00023279 
+   11           0.00023279 
+   12           0.00009505 
+   13           0.00009469 
+   14           0.00009469 
+   15           0.00009469 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49884348 
+   1            0.15578564 
+   2            0.15578564 
+   3            0.15578564 
+   4            0.00673984 
+   5            0.00673984 
+   6            0.00673984 
+   7            0.00673984 
+   8            0.00673984 
+   9            0.00010010 
+   10           0.00000010 
+   11           0.00000010 
+   12           0.00000010 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68390957 
+   1            0.10425788 
+   2            0.10425788 
+   3            0.10425788 
+   4            0.00059125 
+   5            0.00059125 
+   6            0.00059125 
+   7            0.00023279 
+   8            0.00023279 
+   9            0.00023279 
+   10           0.00023279 
+   11           0.00023279 
+   12           0.00009505 
+   13           0.00009468 
+   14           0.00009468 
+   15           0.00009468 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95949964
+ Davidson correction :                         -7.72681592 
+ Zeroth-order energy: -8463.18900102
+ Second-order energy: -8594.81058614
+ State              Energy          Relative          <S2>
+     0 =    -8646.24607784        0.00000000    0.00000000
+     1 =    -7957.00238078      689.24369706    2.00000000
+     2 =    -7957.00238078      689.24369706    2.00000000
+     3 =    -7957.00238078      689.24369706    2.00000000
+     4 =    -6689.12342270     1957.12265513    2.00000000
+     5 =    -6689.12342270     1957.12265513    2.00000000
+     6 =    -6689.12342270     1957.12265513    2.00000000
+     7 =    -6593.89070820     2052.35536963    6.00000000
+     8 =    -6593.89070820     2052.35536963    6.00000000
+     9 =    -6593.89070820     2052.35536963    6.00000000
+    10 =    -6593.89070820     2052.35536963    6.00000000
+    11 =    -6593.89070820     2052.35536963    6.00000000
+ Tucker optimization: Iteration    3
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959692401984
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959692401984
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959692401984
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:  -0.000000004632
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000175293
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003228573347
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003228573347
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003228573347
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033850462402
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033850462402
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033850462402
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003228562267
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003228562267
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003228562267
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68415298 
+   1            0.10420684 
+   2            0.10420684 
+   3            0.10420684 
+   4            0.00056690 
+   5            0.00056690 
+   6            0.00056690 
+   7            0.00023324 
+   8            0.00023324 
+   9            0.00023324 
+   10           0.00023324 
+   11           0.00023324 
+   12           0.00009024 
+   13           0.00008978 
+   14           0.00008978 
+   15           0.00008978 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49930589 
+   1            0.15561516 
+   2            0.15561516 
+   3            0.15561516 
+   4            0.00675017 
+   5            0.00675017 
+   6            0.00675017 
+   7            0.00675017 
+   8            0.00675017 
+   9            0.00009775 
+   10           0.00000001 
+   11           0.00000001 
+   12           0.00000001 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68415720 
+   1            0.10420544 
+   2            0.10420544 
+   3            0.10420544 
+   4            0.00056691 
+   5            0.00056691 
+   6            0.00056691 
+   7            0.00023324 
+   8            0.00023324 
+   9            0.00023324 
+   10           0.00023324 
+   11           0.00023324 
+   12           0.00009024 
+   13           0.00008977 
+   14           0.00008977 
+   15           0.00008977 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95969240
+ Davidson correction :                         -7.70464121 
+ Zeroth-order energy: -8462.93499222
+ Second-order energy: -8597.13823567
+ State              Energy          Relative          <S2>
+     0 =    -8646.37647704        0.00000000    0.00000000
+     1 =    -7955.34518233      691.03129472    2.00000000
+     2 =    -7955.34518233      691.03129472    2.00000000
+     3 =    -7955.34518233      691.03129472    2.00000000
+     4 =    -6688.90775270     1957.46872434    2.00000000
+     5 =    -6688.90775270     1957.46872434    2.00000000
+     6 =    -6688.90775270     1957.46872434    2.00000000
+     7 =    -6588.41692948     2057.95954756    6.00000000
+     8 =    -6588.41692948     2057.95954756    6.00000000
+     9 =    -6588.41692948     2057.95954756    6.00000000
+    10 =    -6588.41692948     2057.95954756    6.00000000
+    11 =    -6588.41692948     2057.95954756    6.00000000
+ Tucker optimization: Iteration    4
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959736158256
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959736158256
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959736158256
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:  -0.000000000012
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:  -0.000000065377
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003201134066
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003201134066
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003201134066
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033861584740
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033861584740
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033861584740
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003201122938
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003201122938
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003201122938
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68422830 
+   1            0.10419025 
+   2            0.10419025 
+   3            0.10419025 
+   4            0.00055990 
+   5            0.00055990 
+   6            0.00055990 
+   7            0.00023336 
+   8            0.00023336 
+   9            0.00023336 
+   10           0.00023336 
+   11           0.00023336 
+   12           0.00008885 
+   13           0.00008854 
+   14           0.00008854 
+   15           0.00008854 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49944594 
+   1            0.15556421 
+   2            0.15556421 
+   3            0.15556421 
+   4            0.00675287 
+   5            0.00675287 
+   6            0.00675287 
+   7            0.00675287 
+   8            0.00675287 
+   9            0.00009707 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68423251 
+   1            0.10418885 
+   2            0.10418885 
+   3            0.10418885 
+   4            0.00055990 
+   5            0.00055990 
+   6            0.00055990 
+   7            0.00023336 
+   8            0.00023336 
+   9            0.00023336 
+   10           0.00023336 
+   11           0.00023336 
+   12           0.00008885 
+   13           0.00008853 
+   14           0.00008853 
+   15           0.00008853 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95973616
+ Davidson correction :                         -7.70269076 
+ Zeroth-order energy: -8462.79823417
+ Second-order energy: -8600.30206399
+ State              Energy          Relative          <S2>
+     0 =    -8646.40095359        0.00000000    0.00000000
+     1 =    -7954.83796064      691.56299295    2.00000000
+     2 =    -7954.83796064      691.56299295    2.00000000
+     3 =    -7954.83796064      691.56299295    2.00000000
+     4 =    -6688.81784047     1957.58311313    2.00000000
+     5 =    -6688.81784047     1957.58311313    2.00000000
+     6 =    -6688.81784047     1957.58311313    2.00000000
+     7 =    -6586.74857605     2059.65237754    6.00000000
+     8 =    -6586.74857605     2059.65237754    6.00000000
+     9 =    -6586.74857605     2059.65237754    6.00000000
+    10 =    -6586.74857605     2059.65237754    6.00000000
+    11 =    -6586.74857605     2059.65237754    6.00000000
+ Tucker optimization: Iteration    5
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959748356816
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959748356816
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959748356816
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:  -0.000000001586
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000001058
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003193351502
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003193351502
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003193351502
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033864951321
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033864951321
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033864951321
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003193340360
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003193340360
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003193340360
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68425139 
+   1            0.10418509 
+   2            0.10418509 
+   3            0.10418509 
+   4            0.00055779 
+   5            0.00055779 
+   6            0.00055779 
+   7            0.00023339 
+   8            0.00023339 
+   9            0.00023339 
+   10           0.00023339 
+   11           0.00023339 
+   12           0.00008844 
+   13           0.00008818 
+   14           0.00008818 
+   15           0.00008818 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49948860 
+   1            0.15554882 
+   2            0.15554882 
+   3            0.15554882 
+   4            0.00675361 
+   5            0.00675361 
+   6            0.00675361 
+   7            0.00675361 
+   8            0.00675361 
+   9            0.00009687 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68425560 
+   1            0.10418369 
+   2            0.10418369 
+   3            0.10418369 
+   4            0.00055780 
+   5            0.00055780 
+   6            0.00055780 
+   7            0.00023339 
+   8            0.00023339 
+   9            0.00023339 
+   10           0.00023339 
+   11           0.00023339 
+   12           0.00008843 
+   13           0.00008818 
+   14           0.00008818 
+   15           0.00008818 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95974836
+ Davidson correction :                         -7.70244152 
+ Zeroth-order energy: -8462.75081817
+ Second-order energy: -8599.27465718
+ State              Energy          Relative          <S2>
+     0 =    -8646.40557130        0.00000000    0.00000000
+     1 =    -7954.68468684      691.72088445    2.00000000
+     2 =    -7954.68468684      691.72088445    2.00000000
+     3 =    -7954.68468684      691.72088445    2.00000000
+     4 =    -6688.79102645     1957.61454485    2.00000000
+     5 =    -6688.79102645     1957.61454485    2.00000000
+     6 =    -6688.79102645     1957.61454485    2.00000000
+     7 =    -6586.24847087     2060.15710043    6.00000000
+     8 =    -6586.24847087     2060.15710043    6.00000000
+     9 =    -6586.24847087     2060.15710043    6.00000000
+    10 =    -6586.24847087     2060.15710043    6.00000000
+    11 =    -6586.24847087     2060.15710043    6.00000000
+ Tucker optimization: Iteration    6
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959751911004
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959751911004
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959751911004
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000000100
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000004604
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003191064289
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003191064289
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003191064289
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033865971565
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033865971565
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033865971565
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003191053142
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003191053142
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003191053142
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68425833 
+   1            0.10418354 
+   2            0.10418354 
+   3            0.10418354 
+   4            0.00055716 
+   5            0.00055716 
+   6            0.00055716 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008831 
+   13           0.00008808 
+   14           0.00008808 
+   15           0.00008808 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950142 
+   1            0.15554420 
+   2            0.15554420 
+   3            0.15554420 
+   4            0.00675383 
+   5            0.00675383 
+   6            0.00675383 
+   7            0.00675383 
+   8            0.00675383 
+   9            0.00009681 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426254 
+   1            0.10418214 
+   2            0.10418214 
+   3            0.10418214 
+   4            0.00055717 
+   5            0.00055717 
+   6            0.00055717 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008831 
+   13           0.00008808 
+   14           0.00008808 
+   15           0.00008808 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975191
+ Davidson correction :                         -7.70240191 
+ Zeroth-order energy: -8462.73608327
+ Second-order energy: -8596.70426944
+ State              Energy          Relative          <S2>
+     0 =    -8646.40678999        0.00000000    0.00000000
+     1 =    -7954.63866879      691.76812120    2.00000000
+     2 =    -7954.63866879      691.76812120    2.00000000
+     3 =    -7954.63866879      691.76812120    2.00000000
+     4 =    -6688.78286880     1957.62392119    2.00000000
+     5 =    -6688.78286880     1957.62392119    2.00000000
+     6 =    -6688.78286880     1957.62392119    2.00000000
+     7 =    -6586.09850329     2060.30828671    6.00000000
+     8 =    -6586.09850329     2060.30828671    6.00000000
+     9 =    -6586.09850329     2060.30828671    6.00000000
+    10 =    -6586.09850329     2060.30828671    6.00000000
+    11 =    -6586.09850329     2060.30828671    6.00000000
+ Tucker optimization: Iteration    7
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959752968115
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959752968115
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959752968115
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:  -0.000000000006
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000000057
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190382599
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190382599
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190382599
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866277836
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866277836
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866277836
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190371450
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190371450
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190371450
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426041 
+   1            0.10418307 
+   2            0.10418307 
+   3            0.10418307 
+   4            0.00055698 
+   5            0.00055698 
+   6            0.00055698 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008827 
+   13           0.00008805 
+   14           0.00008805 
+   15           0.00008805 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950526 
+   1            0.15554282 
+   2            0.15554282 
+   3            0.15554282 
+   4            0.00675390 
+   5            0.00675390 
+   6            0.00675390 
+   7            0.00675390 
+   8            0.00675390 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426462 
+   1            0.10418167 
+   2            0.10418167 
+   3            0.10418167 
+   4            0.00055698 
+   5            0.00055698 
+   6            0.00055698 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008827 
+   13           0.00008805 
+   14           0.00008805 
+   15           0.00008805 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975297
+ Davidson correction :                         -7.70239289 
+ Zeroth-order energy: -8462.73161736
+ Second-order energy: -8600.14781800
+ State              Energy          Relative          <S2>
+     0 =    -8646.40713544        0.00000000    0.00000000
+     1 =    -7954.62487005      691.78226539    2.00000000
+     2 =    -7954.62487005      691.78226539    2.00000000
+     3 =    -7954.62487005      691.78226539    2.00000000
+     4 =    -6688.78042168     1957.62671376    2.00000000
+     5 =    -6688.78042168     1957.62671376    2.00000000
+     6 =    -6688.78042168     1957.62671376    2.00000000
+     7 =    -6586.05356276     2060.35357268    6.00000000
+     8 =    -6586.05356276     2060.35357268    6.00000000
+     9 =    -6586.05356276     2060.35357268    6.00000000
+    10 =    -6586.05356276     2060.35357268    6.00000000
+    11 =    -6586.05356276     2060.35357268    6.00000000
+ Tucker optimization: Iteration    8
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753284098
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753284098
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753284098
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:  -0.000000000425
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000001487
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190178682
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190178682
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190178682
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866369687
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866369687
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866369687
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190167533
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190167533
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190167533
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426104 
+   1            0.10418293 
+   2            0.10418293 
+   3            0.10418293 
+   4            0.00055692 
+   5            0.00055692 
+   6            0.00055692 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008804 
+   14           0.00008804 
+   15           0.00008804 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950642 
+   1            0.15554240 
+   2            0.15554240 
+   3            0.15554240 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426524 
+   1            0.10418153 
+   2            0.10418153 
+   3            0.10418153 
+   4            0.00055693 
+   5            0.00055693 
+   6            0.00055693 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008804 
+   14           0.00008804 
+   15           0.00008804 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975328
+ Davidson correction :                         -7.70239046 
+ Zeroth-order energy: -8462.73027480
+ Second-order energy: -8602.01180253
+ State              Energy          Relative          <S2>
+     0 =    -8646.40723748        0.00000000    0.00000000
+     1 =    -7954.62073451      691.78650297    2.00000000
+     2 =    -7954.62073451      691.78650297    2.00000000
+     3 =    -7954.62073451      691.78650297    2.00000000
+     4 =    -6688.77968767     1957.62754981    2.00000000
+     5 =    -6688.77968767     1957.62754981    2.00000000
+     6 =    -6688.77968767     1957.62754981    2.00000000
+     7 =    -6586.04009571     2060.36714176    6.00000000
+     8 =    -6586.04009571     2060.36714176    6.00000000
+     9 =    -6586.04009571     2060.36714176    6.00000000
+    10 =    -6586.04009571     2060.36714176    6.00000000
+    11 =    -6586.04009571     2060.36714176    6.00000000
+ Tucker optimization: Iteration    9
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753378717
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753378717
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753378717
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:  -0.000000000094
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000000613
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190117608
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190117608
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190117608
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866397215
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866397215
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866397215
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190106460
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190106460
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190106460
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426123 
+   1            0.10418289 
+   2            0.10418289 
+   3            0.10418289 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950676 
+   1            0.15554228 
+   2            0.15554228 
+   3            0.15554228 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426543 
+   1            0.10418149 
+   2            0.10418149 
+   3            0.10418149 
+   4            0.00055691 
+   5            0.00055691 
+   6            0.00055691 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975338
+ Davidson correction :                         -7.70238975 
+ Zeroth-order energy: -8462.72987210
+ Second-order energy: -8601.40799229
+ State              Energy          Relative          <S2>
+     0 =    -8646.40726790        0.00000000    0.00000000
+     1 =    -7954.61949522      691.78777268    2.00000000
+     2 =    -7954.61949522      691.78777268    2.00000000
+     3 =    -7954.61949522      691.78777268    2.00000000
+     4 =    -6688.77946768     1957.62780022    2.00000000
+     5 =    -6688.77946768     1957.62780022    2.00000000
+     6 =    -6688.77946768     1957.62780022    2.00000000
+     7 =    -6586.03606029     2060.37120761    6.00000000
+     8 =    -6586.03606029     2060.37120761    6.00000000
+     9 =    -6586.03606029     2060.37120761    6.00000000
+    10 =    -6586.03606029     2060.37120761    6.00000000
+    11 =    -6586.03606029     2060.37120761    6.00000000
+ Tucker optimization: Iteration   10
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753407063
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753407063
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753407063
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000000073
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000000030
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190099311
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190099311
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190099311
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866405465
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866405465
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866405465
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190088162
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190088162
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190088162
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426128 
+   1            0.10418287 
+   2            0.10418287 
+   3            0.10418287 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950686 
+   1            0.15554224 
+   2            0.15554224 
+   3            0.15554224 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426549 
+   1            0.10418147 
+   2            0.10418147 
+   3            0.10418147 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975341
+ Davidson correction :                         -7.70238954 
+ Zeroth-order energy: -8462.72975139
+ Second-order energy: -8600.40178719
+ State              Energy          Relative          <S2>
+     0 =    -8646.40727700        0.00000000    0.00000000
+     1 =    -7954.61912387      691.78815314    2.00000000
+     2 =    -7954.61912387      691.78815314    2.00000000
+     3 =    -7954.61912387      691.78815314    2.00000000
+     4 =    -6688.77940176     1957.62787525    2.00000000
+     5 =    -6688.77940176     1957.62787525    2.00000000
+     6 =    -6688.77940176     1957.62787525    2.00000000
+     7 =    -6586.03485107     2060.37242593    6.00000000
+     8 =    -6586.03485107     2060.37242593    6.00000000
+     9 =    -6586.03485107     2060.37242593    6.00000000
+    10 =    -6586.03485107     2060.37242593    6.00000000
+    11 =    -6586.03485107     2060.37242593    6.00000000
+ Tucker optimization: Iteration   11
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753415556
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753415556
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753415556
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000000004
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:  -0.000000000127
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190093828
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190093828
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190093828
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866407937
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866407937
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866407937
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190082679
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190082679
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190082679
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426130 
+   1            0.10418287 
+   2            0.10418287 
+   3            0.10418287 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950690 
+   1            0.15554223 
+   2            0.15554223 
+   3            0.15554223 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426551 
+   1            0.10418147 
+   2            0.10418147 
+   3            0.10418147 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975342
+ Davidson correction :                         -7.70238948 
+ Zeroth-order energy: -8462.72971522
+ Second-order energy: -8601.27029217
+ State              Energy          Relative          <S2>
+     0 =    -8646.40727973        0.00000000    0.00000000
+     1 =    -7954.61901259      691.78826714    2.00000000
+     2 =    -7954.61901259      691.78826714    2.00000000
+     3 =    -7954.61901259      691.78826714    2.00000000
+     4 =    -6688.77938201     1957.62789773    2.00000000
+     5 =    -6688.77938201     1957.62789773    2.00000000
+     6 =    -6688.77938201     1957.62789773    2.00000000
+     7 =    -6586.03448873     2060.37279100    6.00000000
+     8 =    -6586.03448873     2060.37279100    6.00000000
+     9 =    -6586.03448873     2060.37279100    6.00000000
+    10 =    -6586.03448873     2060.37279100    6.00000000
+    11 =    -6586.03448873     2060.37279100    6.00000000
+ Tucker optimization: Iteration   12
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753418101
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753418101
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753418101
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000000007
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:  -0.000000000017
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190092185
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190092185
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190092185
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866408678
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866408678
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866408678
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190081036
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190081036
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190081036
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426130 
+   1            0.10418287 
+   2            0.10418287 
+   3            0.10418287 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950690 
+   1            0.15554223 
+   2            0.15554223 
+   3            0.15554223 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426551 
+   1            0.10418147 
+   2            0.10418147 
+   3            0.10418147 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975342
+ Davidson correction :                         -7.70238946 
+ Zeroth-order energy: -8462.72970438
+ Second-order energy: -8602.94957808
+ State              Energy          Relative          <S2>
+     0 =    -8646.40728055        0.00000000    0.00000000
+     1 =    -7954.61897924      691.78830130    2.00000000
+     2 =    -7954.61897924      691.78830130    2.00000000
+     3 =    -7954.61897924      691.78830130    2.00000000
+     4 =    -6688.77937609     1957.62790446    2.00000000
+     5 =    -6688.77937609     1957.62790446    2.00000000
+     6 =    -6688.77937609     1957.62790446    2.00000000
+     7 =    -6586.03438015     2060.37290039    6.00000000
+     8 =    -6586.03438015     2060.37290039    6.00000000
+     9 =    -6586.03438015     2060.37290039    6.00000000
+    10 =    -6586.03438015     2060.37290039    6.00000000
+    11 =    -6586.03438015     2060.37290039    6.00000000
+ Tucker optimization: Iteration   13
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753418864
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753418864
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753418864
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000000001
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000000020
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190091693
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190091693
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190091693
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866408899
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866408899
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866408899
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190080544
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190080544
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190080544
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426131 
+   1            0.10418287 
+   2            0.10418287 
+   3            0.10418287 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950691 
+   1            0.15554223 
+   2            0.15554223 
+   3            0.15554223 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426551 
+   1            0.10418147 
+   2            0.10418147 
+   3            0.10418147 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975342
+ Davidson correction :                         -7.70238945 
+ Zeroth-order energy: -8462.72970113
+ Second-order energy: -8600.78942129
+ State              Energy          Relative          <S2>
+     0 =    -8646.40728079        0.00000000    0.00000000
+     1 =    -7954.61896925      691.78831154    2.00000000
+     2 =    -7954.61896925      691.78831154    2.00000000
+     3 =    -7954.61896925      691.78831154    2.00000000
+     4 =    -6688.77937431     1957.62790648    2.00000000
+     5 =    -6688.77937431     1957.62790648    2.00000000
+     6 =    -6688.77937431     1957.62790648    2.00000000
+     7 =    -6586.03434762     2060.37293317    6.00000000
+     8 =    -6586.03434762     2060.37293317    6.00000000
+     9 =    -6586.03434762     2060.37293317    6.00000000
+    10 =    -6586.03434762     2060.37293317    6.00000000
+    11 =    -6586.03434762     2060.37293317    6.00000000
+ Tucker optimization: Iteration   14
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753419092
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753419092
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753419092
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000000006
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000000012
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190091545
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190091545
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190091545
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866408966
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866408966
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866408966
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190080396
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190080396
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190080396
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426131 
+   1            0.10418287 
+   2            0.10418287 
+   3            0.10418287 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950691 
+   1            0.15554223 
+   2            0.15554223 
+   3            0.15554223 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426551 
+   1            0.10418147 
+   2            0.10418147 
+   3            0.10418147 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975342
+ Davidson correction :                         -7.70238945 
+ Zeroth-order energy: -8462.72970016
+ Second-order energy: -8600.71652435
+ State              Energy          Relative          <S2>
+     0 =    -8646.40728087        0.00000000    0.00000000
+     1 =    -7954.61896626      691.78831461    2.00000000
+     2 =    -7954.61896626      691.78831461    2.00000000
+     3 =    -7954.61896626      691.78831461    2.00000000
+     4 =    -6688.77937378     1957.62790709    2.00000000
+     5 =    -6688.77937378     1957.62790709    2.00000000
+     6 =    -6688.77937378     1957.62790709    2.00000000
+     7 =    -6586.03433787     2060.37294300    6.00000000
+     8 =    -6586.03433787     2060.37294300    6.00000000
+     9 =    -6586.03433787     2060.37294300    6.00000000
+    10 =    -6586.03433787     2060.37294300    6.00000000
+    11 =    -6586.03433787     2060.37294300    6.00000000
+ Tucker optimization: Iteration   15
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753419161
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753419161
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753419161
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:  -0.000000000004
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:   0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:   0.000000000001
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190091501
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190091501
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190091501
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866408986
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866408986
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866408986
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190080352
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190080352
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190080352
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426131 
+   1            0.10418287 
+   2            0.10418287 
+   3            0.10418287 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950691 
+   1            0.15554223 
+   2            0.15554223 
+   3            0.15554223 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426551 
+   1            0.10418147 
+   2            0.10418147 
+   3            0.10418147 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975342
+ Davidson correction :                         -7.70238945 
+ Zeroth-order energy: -8462.72969987
+ Second-order energy: -8595.97576763
+ State              Energy          Relative          <S2>
+     0 =    -8646.40728089        0.00000000    0.00000000
+     1 =    -7954.61896536      691.78831553    2.00000000
+     2 =    -7954.61896536      691.78831553    2.00000000
+     3 =    -7954.61896536      691.78831553    2.00000000
+     4 =    -6688.77937362     1957.62790727    2.00000000
+     5 =    -6688.77937362     1957.62790727    2.00000000
+     6 =    -6688.77937362     1957.62790727    2.00000000
+     7 =    -6586.03433495     2060.37294594    6.00000000
+     8 =    -6586.03433495     2060.37294594    6.00000000
+     9 =    -6586.03433495     2060.37294594    6.00000000
+    10 =    -6586.03433495     2060.37294594    6.00000000
+    11 =    -6586.03433495     2060.37294594    6.00000000
+ Tucker optimization: Iteration   16
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (64, 64)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+     Size of Hamitonian block:  (192, 192)
+     Size of Hamitonian block:  (64, 192)
+ Dimensions of Full Hamiltonian       (0,)
+ Dimensions of Subspace Hamiltonian   (640, 640)
+
+ Dimensions of all the spaces
+ P_dims   64
+ Q_dims   [192, 192, 192]
+ QQ_dims  [576, 576, 576]
+ QQQ_dims [1728]
+
+ P,P block
+ Get gramian for block 0  size:  (4, 4)  trace:   0.959753419181
+ Get gramian for block 1  size:  (4, 4)  trace:   0.959753419181
+ Get gramian for block 2  size:  (4, 4)  trace:   0.959753419181
+
+ P,Q block
+ Q =  0
+   Get gramian for block:  0  size:     4 x 12     trace:   0.000000000000
+ Q =  1
+   Get gramian for block:  1  size:     4 x 12     trace:  -0.000000000000
+ Q =  2
+   Get gramian for block:  2  size:     4 x 12     trace:  -0.000000000003
+
+ Q,Q block
+ Q =  0
+   Get gramian for block:  0  size:    12 x 12     trace:   0.003190091488
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190091488
+   Get gramian for block:  2  size:     4 x 4      trace:   0.003190091488
+ Q =  1
+   Get gramian for block:  0  size:     4 x 4      trace:   0.033866408992
+   Get gramian for block:  1  size:    12 x 12     trace:   0.033866408992
+   Get gramian for block:  2  size:     4 x 4      trace:   0.033866408992
+ Q =  2
+   Get gramian for block:  0  size:     4 x 4      trace:   0.003190080339
+   Get gramian for block:  1  size:     4 x 4      trace:   0.003190080339
+   Get gramian for block:  2  size:    12 x 12     trace:   0.003190080339
+    Eigenvalues of each 1fdm:
+         Fragment:  0
+   0            0.68426131 
+   1            0.10418287 
+   2            0.10418287 
+   3            0.10418287 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023341 
+   8            0.00023341 
+   9            0.00023341 
+   10           0.00023341 
+   11           0.00023341 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+         Fragment:  1
+   0            0.49950691 
+   1            0.15554223 
+   2            0.15554223 
+   3            0.15554223 
+   4            0.00675392 
+   5            0.00675392 
+   6            0.00675392 
+   7            0.00675392 
+   8            0.00675392 
+   9            0.00009679 
+   10           0.00000000 
+   11           0.00000000 
+   12           0.00000000 
+   13           0.00000000 
+   14           0.00000000 
+   15           0.00000000 
+         trace: 1.00000000      
+
+         Fragment:  2
+   0            0.68426551 
+   1            0.10418147 
+   2            0.10418147 
+   3            0.10418147 
+   4            0.00055690 
+   5            0.00055690 
+   6            0.00055690 
+   7            0.00023340 
+   8            0.00023340 
+   9            0.00023340 
+   10           0.00023340 
+   11           0.00023340 
+   12           0.00008826 
+   13           0.00008803 
+   14           0.00008803 
+   15           0.00008803 
+         trace: 1.00000000      
+
+ Norm of low-entanglement reference component   0.95975342
+ Davidson correction :                         -7.70238945 
+ Zeroth-order energy: -8462.72969978
+ Second-order energy: -8603.61761938
+ State              Energy          Relative          <S2>
+     0 =    -8646.40728090        0.00000000    0.00000000
+     1 =    -7954.61896509      691.78831580    2.00000000
+     2 =    -7954.61896509      691.78831580    2.00000000
+     3 =    -7954.61896509      691.78831580    2.00000000
+     4 =    -6688.77937357     1957.62790732    2.00000000
+     5 =    -6688.77937357     1957.62790732    2.00000000
+     6 =    -6688.77937357     1957.62790732    2.00000000
+     7 =    -6586.03433407     2060.37294682    6.00000000
+     8 =    -6586.03433407     2060.37294682    6.00000000
+     9 =    -6586.03433407     2060.37294682    6.00000000
+    10 =    -6586.03433407     2060.37294682    6.00000000
+    11 =    -6586.03433407     2060.37294682    6.00000000
+  Iteration        Energy         Delta
+          0  -8632.04247404              
+          1  -8644.55053575      -1.3e+01
+          2  -8646.24607784      -1.7e+00
+          3  -8646.37647704      -1.3e-01
+          4  -8646.40095359      -2.4e-02
+          5  -8646.40557130      -4.6e-03
+          6  -8646.40678999      -1.2e-03
+          7  -8646.40713544      -3.5e-04
+          8  -8646.40723748      -1.0e-04
+          9  -8646.40726790      -3.0e-05
+         10  -8646.40727700      -9.1e-06
+         11  -8646.40727973      -2.7e-06
+         12  -8646.40728055      -8.2e-07
+         13  -8646.40728079      -2.4e-07
+         14  -8646.40728087      -7.3e-08
+         15  -8646.40728089      -2.2e-08
+         16  -8646.40728090      -6.6e-09
