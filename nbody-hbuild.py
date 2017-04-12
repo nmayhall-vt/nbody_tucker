@@ -59,6 +59,57 @@ def form_superblock_hamiltonian(lattice, j12, blocks, block_list):
     return H_b, S2_b, Sz_b
     # }}}
 
+def form_compressed_zero_order_hamiltonian_diag(vecs,Hi):
+    # {{{
+    dim = 1 # dimension of subspace
+    dims = [] # list of mode dimensions (size of hilbert space on each fragment) 
+    for vi,v in enumerate(vecs):
+        dim = dim*v.shape[1]
+        dims.extend([v.shape[1]])
+    H = np.zeros((dim,dim))
+    n_dims = len(dims)
+
+
+    H1 = cp.deepcopy(Hi)
+    for vi,v in enumerate(vecs):
+        H1[vi] = np.dot(v.transpose(),np.dot(Hi[vi],v))
+
+    
+    dimsdims = dims
+    dimsdims = np.append(dims,dims)
+
+    #Htest = Htest.reshape(dimsdims)
+    #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
+    #   target subspace
+    dim_i1=1 #   dimension of space to the left
+    dim_i2=dim #   dimension of space to the right
+    
+    for vi,v in enumerate(vecs):
+        i1 = np.eye(dim_i1)
+        dim_i2 = dim_i2/v.shape[1]
+        i2 = np.eye(dim_i2)
+        
+        #print "dim_i1  :  dim_i2", dim_i1, dim_i2, dim
+        H += np.kron(i1,np.kron(H1[vi],i2))
+        
+        #nv = v.shape[1]
+        #test = np.ones(len(dimsdims)).astype(int)
+        #test[vi] = nv
+        #test[vi+len(dims)] = nv
+        
+        #h = cp.deepcopy(H1[vi])
+        #h = h.reshape(test)
+        #Htest = np.einsum('ijkljk->ijklmn',Htest,h)
+        
+        dim_i1 = dim_i1 * v.shape[1]
+
+     
+
+    #H = H.reshape(dim,dim)
+    print "     Size of Hamitonian block: ", H.shape
+    return H.diagonal()
+    # }}}
+
 def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
     # {{{
     dim = 1 # dimension of subspace
@@ -67,7 +118,7 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
         dim = dim*v.shape[1]
         dims.extend([v.shape[1]])
     H = np.zeros((dim,dim))
-    Htest = np.zeros((dim,dim))
+    #Htest = np.zeros((dim,dim))
     n_dims = len(dims)
 
 
@@ -708,8 +759,10 @@ parser.add_argument('-nr','--n_roots', type=int, default="10", help='Number of e
 parser.add_argument('--n_print', type=int, default="10", help='number of states to print', required=False)
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
-parser.add_argument('--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
+parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
+parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
+parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
 args = vars(parser.parse_args())
 #
 #   Let minute specification of walltime override hour specification
@@ -884,6 +937,8 @@ for bi,b in enumerate(blocks):
             Hij[(bi,bj)], S2ij[(bi,bj)], Szij[(bi,bj)] = form_superblock_hamiltonian(lattice, j12, blocks, [bi,bj])
             Hij[(bi,bj)] -= np.kron(hi,np.eye(hj.shape[0])) 
             Hij[(bi,bj)] -= np.kron(np.eye(hi.shape[0]),hj) 
+
+
             S2ij[(bi,bj)] -= np.kron(s2i,np.eye(s2j.shape[0])) 
             S2ij[(bi,bj)] -= np.kron(np.eye(s2i.shape[0]),s2j) 
 
@@ -922,6 +977,12 @@ for it in range(0,maxiter):
     S20_0 = form_compressed_hamiltonian_diag(vecs0,S2i,S2ij)# <PPP|S^2|PPP>
     #
     
+    H_zero_order_diag =  np.array([]) 
+
+    if args['pt_order'] > 0:
+        H_zero_order_diag = form_compressed_zero_order_hamiltonian_diag(vecs0,Hi) # <PPP|H|PPP>
+        #H_zero_order_diag = form_compressed_zero_order_hamiltonian_diag(vecsQ[bi],Hi) # <PPP|H|PPP>
+
     H_sectors = {}
     H_sectors[0,0] = H0_0
     
@@ -932,6 +993,11 @@ for it in range(0,maxiter):
     
     if n_body_order >= 1:
         for bi in range(n_blocks):
+            if args['pt_order'] > 0:
+                H_zero_order_diag = np.hstack((H_zero_order_diag,
+                        form_compressed_zero_order_hamiltonian_diag(vecsQ[bi],Hi)
+                        ) )# <QPP|H|QPP>
+
             H_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],Hi,Hij) # <QPP|H|QPP>
             
             H_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],Hi,Hij,[bi]) # <PPP|H|QPP>
@@ -947,11 +1013,15 @@ for it in range(0,maxiter):
                 S2_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],S2i,S2ij,[bi,bj]) # <QPP|H|PQP>
                 S2_sectors[bj+1,bi+1] = S2_sectors[bi+1,bj+1].T
     
-    
+   
     if n_body_order >= 2:
         for bi in range(n_blocks):
             for bj in range(bi+1,n_blocks):
                 bij = (bi+1,bj+1)
+                if args['pt_order'] > 0:
+                    H_zero_order_diag = np.hstack((H_zero_order_diag,
+                            form_compressed_zero_order_hamiltonian_diag(vecsQQ[bi,bj],Hi)
+                            ) )# <QPP|H|QPP>
                 print 
                 print " Form Hamiltonian for <%s|H|%s>" %(bij, bij)
                 H_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Hi,Hij) # <QPQ|H|QPQ>
@@ -1435,12 +1505,20 @@ for it in range(0,maxiter):
         #lp[0] += davidson_correction
     
     #pt2
-    do_pt2 = 1
-    if do_pt2 == 1:
+    if args['pt_order'] == 2:
         n0 = H_sectors[0,0].shape[0] 
         Hpp = Htest[0:n0, 0:n0]
         Hpq = Htest[0:n0, n0::]
-        Dqq = np.diag(Htest)[n0::]
+
+        Dqq = np.array([])
+
+        if args['pt_type'] == 'en':
+            Dqq = np.diag(Htest)[n0::]    #Epstein-Nesbitt-like
+        elif args['pt_type'] == 'mp':
+            Dqq = H_zero_order_diag[n0::]    #Moller-Plesset-like
+        else:
+            print " Bad choice of pt_type"
+            exit(-1)
         
         H0 = Hpp
         l0,v0 = np.linalg.eigh(H0)
