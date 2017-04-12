@@ -554,8 +554,6 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
 
         nd = n0 + n1 + n2
 
-        print "Dimensions: ", n0, n1, n2, " = ", nd
-
         Htest = np.empty([nd,nd])
 
         row = np.empty([n0,nd])
@@ -1260,7 +1258,8 @@ for it in range(0,maxiter):
 
     start = n0 
     for bi,b in enumerate(blocks):
-        q_dim = n0 / p_states[bi].shape[1] * q_states[bi].shape[1]
+        #q_dim = n0 / p_states[bi].shape[1] * q_states[bi].shape[1]
+        q_dim = H_sectors[bi+1,bi+1].shape[0]
         Q_dims.extend([q_dim])
        
         ci_startstop[bi] = (start,start+q_dim)
@@ -1270,7 +1269,9 @@ for it in range(0,maxiter):
     for bi,b in enumerate(blocks):
         for bbi,bb in enumerate(blocks):
             if bbi > bi:
-                q_dim = n0 / p_states[bi].shape[1] / p_states[bbi].shape[1] * q_states[bi].shape[1] * q_states[bbi].shape[1]
+                bij = (bi+1, bbi+1)
+                #q_dim = n0 / p_states[bi].shape[1] / p_states[bbi].shape[1] * q_states[bi].shape[1] * q_states[bbi].shape[1]
+                q_dim = H_sectors[bij,bij].shape[0]
                 QQ_dims.extend([q_dim])
                 
                 ci_startstop[(bi,bbi)] = (start,start+q_dim)
@@ -1300,6 +1301,14 @@ for it in range(0,maxiter):
     print " QQ_dims ", QQ_dims
     print " QQQ_dims", QQQ_dims
     print
+
+
+    #
+    #   
+    #   Update Tucker factors
+    #
+    #
+
     if it<maxiter-1 :
 
         #
@@ -1307,8 +1316,24 @@ for it in range(0,maxiter):
         v = cp.deepcopy(vp[:,target_state])
         
         v_0 = v[0:P_dim]
+
+        n0 = 1   # this is the size of the PPPP block (before m_s projection)
+        for bi,b in enumerate(blocks):
+            n0 *= p_states[bi].shape[1]
+
+
+        # unproject back from m_s subblock
+        if ms_proj:
+            ms_space_P = get_ms_subspace_list(vecs0, Szi, target_ms)
+            tmp = np.zeros((n0))
+            tmp[ms_space_P] = v_0
+            v_0 = cp.deepcopy(tmp)
+
+
         v_0.shape = n_p_states
         grams = {}
+        
+        
         #
         # PP terms
         print " P,P block" 
@@ -1319,6 +1344,7 @@ for it in range(0,maxiter):
             print " trace: %16.12f"% gram_tmp.trace()
     
             grams[fi] = vecs0[fi].dot(gram_tmp).dot(vecs0[fi].T)
+
      
         #
         # P,Q terms
@@ -1331,6 +1357,16 @@ for it in range(0,maxiter):
                 start = ci_startstop[bi][0] 
                 stop  = ci_startstop[bi][1] 
                 v1 = cp.deepcopy(vp[start:stop,target_state])
+          
+                # unproject back from m_s subblock
+                if ms_proj:
+                    ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
+                    n_curr = n0 * q_states[bi].shape[1] / p_states[bi].shape[1]
+                    tmp = np.zeros((n_curr))
+                    tmp[ms_space_curr] = v1
+                    v1 = cp.deepcopy(tmp)
+
+
                 
                 dims_curr = cp.deepcopy(n_p_states)
                 dims_curr[bi] = q_states[bi].shape[1]
@@ -1359,6 +1395,16 @@ for it in range(0,maxiter):
                 stop  = ci_startstop[bi][1] 
                 v1 = cp.deepcopy(vp[start:stop,target_state])
                 #print " Norm of Q: ", np.linalg.norm(v1)
+                
+                
+                # unproject back from m_s subblock
+                if ms_proj:
+                    ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
+                    n_curr = n0 * q_states[bi].shape[1] / p_states[bi].shape[1]
+                    tmp = np.zeros((n_curr))
+                    tmp[ms_space_curr] = v1
+                    v1 = cp.deepcopy(tmp)
+
                 
                 dims_curr = cp.deepcopy(n_p_states)
                 dims_curr[bi] = q_states[bi].shape[1]
@@ -1403,6 +1449,16 @@ for it in range(0,maxiter):
                         stop2  = ci_startstop[(bi,bbi)][1] 
                         
                         v2 = cp.deepcopy(vp[start2:stop2,target_state])
+              
+
+                        # unproject back from m_s subblock
+                        if ms_proj:
+                            ms_space_curr = get_ms_subspace_list(vecsQQ[(bi,bbi)], Szi, target_ms)
+                            n_curr = n0 * q_states[bi].shape[1] * q_states[bbi].shape[1] / p_states[bi].shape[1] / p_states[bbi].shape[1]
+                            tmp = np.zeros((n_curr))
+                            tmp[ms_space_curr] = v2
+                            v2 = cp.deepcopy(tmp)
+
                         
                         dims_curr2 = cp.deepcopy(n_p_states)
                         dims_curr2[bi]  = q_states[bi].shape[1]
@@ -1415,6 +1471,15 @@ for it in range(0,maxiter):
                         stop1  = ci_startstop[bi][1] 
                         
                         v1 = cp.deepcopy(vp[start1:stop1,target_state])
+                        
+                        # unproject back from m_s subblock
+                        if ms_proj:
+                            ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
+                            n_curr = n0 * q_states[bi].shape[1] / p_states[bi].shape[1] 
+                            tmp = np.zeros((n_curr))
+                            tmp[ms_space_curr] = v1
+                            v1 = cp.deepcopy(tmp)
+
                         dims_curr1 = cp.deepcopy(n_p_states)
                         dims_curr1[bi]  = q_states[bi].shape[1]
                         v1.shape = dims_curr1
@@ -1435,6 +1500,15 @@ for it in range(0,maxiter):
                         stop1  = ci_startstop[bbi][1] 
                         
                         v1 = cp.deepcopy(vp[start1:stop1,target_state])
+                        
+                        # unproject back from m_s subblock
+                        if ms_proj:
+                            ms_space_curr = get_ms_subspace_list(vecsQ[bbi], Szi, target_ms)
+                            n_curr = n0 * q_states[bbi].shape[1] / p_states[bbi].shape[1] 
+                            tmp = np.zeros((n_curr))
+                            tmp[ms_space_curr] = v1
+                            v1 = cp.deepcopy(tmp)
+
                         dims_curr1 = cp.deepcopy(n_p_states)
                         dims_curr1[bbi]  = q_states[bbi].shape[1]
                         v1.shape = dims_curr1
@@ -1468,6 +1542,15 @@ for it in range(0,maxiter):
                         start = ci_startstop[(bi,bbi)][0] 
                         stop  = ci_startstop[(bi,bbi)][1] 
                         v1 = cp.deepcopy(vp[start:stop,target_state])
+
+                        # unproject back from m_s subblock
+                        if ms_proj:
+                            ms_space_curr = get_ms_subspace_list(vecsQQ[(bi,bbi)], Szi, target_ms)
+                            n_curr = n0 * q_states[bi].shape[1] * q_states[bbi].shape[1] / p_states[bi].shape[1] / p_states[bbi].shape[1]
+                            tmp = np.zeros((n_curr))
+                            tmp[ms_space_curr] = v1
+                            v1 = cp.deepcopy(tmp)
+
                         
                         dims_curr = cp.deepcopy(n_p_states)
                         dims_curr[bi]  = q_states[bi].shape[1]
