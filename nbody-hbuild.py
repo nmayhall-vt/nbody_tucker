@@ -118,6 +118,7 @@ def form_compressed_zero_order_hamiltonian_diag(vecs,Hi):
     return H.diagonal()
     # }}}
 
+#def form_compressed_hamiltonian_diag(vecs,Hi,Hij,Szi,ms):
 def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
     # {{{
     dim = 1 # dimension of subspace
@@ -170,18 +171,6 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
         dim_i1 = dim_i1 * v.shape[1]
 
      
-#    print H.reshape(dimsdims)[:,:,:,:,:,:]
-#    print "a"
-#    print "a"
-#    print "a"
-#    print H.reshape(dimsdims)
-#    Htest = Htest.reshape(dim,dim) 
-#    exit(-1)
-#    printm(Htest)
-#    print
-#    printm(H)
-
-
     #   Add up all the two-body contributions, making sure that the results is properly dimensioned for the 
     #   target subspace
     dim_i1=1 #   dimension of space to the left
@@ -189,17 +178,6 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
     dim_i2=dim #   dimension of space to the right
   
     H = H.reshape(dimsdims)
-
-    #print H.shape
-    #print H[tuple([slice(0,3)])*len(H.shape)].shape
-    ##print H[tuple([slice(0,3)])*len(H.shape)] - H
-    #print np.diagonal(np.diagonal(H)).shape
-    #print H[np.ones(len(H.shape)).astype(int)].shape
-    
-    #sliceij = []
-    #for d in dimsdims:
-    #    sliceij.extend([slice(0,d)])
-    #print sliceij
 
     for vi,v in enumerate(vecs):
         for wi,w in enumerate(vecs):
@@ -232,12 +210,6 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
 
                 sort_ind = np.argsort(tens_inds)
                 
-    
-                #print "sort: ", sort_ind, np.array(tens_inds)[sort_ind]
-                #print ":",vi,wi, tens_inds, tens_dims
-                #swap indices since we have done kronecker product as H2xI
-                #tens_dims[vi], tens_dims[] = tens_dims[0], tens_dims[vi] 
-                #tens_dims[vi+n_dims], tens_dims[0+n_dims] = tens_dims[0+n_dims], tens_dims[vi+n_dims] 
                 swap = np.append(sort_ind,sort_ind+n_dims) 
 
                 #todo and check
@@ -245,31 +217,13 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
                 #H += h.transpose(swap)
                 H += h.reshape(tens_dims).transpose(swap)
                 
-                #print "swap ", swap
-                #h = h.reshape(tens_dims)
-                #h = h.transpose(swap)
-                #print h.shape
-                #print h.shape, dimsdims
-                
-  
-                #sl = cp.deepcopy(sliceij)
-                #sl
-                #print H[sl].shape
-                #H[] = Hij[(vi,wi)]
-                #dim_i2 = 1
-                #for i in range(vi,wi):
-                #    dim_i2 = dim_i2 * vecs[i].shape[1]
-                #dim_i2 = dim_i2/v.shape[1]
-                #i2 = np.eye(dim_i2)
-                
-                #print "dim_i1  :  dim_i2", dim_i1, dim_i2, dim
-                #H += np.kron(i1,np.kron(H1[vi],i2))
-             
-                #dim_i1 = dim_i1 * v.shape[1]
-
     H = H.reshape(dim,dim)
+
+    ## Project this onto m_s = 0 (or other target)
+    #Sz = form_compressed_zero_order_hamiltonian_diag(vecs0,Szi)# This is the diagonal of Sz in the current space
+    #H = filter_rows_cols(H, Szi, Sz0_0, target_ms)
+
     print "     Size of Hamitonian block: ", H.shape
-    #printm(H)
     return H
     # }}}
 
@@ -739,6 +693,48 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
     return Htest
     #}}}
 
+def filter_rows_cols(A, sz_r, sz_c, sz):
+    #{{{
+    """
+    Filter the matrix A by keeping only the rows and columns for which sz_r(r) = sz and sz_c(c) = sz
+
+    This is used to grab only the portion of the Hamiltonian which has constant s_z
+    """
+    r_list = np.array([],dtype=int)
+    c_list = np.array([],dtype=int)
+    thresh = 1e-8
+    for r in range(0,A.shape[0]):
+        if abs(sz_r[r] - sz) < thresh:
+            r_list = np.hstack((r_list,r))
+    for c in range(0,A.shape[1]):
+        if abs(sz_c[c] - sz) < thresh:
+            c_list = np.hstack((c_list,c))
+            #c_list.extend([c])
+
+    return A[r_list,::][::,c_list]
+    #}}}
+
+def get_ms_subspace_list(v, Szi, ms):
+    #{{{
+    """
+    Get a list of configurations with requested m_s value
+
+    The current space is defined by the vectors in v (i.e., a list of all compression vectors on each fragment)
+
+    Szi is just the Sz matrix for each fragment
+    """
+    Sz0 = form_compressed_zero_order_hamiltonian_diag(v,Szi)# <vvv..|Sz|vvv..>
+
+    r_list = np.array([],dtype=int)
+    thresh = 1e-10
+    for r in range(0,Sz0.shape[0]):
+        if abs(Sz0[r] - ms) < thresh:
+            r_list = np.hstack((r_list,r))
+
+    return r_list
+    #}}}
+
+
 
 
 
@@ -770,7 +766,8 @@ parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', he
 parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
-parser.add_argument('-pt_type','--pt_type', type=str, default='en', choices=['mp','en'], help='PT correction denominator type', required=False)
+parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
+parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
 args = vars(parser.parse_args())
 #
 #   Let minute specification of walltime override hour specification
@@ -985,10 +982,24 @@ for it in range(0,maxiter):
             v[bi] = q_states[bi]
             v[bj] = q_states[bj]
             vecsQQ[bi,bj] = v
-    
+   
+    count = {}
+
     H0_0 = form_compressed_hamiltonian_diag(vecs0,Hi,Hij)   # <PPP|H|PPP>
     S20_0 = form_compressed_hamiltonian_diag(vecs0,S2i,S2ij)# <PPP|S^2|PPP>
-    Sz0_0 = form_compressed_hamiltonian_diag(vecs0,Szi,Szij)# <PPP|S^2|PPP>
+    #Sz0 = form_compressed_zero_order_hamiltonian_diag(vecs0,Szi)# <PPP|Sz|PPP>
+
+    # Project this onto m_s = 0 (or other target)
+    ms_proj = 1
+    if ms_proj:
+        target_ms = args['target_ms']
+        ms_space_0 = get_ms_subspace_list(vecs0, Szi, target_ms)
+        
+        H0_0 = H0_0[ms_space_0,::][::,ms_space_0]
+        S20_0 = S20_0[ms_space_0,::][::,ms_space_0]
+    
+    #H0_0 = filter_rows_cols(H0_0, Sz0_0, Sz0_0, target_ms)
+    #S20_0 = filter_rows_cols(S20_0, Sz0, Sz0, target_ms)
     #
     
     H_zero_order_diag =  np.array([]) 
@@ -1012,6 +1023,7 @@ for it in range(0,maxiter):
                         form_compressed_zero_order_hamiltonian_diag(vecsQ[bi],Hi)
                         ) )# <QPP|H|QPP>
 
+
             H_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],Hi,Hij) # <QPP|H|QPP>
             
             H_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],Hi,Hij,[bi]) # <PPP|H|QPP>
@@ -1020,12 +1032,36 @@ for it in range(0,maxiter):
             S2_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],S2i,S2ij) # <QPP|H|QPP>
             S2_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],S2i,S2ij,[bi]) # <PPP|H|QPP>
             S2_sectors[bi+1,0]       = S2_sectors[0,bi+1].T
+   
+            # project each matrix onto target m_s space
+            if ms_proj:
+                ms_space_Pi = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
+             
+                H_sectors[bi+1,bi+1] = H_sectors[bi+1,bi+1][ms_space_Pi,::][::,ms_space_Pi]
+                H_sectors[0   ,bi+1] = H_sectors[0   ,bi+1][ms_space_0 ,::][::,ms_space_Pi]
+                H_sectors[bi+1,   0] = H_sectors[bi+1,   0][ms_space_Pi,::][::, ms_space_0]
+                
+                S2_sectors[bi+1,bi+1] = S2_sectors[bi+1,bi+1][ms_space_Pi,::][::,ms_space_Pi]
+                S2_sectors[0   ,bi+1] = S2_sectors[0   ,bi+1][ms_space_0, ::][::,ms_space_Pi]
+                S2_sectors[bi+1,   0] = S2_sectors[bi+1,   0][ms_space_Pi,::][::, ms_space_0]
+            
             for bj in range(bi+1,n_blocks):
                 H_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],Hi,Hij,[bi,bj]) # <QPP|H|PQP>
                 H_sectors[bj+1,bi+1] = H_sectors[bi+1,bj+1].T
     
                 S2_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],S2i,S2ij,[bi,bj]) # <QPP|H|PQP>
                 S2_sectors[bj+1,bi+1] = S2_sectors[bi+1,bj+1].T
+            
+                # project each matrix onto target m_s space
+                if ms_proj:
+                    ms_space_Pj = get_ms_subspace_list(vecsQ[bj], Szi, target_ms)
+                    
+                    H_sectors[bi+1,bj+1] = H_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
+                    H_sectors[bj+1,bi+1] = H_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
+                    S2_sectors[bi+1,bj+1] = S2_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
+                    S2_sectors[bj+1,bi+1] = S2_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
+            
+            
     
    
     if n_body_order >= 2:
@@ -1048,6 +1084,19 @@ for it in range(0,maxiter):
                 S2_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],S2i,S2ij) # <QPQ|H|QPQ>
                 S2_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],S2i,S2ij,[bi,bj]) # <PPP|H|QQP>
                 S2_sectors[bij,0]    = S2_sectors[0,bij].T
+            
+                # project each matrix onto target m_s space
+                if ms_proj:
+                    ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
+                 
+                    H_sectors[bij,bij] = H_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
+                    H_sectors[0  ,bij] = H_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
+                    H_sectors[bij,  0] = H_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
+                 
+                    S2_sectors[bij,bij] = S2_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
+                    S2_sectors[0  ,bij] = S2_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
+                    S2_sectors[bij,  0] = S2_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
+            
                 
         for bi in range(n_blocks):
             for bj in range(bi+1,n_blocks):
@@ -1070,12 +1119,27 @@ for it in range(0,maxiter):
                         S2_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],S2i,S2ij,[bi]) # <PQP|H|PQQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
                     else:
+                        print 
+                        print " Form Zeros       for <%s|H|%s>" %(bij, bk+1)
                         H_sectors[bk+1,bij]     = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
                         H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
                 
                         S2_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
-                
+            
+                    # project each matrix onto target m_s space
+                    if ms_proj:
+                        if bk == bi or bk == bj :    #Zeros are already projected 
+                            ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
+                            ms_space_Pk = get_ms_subspace_list(vecsQ[bk], Szi, target_ms)
+                      
+                            H_sectors[bk+1,bij] = H_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
+                            H_sectors[bij,bk+1] = H_sectors[bij,bk+1][ms_space_Pij,::][::,ms_space_Pk]
+                            
+                            S2_sectors[bij,bk+1] = S2_sectors[bij,bk+1][ms_space_Pij,::][::,ms_space_Pk]
+                            S2_sectors[bk+1,bij] = S2_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
+                    
+                #for bk in range(bi,n_blocks):
                     for bl in range(bk+1,n_blocks):
                         bkl = (bk+1,bl+1)
     
@@ -1084,7 +1148,8 @@ for it in range(0,maxiter):
                             continue
                         if bk == bi and bl <= bj:
                             continue
-                        
+                       
+                        #count[(bij,bkl)] += 1
                         diff = {}
                         diff[bi] = 1
                         diff[bj] = 1
@@ -1113,6 +1178,18 @@ for it in range(0,maxiter):
                             
                             S2_sectors[bij,bkl] = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
                             S2_sectors[bkl,bij] = S2_sectors[bij,bkl].T
+                 
+                        # project each matrix onto target m_s space
+                        if ms_proj:
+                            if len(diff2) == 2:   #Zeros are already projected 
+                                ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
+                                ms_space_Pkl = get_ms_subspace_list(vecsQQ[bk,bl], Szi, target_ms)
+                             
+                                H_sectors[bij,bkl] = H_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
+                                H_sectors[bkl,bij] = H_sectors[bkl,bij][ms_space_Pkl,::][::,ms_space_Pij]
+                             
+                                S2_sectors[bij,bkl] = S2_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
+                                S2_sectors[bkl,bij] = S2_sectors[bkl,bij][ms_space_Pkl,::][::,ms_space_Pij]
     
     
     Htest = assemble_blocked_matrix(H_sectors, n_blocks, n_body_order) 
@@ -1223,7 +1300,7 @@ for it in range(0,maxiter):
     print " QQ_dims ", QQ_dims
     print " QQQ_dims", QQQ_dims
     print
-    if 1:
+    if it<maxiter-1 :
 
         #
         #   (A a1 a2 a3) (B b1 b2 b3) = AB a1 b1
