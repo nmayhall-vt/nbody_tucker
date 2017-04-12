@@ -909,6 +909,7 @@ maxiter = args['max_iter']
 last_vector = np.array([])  # used to detect root flipping
 for it in range(0,maxiter):
 
+
     print " Tucker optimization: Iteration %4i" %it
 
     vecs0 = []
@@ -1103,6 +1104,7 @@ for it in range(0,maxiter):
     Q_dims = [] # dimension of Q space for each block i.e., Q_dims[3] is the dimension of this space |abcDef...> 
     QQ_dims = [] # dimension of Q space for each block-dimer i.e., QQ_dims[3] is the dimension of this space |AbcdEf...> 
     QQQ_dims = []
+    print "len_p", p_states[0].shape
 
     #   These arrays of pairs indicate where each P,Q,QQ, etc block starts and stops in the compressed CI space
     ci_startstop     = {}
@@ -1338,11 +1340,16 @@ for it in range(0,maxiter):
                         block_dimer_index += 1
      
 
-        p_states = []
-        q_states = []
+        p_states_new = []
+        q_states_new = []
         print "    Eigenvalues of each 1fdm:" 
         for fi,f in enumerate(blocks):
-            lx,vx = np.linalg.eigh(grams[fi])
+            old_basis = np.hstack((p_states[fi], q_states[fi]))
+        
+            lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi]).dot(old_basis))
+            vx = old_basis.dot(vx)
+
+            #lx,vx = np.linalg.eigh(grams[fi])
         
             sort_ind = np.argsort(lx)[::-1]
             lx = lx[sort_ind]
@@ -1355,9 +1362,11 @@ for it in range(0,maxiter):
             print 
             #print lx
             
-            p_states.extend([vx[:,0:n_p_states[bi]]])
-            q_states.extend([vx[:,n_p_states[bi]:n_p_states[bi]+n_q_states[bi]]])
-     
+            p_states_new.extend([vx[:,0:n_p_states[fi]]])
+            q_states_new.extend([vx[:,n_p_states[fi]:n_p_states[fi]+n_q_states[fi]]])
+
+        p_states = p_states_new 
+        q_states = q_states_new 
 
 
     #if it<maxiter-1 :
@@ -1371,8 +1380,6 @@ for it in range(0,maxiter):
    
         vec_curr = transform_tensor(v_0, vecs0)
     
-        #change_tucker_basis(last_vector, last_tucker_basis, 
-        
         if n_body_order >= 1:
             
             start = P_dim
@@ -1393,7 +1400,6 @@ for it in range(0,maxiter):
                 vec_curr += transform_tensor(v_tmp, vecs_b)
                 start = stop
         
-        #if 0:
         if n_body_order >= 2:
             
             block_dimer_index = 0
