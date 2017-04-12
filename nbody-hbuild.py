@@ -724,7 +724,7 @@ def get_ms_subspace_list(v, Szi, ms):
     Sz0 = form_compressed_zero_order_hamiltonian_diag(v,Szi)# <vvv..|Sz|vvv..>
 
     r_list = np.array([],dtype=int)
-    thresh = 1e-10
+    thresh = 1e-12
     for r in range(0,Sz0.shape[0]):
         if abs(Sz0[r] - ms) < thresh:
             r_list = np.hstack((r_list,r))
@@ -1582,6 +1582,8 @@ for it in range(0,maxiter):
             #lx,vx = np.linalg.eigh(grams[fi])
 
             lx,vx = np.linalg.eigh(grams[fi] + Szi[fi])
+            #lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi] + Szi[fi]).dot(old_basis))
+            #vx = old_basis.dot(vx)
        
             lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
 
