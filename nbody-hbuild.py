@@ -34,7 +34,15 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
         lat_b = lattice[b]
         H_b, tmp, S2_b, Sz_b = form_hdvv_H(lat_b,j_b)
     
-        l_b,v_b = np.linalg.eigh(H_b)
+        # Diagonalize an arbitrary linear combination of the quantum numbers we insist on preserving
+        l_b,v_b = np.linalg.eigh(H_b + Sz_b + S2_b) 
+        l_b = v_b.transpose().dot(H_b).dot(v_b).diagonal()
+        
+        sort_ind = np.argsort(l_b)
+        l_b = l_b[sort_ind]
+        v_b = v_b[:,sort_ind]
+            
+
         print " Guess eigenstates"
         for l in l_b:
             print "%12.8f" %l
@@ -880,12 +888,16 @@ for bi,b in enumerate(blocks):
             hj = Hi[bj]
             s2i = S2i[bi]
             s2j = S2i[bj]
+            szi = Szi[bi]
+            szj = Szi[bj]
             
             Hij[(bi,bj)], S2ij[(bi,bj)], Szij[(bi,bj)] = form_superblock_hamiltonian(lattice, j12, blocks, [bi,bj])
             Hij[(bi,bj)] -= np.kron(hi,np.eye(hj.shape[0])) 
             Hij[(bi,bj)] -= np.kron(np.eye(hi.shape[0]),hj) 
             S2ij[(bi,bj)] -= np.kron(s2i,np.eye(s2j.shape[0])) 
             S2ij[(bi,bj)] -= np.kron(np.eye(s2i.shape[0]),s2j) 
+            Szij[(bi,bj)] -= np.kron(szi,np.eye(szj.shape[0])) 
+            Szij[(bi,bj)] -= np.kron(np.eye(szi.shape[0]),szj) 
 
 
 
@@ -920,6 +932,7 @@ for it in range(0,maxiter):
     
     H0_0 = form_compressed_hamiltonian_diag(vecs0,Hi,Hij)   # <PPP|H|PPP>
     S20_0 = form_compressed_hamiltonian_diag(vecs0,S2i,S2ij)# <PPP|S^2|PPP>
+    Sz0_0 = form_compressed_hamiltonian_diag(vecs0,Szi,Szij)# <PPP|S^2|PPP>
     #
     
     H_sectors = {}
