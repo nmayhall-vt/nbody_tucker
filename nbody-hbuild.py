@@ -1086,7 +1086,7 @@ for it in range(0,maxiter):
                 # project each matrix onto target m_s space
                 if ms_proj:
                     ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
-                 
+                
                     H_sectors[bij,bij] = H_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
                     H_sectors[0  ,bij] = H_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
                     H_sectors[bij,  0] = H_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
@@ -1576,11 +1576,15 @@ for it in range(0,maxiter):
         for fi,f in enumerate(blocks):
             old_basis = np.hstack((p_states[fi], q_states[fi]))
         
-            lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi]).dot(old_basis))
-            vx = old_basis.dot(vx)
+            #lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi]).dot(old_basis))
+            #vx = old_basis.dot(vx)
 
             #lx,vx = np.linalg.eigh(grams[fi])
-        
+
+            lx,vx = np.linalg.eigh(grams[fi] + Szi[fi])
+       
+            lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
+
             sort_ind = np.argsort(lx)[::-1]
             lx = lx[sort_ind]
             vx = vx[:,sort_ind]
