@@ -770,7 +770,7 @@ parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', he
 parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
-parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
+parser.add_argument('-pt_type','--pt_type', type=str, default='en', choices=['mp','en'], help='PT correction denominator type', required=False)
 args = vars(parser.parse_args())
 #
 #   Let minute specification of walltime override hour specification
