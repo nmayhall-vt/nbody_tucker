@@ -114,7 +114,6 @@ def form_compressed_zero_order_hamiltonian_diag(vecs,Hi):
      
 
     #H = H.reshape(dim,dim)
-    print "     Size of Hamitonian block: ", H.shape
     return H.diagonal()
     # }}}
 
@@ -268,7 +267,6 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
                 #dim_i1 = dim_i1 * v.shape[1]
 
     H = H.reshape(dim,dim)
-    print "     Size of Hamitonian block: ", H.shape
     #printm(H)
     return H
     # }}}
@@ -325,7 +323,6 @@ def form_compressed_hamiltonian_offdiag_1block_diff(vecs_l,vecs_r,Hi,Hij,differe
     assert(dim_same == dim_same_check)
 
     H = np.zeros((dim_l,dim_r))
-    print "     Size of Hamitonian block: ", H.shape
 
     assert(len(dims_l) == len(dims_r))
     n_dims = len(dims_l)
@@ -497,7 +494,6 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
     assert(dim_same == dim_same_check)
 
     H = np.zeros((dim_l,dim_r))
-    print "     Size of Hamitonian block: ", H.shape
 
     assert(len(dims_l) == len(dims_r))
     n_dims = len(dims_l)
@@ -600,7 +596,7 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
 
         nd = n0 + n1 + n2
 
-        print "Dimensions: ", n0, n1, n2, " = ", nd
+        #print "Dimensions: ", n0, n1, n2, " = ", nd
 
         Htest = np.empty([nd,nd])
 
@@ -1036,11 +1032,9 @@ for it in range(0,maxiter):
                     H_zero_order_diag = np.hstack((H_zero_order_diag,
                             form_compressed_zero_order_hamiltonian_diag(vecsQQ[bi,bj],Hi)
                             ) )# <QPP|H|QPP>
-                print 
                 print " Form Hamiltonian for <%s|H|%s>" %(bij, bij)
                 H_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Hi,Hij) # <QPQ|H|QPQ>
                 
-                print 
                 print " Form Hamiltonian for <%s|H|%s>" %(0, bij)
                 H_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Hi,Hij,[bi,bj]) # <PPP|H|QQP>
                 H_sectors[bij,0]    = H_sectors[0,bij].T
@@ -1054,7 +1048,6 @@ for it in range(0,maxiter):
                 bij = (bi+1,bj+1)
                 for bk in range(n_blocks):
                     if bk == bi:
-                        print 
                         print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
                         H_sectors[bk+1,bij]     = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bj]) # <PPQ|H|PQQ>
                         H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
@@ -1062,7 +1055,6 @@ for it in range(0,maxiter):
                         S2_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],S2i,S2ij,[bj]) # <PPQ|H|PQQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
                     elif bk == bj:
-                        print 
                         print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
                         H_sectors[bk+1,bij]     = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bi]) # <PQP|H|PQQ>
                         H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
@@ -1100,7 +1092,6 @@ for it in range(0,maxiter):
                                 diff2.extend([bbi])
                        
                         if len(diff2) == 2:
-                            print 
                             print " Form Hamiltonian for <%s|H|%s>" %(bij, bkl)
                             H_sectors[bij,bkl]  = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],Hi,Hij,diff2) # <QPQ|H|QQP>
                             H_sectors[bkl,bij]  = H_sectors[bij,bkl].T
@@ -1236,10 +1227,10 @@ for it in range(0,maxiter):
         # PP terms
         print " P,P block" 
         for fi,f in enumerate(blocks):
-            print " Get gramian for block", fi,
+            #print " Get gramian for block", fi,
             gram_tmp = form_1fdm(v_0, v_0, [fi])
-            print " size: ", gram_tmp.shape,
-            print " trace: %16.12f"% gram_tmp.trace()
+            #print " size: ", gram_tmp.shape,
+            #print " trace: %16.12f"% gram_tmp.trace()
     
             grams[fi] = vecs0[fi].dot(gram_tmp).dot(vecs0[fi].T)
      
@@ -1260,10 +1251,10 @@ for it in range(0,maxiter):
                 
                 v1.shape = dims_curr
             
-                print "   Get gramian for block: ", bi, 
+                #print "   Get gramian for block: ", bi, 
                 gram_tmp = form_1fdm(v_0, v1, [bi])
-                print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                print " trace: %16.12f"% gram_tmp.trace()
+                #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                #print " trace: %16.12f"% gram_tmp.trace()
                 
                 gram_tmp = vecs0[bi].dot(gram_tmp).dot(vecsQ[bi][bi].T)
 
@@ -1289,10 +1280,10 @@ for it in range(0,maxiter):
                 v1.shape = dims_curr
             
                 for fi,f in enumerate(blocks):
-                    print "   Get gramian for block: ", fi, 
+                    #print "   Get gramian for block: ", fi, 
                     gram_tmp = form_1fdm(v1, v1, [fi])
-                    print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                    print " trace: %16.12f"% gram_tmp.trace()
+                    #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                    #print " trace: %16.12f"% gram_tmp.trace()
                     
                     grams[fi] += vecsQ[bi][fi].dot(gram_tmp).dot(vecsQ[bi][fi].T)
        
@@ -1342,10 +1333,10 @@ for it in range(0,maxiter):
                         dims_curr1[bi]  = q_states[bi].shape[1]
                         v1.shape = dims_curr1
                         
-                        print "   Get gramian for block: ", bbi, 
+                        #print "   Get gramian for block: ", bbi, 
                         gram_tmp = form_1fdm(v1, v2, [bbi])
-                        print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                        print " trace: %16.12f"% gram_tmp.trace()
+                        #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                        #print " trace: %16.12f"% gram_tmp.trace()
                             
                         gram_tmp = vecsQ[(bi)][bbi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][bbi].T)
 
@@ -1362,10 +1353,10 @@ for it in range(0,maxiter):
                         dims_curr1[bbi]  = q_states[bbi].shape[1]
                         v1.shape = dims_curr1
                         
-                        print "   Get gramian for block: ", bi, 
+                        #print "   Get gramian for block: ", bi, 
                         gram_tmp = form_1fdm(v1, v2, [bi])
-                        print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                        print " trace: %16.12f"% gram_tmp.trace()
+                        #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                        #print " trace: %16.12f"% gram_tmp.trace()
                             
                         gram_tmp = vecsQ[(bbi)][bi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][bi].T)
 
@@ -1399,10 +1390,10 @@ for it in range(0,maxiter):
                         v1.shape = dims_curr
                      
                         for fi,f in enumerate(blocks):
-                            print "   Get gramian for block: ", fi, 
+                            #print "   Get gramian for block: ", fi, 
                             gram_tmp = form_1fdm(v1, v1, [fi])
-                            print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                            print " trace: %16.12f"% gram_tmp.trace()
+                            #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                            #print " trace: %16.12f"% gram_tmp.trace()
                             
                             grams[fi] += vecsQQ[(bi,bbi)][fi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][fi].T)
                   
@@ -1442,7 +1433,7 @@ for it in range(0,maxiter):
     #if it<maxiter-1 :
     if 0 :
         print " Recompose target state (SLOW)"
-   
+   # {{{
         v = cp.deepcopy(vp[:,target_state])
         
         v_0 = v[0:P_dim]
@@ -1565,7 +1556,7 @@ for it in range(0,maxiter):
     thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
         if abs(lp[target_state]-energy_per_iter[it-1]) < thresh:
-            break
+            break# }}}
 
     
     
