@@ -114,7 +114,58 @@ def form_compressed_zero_order_hamiltonian_diag(vecs,Hi):
      
 
     #H = H.reshape(dim,dim)
-    print "     Size of Hamitonian block: ", H.shape
+    #print "     Size of Hamitonian block: ", H.shape
+    return H.diagonal()
+    # }}}
+
+def form_compressed_zero_order_hamiltonian_diag1(vecs,Hi):
+    # {{{
+    dim = 1 # dimension of subspace
+    dims = [] # list of mode dimensions (size of hilbert space on each fragment) 
+    for vi,v in enumerate(vecs):
+        dim = dim*v.shape[1]
+        dims.extend([v.shape[1]])
+    H = np.zeros((dim,dim))
+    n_dims = len(dims)
+
+
+    H1 = cp.deepcopy(Hi)
+    for vi,v in enumerate(vecs):
+        H1[vi] = np.dot(v.transpose(),np.dot(Hi[vi],v))
+
+    
+    dimsdims = dims
+    dimsdims = np.append(dims,dims)
+
+    #Htest = Htest.reshape(dimsdims)
+    #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
+    #   target subspace
+    dim_i1=1 #   dimension of space to the left
+    dim_i2=dim #   dimension of space to the right
+    
+    for vi,v in enumerate(vecs):
+        i1 = np.eye(dim_i1)
+        dim_i2 = dim_i2/v.shape[1]
+        i2 = np.eye(dim_i2)
+        
+        #print "dim_i1  :  dim_i2", dim_i1, dim_i2, dim
+        H += np.kron(i1,np.kron(H1[vi],i2))
+        
+        #nv = v.shape[1]
+        #test = np.ones(len(dimsdims)).astype(int)
+        #test[vi] = nv
+        #test[vi+len(dims)] = nv
+        
+        #h = cp.deepcopy(H1[vi])
+        #h = h.reshape(test)
+        #Htest = np.einsum('ijkljk->ijklmn',Htest,h)
+        
+        dim_i1 = dim_i1 * v.shape[1]
+
+     
+
+    #H = H.reshape(dim,dim)
+    #print "     Size of Hamitonian block: ", H.shape
     return H.diagonal()
     # }}}
 
@@ -223,7 +274,7 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
     #Sz = form_compressed_zero_order_hamiltonian_diag(vecs0,Szi)# This is the diagonal of Sz in the current space
     #H = filter_rows_cols(H, Szi, Sz0_0, target_ms)
 
-    print "     Size of Hamitonian block: ", H.shape
+    #print "     Size of Hamitonian block: ", H.shape
     return H
     # }}}
 
@@ -279,7 +330,7 @@ def form_compressed_hamiltonian_offdiag_1block_diff(vecs_l,vecs_r,Hi,Hij,differe
     assert(dim_same == dim_same_check)
 
     H = np.zeros((dim_l,dim_r))
-    print "     Size of Hamitonian block: ", H.shape
+    #print "     Size of Hamitonian block: ", H.shape
 
     assert(len(dims_l) == len(dims_r))
     n_dims = len(dims_l)
@@ -451,7 +502,7 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
     assert(dim_same == dim_same_check)
 
     H = np.zeros((dim_l,dim_r))
-    print "     Size of Hamitonian block: ", H.shape
+    #print "     Size of Hamitonian block: ", H.shape
 
     assert(len(dims_l) == len(dims_r))
     n_dims = len(dims_l)
@@ -729,6 +780,8 @@ def get_ms_subspace_list(v, Szi, ms):
         if abs(Sz0[r] - ms) < thresh:
             r_list = np.hstack((r_list,r))
 
+    #print "r_list ", Sz0 
+    #print "r_list ", r_list
     return r_list
     #}}}
 
@@ -985,16 +1038,20 @@ for it in range(0,maxiter):
 
     H0_0 = form_compressed_hamiltonian_diag(vecs0,Hi,Hij)   # <PPP|H|PPP>
     S20_0 = form_compressed_hamiltonian_diag(vecs0,S2i,S2ij)# <PPP|S^2|PPP>
+    Sz0_0 = form_compressed_hamiltonian_diag(vecs0,Szi,Szij)# <PPP|S^2|PPP>
     #Sz0 = form_compressed_zero_order_hamiltonian_diag(vecs0,Szi)# <PPP|Sz|PPP>
 
     # Project this onto m_s = 0 (or other target)
-    ms_proj = 1
+    ms_proj = 0
+    target_ms = args['target_ms']
     if ms_proj:
-        target_ms = args['target_ms']
         ms_space_0 = get_ms_subspace_list(vecs0, Szi, target_ms)
         
         H0_0 = H0_0[ms_space_0,::][::,ms_space_0]
         S20_0 = S20_0[ms_space_0,::][::,ms_space_0]
+        Sz0_0 = Sz0_0[ms_space_0,::][::,ms_space_0]
+                                
+        print "sector: ", ms_space_0
     
     #H0_0 = filter_rows_cols(H0_0, Sz0_0, Sz0_0, target_ms)
     #S20_0 = filter_rows_cols(S20_0, Sz0, Sz0, target_ms)
@@ -1012,6 +1069,9 @@ for it in range(0,maxiter):
     S2_sectors = {}
     S2_sectors[0,0] = S20_0
     
+    Sz_sectors = {}
+    Sz_sectors[0,0] = Sz0_0
+        
     n_body_order = args['n_body_order'] 
     
     if n_body_order >= 1:
@@ -1030,6 +1090,10 @@ for it in range(0,maxiter):
             S2_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],S2i,S2ij) # <QPP|H|QPP>
             S2_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],S2i,S2ij,[bi]) # <PPP|H|QPP>
             S2_sectors[bi+1,0]       = S2_sectors[0,bi+1].T
+            
+            Sz_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],Szi,Szij) # <QPP|H|QPP>
+            Sz_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],Szi,Szij,[bi]) # <PPP|H|QPP>
+            Sz_sectors[bi+1,0]       = Sz_sectors[0,bi+1].T
    
             # project each matrix onto target m_s space
             if ms_proj:
@@ -1042,6 +1106,12 @@ for it in range(0,maxiter):
                 S2_sectors[bi+1,bi+1] = S2_sectors[bi+1,bi+1][ms_space_Pi,::][::,ms_space_Pi]
                 S2_sectors[0   ,bi+1] = S2_sectors[0   ,bi+1][ms_space_0, ::][::,ms_space_Pi]
                 S2_sectors[bi+1,   0] = S2_sectors[bi+1,   0][ms_space_Pi,::][::, ms_space_0]
+                
+                Sz_sectors[bi+1,bi+1] = Sz_sectors[bi+1,bi+1][ms_space_Pi,::][::,ms_space_Pi]
+                Sz_sectors[0   ,bi+1] = Sz_sectors[0   ,bi+1][ms_space_0, ::][::,ms_space_Pi]
+                Sz_sectors[bi+1,   0] = Sz_sectors[bi+1,   0][ms_space_Pi,::][::, ms_space_0]
+        
+    
             
             for bj in range(bi+1,n_blocks):
                 H_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],Hi,Hij,[bi,bj]) # <QPP|H|PQP>
@@ -1050,14 +1120,19 @@ for it in range(0,maxiter):
                 S2_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],S2i,S2ij,[bi,bj]) # <QPP|H|PQP>
                 S2_sectors[bj+1,bi+1] = S2_sectors[bi+1,bj+1].T
             
+                Sz_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],Szi,Szij,[bi,bj]) # <QPP|H|PQP>
+                Sz_sectors[bj+1,bi+1] = Sz_sectors[bi+1,bj+1].T
+            
                 # project each matrix onto target m_s space
                 if ms_proj:
                     ms_space_Pj = get_ms_subspace_list(vecsQ[bj], Szi, target_ms)
-                    
+
                     H_sectors[bi+1,bj+1] = H_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
                     H_sectors[bj+1,bi+1] = H_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
                     S2_sectors[bi+1,bj+1] = S2_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
                     S2_sectors[bj+1,bi+1] = S2_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
+                    Sz_sectors[bi+1,bj+1] = Sz_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
+                    Sz_sectors[bj+1,bi+1] = Sz_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
             
             
     
@@ -1070,11 +1145,9 @@ for it in range(0,maxiter):
                     H_zero_order_diag = np.hstack((H_zero_order_diag,
                             form_compressed_zero_order_hamiltonian_diag(vecsQQ[bi,bj],Hi)
                             ) )# <QPP|H|QPP>
-                print 
                 print " Form Hamiltonian for <%s|H|%s>" %(bij, bij)
                 H_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Hi,Hij) # <QPQ|H|QPQ>
                 
-                print 
                 print " Form Hamiltonian for <%s|H|%s>" %(0, bij)
                 H_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Hi,Hij,[bi,bj]) # <PPP|H|QQP>
                 H_sectors[bij,0]    = H_sectors[0,bij].T
@@ -1082,6 +1155,10 @@ for it in range(0,maxiter):
                 S2_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],S2i,S2ij) # <QPQ|H|QPQ>
                 S2_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],S2i,S2ij,[bi,bj]) # <PPP|H|QQP>
                 S2_sectors[bij,0]    = S2_sectors[0,bij].T
+                
+                Sz_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Szi,Szij) # <QPQ|H|QPQ>
+                Sz_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Szi,Szij,[bi,bj]) # <PPP|H|QQP>
+                Sz_sectors[bij,0]    = Sz_sectors[0,bij].T
             
                 # project each matrix onto target m_s space
                 if ms_proj:
@@ -1094,6 +1171,9 @@ for it in range(0,maxiter):
                     S2_sectors[bij,bij] = S2_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
                     S2_sectors[0  ,bij] = S2_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
                     S2_sectors[bij,  0] = S2_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
+                    Sz_sectors[bij,bij] = Sz_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
+                    Sz_sectors[0  ,bij] = Sz_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
+                    Sz_sectors[bij,  0] = Sz_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
             
                 
         for bi in range(n_blocks):
@@ -1101,41 +1181,50 @@ for it in range(0,maxiter):
                 bij = (bi+1,bj+1)
                 for bk in range(n_blocks):
                     if bk == bi:
-                        print 
                         print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
                         H_sectors[bk+1,bij]     = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bj]) # <PPQ|H|PQQ>
                         H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
                         
                         S2_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],S2i,S2ij,[bj]) # <PPQ|H|PQQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
+                        
+                        Sz_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Szi,Szij,[bj]) # <PPQ|H|PQQ>
+                        Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
                     elif bk == bj:
-                        print 
                         print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
                         H_sectors[bk+1,bij]     = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bi]) # <PQP|H|PQQ>
                         H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
                         
                         S2_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],S2i,S2ij,[bi]) # <PQP|H|PQQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
+                        
+                        Sz_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Szi,Szij,[bi]) # <PQP|H|PQQ>
+                        Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
                     else:
-                        print 
-                        print " Form Zeros       for <%s|H|%s>" %(bij, bk+1)
                         H_sectors[bk+1,bij]     = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
                         H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
                 
                         S2_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
+                
+                        Sz_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
+                        Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
             
                     # project each matrix onto target m_s space
                     if ms_proj:
                         if bk == bi or bk == bj :    #Zeros are already projected 
                             ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
                             ms_space_Pk = get_ms_subspace_list(vecsQ[bk], Szi, target_ms)
+                    
                       
                             H_sectors[bk+1,bij] = H_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
                             H_sectors[bij,bk+1] = H_sectors[bij,bk+1][ms_space_Pij,::][::,ms_space_Pk]
                             
                             S2_sectors[bij,bk+1] = S2_sectors[bij,bk+1][ms_space_Pij,::][::,ms_space_Pk]
                             S2_sectors[bk+1,bij] = S2_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
+                            
+                            Sz_sectors[bij,bk+1] = Sz_sectors[bij,bk+1][ms_space_Pij,::][::,ms_space_Pk]
+                            Sz_sectors[bk+1,bij] = Sz_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
                     
                 #for bk in range(bi,n_blocks):
                     for bl in range(bk+1,n_blocks):
@@ -1163,64 +1252,84 @@ for it in range(0,maxiter):
                                 diff2.extend([bbi])
                        
                         if len(diff2) == 2:
-                            print 
                             print " Form Hamiltonian for <%s|H|%s>" %(bij, bkl)
                             H_sectors[bij,bkl]  = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],Hi,Hij,diff2) # <QPQ|H|QQP>
                             H_sectors[bkl,bij]  = H_sectors[bij,bkl].T
                             
                             S2_sectors[bij,bkl] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],S2i,S2ij,diff2) # <QPQ|H|QQP>
                             S2_sectors[bkl,bij] = S2_sectors[bij,bkl].T
+                            
+                            Sz_sectors[bij,bkl] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],Szi,Szij,diff2) # <QPQ|H|QQP>
+                            Sz_sectors[bkl,bij] = Sz_sectors[bij,bkl].T
                         if len(diff2) > 2:
                             H_sectors[bij,bkl]  = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
                             H_sectors[bkl,bij]  = H_sectors[bij,bkl].T
                             
                             S2_sectors[bij,bkl] = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
                             S2_sectors[bkl,bij] = S2_sectors[bij,bkl].T
+                            
+                            Sz_sectors[bij,bkl] = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
+                            Sz_sectors[bkl,bij] = Sz_sectors[bij,bkl].T
                  
                         # project each matrix onto target m_s space
                         if ms_proj:
                             if len(diff2) == 2:   #Zeros are already projected 
                                 ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
                                 ms_space_Pkl = get_ms_subspace_list(vecsQQ[bk,bl], Szi, target_ms)
+                    
                              
                                 H_sectors[bij,bkl] = H_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
                                 H_sectors[bkl,bij] = H_sectors[bkl,bij][ms_space_Pkl,::][::,ms_space_Pij]
                              
                                 S2_sectors[bij,bkl] = S2_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
                                 S2_sectors[bkl,bij] = S2_sectors[bkl,bij][ms_space_Pkl,::][::,ms_space_Pij]
+                             
+                                Sz_sectors[bij,bkl] = Sz_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
+                                Sz_sectors[bkl,bij] = Sz_sectors[bkl,bij][ms_space_Pkl,::][::,ms_space_Pij]
+
     
     
     Htest = assemble_blocked_matrix(H_sectors, n_blocks, n_body_order) 
     S2test = assemble_blocked_matrix(S2_sectors, n_blocks, n_body_order) 
-    
-    if 0:
-        dims_0
-        Htest = cp.deepcopy(H_tot)
-        Htest.shape = dims_tot + dims_tot
-        v0v0 = vecs0+vecs0
-        Htest   = transform_tensor(Htest,vecs0+vecs0,trans=1)
-        dim0 = 1
-        for d in dims_0:
-            dim0 *= d
-        print dim0,dim0
-        print Htest.shape
-        Htest.shape = [dim0,dim0] 
-        print Htest
-        print H0_0
-    
+    Sztest = assemble_blocked_matrix(Sz_sectors, n_blocks, n_body_order) 
+
+    #print Sztest
    
+    print "trace: ", Sztest.diagonal()
+
+    r_list = np.array([],dtype=int)
+    sz_thresh = 1e-3
+    for r in range(0,Sztest.shape[0]):
+        if abs(Sztest[r,r] - target_ms) < sz_thresh:
+            r_list = np.hstack((r_list,r))
+  
+    Htest_ms = Htest[r_list,::][::,r_list]
+    S2test_ms = S2test[r_list,::][::,r_list]
+    Sztest_ms = S2test[r_list,::][::,r_list]
+
     print " Dimensions of Full Hamiltonian      ", H_tot.shape
-    print " Dimensions of Subspace Hamiltonian  ", Htest.shape
+    print " Dimensions of Subspace Hamiltonian  ", Htest_ms.shape
 
     lp = np.array([])
     vp = np.array([])
 
     if Htest.shape[0] > 3000:
-        lp,vp = scipy.sparse.linalg.eigsh(Htest, k=args["n_roots"] )
+        lp,vp = scipy.sparse.linalg.eigsh(Htest_ms, k=args["n_roots"] )
+        #lp,vp = scipy.sparse.linalg.eigsh(Htest + Sztest, k=args["n_roots"] )
     else:
-        lp,vp = np.linalg.eigh(Htest)
 
-    s2 = vp.T.dot(S2test).dot(vp)
+        #lp,vp = np.linalg.eigh(Htest_ms)
+        lp,vp = np.linalg.eigh(Htest_ms + Sztest_ms)
+ 
+    
+
+    lp = vp.T.dot(Htest_ms).dot(vp).diagonal()
+            
+    sort_ind = np.argsort(lp)
+    lp = lp[sort_ind]
+    vp = vp[:,sort_ind]
+
+    s2 = vp.T.dot(S2test_ms).dot(vp)
     #print 
     #print " Eigenvectors of compressed Hamiltonian"
     #print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
@@ -1228,9 +1337,70 @@ for it in range(0,maxiter):
     #    print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
     #    if si>10:
     #        break
-
     
     target_state = args['target_state'] 
+
+    vpt = np.zeros((Htest.shape[0],vp.shape[1]))
+    vpt[r_list] = vp
+    vp = cp.deepcopy(vpt)
+    
+    
+    #davidson
+    davidson = 1
+    if davidson == 1:
+        n0 = H_sectors[0,0].shape[0] 
+
+        c_0 =  np.dot(vp[0:n0,0].T,vp[0:n0,0])
+        ltmp, vtmp = np.linalg.eigh(H0_0)
+        davidson_correction = (1-c_0)*(lp[0] - ltmp[0])/c_0
+        print " Norm of low-entanglement reference component %12.8f" %c_0
+        print " Davidson correction :                        %12.8f " %davidson_correction
+        #lp[0] += davidson_correction
+    
+    #pt2
+    if args['pt_order'] == 2:
+        n0 = H_sectors[0,0].shape[0] 
+        Hpp = Htest[0:n0, 0:n0]
+        Hpq = Htest[0:n0, n0::]
+
+        Dqq = np.array([])
+
+        if args['pt_type'] == 'en':
+            Dqq = np.diag(Htest)[n0::]    #Epstein-Nesbitt-like
+        elif args['pt_type'] == 'mp':
+            Dqq = H_zero_order_diag[n0::]    #Moller-Plesset-like
+        else:
+            print " Bad choice of pt_type"
+            exit(-1)
+        
+        H0 = Hpp
+        l0,v0 = np.linalg.eigh(H0)
+        e0 = l0[0]
+
+        Dqq = 1/(e0-Dqq) 
+        H2 = Hpp + Hpq.dot(np.diag(Dqq)).dot(Hpq.T)
+
+        l2,v2 = np.linalg.eigh(H2)
+        print " Zeroth-order energy: %12.8f" %l0[0]
+        print " Second-order energy: %12.8f" %l2[0]
+
+    print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+    for si,i in enumerate(lp):
+        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,abs(s2[si,si]))
+        if si>args['n_print']:
+            break
+    
+    #print
+    #print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
+
+
+    energy_per_iter += [lp[target_state]]
+
+    thresh = 1.0*np.power(10.0,-float(args['thresh']))
+    if it > 0:
+        if abs(lp[target_state]-energy_per_iter[it-1]) < thresh:
+            break
+
     #
     #   todo: look for, and address, root flipping
     #
@@ -1257,42 +1427,47 @@ for it in range(0,maxiter):
     ci_startstop[-1] = (0,n0)
 
     start = n0 
-    for bi,b in enumerate(blocks):
-        #q_dim = n0 / p_states[bi].shape[1] * q_states[bi].shape[1]
-        q_dim = H_sectors[bi+1,bi+1].shape[0]
-        Q_dims.extend([q_dim])
-       
-        ci_startstop[bi] = (start,start+q_dim)
-
-        start = start + q_dim
-
-    for bi,b in enumerate(blocks):
-        for bbi,bb in enumerate(blocks):
-            if bbi > bi:
-                bij = (bi+1, bbi+1)
-                #q_dim = n0 / p_states[bi].shape[1] / p_states[bbi].shape[1] * q_states[bi].shape[1] * q_states[bbi].shape[1]
-                q_dim = H_sectors[bij,bij].shape[0]
-                QQ_dims.extend([q_dim])
-                
-                ci_startstop[(bi,bbi)] = (start,start+q_dim)
-        
-                start = start + q_dim
-
-
-    for bi,b in enumerate(blocks):
-        for bbi,bb in enumerate(blocks):
-            if bbi > bi:
-                for bbbi,bbb in enumerate(blocks):
-                    if bbbi > bbi:
-                        q_dim = n0 
-                        q_dim = q_dim / p_states[bi].shape[1]   * q_states[bi].shape[1]
-                        q_dim = q_dim / p_states[bbi].shape[1]  * q_states[bbi].shape[1]
-                        q_dim = q_dim / p_states[bbbi].shape[1] * q_states[bbbi].shape[1]
-                        QQQ_dims.extend([q_dim])
-                
-                        ci_startstop[(bi,bbi,bbbi)] = (start,start+q_dim)
-        
-                        start = start + q_dim
+    if n_body_order >= 1: 
+        print 
+        print " Form fragment-reduced density matrices"
+        for bi,b in enumerate(blocks):
+            #q_dim = n0 / p_states[bi].shape[1] * q_states[bi].shape[1]
+            q_dim = H_sectors[bi+1,bi+1].shape[0]
+            Q_dims.extend([q_dim])
+           
+            ci_startstop[bi] = (start,start+q_dim)
+ 
+            start = start + q_dim
+ 
+    if n_body_order >= 2: 
+        for bi,b in enumerate(blocks):
+            for bbi,bb in enumerate(blocks):
+                if bbi > bi:
+                    bij = (bi+1, bbi+1)
+                    #q_dim = n0 / p_states[bi].shape[1] / p_states[bbi].shape[1] * q_states[bi].shape[1] * q_states[bbi].shape[1]
+                    q_dim = H_sectors[bij,bij].shape[0]
+                    QQ_dims.extend([q_dim])
+                    
+                    ci_startstop[(bi,bbi)] = (start,start+q_dim)
+            
+                    start = start + q_dim
+ 
+ 
+    if n_body_order >= 3: 
+        for bi,b in enumerate(blocks):
+            for bbi,bb in enumerate(blocks):
+                if bbi > bi:
+                    for bbbi,bbb in enumerate(blocks):
+                        if bbbi > bbi:
+                            q_dim = n0 
+                            q_dim = q_dim / p_states[bi].shape[1]   * q_states[bi].shape[1]
+                            q_dim = q_dim / p_states[bbi].shape[1]  * q_states[bbi].shape[1]
+                            q_dim = q_dim / p_states[bbbi].shape[1] * q_states[bbbi].shape[1]
+                            QQQ_dims.extend([q_dim])
+                    
+                            ci_startstop[(bi,bbi,bbbi)] = (start,start+q_dim)
+            
+                            start = start + q_dim
     
     print
     print " Dimensions of all the spaces"
@@ -1309,8 +1484,8 @@ for it in range(0,maxiter):
     #
     #
 
-    if it<maxiter-1 :
-
+    if it<maxiter-0 :
+# {{{
         #
         #   (A a1 a2 a3) (B b1 b2 b3) = AB a1 b1
         v = cp.deepcopy(vp[:,target_state])
@@ -1338,10 +1513,10 @@ for it in range(0,maxiter):
         # PP terms
         print " P,P block" 
         for fi,f in enumerate(blocks):
-            print " Get gramian for block", fi,
+            #print " Get gramian for block", fi,
             gram_tmp = form_1fdm(v_0, v_0, [fi])
-            print " size: ", gram_tmp.shape,
-            print " trace: %16.12f"% gram_tmp.trace()
+            #print " size: ", gram_tmp.shape,
+            #print " trace: %16.12f"% gram_tmp.trace()
     
             grams[fi] = vecs0[fi].dot(gram_tmp).dot(vecs0[fi].T)
 
@@ -1373,10 +1548,10 @@ for it in range(0,maxiter):
                 
                 v1.shape = dims_curr
             
-                print "   Get gramian for block: ", bi, 
+                #print "   Get gramian for block: ", bi, 
                 gram_tmp = form_1fdm(v_0, v1, [bi])
-                print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                print " trace: %16.12f"% gram_tmp.trace()
+                #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                #print " trace: %16.12f"% gram_tmp.trace()
                 
                 gram_tmp = vecs0[bi].dot(gram_tmp).dot(vecsQ[bi][bi].T)
 
@@ -1412,10 +1587,10 @@ for it in range(0,maxiter):
                 v1.shape = dims_curr
             
                 for fi,f in enumerate(blocks):
-                    print "   Get gramian for block: ", fi, 
+                    #print "   Get gramian for block: ", fi, 
                     gram_tmp = form_1fdm(v1, v1, [fi])
-                    print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                    print " trace: %16.12f"% gram_tmp.trace()
+                    #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                    #print " trace: %16.12f"% gram_tmp.trace()
                     
                     grams[fi] += vecsQ[bi][fi].dot(gram_tmp).dot(vecsQ[bi][fi].T)
        
@@ -1484,10 +1659,10 @@ for it in range(0,maxiter):
                         dims_curr1[bi]  = q_states[bi].shape[1]
                         v1.shape = dims_curr1
                         
-                        print "   Get gramian for block: ", bbi, 
+                        #print "   Get gramian for block: ", bbi, 
                         gram_tmp = form_1fdm(v1, v2, [bbi])
-                        print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                        print " trace: %16.12f"% gram_tmp.trace()
+                        #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                        #print " trace: %16.12f"% gram_tmp.trace()
                             
                         gram_tmp = vecsQ[(bi)][bbi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][bbi].T)
 
@@ -1513,10 +1688,10 @@ for it in range(0,maxiter):
                         dims_curr1[bbi]  = q_states[bbi].shape[1]
                         v1.shape = dims_curr1
                         
-                        print "   Get gramian for block: ", bi, 
+                        #print "   Get gramian for block: ", bi, 
                         gram_tmp = form_1fdm(v1, v2, [bi])
-                        print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                        print " trace: %16.12f"% gram_tmp.trace()
+                        #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                        #print " trace: %16.12f"% gram_tmp.trace()
                             
                         gram_tmp = vecsQ[(bbi)][bi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][bi].T)
 
@@ -1559,15 +1734,15 @@ for it in range(0,maxiter):
                         v1.shape = dims_curr
                      
                         for fi,f in enumerate(blocks):
-                            print "   Get gramian for block: ", fi, 
+                            #print "   Get gramian for block: ", fi, 
                             gram_tmp = form_1fdm(v1, v1, [fi])
-                            print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
-                            print " trace: %16.12f"% gram_tmp.trace()
+                            #print " size: %5s x %-5s"%(gram_tmp.shape[0],gram_tmp.shape[1]),
+                            #print " trace: %16.12f"% gram_tmp.trace()
                             
                             grams[fi] += vecsQQ[(bi,bbi)][fi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][fi].T)
                   
                   
-                        block_dimer_index += 1
+                        block_dimer_index += 1# }}}
      
 
         p_states_new = []
@@ -1575,21 +1750,46 @@ for it in range(0,maxiter):
         print "    Eigenvalues of each 1fdm:" 
         for fi,f in enumerate(blocks):
             old_basis = np.hstack((p_states[fi], q_states[fi]))
-        
-            #lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi]).dot(old_basis))
-            #vx = old_basis.dot(vx)
+       
+            lx = np.array([])
+            vx = np.array([])
+            
+            if ms_proj:
+                #szx,ux = np.linalg.eigh(old_basis.T.dot(Szi[fi]).dot(old_basis))
+                #ux = old_basis.dot(ux)
+                #lx,vx = np.linalg.eigh(ux.T.dot(grams[fi]+Szi[fi]).dot(ux))
+                #vx = vx.dot(ux)
+                #lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
+                
+                lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi] + Szi[fi]).dot(old_basis))
+                vx = old_basis.dot(vx)
+                lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
+            else:
+                #szx,ux = np.linalg.eigh(old_basis.T.dot(Szi[fi]).dot(old_basis))
+                #ux = old_basis.dot(ux)
+                #lx,vx = np.linalg.eigh(ux.T.dot(grams[fi]).dot(ux))
+                #vx = ux.dot(vx)
+                #lx,vx = np.linalg.eigh(grams[fi] + Szi[fi])
+                lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi] + Szi[fi]).dot(old_basis))
+                vx = old_basis.dot(vx)
+                lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
 
             #lx,vx = np.linalg.eigh(grams[fi])
 
-            lx,vx = np.linalg.eigh(grams[fi] + Szi[fi])
+            #lx,vx = np.linalg.eigh(grams[fi] + Szi[fi])
             #lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi] + Szi[fi]).dot(old_basis))
             #vx = old_basis.dot(vx)
        
-            lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
 
             sort_ind = np.argsort(lx)[::-1]
             lx = lx[sort_ind]
             vx = vx[:,sort_ind]
+            
+            #print Szi[fi].trace()
+            #print Szi[fi]
+            #print vx.T.dot(Szi[fi]).dot(vx).trace()
+            #print vx.T.dot(Szi[fi]).dot(vx).diagonal()
+            #print form_compressed_zero_order_hamiltonian_diag([vx],Szi[fi])# <vvv..|Sz|vvv..>
             
             print "         Fragment: ", fi
             for si,i in enumerate(lx):
@@ -1605,10 +1805,16 @@ for it in range(0,maxiter):
         q_states = q_states_new 
 
 
+
+
+
+
+
+
     #if it<maxiter-1 :
     if 0 :
         print " Recompose target state (SLOW)"
-   
+   # {{{
         v = cp.deepcopy(vp[:,target_state])
         
         v_0 = v[0:P_dim]
@@ -1673,65 +1879,10 @@ for it in range(0,maxiter):
             q_states.extend([b[:,n_p_states[bi]:n_p_states[bi]+n_q_states[bi]]])
       
         vec_curr = vec_curr.reshape(dim_tot)
-        #H_tot = H_tot.reshape(dim_tot, dim_tot)
+        #H_tot = H_tot.reshape(dim_tot, dim_tot)# }}}
         
 
 
-    #davidson
-    davidson = 1
-    if davidson == 1:
-        n0 = H_sectors[0,0].shape[0] 
-
-        c_0 =  np.dot(vp[0:n0,0].T,vp[0:n0,0])
-        ltmp, vtmp = np.linalg.eigh(H0_0)
-        davidson_correction = (1-c_0)*(lp[0] - ltmp[0])/c_0
-        print " Norm of low-entanglement reference component %12.8f" %c_0
-        print " Davidson correction :                        %12.8f " %davidson_correction
-        #lp[0] += davidson_correction
-    
-    #pt2
-    if args['pt_order'] == 2:
-        n0 = H_sectors[0,0].shape[0] 
-        Hpp = Htest[0:n0, 0:n0]
-        Hpq = Htest[0:n0, n0::]
-
-        Dqq = np.array([])
-
-        if args['pt_type'] == 'en':
-            Dqq = np.diag(Htest)[n0::]    #Epstein-Nesbitt-like
-        elif args['pt_type'] == 'mp':
-            Dqq = H_zero_order_diag[n0::]    #Moller-Plesset-like
-        else:
-            print " Bad choice of pt_type"
-            exit(-1)
-        
-        H0 = Hpp
-        l0,v0 = np.linalg.eigh(H0)
-        e0 = l0[0]
-
-        Dqq = 1/(e0-Dqq) 
-        H2 = Hpp + Hpq.dot(np.diag(Dqq)).dot(Hpq.T)
-
-        l2,v2 = np.linalg.eigh(H2)
-        print " Zeroth-order energy: %12.8f" %l0[0]
-        print " Second-order energy: %12.8f" %l2[0]
-
-    print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
-    for si,i in enumerate(lp):
-        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,abs(s2[si,si]))
-        if si>args['n_print']:
-            break
-    
-    #print
-    #print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
-
-
-    energy_per_iter += [lp[target_state]]
-
-    thresh = 1.0*np.power(10.0,-float(args['thresh']))
-    if it > 0:
-        if abs(lp[target_state]-energy_per_iter[it-1]) < thresh:
-            break
 
     
     
