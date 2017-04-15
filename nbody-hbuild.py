@@ -10,8 +10,8 @@ import scipy.sparse.linalg
 #import sys
 #sys.path.insert(0, '../')
 
-from hdvv import *
 
+from hdvv import *
 
 def printm(m):
     # {{{
@@ -773,11 +773,34 @@ def get_ms_subspace_list(v, Szi, ms):
     Szi is just the Sz matrix for each fragment
     """
     Sz0 = form_compressed_zero_order_hamiltonian_diag(v,Szi)# <vvv..|Sz|vvv..>
-
+    
     r_list = np.array([],dtype=int)
     thresh = 1e-12
     for r in range(0,Sz0.shape[0]):
         if abs(Sz0[r] - ms) < thresh:
+            r_list = np.hstack((r_list,r))
+
+    #print "r_list ", Sz0 
+    #print "r_list ", r_list
+    return r_list
+    #}}}
+
+def get_ms_subspace_list2(v, Szi, Szij, ms):
+    #{{{
+    """
+    Get a list of configurations with requested m_s value
+
+    The current space is defined by the vectors in v (i.e., a list of all compression vectors on each fragment)
+
+    Szi is just the Sz matrix for each fragment
+    """
+    Sz0  = form_compressed_hamiltonian_diag(v,Szi,Szij) # <QPQ|H|QPQ>
+
+    r_list = np.array([],dtype=int)
+    thresh = 1e-12
+    for r in range(0,Sz0.shape[0]):
+        if abs(Sz0[r,r] - ms) < thresh:
+        #if np.isclose(Sz0[r,r], ms):
             r_list = np.hstack((r_list,r))
 
     #print "r_list ", Sz0 
@@ -917,8 +940,6 @@ dims_tot = []
 dim_tot = 1
 for bi,b in enumerate(blocks):
     print "here:",b,bi
-for bi,b in enumerate(blocks):
-    print "here:",b,bi
     block_dim = np.power(2,b.shape[0])
     dims_tot.extend([block_dim])
     dim_tot *= block_dim
@@ -1042,16 +1063,15 @@ for it in range(0,maxiter):
     #Sz0 = form_compressed_zero_order_hamiltonian_diag(vecs0,Szi)# <PPP|Sz|PPP>
 
     # Project this onto m_s = 0 (or other target)
-    ms_proj = 0
+    ms_proj = 1
     target_ms = args['target_ms']
     if ms_proj:
-        ms_space_0 = get_ms_subspace_list(vecs0, Szi, target_ms)
+        ms_space_0 = get_ms_subspace_list2(vecs0, Szi, Szij, target_ms)
+        #ms_space_0 = get_ms_subspace_list(vecs0, Szi, target_ms)
         
         H0_0 = H0_0[ms_space_0,::][::,ms_space_0]
         S20_0 = S20_0[ms_space_0,::][::,ms_space_0]
         Sz0_0 = Sz0_0[ms_space_0,::][::,ms_space_0]
-                                
-        print "sector: ", ms_space_0
     
     #H0_0 = filter_rows_cols(H0_0, Sz0_0, Sz0_0, target_ms)
     #S20_0 = filter_rows_cols(S20_0, Sz0, Sz0, target_ms)
@@ -1097,7 +1117,8 @@ for it in range(0,maxiter):
    
             # project each matrix onto target m_s space
             if ms_proj:
-                ms_space_Pi = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
+                ms_space_Pi = get_ms_subspace_list2(vecsQ[bi], Szi, Szij, target_ms)
+                #ms_space_Pi = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
              
                 H_sectors[bi+1,bi+1] = H_sectors[bi+1,bi+1][ms_space_Pi,::][::,ms_space_Pi]
                 H_sectors[0   ,bi+1] = H_sectors[0   ,bi+1][ms_space_0 ,::][::,ms_space_Pi]
@@ -1125,7 +1146,8 @@ for it in range(0,maxiter):
             
                 # project each matrix onto target m_s space
                 if ms_proj:
-                    ms_space_Pj = get_ms_subspace_list(vecsQ[bj], Szi, target_ms)
+                    ms_space_Pj = get_ms_subspace_list2(vecsQ[bj], Szi, Szij, target_ms)
+                    #ms_space_Pj = get_ms_subspace_list(vecsQ[bj], Szi, target_ms)
 
                     H_sectors[bi+1,bj+1] = H_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
                     H_sectors[bj+1,bi+1] = H_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
@@ -1162,7 +1184,8 @@ for it in range(0,maxiter):
             
                 # project each matrix onto target m_s space
                 if ms_proj:
-                    ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
+                    ms_space_Pij = get_ms_subspace_list2(vecsQQ[bi,bj], Szi, Szij, target_ms)
+                    #ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
                 
                     H_sectors[bij,bij] = H_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
                     H_sectors[0  ,bij] = H_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
@@ -1213,8 +1236,10 @@ for it in range(0,maxiter):
                     # project each matrix onto target m_s space
                     if ms_proj:
                         if bk == bi or bk == bj :    #Zeros are already projected 
-                            ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
-                            ms_space_Pk = get_ms_subspace_list(vecsQ[bk], Szi, target_ms)
+                            ms_space_Pij = get_ms_subspace_list2(vecsQQ[bi,bj], Szi, Szij, target_ms)
+                            ms_space_Pk = get_ms_subspace_list2(vecsQ[bk], Szi, Szij, target_ms)
+                            #ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
+                            #ms_space_Pk = get_ms_subspace_list(vecsQ[bk], Szi, target_ms)
                     
                       
                             H_sectors[bk+1,bij] = H_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
@@ -1274,8 +1299,10 @@ for it in range(0,maxiter):
                         # project each matrix onto target m_s space
                         if ms_proj:
                             if len(diff2) == 2:   #Zeros are already projected 
-                                ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
-                                ms_space_Pkl = get_ms_subspace_list(vecsQQ[bk,bl], Szi, target_ms)
+                                ms_space_Pij = get_ms_subspace_list2(vecsQQ[bi,bj], Szi, Szij, target_ms)
+                                ms_space_Pkl = get_ms_subspace_list2(vecsQQ[bk,bl], Szi, Szij, target_ms)
+                                #ms_space_Pij = get_ms_subspace_list(vecsQQ[bi,bj], Szi, target_ms)
+                                #ms_space_Pkl = get_ms_subspace_list(vecsQQ[bk,bl], Szi, target_ms)
                     
                              
                                 H_sectors[bij,bkl] = H_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
@@ -1291,45 +1318,44 @@ for it in range(0,maxiter):
     
     Htest = assemble_blocked_matrix(H_sectors, n_blocks, n_body_order) 
     S2test = assemble_blocked_matrix(S2_sectors, n_blocks, n_body_order) 
-    Sztest = assemble_blocked_matrix(Sz_sectors, n_blocks, n_body_order) 
+    #Sztest = assemble_blocked_matrix(Sz_sectors, n_blocks, n_body_order) 
 
     #print Sztest
    
-    print "trace: ", Sztest.diagonal()
-
-    r_list = np.array([],dtype=int)
-    sz_thresh = 1e-3
-    for r in range(0,Sztest.shape[0]):
-        if abs(Sztest[r,r] - target_ms) < sz_thresh:
-            r_list = np.hstack((r_list,r))
+    #r_list = np.array([],dtype=int)
+    #sz_thresh = 1e-3
+    #for r in range(0,Sztest.shape[0]):
+    #    if abs(Sztest[r,r] - target_ms) < sz_thresh:
+    #        r_list = np.hstack((r_list,r))
   
-    Htest_ms = Htest[r_list,::][::,r_list]
-    S2test_ms = S2test[r_list,::][::,r_list]
-    Sztest_ms = S2test[r_list,::][::,r_list]
+    #Htest_ms = Htest[r_list,::][::,r_list]
+    #S2test_ms = S2test[r_list,::][::,r_list]
+    #Sztest_ms = S2test[r_list,::][::,r_list]
 
-    print " Dimensions of Full Hamiltonian      ", H_tot.shape
-    print " Dimensions of Subspace Hamiltonian  ", Htest_ms.shape
+    #print " Dimensions of Full Hamiltonian      ", H_tot.shape
+    print " Dimensions of Subspace Hamiltonian  ", Htest.shape
 
     lp = np.array([])
     vp = np.array([])
 
     if Htest.shape[0] > 3000:
-        lp,vp = scipy.sparse.linalg.eigsh(Htest_ms, k=args["n_roots"] )
+        lp,vp = scipy.sparse.linalg.eigsh(Htest, k=args["n_roots"] )
         #lp,vp = scipy.sparse.linalg.eigsh(Htest + Sztest, k=args["n_roots"] )
+        pass
     else:
-
         #lp,vp = np.linalg.eigh(Htest_ms)
-        lp,vp = np.linalg.eigh(Htest_ms + Sztest_ms)
+        #lp,vp = np.linalg.eigh(Htest)
+        #lp,vp = np.linalg.eigh(Htest + Sztest)
+        lp,vp = np.linalg.eigh(Htest)
  
     
-
-    lp = vp.T.dot(Htest_ms).dot(vp).diagonal()
+    lp = vp.T.dot(Htest).dot(vp).diagonal()
             
     sort_ind = np.argsort(lp)
     lp = lp[sort_ind]
     vp = vp[:,sort_ind]
 
-    s2 = vp.T.dot(S2test_ms).dot(vp)
+    s2 = vp.T.dot(S2test).dot(vp)
     #print 
     #print " Eigenvectors of compressed Hamiltonian"
     #print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
@@ -1340,9 +1366,9 @@ for it in range(0,maxiter):
     
     target_state = args['target_state'] 
 
-    vpt = np.zeros((Htest.shape[0],vp.shape[1]))
-    vpt[r_list] = vp
-    vp = cp.deepcopy(vpt)
+    #vpt = np.zeros((Htest.shape[0],vp.shape[1]))
+    #vpt[r_list] = vp
+    #vp = cp.deepcopy(vpt)
     
     
     #davidson
@@ -1419,7 +1445,6 @@ for it in range(0,maxiter):
     Q_dims = [] # dimension of Q space for each block i.e., Q_dims[3] is the dimension of this space |abcDef...> 
     QQ_dims = [] # dimension of Q space for each block-dimer i.e., QQ_dims[3] is the dimension of this space |AbcdEf...> 
     QQQ_dims = []
-    print "len_p", p_states[0].shape
 
     #   These arrays of pairs indicate where each P,Q,QQ, etc block starts and stops in the compressed CI space
     ci_startstop     = {}
@@ -1499,7 +1524,8 @@ for it in range(0,maxiter):
 
         # unproject back from m_s subblock
         if ms_proj:
-            ms_space_P = get_ms_subspace_list(vecs0, Szi, target_ms)
+            ms_space_P = get_ms_subspace_list2(vecs0, Szi, Szij, target_ms)
+            #ms_space_P = get_ms_subspace_list(vecs0, Szi, target_ms)
             tmp = np.zeros((n0))
             tmp[ms_space_P] = v_0
             v_0 = cp.deepcopy(tmp)
@@ -1535,7 +1561,8 @@ for it in range(0,maxiter):
           
                 # unproject back from m_s subblock
                 if ms_proj:
-                    ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
+                    ms_space_curr = get_ms_subspace_list2(vecsQ[bi], Szi, Szij, target_ms)
+                    #ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
                     n_curr = n0 * q_states[bi].shape[1] / p_states[bi].shape[1]
                     tmp = np.zeros((n_curr))
                     tmp[ms_space_curr] = v1
@@ -1574,7 +1601,8 @@ for it in range(0,maxiter):
                 
                 # unproject back from m_s subblock
                 if ms_proj:
-                    ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
+                    ms_space_curr = get_ms_subspace_list2(vecsQ[bi], Szi, Szij, target_ms)
+                    #ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
                     n_curr = n0 * q_states[bi].shape[1] / p_states[bi].shape[1]
                     tmp = np.zeros((n_curr))
                     tmp[ms_space_curr] = v1
@@ -1628,7 +1656,8 @@ for it in range(0,maxiter):
 
                         # unproject back from m_s subblock
                         if ms_proj:
-                            ms_space_curr = get_ms_subspace_list(vecsQQ[(bi,bbi)], Szi, target_ms)
+                            ms_space_curr = get_ms_subspace_list2(vecsQQ[(bi,bbi)], Szi, Szij, target_ms)
+                            #ms_space_curr = get_ms_subspace_list(vecsQQ[(bi,bbi)], Szi, target_ms)
                             n_curr = n0 * q_states[bi].shape[1] * q_states[bbi].shape[1] / p_states[bi].shape[1] / p_states[bbi].shape[1]
                             tmp = np.zeros((n_curr))
                             tmp[ms_space_curr] = v2
@@ -1649,7 +1678,8 @@ for it in range(0,maxiter):
                         
                         # unproject back from m_s subblock
                         if ms_proj:
-                            ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
+                            ms_space_curr = get_ms_subspace_list2(vecsQ[bi], Szi, Szij, target_ms)
+                            #ms_space_curr = get_ms_subspace_list(vecsQ[bi], Szi, target_ms)
                             n_curr = n0 * q_states[bi].shape[1] / p_states[bi].shape[1] 
                             tmp = np.zeros((n_curr))
                             tmp[ms_space_curr] = v1
@@ -1678,7 +1708,8 @@ for it in range(0,maxiter):
                         
                         # unproject back from m_s subblock
                         if ms_proj:
-                            ms_space_curr = get_ms_subspace_list(vecsQ[bbi], Szi, target_ms)
+                            ms_space_curr = get_ms_subspace_list2(vecsQ[bbi], Szi, Szij, target_ms)
+                            #ms_space_curr = get_ms_subspace_list(vecsQ[bbi], Szi, target_ms)
                             n_curr = n0 * q_states[bbi].shape[1] / p_states[bbi].shape[1] 
                             tmp = np.zeros((n_curr))
                             tmp[ms_space_curr] = v1
@@ -1720,7 +1751,8 @@ for it in range(0,maxiter):
 
                         # unproject back from m_s subblock
                         if ms_proj:
-                            ms_space_curr = get_ms_subspace_list(vecsQQ[(bi,bbi)], Szi, target_ms)
+                            ms_space_curr = get_ms_subspace_list2(vecsQQ[(bi,bbi)], Szi, Szij, target_ms)
+                            #ms_space_curr = get_ms_subspace_list(vecsQQ[(bi,bbi)], Szi, target_ms)
                             n_curr = n0 * q_states[bi].shape[1] * q_states[bbi].shape[1] / p_states[bi].shape[1] / p_states[bbi].shape[1]
                             tmp = np.zeros((n_curr))
                             tmp[ms_space_curr] = v1
@@ -1750,46 +1782,17 @@ for it in range(0,maxiter):
         print "    Eigenvalues of each 1fdm:" 
         for fi,f in enumerate(blocks):
             old_basis = np.hstack((p_states[fi], q_states[fi]))
-       
-            lx = np.array([])
-            vx = np.array([])
             
-            if ms_proj:
-                #szx,ux = np.linalg.eigh(old_basis.T.dot(Szi[fi]).dot(old_basis))
-                #ux = old_basis.dot(ux)
-                #lx,vx = np.linalg.eigh(ux.T.dot(grams[fi]+Szi[fi]).dot(ux))
-                #vx = vx.dot(ux)
-                #lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
-                
-                lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi] + Szi[fi]).dot(old_basis))
-                vx = old_basis.dot(vx)
-                lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
-            else:
-                #szx,ux = np.linalg.eigh(old_basis.T.dot(Szi[fi]).dot(old_basis))
-                #ux = old_basis.dot(ux)
-                #lx,vx = np.linalg.eigh(ux.T.dot(grams[fi]).dot(ux))
-                #vx = ux.dot(vx)
-                #lx,vx = np.linalg.eigh(grams[fi] + Szi[fi])
-                lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi] + Szi[fi]).dot(old_basis))
-                vx = old_basis.dot(vx)
-                lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
+            
+            lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi]).dot(old_basis))
+            vx = old_basis.dot(vx)
+            lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
 
-            #lx,vx = np.linalg.eigh(grams[fi])
-
-            #lx,vx = np.linalg.eigh(grams[fi] + Szi[fi])
-            #lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi] + Szi[fi]).dot(old_basis))
-            #vx = old_basis.dot(vx)
        
-
             sort_ind = np.argsort(lx)[::-1]
             lx = lx[sort_ind]
             vx = vx[:,sort_ind]
             
-            #print Szi[fi].trace()
-            #print Szi[fi]
-            #print vx.T.dot(Szi[fi]).dot(vx).trace()
-            #print vx.T.dot(Szi[fi]).dot(vx).diagonal()
-            #print form_compressed_zero_order_hamiltonian_diag([vx],Szi[fi])# <vvv..|Sz|vvv..>
             
             print "         Fragment: ", fi
             for si,i in enumerate(lx):
@@ -1797,9 +1800,18 @@ for it in range(0,maxiter):
             print "         trace: %-16.8f" % grams[fi].trace()
             print 
             #print lx
-            
-            p_states_new.extend([vx[:,0:n_p_states[fi]]])
-            q_states_new.extend([vx[:,n_p_states[fi]:n_p_states[fi]+n_q_states[fi]]])
+
+            vp = vx[:,0:n_p_states[fi]]
+            vq = vx[:,n_p_states[fi]:n_p_states[fi]+n_q_states[fi]]
+
+            tmp, up = np.linalg.eigh(vp.T.dot(Szi[fi]).dot(vp))
+            tmp, uq = np.linalg.eigh(vq.T.dot(Szi[fi]).dot(vq))
+           
+            vp = vp.dot(up)
+            vq = vq.dot(uq)
+
+            p_states_new.extend([vp])
+            q_states_new.extend([vq])
 
         p_states = p_states_new 
         q_states = q_states_new 
