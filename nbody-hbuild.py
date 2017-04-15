@@ -1059,7 +1059,7 @@ for it in range(0,maxiter):
 
     H0_0 = form_compressed_hamiltonian_diag(vecs0,Hi,Hij)   # <PPP|H|PPP>
     S20_0 = form_compressed_hamiltonian_diag(vecs0,S2i,S2ij)# <PPP|S^2|PPP>
-    Sz0_0 = form_compressed_hamiltonian_diag(vecs0,Szi,Szij)# <PPP|S^2|PPP>
+    #Sz0_0 = form_compressed_hamiltonian_diag(vecs0,Szi,Szij)# <PPP|S^2|PPP>
     #Sz0 = form_compressed_zero_order_hamiltonian_diag(vecs0,Szi)# <PPP|Sz|PPP>
 
     # Project this onto m_s = 0 (or other target)
@@ -1071,7 +1071,7 @@ for it in range(0,maxiter):
         
         H0_0 = H0_0[ms_space_0,::][::,ms_space_0]
         S20_0 = S20_0[ms_space_0,::][::,ms_space_0]
-        Sz0_0 = Sz0_0[ms_space_0,::][::,ms_space_0]
+        #Sz0_0 = Sz0_0[ms_space_0,::][::,ms_space_0]
     
     #H0_0 = filter_rows_cols(H0_0, Sz0_0, Sz0_0, target_ms)
     #S20_0 = filter_rows_cols(S20_0, Sz0, Sz0, target_ms)
@@ -1089,8 +1089,8 @@ for it in range(0,maxiter):
     S2_sectors = {}
     S2_sectors[0,0] = S20_0
     
-    Sz_sectors = {}
-    Sz_sectors[0,0] = Sz0_0
+    #Sz_sectors = {}
+    #Sz_sectors[0,0] = Sz0_0
         
     n_body_order = args['n_body_order'] 
     
@@ -1111,9 +1111,9 @@ for it in range(0,maxiter):
             S2_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],S2i,S2ij,[bi]) # <PPP|H|QPP>
             S2_sectors[bi+1,0]       = S2_sectors[0,bi+1].T
             
-            Sz_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],Szi,Szij) # <QPP|H|QPP>
-            Sz_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],Szi,Szij,[bi]) # <PPP|H|QPP>
-            Sz_sectors[bi+1,0]       = Sz_sectors[0,bi+1].T
+            #Sz_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],Szi,Szij) # <QPP|H|QPP>
+            #Sz_sectors[0,bi+1]       = form_compressed_hamiltonian_offdiag_1block_diff(vecs0,vecsQ[bi],Szi,Szij,[bi]) # <PPP|H|QPP>
+            #Sz_sectors[bi+1,0]       = Sz_sectors[0,bi+1].T
    
             # project each matrix onto target m_s space
             if ms_proj:
@@ -1128,9 +1128,9 @@ for it in range(0,maxiter):
                 S2_sectors[0   ,bi+1] = S2_sectors[0   ,bi+1][ms_space_0, ::][::,ms_space_Pi]
                 S2_sectors[bi+1,   0] = S2_sectors[bi+1,   0][ms_space_Pi,::][::, ms_space_0]
                 
-                Sz_sectors[bi+1,bi+1] = Sz_sectors[bi+1,bi+1][ms_space_Pi,::][::,ms_space_Pi]
-                Sz_sectors[0   ,bi+1] = Sz_sectors[0   ,bi+1][ms_space_0, ::][::,ms_space_Pi]
-                Sz_sectors[bi+1,   0] = Sz_sectors[bi+1,   0][ms_space_Pi,::][::, ms_space_0]
+                #Sz_sectors[bi+1,bi+1] = Sz_sectors[bi+1,bi+1][ms_space_Pi,::][::,ms_space_Pi]
+                #Sz_sectors[0   ,bi+1] = Sz_sectors[0   ,bi+1][ms_space_0, ::][::,ms_space_Pi]
+                #Sz_sectors[bi+1,   0] = Sz_sectors[bi+1,   0][ms_space_Pi,::][::, ms_space_0]
         
     
             
@@ -1141,8 +1141,8 @@ for it in range(0,maxiter):
                 S2_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],S2i,S2ij,[bi,bj]) # <QPP|H|PQP>
                 S2_sectors[bj+1,bi+1] = S2_sectors[bi+1,bj+1].T
             
-                Sz_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],Szi,Szij,[bi,bj]) # <QPP|H|PQP>
-                Sz_sectors[bj+1,bi+1] = Sz_sectors[bi+1,bj+1].T
+                #Sz_sectors[bi+1,bj+1] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQ[bi],vecsQ[bj],Szi,Szij,[bi,bj]) # <QPP|H|PQP>
+                #Sz_sectors[bj+1,bi+1] = Sz_sectors[bi+1,bj+1].T
             
                 # project each matrix onto target m_s space
                 if ms_proj:
@@ -1153,8 +1153,8 @@ for it in range(0,maxiter):
                     H_sectors[bj+1,bi+1] = H_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
                     S2_sectors[bi+1,bj+1] = S2_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
                     S2_sectors[bj+1,bi+1] = S2_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
-                    Sz_sectors[bi+1,bj+1] = Sz_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
-                    Sz_sectors[bj+1,bi+1] = Sz_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
+                    #Sz_sectors[bi+1,bj+1] = Sz_sectors[bi+1,bj+1][ms_space_Pi,::][::,ms_space_Pj]
+                    #Sz_sectors[bj+1,bi+1] = Sz_sectors[bj+1,bi+1][ms_space_Pj,::][::,ms_space_Pi]
             
             
     
@@ -1178,9 +1178,9 @@ for it in range(0,maxiter):
                 S2_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],S2i,S2ij,[bi,bj]) # <PPP|H|QQP>
                 S2_sectors[bij,0]    = S2_sectors[0,bij].T
                 
-                Sz_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Szi,Szij) # <QPQ|H|QPQ>
-                Sz_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Szi,Szij,[bi,bj]) # <PPP|H|QQP>
-                Sz_sectors[bij,0]    = Sz_sectors[0,bij].T
+                #Sz_sectors[bij,bij]  = form_compressed_hamiltonian_diag(vecsQQ[bi,bj],Szi,Szij) # <QPQ|H|QPQ>
+                #Sz_sectors[0,bij]    = form_compressed_hamiltonian_offdiag_2block_diff(vecs0,vecsQQ[bi,bj],Szi,Szij,[bi,bj]) # <PPP|H|QQP>
+                #Sz_sectors[bij,0]    = Sz_sectors[0,bij].T
             
                 # project each matrix onto target m_s space
                 if ms_proj:
@@ -1194,9 +1194,9 @@ for it in range(0,maxiter):
                     S2_sectors[bij,bij] = S2_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
                     S2_sectors[0  ,bij] = S2_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
                     S2_sectors[bij,  0] = S2_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
-                    Sz_sectors[bij,bij] = Sz_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
-                    Sz_sectors[0  ,bij] = Sz_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
-                    Sz_sectors[bij,  0] = Sz_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
+                    #Sz_sectors[bij,bij] = Sz_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
+                    #Sz_sectors[0  ,bij] = Sz_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
+                    #Sz_sectors[bij,  0] = Sz_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
             
                 
         for bi in range(n_blocks):
@@ -1211,8 +1211,8 @@ for it in range(0,maxiter):
                         S2_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],S2i,S2ij,[bj]) # <PPQ|H|PQQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
                         
-                        Sz_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Szi,Szij,[bj]) # <PPQ|H|PQQ>
-                        Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
+                        #Sz_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Szi,Szij,[bj]) # <PPQ|H|PQQ>
+                        #Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
                     elif bk == bj:
                         print " Form Hamiltonian for <%s|H|%s>" %(bij, bk+1)
                         H_sectors[bk+1,bij]     = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Hi,Hij,[bi]) # <PQP|H|PQQ>
@@ -1221,8 +1221,8 @@ for it in range(0,maxiter):
                         S2_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],S2i,S2ij,[bi]) # <PQP|H|PQQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
                         
-                        Sz_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Szi,Szij,[bi]) # <PQP|H|PQQ>
-                        Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
+                        #Sz_sectors[bk+1,bij]    = form_compressed_hamiltonian_offdiag_1block_diff(vecsQ[bk],vecsQQ[bi,bj],Szi,Szij,[bi]) # <PQP|H|PQQ>
+                        #Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
                     else:
                         H_sectors[bk+1,bij]     = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
                         H_sectors[bij,bk+1]     = H_sectors[bk+1,bij].T
@@ -1230,8 +1230,8 @@ for it in range(0,maxiter):
                         S2_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
                         S2_sectors[bij,bk+1]    = S2_sectors[bk+1,bij].T
                 
-                        Sz_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
-                        Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
+                        #Sz_sectors[bk+1,bij]    = np.zeros( (H_sectors[bk+1,bk+1].shape[1] , H_sectors[bij,bij].shape[1] ) ) # <PQP|H|QPQ>
+                        #Sz_sectors[bij,bk+1]    = Sz_sectors[bk+1,bij].T
             
                     # project each matrix onto target m_s space
                     if ms_proj:
@@ -1248,8 +1248,8 @@ for it in range(0,maxiter):
                             S2_sectors[bij,bk+1] = S2_sectors[bij,bk+1][ms_space_Pij,::][::,ms_space_Pk]
                             S2_sectors[bk+1,bij] = S2_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
                             
-                            Sz_sectors[bij,bk+1] = Sz_sectors[bij,bk+1][ms_space_Pij,::][::,ms_space_Pk]
-                            Sz_sectors[bk+1,bij] = Sz_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
+                            #Sz_sectors[bij,bk+1] = Sz_sectors[bij,bk+1][ms_space_Pij,::][::,ms_space_Pk]
+                            #Sz_sectors[bk+1,bij] = Sz_sectors[bk+1,bij][ms_space_Pk,::][::,ms_space_Pij]
                     
                 #for bk in range(bi,n_blocks):
                     for bl in range(bk+1,n_blocks):
@@ -1284,8 +1284,8 @@ for it in range(0,maxiter):
                             S2_sectors[bij,bkl] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],S2i,S2ij,diff2) # <QPQ|H|QQP>
                             S2_sectors[bkl,bij] = S2_sectors[bij,bkl].T
                             
-                            Sz_sectors[bij,bkl] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],Szi,Szij,diff2) # <QPQ|H|QQP>
-                            Sz_sectors[bkl,bij] = Sz_sectors[bij,bkl].T
+                            #Sz_sectors[bij,bkl] = form_compressed_hamiltonian_offdiag_2block_diff(vecsQQ[bi,bj],vecsQQ[bk,bl],Szi,Szij,diff2) # <QPQ|H|QQP>
+                            #Sz_sectors[bkl,bij] = Sz_sectors[bij,bkl].T
                         if len(diff2) > 2:
                             H_sectors[bij,bkl]  = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
                             H_sectors[bkl,bij]  = H_sectors[bij,bkl].T
@@ -1293,8 +1293,8 @@ for it in range(0,maxiter):
                             S2_sectors[bij,bkl] = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
                             S2_sectors[bkl,bij] = S2_sectors[bij,bkl].T
                             
-                            Sz_sectors[bij,bkl] = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
-                            Sz_sectors[bkl,bij] = Sz_sectors[bij,bkl].T
+                            #Sz_sectors[bij,bkl] = np.zeros( (H_sectors[0,bij].shape[1] , H_sectors[0,bkl].shape[1] ) )
+                            #Sz_sectors[bkl,bij] = Sz_sectors[bij,bkl].T
                  
                         # project each matrix onto target m_s space
                         if ms_proj:
@@ -1311,8 +1311,8 @@ for it in range(0,maxiter):
                                 S2_sectors[bij,bkl] = S2_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
                                 S2_sectors[bkl,bij] = S2_sectors[bkl,bij][ms_space_Pkl,::][::,ms_space_Pij]
                              
-                                Sz_sectors[bij,bkl] = Sz_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
-                                Sz_sectors[bkl,bij] = Sz_sectors[bkl,bij][ms_space_Pkl,::][::,ms_space_Pij]
+                                #Sz_sectors[bij,bkl] = Sz_sectors[bij,bkl][ms_space_Pij,::][::,ms_space_Pkl]
+                                #Sz_sectors[bkl,bij] = Sz_sectors[bkl,bij][ms_space_Pkl,::][::,ms_space_Pij]
 
     
     
