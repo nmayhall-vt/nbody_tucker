@@ -1793,22 +1793,34 @@ for it in range(0,maxiter):
             lx = lx[sort_ind]
             vx = vx[:,sort_ind]
             
-            
-            print "         Fragment: ", fi
-            for si,i in enumerate(lx):
-                print "   %-4i   %16.8f "%(si,i)
-            print "         trace: %-16.8f" % grams[fi].trace()
-            print 
-            #print lx
-
             vp = vx[:,0:n_p_states[fi]]
             vq = vx[:,n_p_states[fi]:n_p_states[fi]+n_q_states[fi]]
 
-            tmp, up = np.linalg.eigh(vp.T.dot(Szi[fi]).dot(vp))
-            tmp, uq = np.linalg.eigh(vq.T.dot(Szi[fi]).dot(vq))
+            tmp, up = np.linalg.eigh(vp.T.dot(grams[fi] + Hi[fi] + Szi[fi] + S2i[fi]).dot(vp))
+            tmp, uq = np.linalg.eigh(vq.T.dot(grams[fi] + Hi[fi] + Szi[fi] + S2i[fi]).dot(vq))
            
             vp = vp.dot(up)
             vq = vq.dot(uq)
+
+            sort_ind = np.argsort(vp.T.dot(grams[fi]).dot(vp).diagonal() )[::-1]
+            vp = vp[:,sort_ind]
+            sort_ind = np.argsort(vq.T.dot(grams[fi]).dot(vq).diagonal() )[::-1]
+            vq = vq[:,sort_ind]
+           
+            v = np.hstack( ( vp,vq) )
+            sz = v.T.dot(Szi[fi]).dot(v).diagonal()
+            s2 = v.T.dot(S2i[fi]).dot(v).diagonal()
+            lx = v.T.dot(grams[fi]).dot(v).diagonal()
+            h = v.T.dot(Hi[fi]).dot(v).diagonal()
+           
+            print "         Fragment: ", fi
+            print "   %-12s   %16s  %16s  %12s  %12s "%("Local State", "Occ. Number", "<H>", "<S2>", "<Sz>")
+            for si,i in enumerate(lx):
+                print "   %-12i   %16.8f  %16.8f  %12.4f  %12.4f "%(si,lx[si],h[si],abs(s2[si]),sz[si])
+                #print "   %-4i   %16.8f  %16.8f  %16.4f "%(si,lx[si],h[si],sz[i])
+            print "         trace: %-16.8f" % grams[fi].trace()
+            print 
+            #print lx
 
             p_states_new.extend([vp])
             q_states_new.extend([vq])
