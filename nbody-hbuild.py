@@ -1062,6 +1062,8 @@ for it in range(0,maxiter):
     #Sz0_0 = form_compressed_hamiltonian_diag(vecs0,Szi,Szij)# <PPP|S^2|PPP>
     #Sz0 = form_compressed_zero_order_hamiltonian_diag(vecs0,Szi)# <PPP|Sz|PPP>
 
+    H_zero_order_diag =  np.array([]) 
+
     # Project this onto m_s = 0 (or other target)
     ms_proj = 1
     target_ms = args['target_ms']
@@ -1073,15 +1075,20 @@ for it in range(0,maxiter):
         S20_0 = S20_0[ms_space_0,::][::,ms_space_0]
         #Sz0_0 = Sz0_0[ms_space_0,::][::,ms_space_0]
     
+        #H_zero_order_diag = form_compressed_zero_order_hamiltonian_diag(vecsQ[bi],Hi) # <PPP|H|PPP>
+    
+    if args['pt_order'] > 0:
+        H_zero_order_diag = form_compressed_zero_order_hamiltonian_diag(vecs0,Hi) # <PPP|H|PPP>
+        if ms_proj:
+            ms_space_0 = get_ms_subspace_list2(vecs0, Szi, Szij, target_ms)
+        
+            H_zero_order_diag = H_zero_order_diag[ms_space_0]
+
+    
     #H0_0 = filter_rows_cols(H0_0, Sz0_0, Sz0_0, target_ms)
     #S20_0 = filter_rows_cols(S20_0, Sz0, Sz0, target_ms)
     #
     
-    H_zero_order_diag =  np.array([]) 
-
-    if args['pt_order'] > 0:
-        H_zero_order_diag = form_compressed_zero_order_hamiltonian_diag(vecs0,Hi) # <PPP|H|PPP>
-        #H_zero_order_diag = form_compressed_zero_order_hamiltonian_diag(vecsQ[bi],Hi) # <PPP|H|PPP>
 
     H_sectors = {}
     H_sectors[0,0] = H0_0
@@ -1096,10 +1103,10 @@ for it in range(0,maxiter):
     
     if n_body_order >= 1:
         for bi in range(n_blocks):
-            if args['pt_order'] > 0:
+            if args['pt_order'] > 0 and ms_proj == 0:
                 H_zero_order_diag = np.hstack((H_zero_order_diag,
-                        form_compressed_zero_order_hamiltonian_diag(vecsQ[bi],Hi)
-                        ) )# <QPP|H|QPP>
+                    form_compressed_zero_order_hamiltonian_diag(vecsQ[bi],Hi)
+                    ) )# <QPP|H|QPP>
 
 
             H_sectors[bi+1,bi+1]    = form_compressed_hamiltonian_diag(vecsQ[bi],Hi,Hij) # <QPP|H|QPP>
@@ -1131,6 +1138,10 @@ for it in range(0,maxiter):
                 #Sz_sectors[bi+1,bi+1] = Sz_sectors[bi+1,bi+1][ms_space_Pi,::][::,ms_space_Pi]
                 #Sz_sectors[0   ,bi+1] = Sz_sectors[0   ,bi+1][ms_space_0, ::][::,ms_space_Pi]
                 #Sz_sectors[bi+1,   0] = Sz_sectors[bi+1,   0][ms_space_Pi,::][::, ms_space_0]
+                if args['pt_order'] > 0:
+                    H_zero_order_diag = np.hstack((H_zero_order_diag,
+                            form_compressed_zero_order_hamiltonian_diag(vecsQ[bi],Hi)[ms_space_Pi]
+                            ) )# <QPP|H|QPP>
         
     
             
@@ -1163,7 +1174,7 @@ for it in range(0,maxiter):
         for bi in range(n_blocks):
             for bj in range(bi+1,n_blocks):
                 bij = (bi+1,bj+1)
-                if args['pt_order'] > 0:
+                if args['pt_order'] > 0 and ms_proj == 0:
                     H_zero_order_diag = np.hstack((H_zero_order_diag,
                             form_compressed_zero_order_hamiltonian_diag(vecsQQ[bi,bj],Hi)
                             ) )# <QPP|H|QPP>
@@ -1197,6 +1208,10 @@ for it in range(0,maxiter):
                     #Sz_sectors[bij,bij] = Sz_sectors[bij,bij][ms_space_Pij,::][::,ms_space_Pij]
                     #Sz_sectors[0  ,bij] = Sz_sectors[0  ,bij][ms_space_0  ,::][::,ms_space_Pij]
                     #Sz_sectors[bij,  0] = Sz_sectors[bij,  0][ms_space_Pij,::][::,  ms_space_0]
+                    if args['pt_order'] > 0:
+                        H_zero_order_diag = np.hstack((H_zero_order_diag,
+                                form_compressed_zero_order_hamiltonian_diag(vecsQQ[bi,bj],Hi)[ms_space_Pij]
+                                ) )# <QPP|H|QPP>
             
                 
         for bi in range(n_blocks):
@@ -1818,7 +1833,14 @@ for it in range(0,maxiter):
             for si,i in enumerate(lx):
                 print "   %-12i   %16.8f  %16.8f  %12.4f  %12.4f "%(si,lx[si],h[si],abs(s2[si]),sz[si])
                 #print "   %-4i   %16.8f  %16.8f  %16.4f "%(si,lx[si],h[si],sz[i])
-            print "         trace: %-16.8f" % grams[fi].trace()
+            print "   %-12s " %("----")
+            print "   %-12s   %16.8f  %16.8f  %12.4f  %12.4f" %(
+                    "Trace"
+                    ,(grams[fi]).trace()
+                    ,Hi[fi].dot(grams[fi]).trace()
+                    ,S2i[fi].dot(grams[fi]).trace()
+                    ,Szi[fi].dot(grams[fi]).trace()
+                    )
             print 
             #print lx
 
