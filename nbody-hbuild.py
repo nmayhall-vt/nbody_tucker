@@ -956,6 +956,7 @@ if args['n_q_space'] == None:
 # Get initial compression vectors 
 p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states)
 
+
 if args['use_exact_tucker_factors']:
     p_states = []
     q_states = []
@@ -1026,6 +1027,11 @@ for bi,b in enumerate(blocks):
 
 
 
+p_overlap = {}      # Stores the P,P overlap between iterations
+q_overlap = {}      # Stores the Q,Q overlap between iterations
+
+ts_tensors = {}     # Stores the super system eigenvector, in the tucker basis,
+                    # However, not as a vector, but as a series of tensors (PPP, QPP, PQP, ...)
 
 # loop over compression vector iterations
 energy_per_iter = []
@@ -1066,6 +1072,14 @@ for it in range(0,maxiter):
 
     # Project this onto m_s = 0 (or other target)
     ms_proj = 1
+
+    #
+    # Currently, ms_projection doesn't work with state following algorithm for excited states
+    #   \todo
+    if args['target_state'] > 0:
+        ms_proj = 0
+
+
     target_ms = args['target_ms']
     if ms_proj:
         ms_space_0 = get_ms_subspace_list2(vecs0, Szi, Szij, target_ms)
@@ -1350,40 +1364,40 @@ for it in range(0,maxiter):
     #print " Dimensions of Full Hamiltonian      ", H_tot.shape
     print " Dimensions of Subspace Hamiltonian  ", Htest.shape
 
-    lp = np.array([])
-    vp = np.array([])
+    e_super = np.array([])      #   super-system energies
+    v_super = np.array([])      #   super-system eigenvectors
 
     if Htest.shape[0] > 3000:
-        lp,vp = scipy.sparse.linalg.eigsh(Htest, k=args["n_roots"] )
-        #lp,vp = scipy.sparse.linalg.eigsh(Htest + Sztest, k=args["n_roots"] )
+        e_super,v_super = scipy.sparse.linalg.eigsh(Htest, k=args["n_roots"] )
+        #e_super,v_super = scipy.sparse.linalg.eigsh(Htest + Sztest, k=args["n_roots"] )
         pass
     else:
-        #lp,vp = np.linalg.eigh(Htest_ms)
-        #lp,vp = np.linalg.eigh(Htest)
-        #lp,vp = np.linalg.eigh(Htest + Sztest)
-        lp,vp = np.linalg.eigh(Htest)
+        #e_super,v_super = np.linalg.eigh(Htest_ms)
+        #e_super,v_super = np.linalg.eigh(Htest)
+        #e_super,v_super = np.linalg.eigh(Htest + Sztest)
+        e_super,v_super = np.linalg.eigh(Htest)
  
     
-    lp = vp.T.dot(Htest).dot(vp).diagonal()
+    e_super = v_super.T.dot(Htest).dot(v_super).diagonal()
             
-    sort_ind = np.argsort(lp)
-    lp = lp[sort_ind]
-    vp = vp[:,sort_ind]
+    sort_ind = np.argsort(e_super)
+    e_super = e_super[sort_ind]
+    v_super = v_super[:,sort_ind]
 
-    s2 = vp.T.dot(S2test).dot(vp)
+    s2 = v_super.T.dot(S2test).dot(v_super)
     #print 
     #print " Eigenvectors of compressed Hamiltonian"
     #print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
-    #for si,i in enumerate(lp):
-    #    print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
+    #for si,i in enumerate(e_super):
+    #    print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-e_super[0])*convert,s2[si,si])
     #    if si>10:
     #        break
     
     target_state = args['target_state'] 
 
-    #vpt = np.zeros((Htest.shape[0],vp.shape[1]))
-    #vpt[r_list] = vp
-    #vp = cp.deepcopy(vpt)
+    #v_supert = np.zeros((Htest.shape[0],v_super.shape[1]))
+    #v_supert[r_list] = v_super
+    #v_super = cp.deepcopy(v_supert)
     
     
     #davidson
@@ -1391,12 +1405,12 @@ for it in range(0,maxiter):
     if davidson == 1:
         n0 = H_sectors[0,0].shape[0] 
 
-        c_0 =  np.dot(vp[0:n0,0].T,vp[0:n0,0])
+        c_0 =  np.dot(v_super[0:n0,0].T,v_super[0:n0,0])
         ltmp, vtmp = np.linalg.eigh(H0_0)
-        davidson_correction = (1-c_0)*(lp[0] - ltmp[0])/c_0
+        davidson_correction = (1-c_0)*(e_super[0] - ltmp[0])/c_0
         print " Norm of low-entanglement reference component %12.8f" %c_0
         print " Davidson correction :                        %12.8f " %davidson_correction
-        #lp[0] += davidson_correction
+        #e_super[0] += davidson_correction
     
     #pt2
     if args['pt_order'] == 2:
@@ -1426,29 +1440,22 @@ for it in range(0,maxiter):
         print " Second-order energy: %12.8f" %l2[0]
 
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
-    for si,i in enumerate(lp):
-        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,abs(s2[si,si]))
+    for si,i in enumerate(e_super):
+        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-e_super[0])*convert,abs(s2[si,si]))
         if si>args['n_print']:
             break
     
     #print
-    #print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
+    #print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(e_super[0],l[0],e_super[0]-l[0])
 
 
-    energy_per_iter += [lp[target_state]]
+    energy_per_iter += [e_super[target_state]]
 
     thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
-        if abs(lp[target_state]-energy_per_iter[it-1]) < thresh:
+        if abs(e_super[target_state]-energy_per_iter[it-1]) < thresh:
             break
 
-    #
-    #   todo: look for, and address, root flipping
-    #
-    #check if root flipped
-    #if 1:
-        #vec_curr.shape = dim_tot
-    #    last_vector = cp.deepcopy(vp[:,target_state])
 
 
     #
@@ -1468,8 +1475,6 @@ for it in range(0,maxiter):
 
     start = n0 
     if n_body_order >= 1: 
-        print 
-        print " Form fragment-reduced density matrices"
         for bi,b in enumerate(blocks):
             #q_dim = n0 / p_states[bi].shape[1] * q_states[bi].shape[1]
             q_dim = H_sectors[bi+1,bi+1].shape[0]
@@ -1518,6 +1523,28 @@ for it in range(0,maxiter):
     print
 
 
+
+
+
+
+    #
+    #   Check if target-state root flipped
+    #
+    if target_state > 0 and it > 0:
+        print " Check if root flipped"
+        if ms_proj:
+            print " State following + ms_projection: NYI"
+            exit(-1)
+
+        vec_old = ts_tensors['ref']
+        vec_old.shape = (P_dim)
+
+
+
+
+
+
+
     #
     #   
     #   Update Tucker factors
@@ -1526,9 +1553,11 @@ for it in range(0,maxiter):
 
     if it<maxiter-0 :
 # {{{
+        print 
+        print " Form fragment-reduced density matrices"
         #
         #   (A a1 a2 a3) (B b1 b2 b3) = AB a1 b1
-        v = cp.deepcopy(vp[:,target_state])
+        v = cp.deepcopy(v_super[:,target_state])
         
         v_0 = v[0:P_dim]
 
@@ -1548,6 +1577,8 @@ for it in range(0,maxiter):
 
         v_0.shape = n_p_states
         grams = {}
+        
+        ts_tensors['ref'] = v_0
         
         
         #
@@ -1572,7 +1603,7 @@ for it in range(0,maxiter):
                 print " Q = ", bi
                 start = ci_startstop[bi][0] 
                 stop  = ci_startstop[bi][1] 
-                v1 = cp.deepcopy(vp[start:stop,target_state])
+                v1 = cp.deepcopy(v_super[start:stop,target_state])
           
                 # unproject back from m_s subblock
                 if ms_proj:
@@ -1610,7 +1641,7 @@ for it in range(0,maxiter):
                 print " Q = ", bi
                 start = ci_startstop[bi][0] 
                 stop  = ci_startstop[bi][1] 
-                v1 = cp.deepcopy(vp[start:stop,target_state])
+                v1 = cp.deepcopy(v_super[start:stop,target_state])
                 #print " Norm of Q: ", np.linalg.norm(v1)
                 
                 
@@ -1628,6 +1659,8 @@ for it in range(0,maxiter):
                 dims_curr[bi] = q_states[bi].shape[1]
                 
                 v1.shape = dims_curr
+        
+                ts_tensors[bi] = v1
             
                 for fi,f in enumerate(blocks):
                     #print "   Get gramian for block: ", fi, 
@@ -1666,7 +1699,7 @@ for it in range(0,maxiter):
                         start2 = ci_startstop[(bi,bbi)][0] 
                         stop2  = ci_startstop[(bi,bbi)][1] 
                         
-                        v2 = cp.deepcopy(vp[start2:stop2,target_state])
+                        v2 = cp.deepcopy(v_super[start2:stop2,target_state])
               
 
                         # unproject back from m_s subblock
@@ -1689,7 +1722,7 @@ for it in range(0,maxiter):
                         start1 = ci_startstop[bi][0] 
                         stop1  = ci_startstop[bi][1] 
                         
-                        v1 = cp.deepcopy(vp[start1:stop1,target_state])
+                        v1 = cp.deepcopy(v_super[start1:stop1,target_state])
                         
                         # unproject back from m_s subblock
                         if ms_proj:
@@ -1719,7 +1752,7 @@ for it in range(0,maxiter):
                         start1 = ci_startstop[bbi][0] 
                         stop1  = ci_startstop[bbi][1] 
                         
-                        v1 = cp.deepcopy(vp[start1:stop1,target_state])
+                        v1 = cp.deepcopy(v_super[start1:stop1,target_state])
                         
                         # unproject back from m_s subblock
                         if ms_proj:
@@ -1762,7 +1795,7 @@ for it in range(0,maxiter):
                         print " QQ = ", (bi,bbi)
                         start = ci_startstop[(bi,bbi)][0] 
                         stop  = ci_startstop[(bi,bbi)][1] 
-                        v1 = cp.deepcopy(vp[start:stop,target_state])
+                        v1 = cp.deepcopy(v_super[start:stop,target_state])
 
                         # unproject back from m_s subblock
                         if ms_proj:
@@ -1779,6 +1812,8 @@ for it in range(0,maxiter):
                         dims_curr[bbi] = q_states[bbi].shape[1]
                         
                         v1.shape = dims_curr
+
+                        ts_tensors[bi,bbi] = v1
                      
                         for fi,f in enumerate(blocks):
                             #print "   Get gramian for block: ", fi, 
@@ -1841,14 +1876,76 @@ for it in range(0,maxiter):
                     ,S2i[fi].dot(grams[fi]).trace()
                     ,Szi[fi].dot(grams[fi]).trace()
                     )
-            print 
             #print lx
 
             p_states_new.extend([vp])
             q_states_new.extend([vq])
 
+            #   
+            #   U(n-1)_ia * U(n)_ib = S(n-1,n)_ab
+            p_overlap[fi] = p_states[fi].T.dot(vp) 
+            q_overlap[fi] = q_states[fi].T.dot(vq) 
+
+            print 
+            #print "   Norm of overlaps = P: %12.8f  Q: %12.8f" %(p_overlap[fi].trace(), q_overlap[fi].trace() )
+            print "   Norm of overlaps = P: %12.8f  Q: %12.8f" %(np.linalg.norm(p_overlap[fi],'nuc'),
+                    np.linalg.norm(q_overlap[fi],'nuc') )
+            print 
+            print 
+
         p_states = p_states_new 
         q_states = q_states_new 
+        
+
+
+
+        #
+        #   Project current supersystem eigenvector into next iteration's local basis
+        #
+        if 1:
+     # {{{
+            #
+            # PPP space
+            #
+            basis = [None]*n_blocks
+
+            for bi,b in enumerate(blocks):
+                basis[bi] = p_overlap[bi]
+
+            ts_tensors['ref'] = transform_tensor(ts_tensors['ref'], basis)
+            
+            #
+            # QPP space
+            #
+            for bi,b in enumerate(blocks):
+                basis = [None]*n_blocks
+                
+                for bbi,bb in enumerate(blocks):
+                    if (bbi == bi): 
+                        basis[bbi] = q_overlap[bbi]
+                    else:
+                        basis[bbi] = p_overlap[bbi]
+                
+                ts_tensors[bi] = transform_tensor(ts_tensors[bi], basis)
+            
+            #
+            # QPQ space
+            #
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
+                    
+                    basis = [None]*n_blocks
+                
+                    for bbi in range(n_blocks):
+                        if (bbi == bi) or (bbi == bj): 
+                            basis[bbi] = q_overlap[bbi]
+                        else:
+                            basis[bbi] = p_overlap[bbi]
+                    
+                    ts_tensors[bi,bj] = transform_tensor(ts_tensors[bi,bj], basis)
+            # }}}
+         
+         
 
 
 
@@ -1935,7 +2032,9 @@ for it in range(0,maxiter):
     
     
     
-    
+
+print
+print " ---------- Tucker iteration summary ------------"
 print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
 for ei,e in enumerate(energy_per_iter):
     if ei>0:
