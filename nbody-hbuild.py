@@ -836,7 +836,7 @@ parser.add_argument('-nb','--n_body_order', type=int, default="0", help='n_body 
 parser.add_argument('-nr','--n_roots', type=int, default="10", help='Number of eigenvectors to find in compressed space', required=False)
 parser.add_argument('--n_print', type=int, default="10", help='number of states to print', required=False)
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
-parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
+parser.add_argument('-ts','--target_state', type=int, default="0", help='state(s) to target during (possibly state-averaged) optimization', required=False)
 parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
@@ -1033,6 +1033,10 @@ q_overlap = {}      # Stores the Q,Q overlap between iterations
 ts_tensors = {}     # Stores the super system eigenvector, in the tucker basis,
                     # However, not as a vector, but as a series of tensors (PPP, QPP, PQP, ...)
 
+ts_vector = np.array([]) # stores the Stores the super system eigenvector, in the full basis - huge
+
+target_state = args['target_state'] 
+
 # loop over compression vector iterations
 energy_per_iter = []
 maxiter = args['max_iter'] 
@@ -1071,7 +1075,7 @@ for it in range(0,maxiter):
     H_zero_order_diag =  np.array([]) 
 
     # Project this onto m_s = 0 (or other target)
-    ms_proj = 1
+    ms_proj = 0
 
     #
     # Currently, ms_projection doesn't work with state following algorithm for excited states
@@ -1393,7 +1397,6 @@ for it in range(0,maxiter):
     #    if si>10:
     #        break
     
-    target_state = args['target_state'] 
 
     #v_supert = np.zeros((Htest.shape[0],v_super.shape[1]))
     #v_supert[r_list] = v_super
@@ -1454,7 +1457,8 @@ for it in range(0,maxiter):
     thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
         if abs(e_super[target_state]-energy_per_iter[it-1]) < thresh:
-            break
+            pass
+            #break
 
 
 
@@ -1464,9 +1468,9 @@ for it in range(0,maxiter):
     n0 = H_sectors[0,0].shape[0] 
     
     P_dim = n0
-    Q_dims = [] # dimension of Q space for each block i.e., Q_dims[3] is the dimension of this space |abcDef...> 
-    QQ_dims = [] # dimension of Q space for each block-dimer i.e., QQ_dims[3] is the dimension of this space |AbcdEf...> 
-    QQQ_dims = []
+    Q_dims = {} # dimension of Q space for each block i.e., Q_dims[3] is the dimension of this space |abcDef...> 
+    QQ_dims = {} # dimension of Q space for each block-dimer i.e., QQ_dims[3] is the dimension of this space |AbcdEf...> 
+    QQQ_dims = {}
 
     #   These arrays of pairs indicate where each P,Q,QQ, etc block starts and stops in the compressed CI space
     ci_startstop     = {}
@@ -1475,27 +1479,25 @@ for it in range(0,maxiter):
 
     start = n0 
     if n_body_order >= 1: 
-        for bi,b in enumerate(blocks):
-            #q_dim = n0 / p_states[bi].shape[1] * q_states[bi].shape[1]
+        for bi in range(0,n_blocks):
             q_dim = H_sectors[bi+1,bi+1].shape[0]
-            Q_dims.extend([q_dim])
+            Q_dims[bi] = q_dim
            
             ci_startstop[bi] = (start,start+q_dim)
  
             start = start + q_dim
  
     if n_body_order >= 2: 
-        for bi,b in enumerate(blocks):
-            for bbi,bb in enumerate(blocks):
-                if bbi > bi:
-                    bij = (bi+1, bbi+1)
-                    #q_dim = n0 / p_states[bi].shape[1] / p_states[bbi].shape[1] * q_states[bi].shape[1] * q_states[bbi].shape[1]
-                    q_dim = H_sectors[bij,bij].shape[0]
-                    QQ_dims.extend([q_dim])
-                    
-                    ci_startstop[(bi,bbi)] = (start,start+q_dim)
+        for bi in range(0,n_blocks):
+            for bbi in range(bi+1,n_blocks):
+                bij = (bi+1, bbi+1)
+                q_dim = H_sectors[bij,bij].shape[0]
+                #QQ_dims.extend([q_dim])
+                QQ_dims[bi,bbi] = q_dim
+                
+                ci_startstop[(bi,bbi)] = (start,start+q_dim)
             
-                    start = start + q_dim
+                start = start + q_dim
  
  
     if n_body_order >= 3: 
@@ -1508,7 +1510,8 @@ for it in range(0,maxiter):
                             q_dim = q_dim / p_states[bi].shape[1]   * q_states[bi].shape[1]
                             q_dim = q_dim / p_states[bbi].shape[1]  * q_states[bbi].shape[1]
                             q_dim = q_dim / p_states[bbbi].shape[1] * q_states[bbbi].shape[1]
-                            QQQ_dims.extend([q_dim])
+                            #QQQ_dims.extend([q_dim])
+                            QQQ_dims[bi,bbi,bbbi] = q_dim
                     
                             ci_startstop[(bi,bbi,bbbi)] = (start,start+q_dim)
             
@@ -1524,21 +1527,89 @@ for it in range(0,maxiter):
 
 
 
+    #
+    #   Project current supersystem eigenvector onto full uncontracted basis 
+    #
+    if 0:
+        print " Pushing target state back out to full system"
+        if ms_proj:
+            print " State following + ms_projection: NYI"
+            exit(-1)
+
+        tmp = transform_tensor(ts_tensors['ref'],vecs0)
+        tmp.shape = (dim_tot,1)
+        ts_vector_new = tmp 
+
+        # PQP terms
+        if n_body_order >= 1:
+            for bi in range(0,n_blocks):
+                tmp = transform_tensor(ts_tensors[bi],vecsQ[bi])
+                tmp.shape = (dim_tot,1)
+                ts_vector_new += tmp 
+
+        # QQP terms
+        if n_body_order >= 2:
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
+                    tmp = transform_tensor(ts_tensors[bi,bj],vecsQQ[bi,bj])
+                    tmp.shape = (dim_tot,1)
+                    #ts_vector_new -= tmp 
+
+        
+        if it > 1:
+            print ts_vector.shape
+            print ts_vector_new.shape
+            old_new_overlap = ts_vector.T.dot(ts_vector_new)
+         
+            print " Overlap: %16.12f" % old_new_overlap[0,0]
+
+        ts_vector = ts_vector_new
+
+
 
 
 
     #
     #   Check if target-state root flipped
     #
-    if target_state > 0 and it > 0:
+    #if target_state > -1 and it > 0:
+    if it > 0:
         print " Check if root flipped"
         if ms_proj:
             print " State following + ms_projection: NYI"
             exit(-1)
 
         vec_old = ts_tensors['ref']
-        vec_old.shape = (P_dim)
+        vec_old.shape = (P_dim,1)
 
+        # PQP terms
+        if n_body_order >= 1:
+            for bi in range(0,n_blocks):
+                tmp = ts_tensors[bi]
+                tmp.shape = (Q_dims[bi],1)
+                vec_old = np.vstack((vec_old,tmp))
+
+        # QQP terms
+        if n_body_order >= 2:
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
+                    tmp = ts_tensors[bi,bj]
+                    tmp.shape = (QQ_dims[bi,bj],1)
+                    vec_old = np.vstack((vec_old,tmp))
+           
+        #old_new_overlap = vec_old.T.dot(v_super[:,0:min(target_state+10,v_super.shape[1])])
+        old_new_overlap = vec_old.T.dot(v_super[:,0:10])
+
+        old_new_overlap = abs(old_new_overlap)
+
+        print old_new_overlap.shape
+        for i in range(0,old_new_overlap.shape[1]):
+            print old_new_overlap[0,i]
+
+        new_ts = np.argmax(old_new_overlap)
+        if new_ts != target_state:
+            print " Warning: Target state flipped from %4i to %4i" %(target_state, new_ts)
+            #target_state = new_ts
 
 
 
@@ -1878,13 +1949,16 @@ for it in range(0,maxiter):
                     )
             #print lx
 
-            p_states_new.extend([vp])
-            q_states_new.extend([vq])
-
             #   
             #   U(n-1)_ia * U(n)_ib = S(n-1,n)_ab
             p_overlap[fi] = p_states[fi].T.dot(vp) 
             q_overlap[fi] = q_states[fi].T.dot(vq) 
+            
+            #Ut,st,Vt = np.linalg.svd(p_overlap[fi])
+            #p_overlap[fi] = p_overlap[fi].dot(Vt)
+
+            #Ut,st,Vt = np.linalg.svd(q_overlap[fi])
+            #q_overlap[fi] = q_overlap[fi].dot(Vt)
 
             print 
             #print "   Norm of overlaps = P: %12.8f  Q: %12.8f" %(p_overlap[fi].trace(), q_overlap[fi].trace() )
@@ -1892,6 +1966,9 @@ for it in range(0,maxiter):
                     np.linalg.norm(q_overlap[fi],'nuc') )
             print 
             print 
+
+            p_states_new.extend([vp])
+            q_states_new.extend([vq])
 
         p_states = p_states_new 
         q_states = q_states_new 
@@ -1917,33 +1994,39 @@ for it in range(0,maxiter):
             #
             # QPP space
             #
-            for bi,b in enumerate(blocks):
-                basis = [None]*n_blocks
-                
-                for bbi,bb in enumerate(blocks):
-                    if (bbi == bi): 
-                        basis[bbi] = q_overlap[bbi]
-                    else:
-                        basis[bbi] = p_overlap[bbi]
-                
-                ts_tensors[bi] = transform_tensor(ts_tensors[bi], basis)
-            
-            #
-            # QPQ space
-            #
-            for bi in range(0,n_blocks):
-                for bj in range(bi+1,n_blocks):
-                    
+            if n_body_order >= 1:
+                for bi,b in enumerate(blocks):
                     basis = [None]*n_blocks
-                
-                    for bbi in range(n_blocks):
-                        if (bbi == bi) or (bbi == bj): 
+                    
+                    for bbi,bb in enumerate(blocks):
+                        if (bbi == bi): 
                             basis[bbi] = q_overlap[bbi]
                         else:
                             basis[bbi] = p_overlap[bbi]
                     
-                    ts_tensors[bi,bj] = transform_tensor(ts_tensors[bi,bj], basis)
+                    ts_tensors[bi] = transform_tensor(ts_tensors[bi], basis)
+            
+            #
+            # QPQ space
+            #
+            if n_body_order >= 2:
+                for bi in range(0,n_blocks):
+                    for bj in range(bi+1,n_blocks):
+                        
+                        basis = [None]*n_blocks
+                
+                        for bbi in range(n_blocks):
+                            if (bbi == bi) or (bbi == bj): 
+                                basis[bbi] = q_overlap[bbi]
+                            else:
+                                basis[bbi] = p_overlap[bbi]
+                        
+                        ts_tensors[bi,bj] = transform_tensor(ts_tensors[bi,bj], basis)
             # }}}
+        
+
+
+
          
          
 
