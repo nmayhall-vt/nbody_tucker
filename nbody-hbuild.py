@@ -10,7 +10,7 @@ import scipy.sparse.linalg
 #import sys
 #sys.path.insert(0, '../')
 
-
+import tucker
 from hdvv import *
 
 def printm(m):
@@ -1030,6 +1030,9 @@ for bi,b in enumerate(blocks):
 p_overlap = {}      # Stores the P,P overlap between iterations
 q_overlap = {}      # Stores the Q,Q overlap between iterations
 
+ts_vecs_p = []      # Stores the old tucker basis P
+ts_vecs_q = []      # Stores the old tucker basis Q
+
 ts_tensors = {}     # Stores the super system eigenvector, in the tucker basis,
                     # However, not as a vector, but as a series of tensors (PPP, QPP, PQP, ...)
 
@@ -1527,44 +1530,6 @@ for it in range(0,maxiter):
 
 
 
-    #
-    #   Project current supersystem eigenvector onto full uncontracted basis 
-    #
-    if 0:
-        print " Pushing target state back out to full system"
-        if ms_proj:
-            print " State following + ms_projection: NYI"
-            exit(-1)
-
-        tmp = transform_tensor(ts_tensors['ref'],vecs0)
-        tmp.shape = (dim_tot,1)
-        ts_vector_new = tmp 
-
-        # PQP terms
-        if n_body_order >= 1:
-            for bi in range(0,n_blocks):
-                tmp = transform_tensor(ts_tensors[bi],vecsQ[bi])
-                tmp.shape = (dim_tot,1)
-                ts_vector_new += tmp 
-
-        # QQP terms
-        if n_body_order >= 2:
-            for bi in range(0,n_blocks):
-                for bj in range(bi+1,n_blocks):
-                    tmp = transform_tensor(ts_tensors[bi,bj],vecsQQ[bi,bj])
-                    tmp.shape = (dim_tot,1)
-                    #ts_vector_new -= tmp 
-
-        
-        if it > 1:
-            print ts_vector.shape
-            print ts_vector_new.shape
-            old_new_overlap = ts_vector.T.dot(ts_vector_new)
-         
-            print " Overlap: %16.12f" % old_new_overlap[0,0]
-
-        ts_vector = ts_vector_new
-
 
 
 
@@ -1579,13 +1544,13 @@ for it in range(0,maxiter):
             print " State following + ms_projection: NYI"
             exit(-1)
 
-        vec_old = ts_tensors['ref']
+        vec_old = cp.deepcopy(ts_tensors['ref'])
         vec_old.shape = (P_dim,1)
 
         # PQP terms
         if n_body_order >= 1:
             for bi in range(0,n_blocks):
-                tmp = ts_tensors[bi]
+                tmp = cp.deepcopy(ts_tensors[bi])
                 tmp.shape = (Q_dims[bi],1)
                 vec_old = np.vstack((vec_old,tmp))
 
@@ -1593,7 +1558,7 @@ for it in range(0,maxiter):
         if n_body_order >= 2:
             for bi in range(0,n_blocks):
                 for bj in range(bi+1,n_blocks):
-                    tmp = ts_tensors[bi,bj]
+                    tmp = cp.deepcopy(ts_tensors[bi,bj])
                     tmp.shape = (QQ_dims[bi,bj],1)
                     vec_old = np.vstack((vec_old,tmp))
            
@@ -1611,6 +1576,78 @@ for it in range(0,maxiter):
             print " Warning: Target state flipped from %4i to %4i" %(target_state, new_ts)
             #target_state = new_ts
 
+    
+    
+    #
+    #   Check if target-state root flipped
+    #
+    if it > 0:
+        print " Check if root flipped"
+        if ms_proj:
+            print " State following + ms_projection: NYI"
+            exit(-1)
+
+        overlap_full = 0
+        v_old = cp.deepcopy(ts_tensors['ref'])
+        print "huh ", ts_tensors['ref'].shape
+        v_new = v_super[ci_startstop[-1][0]:ci_startstop[-1][1],target_state]
+        v_new.shape = n_p_states 
+
+        basis_old = ts_vecs_p
+        basis_new = p_states
+
+        print v_old.shape, v_new.shape, len(basis_old), len(basis_new)
+        overlap = tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+        print " Zeroth-order space overlap : %16.12f" %overlap
+
+        overlap_full += overlap
+        # PQP terms
+        if n_body_order >= 1:
+            for bi in range(0,n_blocks):
+                v_old = cp.deepcopy(ts_tensors[bi])
+                v_new = v_super[ci_startstop[bi][0]:ci_startstop[bi][1],target_state]
+
+                q_dims = cp.deepcopy(n_p_states)
+                q_dims[bi] = n_q_states[bi]
+                v_new.shape = q_dims 
+
+                basis_old = cp.deepcopy(ts_vecs_p)
+                basis_new = cp.deepcopy(p_states)
+
+                basis_old[bi] = ts_vecs_q[bi]
+                basis_new[bi] = q_states[bi]
+
+                overlap = tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+                print " Q(%4i) space overlap : %16.12f" %(bi,overlap)
+
+                overlap_full += overlap
+
+        # QQP terms
+        if n_body_order >= 2:
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
+                    v_old = cp.deepcopy(ts_tensors[bi,bj])
+                    v_new = v_super[ci_startstop[bi,bj][0]:ci_startstop[bi,bj][1],target_state]
+                    
+                    q_dims = cp.deepcopy(n_p_states)
+                    q_dims[bi] = n_q_states[bi]
+                    q_dims[bj] = n_q_states[bj]
+                    v_new.shape = q_dims 
+                    
+                    basis_old = cp.deepcopy(ts_vecs_p)
+                    basis_new = cp.deepcopy(p_states)
+                    
+                    basis_old[bi] = ts_vecs_q[bi]
+                    basis_old[bj] = ts_vecs_q[bj]
+                    basis_new[bi] = q_states[bi]
+                    basis_new[bj] = q_states[bj]
+                    
+                    overlap = tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+                    print " Q(%4i,%4i) space overlap : %16.12f" %(bi,bj,overlap)
+           
+                    overlap_full += overlap
+            
+        print " Overlap between iterations : %16.12f" %(overlap_full)
 
 
 
@@ -1623,9 +1660,9 @@ for it in range(0,maxiter):
     #
 
     if it<maxiter-0 :
-# {{{
         print 
         print " Form fragment-reduced density matrices"
+# {{{
         #
         #   (A a1 a2 a3) (B b1 b2 b3) = AB a1 b1
         v = cp.deepcopy(v_super[:,target_state])
@@ -1650,6 +1687,9 @@ for it in range(0,maxiter):
         grams = {}
         
         ts_tensors['ref'] = v_0
+        ts_vecs_p = p_states
+        ts_vecs_q = q_states
+
         
         
         #
@@ -1953,12 +1993,13 @@ for it in range(0,maxiter):
             #   U(n-1)_ia * U(n)_ib = S(n-1,n)_ab
             p_overlap[fi] = p_states[fi].T.dot(vp) 
             q_overlap[fi] = q_states[fi].T.dot(vq) 
-            
-            #Ut,st,Vt = np.linalg.svd(p_overlap[fi])
-            #p_overlap[fi] = p_overlap[fi].dot(Vt)
 
-            #Ut,st,Vt = np.linalg.svd(q_overlap[fi])
-            #q_overlap[fi] = q_overlap[fi].dot(Vt)
+            
+            Ut,st,Vt = np.linalg.svd(p_overlap[fi])
+            p_overlap[fi] = p_overlap[fi].dot(Vt) 
+
+            Ut,st,Vt = np.linalg.svd(q_overlap[fi])
+            q_overlap[fi] = q_overlap[fi].dot(Vt)
 
             print 
             #print "   Norm of overlaps = P: %12.8f  Q: %12.8f" %(p_overlap[fi].trace(), q_overlap[fi].trace() )
@@ -1974,55 +2015,92 @@ for it in range(0,maxiter):
         q_states = q_states_new 
         
 
+    #
+    #   Project current supersystem eigenvector onto full uncontracted basis 
+    #
+    if 0:
+        print " Pushing target state back out to full system"# {{{
+        if ms_proj:
+            print " State following + ms_projection: NYI"
+            exit(-1)
+
+        tmp = transform_tensor(ts_tensors['ref'],vecs0)
+        tmp.shape = (dim_tot,1)
+        ts_vector_new = tmp 
+
+        # PQP terms
+        if n_body_order >= 1:
+            for bi in range(0,n_blocks):
+                tmp = transform_tensor(ts_tensors[bi],vecsQ[bi])
+                tmp.shape = (dim_tot,1)
+                ts_vector_new += tmp 
+
+        # QQP terms
+        if n_body_order >= 2:
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
+                    tmp = transform_tensor(ts_tensors[bi,bj],vecsQQ[bi,bj])
+                    tmp.shape = (dim_tot,1)
+                    ts_vector_new += tmp 
+
+        
+        if it > 1:
+            print ts_vector.shape
+            print ts_vector_new.shape
+            old_new_overlap = ts_vector.T.dot(ts_vector_new)
+         
+            print " Overlap: %16.12f" % old_new_overlap[0,0]
+
+        ts_vector = ts_vector_new# }}}
 
 
+    #
+    #   Project current supersystem eigenvector into next iteration's local basis
+    #
+    if 0:
+    # {{{
         #
-        #   Project current supersystem eigenvector into next iteration's local basis
+        # PPP space
         #
-        if 1:
-     # {{{
-            #
-            # PPP space
-            #
-            basis = [None]*n_blocks
+        basis = [None]*n_blocks
 
+        for bi,b in enumerate(blocks):
+            basis[bi] = p_overlap[bi]
+
+        ts_tensors['ref'] = transform_tensor(ts_tensors['ref'], basis)
+        
+        #
+        # QPP space
+        #
+        if n_body_order >= 1:
             for bi,b in enumerate(blocks):
-                basis[bi] = p_overlap[bi]
-
-            ts_tensors['ref'] = transform_tensor(ts_tensors['ref'], basis)
-            
-            #
-            # QPP space
-            #
-            if n_body_order >= 1:
-                for bi,b in enumerate(blocks):
-                    basis = [None]*n_blocks
+                basis = [None]*n_blocks
+                
+                for bbi,bb in enumerate(blocks):
+                    if (bbi == bi): 
+                        basis[bbi] = q_overlap[bbi]
+                    else:
+                        basis[bbi] = p_overlap[bbi]
+                
+                ts_tensors[bi] = transform_tensor(ts_tensors[bi], basis)
+        
+        #
+        # QPQ space
+        #
+        if n_body_order >= 2:
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
                     
-                    for bbi,bb in enumerate(blocks):
-                        if (bbi == bi): 
+                    basis = [None]*n_blocks
+            
+                    for bbi in range(n_blocks):
+                        if (bbi == bi) or (bbi == bj): 
                             basis[bbi] = q_overlap[bbi]
                         else:
                             basis[bbi] = p_overlap[bbi]
                     
-                    ts_tensors[bi] = transform_tensor(ts_tensors[bi], basis)
-            
-            #
-            # QPQ space
-            #
-            if n_body_order >= 2:
-                for bi in range(0,n_blocks):
-                    for bj in range(bi+1,n_blocks):
-                        
-                        basis = [None]*n_blocks
-                
-                        for bbi in range(n_blocks):
-                            if (bbi == bi) or (bbi == bj): 
-                                basis[bbi] = q_overlap[bbi]
-                            else:
-                                basis[bbi] = p_overlap[bbi]
-                        
-                        ts_tensors[bi,bj] = transform_tensor(ts_tensors[bi,bj], basis)
-            # }}}
+                    ts_tensors[bi,bj] = transform_tensor(ts_tensors[bi,bj], basis)
+        # }}}
         
 
 

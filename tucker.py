@@ -14,7 +14,7 @@ def tucker_decompose(A,thresh,n_keep_max):
         
         specify max number of vectors to keep (n=0: all)
     """
-    dims = A.shape
+    dims = A.shape# {{{
     n_modes = len(dims)
     tucker_factors = []
     core = cp.deepcopy(A)
@@ -56,7 +56,7 @@ def tucker_decompose(A,thresh,n_keep_max):
         #print "core: ", core.shape
         #print "A   : ", A.shape
         tucker_factors.append(U)
-
+# }}}
     return core, tucker_factors
 
 
@@ -68,7 +68,7 @@ def tucker_decompose_list(A,n_keep_list):
 
         if n_dimi < 0, it means to keep the complement to the n important components
     """
-    dims = A.shape
+    dims = A.shape# {{{
     n_modes = len(dims)
     tucker_factors = []
     core = cp.deepcopy(A)
@@ -121,7 +121,7 @@ def tucker_decompose_list(A,n_keep_list):
         core = np.tensordot(core,U,axes=(0,0))
         #print "core: ", core.shape
         #print "A   : ", A.shape
-        tucker_factors.append(U)
+        tucker_factors.append(U)# }}}
 
     return core, tucker_factors
 
@@ -131,7 +131,7 @@ def tucker_recompose(core, tucker_factors, trans=0):
     """
     Recover original tensor from tucker decomposition 
     """
-    print " Re-compose"
+    print " Re-compose"# {{{
     dims = [] 
     A = cp.deepcopy(core)
     n_modes = len(dims)
@@ -152,7 +152,7 @@ def tucker_recompose(core, tucker_factors, trans=0):
             A = np.tensordot(A,tucker_factors[sd],axes=(0,1))
         if trans==1:
             A = np.tensordot(A,tucker_factors[sd].T,axes=(0,1))
-
+# }}}
     return A
 
 
@@ -166,7 +166,7 @@ def transform_tensor(core, vectors, trans=0):
     trans = 0: don't transpose the matrices in 'vectors'
                 the resulting tensor will then be in the column space
     """
-    dims = [] 
+    dims = [] # {{{
     A = cp.deepcopy(core)
     n_modes = len(dims)
   
@@ -189,7 +189,7 @@ def transform_tensor(core, vectors, trans=0):
             A = np.tensordot(A,vectors[sd],axes=(0,0))
 
     print " %37s Final shape of tensor: " %"", A.shape
-    return A
+    return A# }}}
 
 
 def form_gramian1(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, trans2=0):
@@ -212,7 +212,7 @@ def form_gramian1(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, tra
     tuck_factors_B  :   a list of numpy matrices with row indices being the final basis, and column indices being the tucker
                         basis indices. trans1=1 switches this definition
     """
-    assert(len(tuck_factors_A) == len(tuck_factors_B) )
+    assert(len(tuck_factors_A) == len(tuck_factors_B) )# {{{
     assert(len(A.shape) == len(tuck_factors_A) )
     assert(len(B.shape) == len(tuck_factors_B) )
     
@@ -287,7 +287,7 @@ def form_gramian1(A, tuck_factors_A, B, tuck_factors_B, open_dims, trans1=0, tra
     print " = ", AA.shape
     AA = tuck_factors_l[0].dot(AA).dot(tuck_factors_r[0].T)
     return AA
-    #return AA, tuck_factors_C
+    #return AA, tuck_factors_C# }}}
 
            
 def form_1fdm(A, B, open_dims):
@@ -308,7 +308,7 @@ def form_1fdm(A, B, open_dims):
     open_dims tells us which dimension to not contract over
 
     """
-    n_dims = len(A.shape)
+    n_dims = len(A.shape)# {{{
 
     A_inds = range(n_dims) 
     B_inds = range(n_dims)
@@ -324,10 +324,83 @@ def form_1fdm(A, B, open_dims):
             ind_contract_list.extend([d])
 
     #print A.shape, B.shape, ind_contract_list
-    AB= np.tensordot(A,B,axes=(ind_contract_list,ind_contract_list))
+    AB= np.tensordot(A,B,axes=(ind_contract_list,ind_contract_list))# }}}
     return AB
 
     
+def form_overlap(A, tuck_factors_A, B, tuck_factors_B):
+    """
+    Form overlap between compressed vectors
+        |--Ua--Ub--|
+        |          |
+        A--Ua--Ub--B
+        |          |
+        |--Ua--Ub--|
+
+    A is a ndarray numpy tensor
+    B is a ndarray numpy tensor
+
+    tuck_factors_A  :   a list of numpy matrices with row indices being the final basis, and column indices being the tucker
+                        basis indices. trans1=1 switches this definition
+    tuck_factors_B  :   a list of numpy matrices with row indices being the final basis, and column indices being the tucker
+                        basis indices. trans1=1 switches this definition
+
+    Not yet optimized - make sure dim(A)>=dim(B)
+    """
+    assert(len(tuck_factors_A) == len(tuck_factors_B) )# {{{
+    assert(len(A.shape) == len(tuck_factors_A) )
+    assert(len(B.shape) == len(tuck_factors_B) )
+    
+    n_dims = len(A.shape)
+
+    A_inds = range(n_dims) 
+    B_inds = range(n_dims)
+    
+    tuck_factors_l = []
+    tuck_factors_r = []
+        
+    da = -1 
+    db = -1
+
+    for d in range(n_dims):
+        
+        assert( tuck_factors_A[d].shape[0] == tuck_factors_B[d].shape[0]) 
+        #assert( A.shape[d] == tuck_factors_A[d].shape[1] )
+        #assert( B.shape[d] == tuck_factors_B[d].shape[1] )
+        
+        S_d = tuck_factors_A[d].T.dot(tuck_factors_B[d])
+
+        #Contract this dimension's basis overlap with one of the two tensors, (which ever has the largest index)
+     
+        #todo:
+        #   Improve algorithm so that the smallest possible vector is formed by always contracting the overlap with the
+        #   large index
+        #da += 1
+        #db += 1
+        #if S_d.shape[0] >= S_d.shape[1]:
+        if 1:
+            # A--S(Ai,Bi)--B  -->  AS(Bj)--B --> ASB
+        
+            #print "::A:: ",d, A.shape, S_d.shape, A_inds
+            A = np.tensordot(A,S_d,axes=(0,0))
+            
+            # keep info about moving current dimension to the end A(i,d,j,k) U(d,l) -> A(i,j,k,l)
+            old_index = A_inds.index(d)
+            A_inds.append( A_inds.pop(old_index) )
+
+        else:
+            # A--S(Ai,Bi)--B  -->  A--S(Aj)B --> ASB
+            
+            #print "::B:: ",d, B.shape, S_d.shape, B_inds
+            B = np.tensordot(B,S_d,axes=(db,1))
+            #db -= 1
+
+            old_index = B_inds.index(d)
+            B_inds.append( A_inds.pop(old_index) )
+    
+    AA= np.tensordot(A,B,axes=(A_inds,B_inds))
+    return AA
+           
         
 
     
