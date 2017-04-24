@@ -869,6 +869,7 @@ if args['n_p_space'] == None:
         n_p_states.extend([1])
     args['n_p_space'] = n_p_states
 
+
 assert(len(args['n_p_space']) == n_blocks)
 
 np.random.seed(2)
@@ -947,7 +948,7 @@ for bi,b in enumerate(blocks):
 if args['n_q_space'] == None:
     n_q_states = []
     for bi in range(n_blocks):
-        n_q_states.extend([dims_tot[bi]-1])
+        n_q_states.extend([dims_tot[bi]-n_p_states[bi]])
     args['n_q_space'] = n_q_states
 
 #v0 = np.reshape(v0,dims_tot)
@@ -1531,123 +1532,175 @@ for it in range(0,maxiter):
 
 
 
-
-
-
-    #
-    #   Check if target-state root flipped
-    #
-    #if target_state > -1 and it > 0:
-    if it > 0:
-        print " Check if root flipped"
-        if ms_proj:
-            print " State following + ms_projection: NYI"
-            exit(-1)
-
-        vec_old = cp.deepcopy(ts_tensors['ref'])
-        vec_old.shape = (P_dim,1)
-
-        # PQP terms
-        if n_body_order >= 1:
-            for bi in range(0,n_blocks):
-                tmp = cp.deepcopy(ts_tensors[bi])
-                tmp.shape = (Q_dims[bi],1)
-                vec_old = np.vstack((vec_old,tmp))
-
-        # QQP terms
-        if n_body_order >= 2:
-            for bi in range(0,n_blocks):
-                for bj in range(bi+1,n_blocks):
-                    tmp = cp.deepcopy(ts_tensors[bi,bj])
-                    tmp.shape = (QQ_dims[bi,bj],1)
-                    vec_old = np.vstack((vec_old,tmp))
-           
-        #old_new_overlap = vec_old.T.dot(v_super[:,0:min(target_state+10,v_super.shape[1])])
-        old_new_overlap = vec_old.T.dot(v_super[:,0:10])
-
-        old_new_overlap = abs(old_new_overlap)
-
-        print old_new_overlap.shape
-        for i in range(0,old_new_overlap.shape[1]):
-            print old_new_overlap[0,i]
-
-        new_ts = np.argmax(old_new_overlap)
-        if new_ts != target_state:
-            print " Warning: Target state flipped from %4i to %4i" %(target_state, new_ts)
-            #target_state = new_ts
-
-    
     
     #
     #   Check if target-state root flipped
     #
+    state_overlaps = []
     if it > 0:
-        print " Check if root flipped"
+        print " Check if root flipped"# {{{
         if ms_proj:
             print " State following + ms_projection: NYI"
             exit(-1)
-
+        
         overlap_full = 0
+        
+        # <PPP|X> terms
         v_old = cp.deepcopy(ts_tensors['ref'])
-        print "huh ", ts_tensors['ref'].shape
+        basis_old = ts_vecs_p
+        
+        # <PPP|PPP> 
         v_new = v_super[ci_startstop[-1][0]:ci_startstop[-1][1],target_state]
         v_new.shape = n_p_states 
-
-        basis_old = ts_vecs_p
         basis_new = p_states
-
-        print v_old.shape, v_new.shape, len(basis_old), len(basis_new)
+        
+        #print v_old.shape, v_new.shape, len(basis_old), len(basis_new)
         overlap = tucker.form_overlap(v_old, basis_old, v_new, basis_new)
         print " Zeroth-order space overlap : %16.12f" %overlap
-
+        
         overlap_full += overlap
-        # PQP terms
+        
+        # <PPP|PQP> 
         if n_body_order >= 1:
             for bi in range(0,n_blocks):
-                v_old = cp.deepcopy(ts_tensors[bi])
                 v_new = v_super[ci_startstop[bi][0]:ci_startstop[bi][1],target_state]
-
                 q_dims = cp.deepcopy(n_p_states)
                 q_dims[bi] = n_q_states[bi]
+                print v_new.shape, q_dims
                 v_new.shape = q_dims 
-
-                basis_old = cp.deepcopy(ts_vecs_p)
+                
                 basis_new = cp.deepcopy(p_states)
-
-                basis_old[bi] = ts_vecs_q[bi]
                 basis_new[bi] = q_states[bi]
-
-                overlap = tucker.form_overlap(v_old, basis_old, v_new, basis_new)
-                print " Q(%4i) space overlap : %16.12f" %(bi,overlap)
-
-                overlap_full += overlap
-
-        # QQP terms
+                
+                #overlap_full += tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+                overlap_full += tucker.form_overlap(v_new, basis_new, v_old, basis_old)
+        
+        # <PPP|PQQ> 
         if n_body_order >= 2:
             for bi in range(0,n_blocks):
                 for bj in range(bi+1,n_blocks):
-                    v_old = cp.deepcopy(ts_tensors[bi,bj])
                     v_new = v_super[ci_startstop[bi,bj][0]:ci_startstop[bi,bj][1],target_state]
-                    
                     q_dims = cp.deepcopy(n_p_states)
                     q_dims[bi] = n_q_states[bi]
                     q_dims[bj] = n_q_states[bj]
                     v_new.shape = q_dims 
                     
-                    basis_old = cp.deepcopy(ts_vecs_p)
                     basis_new = cp.deepcopy(p_states)
-                    
-                    basis_old[bi] = ts_vecs_q[bi]
-                    basis_old[bj] = ts_vecs_q[bj]
                     basis_new[bi] = q_states[bi]
+                    basis_new[bj] = q_states[bj]
+                
+                #overlap_full += tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+                overlap_full += tucker.form_overlap(v_new, basis_new, v_old, basis_old)
+        
+        # <PQP|X> terms
+        if n_body_order >= 1:
+            for bi in range(0,n_blocks):
+                v_old = cp.deepcopy(ts_tensors[bi])
+                basis_old = cp.deepcopy(ts_vecs_p)
+                basis_old[bi] = ts_vecs_q[bi]
+                    
+                # <PQP | PPP> 
+                v_new = v_super[ci_startstop[-1][0]:ci_startstop[-1][1],target_state]
+                v_new.shape = n_p_states 
+                basis_new = p_states
+                    
+                overlap_full += tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+                #overlap_full += tucker.form_overlap(v_new, basis_new, v_old, basis_old)
+        
+                # <PQP | PQP> 
+                for bj in range(0,n_blocks):
+                    v_new = v_super[ci_startstop[bj][0]:ci_startstop[bj][1],target_state]
+                    q_dims = cp.deepcopy(n_p_states)
+                    q_dims[bj] = n_q_states[bj]
+                    v_new.shape = q_dims 
+                    
+                    basis_new = cp.deepcopy(p_states)
                     basis_new[bj] = q_states[bj]
                     
                     overlap = tucker.form_overlap(v_old, basis_old, v_new, basis_new)
                     print " Q(%4i,%4i) space overlap : %16.12f" %(bi,bj,overlap)
-           
+                    
                     overlap_full += overlap
-            
+                    
+                # <PQP | PQQ> 
+                if n_body_order >= 2:
+                    for bj in range(0,n_blocks):
+                        for bk in range(bj+1,n_blocks):
+                            v_new = v_super[ci_startstop[bj,bk][0]:ci_startstop[bj,bk][1],target_state]
+                            
+                            q_dims = cp.deepcopy(n_p_states)
+                            q_dims[bj] = n_q_states[bj]
+                            q_dims[bk] = n_q_states[bk]
+                            v_new.shape = q_dims 
+                            
+                            basis_new = cp.deepcopy(p_states)
+                            
+                            basis_new[bj] = q_states[bj]
+                            basis_new[bk] = q_states[bk]
+                            
+                            overlap_full += tucker.form_overlap(v_new, basis_new, v_old, basis_old)
+                            #overlap_full += tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+        
+        # <QQP|X> terms
+        if n_body_order >= 2:
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
+                    v_old = cp.deepcopy(ts_tensors[bi,bj])
+                    
+                    basis_old = cp.deepcopy(ts_vecs_p)
+                    basis_old[bi] = ts_vecs_q[bi]
+                    basis_old[bj] = ts_vecs_q[bj]
+                
+                    # <QQP | PPP> 
+                    v_new = v_super[ci_startstop[-1][0]:ci_startstop[-1][1],target_state]
+                    v_new.shape = n_p_states 
+                    basis_new = p_states
+                    
+                    #overlap_full += tucker.form_overlap(v_new, basis_new, v_old, basis_old)
+                    overlap_full += tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+                    
+                    # <QQP | PQP> 
+                    for bk in range(0,n_blocks):
+                        v_new = v_super[ci_startstop[bk][0]:ci_startstop[bk][1],target_state]
+                        q_dims = cp.deepcopy(n_p_states)
+                        q_dims[bk] = n_q_states[bk]
+                        v_new.shape = q_dims 
+                        
+                        basis_new = cp.deepcopy(p_states)
+                        basis_new[bk] = q_states[bk]
+                    
+                        #overlap_full += tucker.form_overlap(v_new, basis_new, v_old, basis_old)
+                        overlap_full += tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+                    
+                    # <QQP | QPQ> 
+                    for bk in range(0,n_blocks):
+                        for bl in range(bk+1,n_blocks):
+                            v_new = v_super[ci_startstop[bk,bl][0]:ci_startstop[bk,bl][1],target_state]
+                            q_dims = cp.deepcopy(n_p_states)
+                            q_dims[bk] = n_q_states[bk]
+                            q_dims[bl] = n_q_states[bl]
+                            v_new.shape = q_dims 
+                            
+                            basis_new = cp.deepcopy(p_states)
+                            basis_new[bk] = q_states[bk]
+                            basis_new[bl] = q_states[bl]
+                            
+                            #overlap = tucker.form_overlap(v_new, basis_new, v_old, basis_old)
+                            overlap = tucker.form_overlap(v_old, basis_old, v_new, basis_new)
+                            print " Q(%4i,%4i|%4i,%4i) space overlap : %16.12f" %(bi,bj,bk,bl,overlap)
+                            
+                            overlap_full += overlap
+            # }}}
+        
         print " Overlap between iterations : %16.12f" %(overlap_full)
+        if (abs(overlap_full) < .5):
+            state_overlaps.extend([abs(overlap_full)])
+            print " Root flipped %4i -> %4i" %(target_state, target_state-1)
+            if (target_state == 0):
+                print " Root flipped?"
+                exit(-1)
+            target_state -= 1
+
 
 
 
@@ -1994,7 +2047,7 @@ for it in range(0,maxiter):
             p_overlap[fi] = p_states[fi].T.dot(vp) 
             q_overlap[fi] = q_states[fi].T.dot(vq) 
 
-            
+
             Ut,st,Vt = np.linalg.svd(p_overlap[fi])
             p_overlap[fi] = p_overlap[fi].dot(Vt) 
 
@@ -2012,8 +2065,7 @@ for it in range(0,maxiter):
             q_states_new.extend([vq])
 
         p_states = p_states_new 
-        q_states = q_states_new 
-        
+        q_states = q_states_new
 
     #
     #   Project current supersystem eigenvector onto full uncontracted basis 
@@ -2044,12 +2096,12 @@ for it in range(0,maxiter):
                     ts_vector_new += tmp 
 
         
-        if it > 1:
+        if it > 0:
             print ts_vector.shape
             print ts_vector_new.shape
             old_new_overlap = ts_vector.T.dot(ts_vector_new)
          
-            print " Overlap: %16.12f" % old_new_overlap[0,0]
+            print " Overlap:                     %16.12f" % old_new_overlap[0,0]
 
         ts_vector = ts_vector_new# }}}
 
