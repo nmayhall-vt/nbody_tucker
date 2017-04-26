@@ -1065,7 +1065,7 @@ for it in range(0,maxiter):
     H_zero_order_diag =  np.array([]) 
 
     # Project this onto m_s = 0 (or other target)
-    ms_proj = 1
+    ms_proj = 0
     target_ms = args['target_ms']
     if ms_proj:
         ms_space_0 = get_ms_subspace_list2(vecs0, Szi, Szij, target_ms)
@@ -1360,7 +1360,6 @@ for it in range(0,maxiter):
     else:
         #lp,vp = np.linalg.eigh(Htest_ms)
         #lp,vp = np.linalg.eigh(Htest)
-        #lp,vp = np.linalg.eigh(Htest + Sztest)
         lp,vp = np.linalg.eigh(Htest)
  
     
@@ -1789,7 +1788,8 @@ for it in range(0,maxiter):
                             grams[fi] += vecsQQ[(bi,bbi)][fi].dot(gram_tmp).dot(vecsQQ[(bi,bbi)][fi].T)
                   
                   
-                        block_dimer_index += 1# }}}
+                        block_dimer_index += 1
+        # }}}
      
 
         p_states_new = []
@@ -1799,10 +1799,14 @@ for it in range(0,maxiter):
             old_basis = np.hstack((p_states[fi], q_states[fi]))
             
             
-            lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi]).dot(old_basis))
-            vx = old_basis.dot(vx)
-            lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
+            #lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi]).dot(old_basis))
+            #vx = old_basis.dot(vx)
+            #lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
 
+            # this makes sure we keep spin states pure. 
+            lx,vx = np.linalg.eigh(grams[fi] + S2i[fi])
+
+            lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
        
             sort_ind = np.argsort(lx)[::-1]
             lx = lx[sort_ind]
