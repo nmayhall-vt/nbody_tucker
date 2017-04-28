@@ -1031,6 +1031,17 @@ for bi,b in enumerate(blocks):
 energy_per_iter = []
 maxiter = args['max_iter'] 
 last_vector = np.array([])  # used to detect root flipping
+
+diis_err_vecs = {}
+diis_frag_grams = {}
+
+diis = 1
+
+for bi in range(0,n_blocks):
+    #diis_err_vecs[bi] = np.empty((p_states[bi].shape[0]* p_states[bi].shape[0],1))
+    diis_err_vecs[bi] = np.empty((q_states[bi].shape[1], 0))
+    diis_frag_grams[bi] = []
+
 for it in range(0,maxiter):
 
 
@@ -1439,7 +1450,10 @@ for it in range(0,maxiter):
     thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
         if abs(lp[target_state]-energy_per_iter[it-1]) < thresh:
-            break
+            if diis == 1:
+                diis = 0
+            else:
+                break
 
     #
     #   todo: look for, and address, root flipping
@@ -1798,13 +1812,85 @@ for it in range(0,maxiter):
         for fi,f in enumerate(blocks):
             old_basis = np.hstack((p_states[fi], q_states[fi]))
             
+            gram_curr = grams[fi] + S2i[fi]
+          
+            n_diis_vecs = 200
+            if diis == 1:
+                proj_p = p_states[fi].dot(p_states[fi].T)
+                #error_vector = np.ravel(proj_p.dot(grams[fi] + S2i[fi]) - (grams[fi] + S2i[fi]).dot(proj_p))
+                error_vector = (q_states[fi].T.dot(grams[fi] + S2i[fi]).dot(p_states[fi]) )
+                
+                #error_vector.shape = (error_vector.shape[0],1)
+           
+                print  diis_err_vecs[fi].shape, error_vector.shape
+                n_evecs = diis_err_vecs[fi].shape[1]
+
+
+
+                #if n_evecs == n_diis_vecs:
+                #    tmp = np.hstack( (diis_err_vecs[fi][:,1:-1], error_vector) )
+                #elif n_evecs < n_diis_vecs:
+                #    tmp = np.hstack( (diis_err_vecs[fi], error_vector) )
+                #else:
+                #    print "wtf?"
+                #    exit(-1)
+                #only add linearly independant vectors
+                #if abs(np.linalg.det(tmp.T.dot(tmp))) > 1e-15:
+                #    diis_err_vecs[fi] = tmp 
+                
+                diis_err_vecs[fi] = np.hstack( (diis_err_vecs[fi], error_vector) ) 
+                diis_frag_grams[fi].append(grams[fi])
+                        
+                
+                #if n_evecs == n_diis_vecs:
+                #    diis_frag_grams[fi].pop(0)
+                #    diis_err_vecs[fi].pop(0) 
             
+                n_evecs = diis_err_vecs[fi].shape[1]
+                
+                if it>0:
+                    
+                    B = np.ones( (n_evecs+1, n_evecs+1) )
+                    
+                    print " Number of error vectors: %4i " %n_evecs, B.shape, B[1::,1::].shape, it
+
+                    B[0,0] = 0
+                    S = diis_err_vecs[fi].T.dot(diis_err_vecs[fi] )
+                
+                    B[1::,1::] = S 
+                    r = np.zeros( (n_evecs+1,1) )
+                    r[0,0] = 1
+                    if n_evecs > 0: 
+                        #x = np.linalg.solve(B, r)
+                        x = np.linalg.pinv(B).dot(r)
+                        #x = x / np.sum(x)
+                        #print " Sum %12.8e"% np.sum(x)
+                        #gram_curr = np.zeros(gram_curr.shape)
+                        #extrap_err_vec = np.zeros((diis_err_vecs[fi].shape[0]))
+                        extrap_err_vec = error_vector 
+                        extrap_err_vec.shape = (extrap_err_vec.shape[0])
+
+                        for i in range(0,x.shape[0]-1):
+                            gram_curr += x[i]*diis_frag_grams[fi][i]
+                            extrap_err_vec += x[i]*diis_err_vecs[fi][:,i]
+                        
+                        print " DIIS Coeffs"
+                        print x.T
+                        print " CURRENT           error vector %12.2e " % error_vector.T.dot(error_vector)
+                        print " DIIS extrapolated error vector %12.2e " % extrap_err_vec.dot(extrap_err_vec)
+            
+
+            #error_vector = p_states[fi].T.dot(grams[fi]).dot(p_states[fi])
+            #error_vector = p_states[fi].T.dot(grams[fi]+S2i[fi]) - (grams[fi]+S2i[fi]).T.dot(p_states[fi])
+               
+            #print " Norm of residual vector\n", error_vector.T.dot(error_vector)
+
             #lx,vx = np.linalg.eigh(old_basis.T.dot(grams[fi]).dot(old_basis))
             #vx = old_basis.dot(vx)
             #lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
 
             # this makes sure we keep spin states pure. 
-            lx,vx = np.linalg.eigh(grams[fi] + S2i[fi])
+            lx,vx = np.linalg.eigh(gram_curr + S2i[fi])
 
             lx = vx.T.dot(grams[fi]).dot(vx).diagonal()
        
