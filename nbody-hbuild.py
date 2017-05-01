@@ -838,10 +838,11 @@ parser.add_argument('--n_print', type=int, default="10", help='number of states 
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
 parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
-parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
+parser.add_argument('-thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
 parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
+parser.add_argument('-opt','--optimization', type=str, default="None", help='Optimization algorithm for Tucker factors',choices=["None", "diis"], required=False)
 args = vars(parser.parse_args())
 #
 #   Let minute specification of walltime override hour specification
@@ -1035,11 +1036,12 @@ last_vector = np.array([])  # used to detect root flipping
 diis_err_vecs = {}
 diis_frag_grams = {}
 
-diis = 1
+opt = args['optimization'] 
 
 for bi in range(0,n_blocks):
     #diis_err_vecs[bi] = np.empty((p_states[bi].shape[0]* p_states[bi].shape[0],1))
-    diis_err_vecs[bi] = np.empty((q_states[bi].shape[1], 0))
+    #diis_err_vecs[bi] = np.empty((q_states[bi].shape[1], 0))
+    diis_err_vecs[bi] = np.array([])
     diis_frag_grams[bi] = []
 
 for it in range(0,maxiter):
@@ -1450,10 +1452,11 @@ for it in range(0,maxiter):
     thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
         if abs(lp[target_state]-energy_per_iter[it-1]) < thresh:
-            if diis == 1:
-                diis = 0
-            else:
-                break
+            break
+            #if diis == 1:
+            #    diis = 0
+            #else:
+            #    break
 
     #
     #   todo: look for, and address, root flipping
@@ -1814,17 +1817,36 @@ for it in range(0,maxiter):
             
             gram_curr = grams[fi] + S2i[fi]
           
-            n_diis_vecs = 200
-            if diis == 1:
+            if opt == "diis":
+                n_diis_vecs = 8 
                 proj_p = p_states[fi].dot(p_states[fi].T)
-                #error_vector = np.ravel(proj_p.dot(grams[fi] + S2i[fi]) - (grams[fi] + S2i[fi]).dot(proj_p))
+                #error_vector = proj_p.dot(grams[fi] + S2i[fi]) - (grams[fi] + S2i[fi]).dot(proj_p)
                 error_vector = (q_states[fi].T.dot(grams[fi] + S2i[fi]).dot(p_states[fi]) )
+                #error_vector = (q_states[fi].T.dot(grams[fi]).dot(p_states[fi]) )
+            
                 
-                #error_vector.shape = (error_vector.shape[0],1)
-           
-                print  diis_err_vecs[fi].shape, error_vector.shape
-                n_evecs = diis_err_vecs[fi].shape[1]
+                diff_err_vec = 1
+                if diff_err_vec == 1:
+                    if it == 0: 
+                        error_vector = grams[fi] + S2i[fi]
+                        #error_vector = cp.deepcopy(grams[fi])
+                    else:
+                        #error_vector = grams[fi] + S2i[fi] - diis_frag_grams[fi][0]
+                        error_vector = grams[fi] + S2i[fi] - diis_frag_grams[fi][-1]
 
+               
+                error_vector.shape = (error_vector.shape[0]*error_vector.shape[1],1)
+           
+                print " Dimension of Error Vector matrix: ", diis_err_vecs[fi].shape
+                if diis_err_vecs[fi].shape[0] == 0:
+                    diis_err_vecs[fi] = error_vector
+                else:
+                    diis_err_vecs[fi] = np.hstack( (diis_err_vecs[fi], error_vector) ) 
+
+
+                diis_frag_grams[fi].append( grams[fi] + S2i[fi])
+                
+                n_evecs = diis_err_vecs[fi].shape[1]
 
 
                 #if n_evecs == n_diis_vecs:
@@ -1837,25 +1859,72 @@ for it in range(0,maxiter):
                 #only add linearly independant vectors
                 #if abs(np.linalg.det(tmp.T.dot(tmp))) > 1e-15:
                 #    diis_err_vecs[fi] = tmp 
-                
-                diis_err_vecs[fi] = np.hstack( (diis_err_vecs[fi], error_vector) ) 
-                diis_frag_grams[fi].append(grams[fi])
-                        
+               
                 
                 #if n_evecs == n_diis_vecs:
                 #    diis_frag_grams[fi].pop(0)
                 #    diis_err_vecs[fi].pop(0) 
             
-                n_evecs = diis_err_vecs[fi].shape[1]
                 
-                if it>0:
+                if it>10:
                     
-                    B = np.ones( (n_evecs+1, n_evecs+1) )
-                    
-                    print " Number of error vectors: %4i " %n_evecs, B.shape, B[1::,1::].shape, it
 
-                    B[0,0] = 0
                     S = diis_err_vecs[fi].T.dot(diis_err_vecs[fi] )
+
+                   
+
+                    collapse = 0
+                    if collapse:
+                        
+                       
+                        sort_ind = np.argsort(S.diagonal())
+                        #sort_ind = np.argsort(lt)[::-1]
+
+                        #sort_ind = [sort_ind[i] for i in sort_ind]
+                        sort_ind = [sort_ind[i] for i in range(0,min(len(sort_ind),n_diis_vecs))]
+        
+
+                        diis_err_vecs[fi] = diis_err_vecs[fi][:,sort_ind]
+                        tmp = []
+                        for i in sort_ind:
+                            tmp.append(diis_frag_grams[fi][i])
+                        diis_frag_grams[fi] = cp.deepcopy(tmp)
+
+                        #diis_frag_grams[fi] = [diis_frag_grams[fi][i] for i in sort_ind]
+                        #diis_frag_grams[fi] =diis_frag_grams[fi][sort_ind]  
+
+
+                        print "Vector errors", S.diagonal()[sort_ind] 
+                        
+                        #nv = 0
+                        #for i in lt:
+                        #    if abs(i) > 1e-16:
+                        #        nv += 1
+                        #if nv==0:
+                        #    print "What?"
+                        #    exit(-1)
+                        #print " Number of linearly independent DIIS vectors: ", nv
+
+#                        vt = vt[:,0:min(nv,n_diis_vecs)]
+#
+#                        diis_err_vecs[fi] = diis_err_vecs[fi].dot(vt) 
+#                        for v in range(0,vt.shape[1]):
+#                            print " Eigval: %12.6e" %lt[v]
+#                            gram_tmp = np.zeros((grams[fi].shape[0],grams[fi].shape[1]))
+#                            for i in range(0,vt.shape[0]):
+#                                gram_tmp += diis_frag_grams[fi][v] * vt[i,v]
+#                            diis_frag_grams[fi][v] = cp.deepcopy(gram_tmp)
+#            
+#                        diis_err_vecs[fi] = diis_err_vecs[fi][:,n_evecs-n_diis_vecs:n_evecs]
+#                        diis_frag_grams[fi] = diis_frag_grams[fi][-n_diis_vecs:]
+                        n_evecs = diis_err_vecs[fi].shape[1]
+                        S = diis_err_vecs[fi].T.dot(diis_err_vecs[fi] )
+                   
+
+                    print " Number of error vectors: %4i " %n_evecs
+                    B = np.ones( (n_evecs+1, n_evecs+1) )
+                    B[0,0] = 0
+
                 
                     B[1::,1::] = S 
                     r = np.zeros( (n_evecs+1,1) )
@@ -1863,21 +1932,25 @@ for it in range(0,maxiter):
                     if n_evecs > 0: 
                         #x = np.linalg.solve(B, r)
                         x = np.linalg.pinv(B).dot(r)
+                        
                         #x = x / np.sum(x)
                         #print " Sum %12.8e"% np.sum(x)
                         #gram_curr = np.zeros(gram_curr.shape)
-                        #extrap_err_vec = np.zeros((diis_err_vecs[fi].shape[0]))
-                        extrap_err_vec = error_vector 
+                        extrap_err_vec = np.zeros((diis_err_vecs[fi].shape[0]))
+                        #extrap_err_vec = error_vector 
                         extrap_err_vec.shape = (extrap_err_vec.shape[0])
 
                         for i in range(0,x.shape[0]-1):
-                            gram_curr += x[i]*diis_frag_grams[fi][i]
-                            extrap_err_vec += x[i]*diis_err_vecs[fi][:,i]
+                            gram_curr += x[i+1]*diis_frag_grams[fi][i]
+                            extrap_err_vec += x[i+1]*diis_err_vecs[fi][:,i]
                         
                         print " DIIS Coeffs"
-                        print x.T
+                        for i in x:
+                            print "  %12.8f" %i
+                        #print x.T
+                        print 
                         print " CURRENT           error vector %12.2e " % error_vector.T.dot(error_vector)
-                        print " DIIS extrapolated error vector %12.2e " % extrap_err_vec.dot(extrap_err_vec)
+                        #print " DIIS extrapolated error vector %12.2e " % extrap_err_vec.dot(extrap_err_vec)
             
 
             #error_vector = p_states[fi].T.dot(grams[fi]).dot(p_states[fi])
