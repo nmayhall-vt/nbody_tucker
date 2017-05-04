@@ -1820,19 +1820,19 @@ for it in range(0,maxiter):
             if opt == "diis":
                 n_diis_vecs = 8 
                 proj_p = p_states[fi].dot(p_states[fi].T)
-                #error_vector = proj_p.dot(grams[fi] + S2i[fi]) - (grams[fi] + S2i[fi]).dot(proj_p)
-                error_vector = (q_states[fi].T.dot(grams[fi] + S2i[fi]).dot(p_states[fi]) )
+                error_vector = proj_p.dot(grams[fi] + S2i[fi]) - (grams[fi] + S2i[fi]).dot(proj_p)
+                #error_vector = (q_states[fi].T.dot(grams[fi] + S2i[fi]).dot(p_states[fi]) )
                 #error_vector = (q_states[fi].T.dot(grams[fi]).dot(p_states[fi]) )
             
                 
-                diff_err_vec = 1
+                diff_err_vec = 0
                 if diff_err_vec == 1:
                     if it == 0: 
                         error_vector = grams[fi] + S2i[fi]
                         #error_vector = cp.deepcopy(grams[fi])
                     else:
-                        #error_vector = grams[fi] + S2i[fi] - diis_frag_grams[fi][0]
-                        error_vector = grams[fi] + S2i[fi] - diis_frag_grams[fi][-1]
+                        error_vector = grams[fi] + S2i[fi] - diis_frag_grams[fi][0]
+                        #error_vector = grams[fi] + S2i[fi] - diis_frag_grams[fi][-1]
 
                
                 error_vector.shape = (error_vector.shape[0]*error_vector.shape[1],1)
@@ -1866,14 +1866,59 @@ for it in range(0,maxiter):
                 #    diis_err_vecs[fi].pop(0) 
             
                 
-                if it>10:
+                if it>0:
                     
 
                     S = diis_err_vecs[fi].T.dot(diis_err_vecs[fi] )
 
-                   
+                  
+                    rm_lin_dep = 0
+                    if rm_lin_dep:
+                        v = cp.deepcopy(diis_err_vecs[fi])
+                        for vi in range(0,v.shape[1]):
+                            v[:,vi] = v[:,vi]/np.linalg.norm(v[:,vi])
+                        Sv = v.T.dot(v)
 
-                    collapse = 0
+                        #lx,vx = np.linalg.eigh(Sv)
+                        
+                        #sort_ind = np.argsort(abs(lx))
+                        #lx = lx[sort_ind]
+                        #vx = vx[:,sort_ind]
+                        ux,lx,vx = np.linalg.svd(v)
+
+                        to_del = np.zeros((v.shape[1],1),dtype=int) 
+
+                    
+                        for i in range(2,lx.shape[0]):
+                            print " Singular value of v %18.2e" %lx[i]
+                            if abs(lx[i]) < 1e-9:
+                                to_del[np.argmax(abs(vx[:,i]))] = 1
+                                #for vi in range(0,vx.shape[0]):
+                                    #print "Coeff ", vx[vi,i]
+                                    #if abs(vx[vi,i]) > 1e-2:
+                                    #    to_del[vi] = 1
+
+
+                        print " Delete: ",to_del 
+
+                        v_new = np.empty(( diis_err_vecs[fi].shape[0],0))
+                        G_new = [] 
+                        print diis_err_vecs[fi].shape
+                        for vi in range(0,v.shape[1]):
+                            if to_del[vi] == 0:
+                                v_new = np.hstack(( v_new,diis_err_vecs[fi][:,vi:vi+1] ))
+                                G_new.append(diis_frag_grams[fi][vi])
+
+                        diis_err_vecs[fi] = cp.deepcopy(v_new)
+                        diis_frag_grams[fi] = cp.deepcopy(G_new)
+                    
+                        S = diis_err_vecs[fi].T.dot(diis_err_vecs[fi] )
+
+
+
+
+
+                    collapse = 1
                     if collapse:
                         
                        
@@ -1923,12 +1968,12 @@ for it in range(0,maxiter):
 
                     print " Number of error vectors: %4i " %n_evecs
                     B = np.ones( (n_evecs+1, n_evecs+1) )
-                    B[0,0] = 0
+                    B[-1,-1] = 0
 
                 
-                    B[1::,1::] = S 
+                    B[0:-1,0:-1] = cp.deepcopy(S) 
                     r = np.zeros( (n_evecs+1,1) )
-                    r[0,0] = 1
+                    r[-1] = 1
                     if n_evecs > 0: 
                         #x = np.linalg.solve(B, r)
                         x = np.linalg.pinv(B).dot(r)
@@ -1941,8 +1986,8 @@ for it in range(0,maxiter):
                         extrap_err_vec.shape = (extrap_err_vec.shape[0])
 
                         for i in range(0,x.shape[0]-1):
-                            gram_curr += x[i+1]*diis_frag_grams[fi][i]
-                            extrap_err_vec += x[i+1]*diis_err_vecs[fi][:,i]
+                            gram_curr += x[i]*diis_frag_grams[fi][i]
+                            extrap_err_vec += x[i]*diis_err_vecs[fi][:,i]
                         
                         print " DIIS Coeffs"
                         for i in x:
