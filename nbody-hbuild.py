@@ -838,7 +838,7 @@ parser.add_argument('--n_print', type=int, default="10", help='number of states 
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 parser.add_argument('-ts','--target_state', type=int, default="0", help='state(s) to target during (possibly state-averaged) optimization', required=False)
 parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
-parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
+parser.add_argument('-thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
 parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
@@ -1462,7 +1462,7 @@ for it in range(0,maxiter):
     if it > 0:
         if abs(e_super[target_state]-energy_per_iter[it-1]) < thresh:
             pass
-            #break
+            break
 
 
 
