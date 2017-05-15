@@ -927,6 +927,8 @@ blocks = {}         # dictionary of block objects
 
 #
 #   Initialize Block objects
+ci_block_dim = {}
+ci_block_dim[-1] = 1
 for bi in range(0,n_blocks):
     blocks[bi] = Block()
     blocks[bi].init(bi,blocks_in[bi,:])
@@ -941,6 +943,33 @@ for bi in range(0,n_blocks):
     blocks[bi].form_H()
     blocks[bi].form_site_operators()
 
+    ci_block_dim[-1] = ci_block_dim[-1]*blocks[bi].np
+
+# 
+H  = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
+S2 = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
+Sz = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
+for bi in range(0,n_blocks):
+    dim0 = 1
+    dim1 = 1
+    for bj in range(0,bi):
+        dim0 = blocks[bj].np*dim0
+    for bj in range(bi+1,n_blocks):
+        dim1 = blocks[bj].np*dim1
+    i0 = np.eye(dim0)
+    i1 = np.eye(dim1)
+
+    H  += np.kron(i0,np.kron( blocks[bi].H_pp() ,i1))
+    S2 += np.kron(i0,np.kron( blocks[bi].S2_pp() ,i1))
+    Sz += np.kron(i0,np.kron( blocks[bi].Sz_pp() ,i1))
+
+count = 0
+for bi in range(0,n_blocks):
+    for bj in range(0,n_blocks):
+        for si in blocks[bi].sites:
+            for sj in blocks[bj].sites:
+                if sj>si:
+                    pass
 
 exit(-1)
 

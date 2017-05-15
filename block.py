@@ -79,12 +79,23 @@ class Block:
             self.Spi[i] = np.kron(i1,np.kron(sp,i2))
             self.Smi[i] = np.kron(i1,np.kron(sm,i2))
             self.Szi[i] = np.kron(i1,np.kron(sz,i2))
+            # Transform to P|Q basis
             self.Spi[i] = self.vecs.T.dot(self.Spi[i]).dot(self.vecs)
             self.Smi[i] = self.vecs.T.dot(self.Smi[i]).dot(self.vecs)
             self.Szi[i] = self.vecs.T.dot(self.Szi[i]).dot(self.vecs)
 
 
+    def H_pp(self):
+        # get view of PP block of H
+        return self.H[0:self.np, 0:self.np]
 
+    def S2_pp(self):
+        # get view of PP block of S2 
+        return self.S2[0:self.np, 0:self.np]
+
+    def Sz_pp(self):
+        # get view of PP block of Sz
+        return self.Sz[0:self.np, 0:self.np]
 
 
 
