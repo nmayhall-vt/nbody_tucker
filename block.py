@@ -73,16 +73,16 @@ class Block:
  
         sp = sp.real
         sm = sm.real
-        for i in range(0,self.n_sites):
+        for i,s in enumerate(self.sites):
             i1 = np.eye(np.power(2,i))
             i2 = np.eye(np.power(2,self.n_sites-i-1))
-            self.Spi[i] = np.kron(i1,np.kron(sp,i2))
-            self.Smi[i] = np.kron(i1,np.kron(sm,i2))
-            self.Szi[i] = np.kron(i1,np.kron(sz,i2))
+            self.Spi[s] = np.kron(i1,np.kron(sp,i2))
+            self.Smi[s] = np.kron(i1,np.kron(sm,i2))
+            self.Szi[s] = np.kron(i1,np.kron(sz,i2))
             # Transform to P|Q basis
-            self.Spi[i] = self.vecs.T.dot(self.Spi[i]).dot(self.vecs)
-            self.Smi[i] = self.vecs.T.dot(self.Smi[i]).dot(self.vecs)
-            self.Szi[i] = self.vecs.T.dot(self.Szi[i]).dot(self.vecs)
+            self.Spi[s] = self.vecs.T.dot(self.Spi[s]).dot(self.vecs)
+            self.Smi[s] = self.vecs.T.dot(self.Smi[s]).dot(self.vecs)
+            self.Szi[s] = self.vecs.T.dot(self.Szi[s]).dot(self.vecs)
 
 
     def H_pp(self):
@@ -96,6 +96,18 @@ class Block:
     def Sz_pp(self):
         # get view of PP block of Sz
         return self.Sz[0:self.np, 0:self.np]
+
+    def Spi_pp(self,site):
+        # get view of PP block of S^+ operator on site
+        return self.Spi[site][0:self.np, 0:self.np]
+
+    def Smi_pp(self,site):
+        # get view of PP block of S^- operator on site
+        return self.Smi[site][0:self.np, 0:self.np]
+
+    def Szi_pp(self,site):
+        # get view of PP block of S^z operator on site
+        return self.Szi[site][0:self.np, 0:self.np]
 
 
 

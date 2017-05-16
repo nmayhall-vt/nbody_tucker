@@ -845,62 +845,15 @@ if args['n_q_space'] == None:
 # Get initial compression vectors 
 p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states)
 
-dims_0 = n_p_states
-
-#
-# |Ia,Ib,Ic> P(Ia,a) P(Ib,b) P(Ic,c) = |abc>    : |PPP>
-#
-# |Ia,Ib,Ic> Q(Ia,A) P(Ib,b) P(Ic,c) = |Abc>    : |QPP>
-# |Ia,Ib,Ic> P(Ia,a) Q(Ib,B) P(Ic,c) = |aBc>    : |PQP>
-#
-# |Ia,Ib,Ic> Q(Ia,A) Q(Ib,B) P(Ic,c) = |ABc>    : |QQP>
-#
-#<abc|Ha+Hb+Hc+Hab+Hac+Hbc|abc>
-#
-#<a|Ha|a><bc|bc> = <a|Ha|a>
-#<ab|Hab|ab><c|c> = <ab|Hab|ab>
-#<Abc|Hab|Abc> = <Ab|Hab|Ab>
-
-
-Hi = {}
-Hij = {}
-S2i = {}
-S2ij = {}
-Szi = {}
-Szij = {}
-#1 body operators
-for bi,b in enumerate(blocks):
-    Hi[bi], S2i[bi], Szi[bi] = form_superblock_hamiltonian(lattice, j12, blocks, [bi])
-
-#2 body operators
-for bi,b in enumerate(blocks):
-    for bj,bb in enumerate(blocks):
-        if bj>bi:
-            hi = Hi[bi]
-            hj = Hi[bj]
-            s2i = S2i[bi]
-            s2j = S2i[bj]
-            szi = Szi[bi]
-            szj = Szi[bj]
-            
-            Hij[(bi,bj)], S2ij[(bi,bj)], Szij[(bi,bj)] = form_superblock_hamiltonian(lattice, j12, blocks, [bi,bj])
-            Hij[(bi,bj)] -= np.kron(hi,np.eye(hj.shape[0])) 
-            Hij[(bi,bj)] -= np.kron(np.eye(hi.shape[0]),hj) 
-
-
-            S2ij[(bi,bj)] -= np.kron(s2i,np.eye(s2j.shape[0])) 
-            S2ij[(bi,bj)] -= np.kron(np.eye(s2i.shape[0]),s2j) 
-            Szij[(bi,bj)] -= np.kron(szi,np.eye(szj.shape[0])) 
-            Szij[(bi,bj)] -= np.kron(np.eye(szi.shape[0]),szj) 
 
 
 """
 H = -2 \sum_{ij} J_{ij} S_i\cdotS_j
   = - \sum_{ij} S^+_i S^-_j  +  S^-_i S^+_j  + 2 S^z_i S^z_j
 
-<abc| H12 |def> = - \sum_{ij} <a|S+i|d><b|S-j|e> <c|f> 
-                             +<a|S-i|d><b|S+j|e> <c|f>
-                             +<a|Szi|d><b|Szj|e> <c|f> * 2
+<abc| H12 |def> = - \sum_{ij}  <a|S+i|d><b|S-j|e> <c|f> 
+                             + <a|S-i|d><b|S+j|e> <c|f>
+                             +2<a|Szi|d><b|Szj|e> <c|f> 
 
 Form matrix representations of S+, S-, Sz in local basis
 
@@ -965,12 +918,34 @@ for bi in range(0,n_blocks):
 
 count = 0
 for bi in range(0,n_blocks):
-    for bj in range(0,n_blocks):
-        for si in blocks[bi].sites:
-            for sj in blocks[bj].sites:
-                if sj>si:
-                    pass
+    for bj in range(bi+1,n_blocks):
+        Bi = blocks[bi]
+        Bj = blocks[bj]
+        dim0 = 1
+        dim1 = 1
+        dim2 = 1
+        for bk in range(0,bi):
+            dim0 = blocks[bk].np*dim0
+        for bk in range(bi+1,bj):
+            dim1 = blocks[bk].np*dim1
+        for bk in range(bj+1,n_blocks):
+            dim2 = blocks[bk].np*dim2
+        i0 = np.eye(dim0)
+        i1 = np.eye(dim1)
+        i2 = np.eye(dim2)
+        print dim0,dim1,dim2
+        for si in Bi.sites:
+            for sj in Bj.sites:
+                H  -= j12[si,sj] * np.kron(i0,np.kron( Bi.Spi_pp(si) ,np.kron(i1,np.kron( Bj.Smi_pp(sj),i2))))
+                H  -= j12[si,sj] * np.kron(i0,np.kron( Bi.Smi_pp(si) ,np.kron(i1,np.kron( Bj.Spi_pp(sj),i2))))
+                H  -= j12[si,sj] * 2 * np.kron(i0,np.kron( Bi.Szi_pp(si) ,np.kron(i1,np.kron( Bj.Szi_pp(sj),i2))))
 
+l,v = np.linalg.eigh(H)
+print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+for si,i in enumerate(l):
+    print " %5i =  %16.8f  %16.8f  %12.8s" %(si,i*convert,(i-l[0])*convert,"--")
+    if si>args['n_print']:
+        break
 exit(-1)
 
 # loop over compression vector iterations
