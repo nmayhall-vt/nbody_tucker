@@ -109,6 +109,70 @@ class Block:
         # get view of PP block of S^z operator on site
         return self.Szi[site][0:self.np, 0:self.np]
 
+    def Spi_ss(self,site,i,j):
+        """ 
+        Get view of space1,space2 block of S^+ operator on site
+        where space1, space2 are the spaces of the bra and ket respectively
+            i.e., Spi(3,0,1) would return S+ at site 3, between P and Q
+            <P|S^+_i|Q>
+        """
+        if   i==0 and j==0:
+            assert(self.np>0)
+            return self.Spi[site][0:self.np, 0:self.np]
+        elif i==1 and j==0:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.Spi[site][self.np:self.np+self.nq , 0:self.np]
+        elif i==0 and j==1:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.Spi[site][0:self.np , self.np:self.np+self.nq]
+        elif i==1 and j==1:
+            assert(self.nq>0)
+            return self.Spi[site][self.np:self.np+self.np+self.nq, self.np:self.np+self.nq]
+    def Smi_ss(self,site,i,j):
+        """ 
+        Get view of space1,space2 block of S^+ operator on site
+        where space1, space2 are the spaces of the bra and ket respectively
+            i.e., Spi(3,0,1) would return S+ at site 3, between P and Q
+            <P|S^+_i|Q>
+        """
+        if   i==0 and j==0:
+            assert(self.np>0)
+            return self.Smi[site][0:self.np, 0:self.np]
+        elif i==1 and j==0:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.Smi[site][self.np:self.np+self.nq , 0:self.np]
+        elif i==0 and j==1:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.Smi[site][0:self.np , self.np:self.np+self.nq]
+        elif i==1 and j==1:
+            assert(self.nq>0)
+            return self.Smi[site][self.np:self.np+self.np+self.nq, self.np:self.np+self.nq]
+    def Szi_ss(self,site,i,j):
+        """ 
+        Get view of space1,space2 block of S^+ operator on site
+        where space1, space2 are the spaces of the bra and ket respectively
+            i.e., Spi(3,0,1) would return S+ at site 3, between P and Q
+            <P|S^+_i|Q>
+        """
+        if   i==0 and j==0:
+            assert(self.np>0)
+            return self.Szi[site][0:self.np, 0:self.np]
+        elif i==1 and j==0:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.Szi[site][self.np:self.np+self.nq , 0:self.np]
+        elif i==0 and j==1:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.Szi[site][0:self.np , self.np:self.np+self.nq]
+        elif i==1 and j==1:
+            assert(self.nq>0)
+            return self.Szi[site][self.np:self.np+self.np+self.nq, self.np:self.np+self.nq]
+
 
 
 

@@ -936,9 +936,18 @@ for bi in range(0,n_blocks):
         print dim0,dim1,dim2
         for si in Bi.sites:
             for sj in Bj.sites:
-                H  -= j12[si,sj] * np.kron(i0,np.kron( Bi.Spi_pp(si) ,np.kron(i1,np.kron( Bj.Smi_pp(sj),i2))))
-                H  -= j12[si,sj] * np.kron(i0,np.kron( Bi.Smi_pp(si) ,np.kron(i1,np.kron( Bj.Spi_pp(sj),i2))))
-                H  -= j12[si,sj] * 2 * np.kron(i0,np.kron( Bi.Szi_pp(si) ,np.kron(i1,np.kron( Bj.Szi_pp(sj),i2))))
+
+                spi = Bi.Spi_ss(si,0,0)
+                smi = Bi.Smi_ss(si,0,0)
+                szi = Bi.Szi_ss(si,0,0)
+                
+                spj = Bj.Spi_ss(sj,0,0)
+                smj = Bj.Smi_ss(sj,0,0)
+                szj = Bj.Szi_ss(sj,0,0)
+
+                H  -= j12[si,sj] * np.kron(i0,np.kron( spi ,np.kron(i1,np.kron( smj,i2))))
+                H  -= j12[si,sj] * np.kron(i0,np.kron( smi ,np.kron(i1,np.kron( spj,i2))))
+                H  -= j12[si,sj] * 2 * np.kron(i0,np.kron( szi ,np.kron(i1,np.kron( szj,i2))))
 
 l,v = np.linalg.eigh(H)
 print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
@@ -947,6 +956,19 @@ for si,i in enumerate(l):
     if si>args['n_print']:
         break
 exit(-1)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # loop over compression vector iterations
 energy_per_iter = []
