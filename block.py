@@ -20,7 +20,7 @@ class Block:
         self.nq     = 0            # number of q-space vectors
         self.ss_dims= []            # number of vectors in each subspace [P,Q,...]
         self.n_ss   = 0             # number of subspaces, usually 2 or 3
-        self.dim_tot= 1             # dimension of full space in block  
+        self.full_dim= 1             # dimension of full space in block  
 
         self.Spi = {}                # matrix_rep of i'th S^+ in local basis
         self.Smi = {}                # matrix_rep of i'th S^- in local basis
@@ -40,16 +40,16 @@ class Block:
         self.sites = _sites
         self.n_sites = len(self.sites)
         for si in range(0,self.n_sites):
-            self.dim_tot *= 2
+            self.full_dim *= 2
         
         vec_count = 0
         for ss in _ss:
             self.ss_dims.append(ss)
             vec_count += ss
-        if (self.dim_tot-vec_count) < 0:
+        if (self.full_dim-vec_count) < 0:
             print "Problem setting block dimensions", self
             exit(-1)
-        self.ss_dims.append(self.dim_tot-vec_count)
+        self.ss_dims.append(self.full_dim-vec_count)
         return 
 
     def __str__(self):

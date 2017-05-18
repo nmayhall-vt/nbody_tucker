@@ -770,19 +770,128 @@ class Tucker_Block:
 
 def test_H(blocks,tb_l, tb_r):
     # 
-    H  = np.zeros((tb_l.full_dim, tb_r.full_dim))
-    
+   
+    n_blocks = len(blocks)
+    assert(n_blocks == tb_l.n_blocks)
+    assert(n_blocks == tb_r.n_blocks)
+    H_dim_layout = []  # dimensions of Ham block as a tensor (d1,d2,..,d1',d2',...)
+    H_dim_layout = np.append(tb_l.block_dims,tb_r.block_dims)
+   
+    """
+    form one-block and two-block terms of H separately
+        1-body
+
+            for each block, form Hamiltonian in subspace, and combine
+            with identity on other blocks
+
+        2-body
+            
+            for each block-dimer, form Hamiltonian in subspace, and combine
+            with identity on other blocks
+    """
+    # How many blocks are different between left and right?
+    different = []
     for bi in range(0,n_blocks):
-        dim0 = 1
-        dim1 = 1
-        for bj in range(0,bi):
-            dim0 = blocks[bj].np*dim0
-        for bj in range(bi+1,n_blocks):
-            dim1 = blocks[bj].np*dim1
-        i0 = np.eye(dim0)
-        i1 = np.eye(dim1)
+        if tb_l.address[bi] != tb_r.address[bi]:
+            different.append(bi)
+    if len(different) > 2:
+        print " Nothing to do, why are we here?"
+        exit(-1)
+    
+    H = np.zeros((tb_l.full_dim,tb_l.full_dim))
+   
+    print " Ham block size", H.shape, H_dim_layout
+    H.shape = H_dim_layout
+    #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
+    #   target subspace
+
+    if len(different) == 0:
+
+        assert(tb_l.full_dim == tb_r.full_dim)
+        full_dim = tb_l.full_dim
+        #<abcd|H1+H2+H3+H4|abcd>
+        #
+        #   <a|H1|a> Ib Ic Id
+        # + Ia <b|H1|b> Ic Id + etc
+
+        for bi in range(0,n_blocks):
+            Bi = blocks[bi]
+            dim_e = full_dim / tb_l.block_dims[bi] 
+            h = np.kron(Bi.H_pp(),np.eye(dim_e))   
+            
+            tens_dims    = []
+            tens_inds    = []
+            tens_inds.extend([bi])
+            tens_dims.extend([tb_l.block_dims[bi]])
+            for bj in range(0,n_blocks):
+                if (bi != bj):
+                    tens_inds.extend([bj])
+                    tens_dims.extend([tb_l.block_dims[bj]])
+            tens_dims = np.append(tens_dims, tens_dims) 
+            #tens_inds = np.append(tens_inds, tens_inds) 
+
+            sort_ind = np.argsort(tens_inds)
+            swap = np.append(sort_ind,sort_ind+n_blocks) 
+
+            H += h.reshape(tens_dims).transpose(swap)
         
-        H  += np.kron(i0,np.kron( blocks[bi].H_pp() ,i1))
+        
+        #   <ab|H12|ab> Ic Id
+        # + <ac|H13|ac> Ib Id
+        # + Ia <bc|H23|bc> Id + etc
+        
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                Bi = blocks[bi]
+                Bj = blocks[bj]
+                dim_e = full_dim / tb_l.block_dims[bi] / tb_l.block_dims[bj]
+
+                h12 = np.zeros((tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj]))
+                #build full Hamiltonian on sublattice
+                for si in Bi.sites:
+                    for sj in Bj.sites:
+
+                        spi = Bi.Spi_ss(si,0,0)
+                        smi = Bi.Smi_ss(si,0,0)
+                        szi = Bi.Szi_ss(si,0,0)
+                        
+                        spj = Bj.Spi_ss(sj,0,0)
+                        smj = Bj.Smi_ss(sj,0,0)
+                        szj = Bj.Szi_ss(sj,0,0)
+                       
+                        h12  -= j12[si,sj] * np.kron(spi, smj)
+                        h12  -= j12[si,sj] * np.kron(smi, spj)
+                        h12  -= j12[si,sj] * np.kron(szi, szj) * 2
+                
+                h = np.kron(h12,np.eye(dim_e))   
+            
+                tens_dims    = []
+                tens_inds    = []
+                tens_inds.extend([bi])
+                tens_inds.extend([bj])
+                tens_dims.extend([tb_l.block_dims[bi]])
+                tens_dims.extend([tb_l.block_dims[bj]])
+                for bk in range(0,n_blocks):
+                    if (bk != bi) and (bk != bj):
+                        tens_inds.extend([bk])
+                        tens_dims.extend([tb_l.block_dims[bk]])
+                tens_dims = np.append(tens_dims, tens_dims) 
+                #tens_inds = np.append(tens_inds, tens_inds) 
+               
+                sort_ind = np.argsort(tens_inds)
+                swap = np.append(sort_ind,sort_ind+n_blocks) 
+               
+                H += h.reshape(tens_dims).transpose(swap)
+
+    H = H.reshape(tb_l.full_dim,tb_r.full_dim)
+    return H
+
+
+
+
+
+
+
        
 
 
@@ -943,62 +1052,13 @@ tb_0 = Tucker_Block()
 address_0 = np.zeros(n_blocks,dtype=int)
 tb_0.init(blocks,address_0)
 
+
+
+
 print tb_0
-test_H(blocks, tb_0, tb_0)
+H = test_H(blocks, tb_0, tb_0)
 
 
-# 
-H  = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
-S2 = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
-Sz = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
-tmp  = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
-for bi in range(0,n_blocks):
-    dim0 = 1
-    dim1 = 1
-    for bj in range(0,bi):
-        dim0 = blocks[bj].np*dim0
-    for bj in range(bi+1,n_blocks):
-        dim1 = blocks[bj].np*dim1
-    i0 = np.eye(dim0)
-    i1 = np.eye(dim1)
-
-    H  += np.kron(i0,np.kron( blocks[bi].H_pp() ,i1))
-    S2 += np.kron(i0,np.kron( blocks[bi].S2_pp() ,i1))
-    Sz += np.kron(i0,np.kron( blocks[bi].Sz_pp() ,i1))
-
-count = 0
-for bi in range(0,n_blocks):
-    for bj in range(bi+1,n_blocks):
-        Bi = blocks[bi]
-        Bj = blocks[bj]
-        dim0 = 1
-        dim1 = 1
-        dim2 = 1
-        for bk in range(0,bi):
-            dim0 = blocks[bk].np*dim0
-        for bk in range(bi+1,bj):
-            dim1 = blocks[bk].np*dim1
-        for bk in range(bj+1,n_blocks):
-            dim2 = blocks[bk].np*dim2
-        i0 = np.eye(dim0)
-        i1 = np.eye(dim1)
-        i2 = np.eye(dim2)
-
-        #print dim0,dim1,dim2
-        for si in Bi.sites:
-            for sj in Bj.sites:
-
-                spi = Bi.Spi_ss(si,0,0)
-                smi = Bi.Smi_ss(si,0,0)
-                szi = Bi.Szi_ss(si,0,0)
-                
-                spj = Bj.Spi_ss(sj,0,0)
-                smj = Bj.Smi_ss(sj,0,0)
-                szj = Bj.Szi_ss(sj,0,0)
-               
-                H  -= j12[si,sj] * np.kron(i0,np.kron( spi ,np.kron(i1,np.kron( smj,i2))))
-                H  -= j12[si,sj] * np.kron(i0,np.kron( smi ,np.kron(i1,np.kron( spj,i2))))
-                H  -= j12[si,sj] * 2 * np.kron(i0,np.kron( szi ,np.kron(i1,np.kron( szj,i2))))
 
 l,v = np.linalg.eigh(H)
 print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
