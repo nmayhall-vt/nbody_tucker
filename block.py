@@ -106,6 +106,28 @@ class Block:
         # get view of PP block of H
         return self.H[0:self.np, 0:self.np]
 
+    def H_ss(self,i,j):
+        """ 
+        Get view of space1,space2 block of H for whole block 
+        where space1, space2 are the spaces of the bra and ket respectively
+            i.e., H_ss(0,1) would return <P|H|Q>
+        """
+        if   i==0 and j==0:
+            assert(self.np>0)
+            return self.H[0:self.np, 0:self.np]
+        elif i==1 and j==0:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.H[self.np:self.np+self.nq , 0:self.np]
+        elif i==0 and j==1:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.H[0:self.np , self.np:self.np+self.nq]
+        elif i==1 and j==1:
+            assert(self.nq>0)
+            return self.H[self.np:self.np+self.np+self.nq, self.np:self.np+self.nq]
+        return self.H[0:self.np, 0:self.np]
+
     def S2_pp(self):
         # get view of PP block of S2 
         return self.S2[0:self.np, 0:self.np]
@@ -193,4 +215,62 @@ class Block:
 
 
 
+
+def build_dimer_H(tb_l, tb_r, Bi, Bj,j12):
+    bi = Bi.index
+    bj = Bj.index
+    h12 = np.zeros((tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj]))
+    for si in Bi.sites:
+        for sj in Bj.sites:
+    
+            space_i_l = tb_l.address[Bi.index]
+            space_i_r = tb_r.address[Bi.index]
+            space_j_l = tb_l.address[Bj.index]
+            space_j_r = tb_r.address[Bj.index]
+            spi = Bi.Spi_ss(si,space_i_l,space_i_r)
+            smi = Bi.Smi_ss(si,space_i_l,space_i_r)
+            szi = Bi.Szi_ss(si,space_i_l,space_i_r)
+            
+            spj = Bj.Spi_ss(sj,space_j_l,space_j_r)
+            smj = Bj.Smi_ss(sj,space_j_l,space_j_r)
+            szj = Bj.Szi_ss(sj,space_j_l,space_j_r)
+           
+            h12  -= j12[si,sj] * np.kron(spi, smj)
+            h12  -= j12[si,sj] * np.kron(smi, spj)
+            h12  -= j12[si,sj] * np.kron(szi, szj) * 2
+    return h12
+
+
+class Tucker_Block:
+    def __init__(self):
+        self.id = 0         # (-1):PPP, (1):PQP, (1,3):QPQ, etc 
+        self.start = 0      # starting point in super ci 
+        self.stop = 0       # stopping point in super ci
+        self.address = []
+        self.blocks = []
+        self.n_blocks = 0
+        self.full_dim = 1
+        self.block_dims = [] 
+
+    def init(self,_id,blocks,add,_start):
+        self.address = cp.deepcopy(add)
+        self.blocks = blocks 
+        self.n_blocks = len(blocks)
+        self.id = _id
+        self.start = _start
+        for bi in range(0,self.n_blocks):
+            self.full_dim *= self.blocks[bi].ss_dims[self.address[bi]]
+            self.block_dims.append( self.blocks[bi].ss_dims[self.address[bi]])
+        
+        self.stop = self.start + self.full_dim
+
+    def __str__(self):
+        out = ""
+        for a in self.address:
+            out += "%3s"%a
+        out += " :: "
+        for a in self.block_dims:
+            out += "%3s"%a
+        out += " :: "+ "%i"%self.full_dim
+        return out
 

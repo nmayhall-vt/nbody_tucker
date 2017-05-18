@@ -408,18 +408,12 @@ def form_compressed_hamiltonian_offdiag_1block_diff(vecs_l,vecs_r,Hi,Hij,differe
                 #print "h2.shape", h2.shape,
                 h2 = np.tensordot(h2,np.eye(dims[bbi]),axes=0)
    
-        #print "h2.shape", h2.shape,
         sort_ind = np.argsort(tens_inds)
         H += h2.transpose(sort_ind)
-        #print "tens_inds", tens_inds
-        #print "sort_ind", sort_ind 
-        #print "h2", h2.transpose(sort_ind).shape
-        #H += h2
     
     for bi in range(block_curr, n_dims):
         if bi == block_curr:
             continue
-        #print "block_curr, bi", block_curr, bi
         vw_l = np.kron(vecs_l[block_curr],vecs_l[bi])
         vw_r = np.kron(vecs_r[block_curr],vecs_r[bi])
         h2 = vw_l.T.dot(Hij[(block_curr,bi)]).dot(vw_r) # i.e.  get reference to <aC|Hij[0,2]|a'c>, where block_curr = 2 and bi = 0
@@ -436,13 +430,8 @@ def form_compressed_hamiltonian_offdiag_1block_diff(vecs_l,vecs_r,Hi,Hij,differe
                 #print "h2.shape", h2.shape,
                 h2 = np.tensordot(h2,np.eye(dims[bbi]),axes=0)
    
-        #print "h2.shape", h2.shape,
         sort_ind = np.argsort(tens_inds)
-        #print "h2", h2.transpose(sort_ind).shape
-        #print "tens_inds", tens_inds
-        #print "sort_ind", sort_ind 
         H += h2.transpose(sort_ind)
-        #print "h2.shape", h2.shape
     
     H.shape = (dim_l,dim_r)
 
@@ -1116,7 +1105,12 @@ for it in range(0,maxiter):
     
     Htest = assemble_blocked_matrix(H_sectors, n_blocks, n_body_order) 
     S2test = assemble_blocked_matrix(S2_sectors, n_blocks, n_body_order) 
-    
+  
+   
+#    test = H_sectors[(1),(1,3)]
+#    l,s,v = np.linalg.svd(test)
+#    print s
+#    exit(-1)
     if 0:
         dims_0
         Htest = cp.deepcopy(H_tot)
@@ -1131,7 +1125,7 @@ for it in range(0,maxiter):
         Htest.shape = [dim0,dim0] 
         print Htest
         print H0_0
-    
+   
    
     print " Dimensions of Full Hamiltonian      ", H_tot.shape
     print " Dimensions of Subspace Hamiltonian  ", Htest.shape
@@ -1145,14 +1139,15 @@ for it in range(0,maxiter):
         lp,vp = np.linalg.eigh(Htest)
 
     s2 = vp.T.dot(S2test).dot(vp)
-    #print 
-    #print " Eigenvectors of compressed Hamiltonian"
-    #print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
-    #for si,i in enumerate(lp):
-    #    print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
-    #    if si>10:
-    #        break
+    print 
+    print " Eigenvectors of compressed Hamiltonian"
+    print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
+    for si,i in enumerate(lp):
+        print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
+        if si>10:
+            break
 
+    exit(-1)
     
     target_state = args['target_state'] 
     #
