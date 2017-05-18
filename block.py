@@ -16,12 +16,11 @@ class Block:
         self.sites = []
         self.lattice = [] 
         self.vectors = np.array([]) # local eigenvector matrix for block [P|Q]
-        self.np      = 0            # number of p-space vectors
-        self.nq      = 0            # number of q-space vectors
-        
-        #op_Sp = np.array([])        # matrix_rep of S^+@i in local basis
-        #op_Sm = np.array([])        # matrix_rep of S^-@i in local basis
-        #op_Sz = np.array([])        # matrix_rep of S^z@i in local basis
+        self.np     = 0            # number of p-space vectors
+        self.nq     = 0            # number of q-space vectors
+        self.ss_dims= []            # number of vectors in each subspace [P,Q,...]
+        self.n_ss   = 0             # number of subspaces, usually 2 or 3
+        self.dim_tot= 1             # dimension of full space in block  
 
         self.Spi = {}                # matrix_rep of i'th S^+ in local basis
         self.Smi = {}                # matrix_rep of i'th S^- in local basis
@@ -31,11 +30,28 @@ class Block:
         self.S2    = np.array([])    # S2 on block sublattice
         self.Sz    = np.array([])    # Sz on block sublattice
 
-    def init(self,_index,_sites):
+    def init(self,_index,_sites,_ss):
+        """
+        _index = index of block
+        _sites = list of lattice sites contained in block
+        _ss    = list of dimensions of vectors per subspace
+        """
         self.index = _index
         self.sites = _sites
         self.n_sites = len(self.sites)
+        for si in range(0,self.n_sites):
+            self.dim_tot *= 2
+        
+        vec_count = 0
+        for ss in _ss:
+            self.ss_dims.append(ss)
+            vec_count += ss
+        if (self.dim_tot-vec_count) < 0:
+            print "Problem setting block dimensions", self
+            exit(-1)
+        self.ss_dims.append(self.dim_tot-vec_count)
         return 
+
     def __str__(self):
         out = " Block %-4i:" %(self.index)
         for si in range(0,self.n_sites):
@@ -43,6 +59,7 @@ class Block:
                 out += "%5i," %(self.sites[si])
             else:
                 out += "%5i" %(self.sites[si])
+        out += " : " + str(self.ss_dims)
         return out
     def extract_j12(self,j12):
         if self.n_sites == 0:
@@ -132,10 +149,10 @@ class Block:
             return self.Spi[site][self.np:self.np+self.np+self.nq, self.np:self.np+self.nq]
     def Smi_ss(self,site,i,j):
         """ 
-        Get view of space1,space2 block of S^+ operator on site
+        Get view of space1,space2 block of S^z operator on site
         where space1, space2 are the spaces of the bra and ket respectively
-            i.e., Spi(3,0,1) would return S+ at site 3, between P and Q
-            <P|S^+_i|Q>
+            i.e., Smi(3,0,1) would return S- at site 3, between P and Q
+            <P|S^-_i|Q>
         """
         if   i==0 and j==0:
             assert(self.np>0)
@@ -153,10 +170,10 @@ class Block:
             return self.Smi[site][self.np:self.np+self.np+self.nq, self.np:self.np+self.nq]
     def Szi_ss(self,site,i,j):
         """ 
-        Get view of space1,space2 block of S^+ operator on site
+        Get view of space1,space2 block of S^z operator on site
         where space1, space2 are the spaces of the bra and ket respectively
-            i.e., Spi(3,0,1) would return S+ at site 3, between P and Q
-            <P|S^+_i|Q>
+            i.e., Szi(3,0,1) would return Sz at site 3, between P and Q
+            <P|S^z_i|Q>
         """
         if   i==0 and j==0:
             assert(self.np>0)

@@ -741,7 +741,6 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
 
 
 
-
 """
 Test forming HDVV Hamiltonian and projecting onto "many-body tucker basis"
 """

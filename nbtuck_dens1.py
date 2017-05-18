@@ -740,12 +740,52 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
     return Htest
     #}}}
 
-class Lattice:
+class Tucker_Block:
     def __init__(self):
-        self.n_sites = 0
-        self.j12 = np.array([])
+        self.address = []
+        self.blocks = []
+        self.n_blocks = 0
+        self.full_dim = 1
+        self.block_dims = [] 
 
+    def init(self,blocks,add):
+        self.address = cp.deepcopy(add)
+        self.blocks = blocks 
+        self.n_blocks = len(blocks)
+
+        for bi in range(0,n_blocks):
+            self.full_dim *= self.blocks[bi].ss_dims[self.address[bi]]
+            self.block_dims.append( self.blocks[bi].ss_dims[self.address[bi]])
+    def __str__(self):
+        out = ""
+        for a in self.address:
+            out += "%3s"%a
+        out += " :: "
+        for a in self.block_dims:
+            out += "%3s"%a
+        out += " :: "+ "%i"%self.full_dim
+        return out
+
+
+
+def test_H(blocks,tb_l, tb_r):
+    # 
+    H  = np.zeros((tb_l.full_dim, tb_r.full_dim))
+    
+    for bi in range(0,n_blocks):
+        dim0 = 1
+        dim1 = 1
+        for bj in range(0,bi):
+            dim0 = blocks[bj].np*dim0
+        for bj in range(bi+1,n_blocks):
+            dim1 = blocks[bj].np*dim1
+        i0 = np.eye(dim0)
+        i1 = np.eye(dim1)
         
+        H  += np.kron(i0,np.kron( blocks[bi].H_pp() ,i1))
+       
+
+
 """
 Test forming HDVV Hamiltonian and projecting onto "many-body tucker basis"
 """
@@ -884,7 +924,7 @@ ci_block_dim = {}
 ci_block_dim[-1] = 1
 for bi in range(0,n_blocks):
     blocks[bi] = Block()
-    blocks[bi].init(bi,blocks_in[bi,:])
+    blocks[bi].init(bi,blocks_in[bi,:],[n_p_states[bi]])
 
     blocks[bi].np = n_p_states[bi] 
     blocks[bi].nq = n_q_states[bi] 
@@ -897,11 +937,21 @@ for bi in range(0,n_blocks):
     blocks[bi].form_site_operators()
 
     ci_block_dim[-1] = ci_block_dim[-1]*blocks[bi].np
+    print blocks[bi]
+
+tb_0 = Tucker_Block()
+address_0 = np.zeros(n_blocks,dtype=int)
+tb_0.init(blocks,address_0)
+
+print tb_0
+test_H(blocks, tb_0, tb_0)
+
 
 # 
 H  = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
 S2 = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
 Sz = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
+tmp  = np.zeros((ci_block_dim[-1],ci_block_dim[-1]))
 for bi in range(0,n_blocks):
     dim0 = 1
     dim1 = 1
@@ -933,7 +983,8 @@ for bi in range(0,n_blocks):
         i0 = np.eye(dim0)
         i1 = np.eye(dim1)
         i2 = np.eye(dim2)
-        print dim0,dim1,dim2
+
+        #print dim0,dim1,dim2
         for si in Bi.sites:
             for sj in Bj.sites:
 
@@ -944,7 +995,7 @@ for bi in range(0,n_blocks):
                 spj = Bj.Spi_ss(sj,0,0)
                 smj = Bj.Smi_ss(sj,0,0)
                 szj = Bj.Szi_ss(sj,0,0)
-
+               
                 H  -= j12[si,sj] * np.kron(i0,np.kron( spi ,np.kron(i1,np.kron( smj,i2))))
                 H  -= j12[si,sj] * np.kron(i0,np.kron( smi ,np.kron(i1,np.kron( spj,i2))))
                 H  -= j12[si,sj] * 2 * np.kron(i0,np.kron( szi ,np.kron(i1,np.kron( szj,i2))))
