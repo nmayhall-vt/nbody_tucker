@@ -299,12 +299,18 @@ for it in range(0,maxiter):
     else:
         l,v = np.linalg.eigh(H)
     
-    energy_per_iter.append(l[ts]) 
     S2 = v.T.dot(S2).dot(v)
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(l):
         if si<args['n_print']:
             print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
+
+
+    energy_per_iter.append(l[ts]) 
+    thresh = 1.0*np.power(10.0,-float(args['thresh']))
+    if it > 0:
+        if abs(l[ts]-energy_per_iter[it-1]) < thresh:
+            break
 
 
     brdms = {}   # block reduced density matrix
@@ -393,8 +399,8 @@ for it in range(0,maxiter):
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
 
-        brdm_curr = brdms[bi] + Bi.full_S2
-        lx,vx = np.linalg.eigh(brdm_curr)
+        brdm_curr = brdms[bi]
+        lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)
             
         lx = vx.T.dot(brdms[bi]).dot(vx).diagonal()
        
@@ -404,7 +410,7 @@ for it in range(0,maxiter):
         
         vp = vx[:,0:Bi.ss_dims[0]]
         vq = vx[:,Bi.ss_dims[0]:Bi.ss_dims[0]+Bi.ss_dims[1]]
-        
+       
         tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vp))
         tmp, uq = np.linalg.eigh(vq.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vq))
         
@@ -417,14 +423,16 @@ for it in range(0,maxiter):
         vq = vq[:,sort_ind]
         
         v = np.hstack( ( vp,vq) )
+
         sz = v.T.dot(Bi.full_Sz).dot(v).diagonal()
         s2 = v.T.dot(Bi.full_S2).dot(v).diagonal()
         lx = v.T.dot(brdms[bi]).dot(v).diagonal()
         h = v.T.dot(Bi.full_H).dot(v).diagonal()
-
+        
         #update Block vectors
-        Bi.vecs[:,0:Bi.ss_dims[0]] = vp
-        Bi.vecs[:,Bi.ss_dims[0]:Bi.ss_dims[0]+Bi.ss_dims[1]] = vq
+        Bi.vecs[:,0:Bi.ss_dims[0]+Bi.ss_dims[1]] = v
+        Bi.form_H()
+        Bi.form_site_operators()
 
         print    
         print    
