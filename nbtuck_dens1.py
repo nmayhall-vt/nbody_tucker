@@ -742,23 +742,21 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
 
 def assemble_blocked_matrix2(n_blocks,tucker_blocks, n_body_order):
     #{{{
-    Htest = np.array([])
+    dim_tot = 0
+    for ti in sorted(tucker_blocks):
+        tbi = tucker_blocks[ti]
+        dim_tot += tbi.full_dim
+        print tbi
+
+
+    Htest = np.zeros((dim_tot, dim_tot))
 
     if n_body_order == 0:
         tb_l = tucker_blocks[-1]
         tb_r = tucker_blocks[-1]
-        #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
         Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
 
     elif n_body_order == 1:
-        dim_tot = 0
-        for ti in sorted(tucker_blocks):
-            tbi = tucker_blocks[ti]
-            dim_tot += tbi.full_dim
-            print tbi
-
-
-        Htest = np.zeros((dim_tot, dim_tot))
         
         # Fill diagonals
         tb_l = tucker_blocks[-1]
@@ -980,20 +978,18 @@ def build_H(blocks,tb_l, tb_r):
 
         assert(dim_e_l == dim_e_r)
         dim_e = dim_e_l
-        h = np.kron(h1,np.eye(dim_e))   
+       
+        
+        #HERE NICK!!
         
         tens_dims    = []
         tens_inds    = []
         tens_inds.extend([bi])
         tens_inds.extend([bi+n_blocks])
-        tens_dims.extend([tb_l.block_dims[bi]])
-        tens_dims.extend([tb_r.block_dims[bi]])
         for bj in range(0,n_blocks):
             if (bi != bj):
                 tens_inds.extend([bj])
                 tens_inds.extend([bj+n_blocks])
-                tens_dims.extend([tb_l.block_dims[bj]])
-                tens_dims.extend([tb_r.block_dims[bj]])
 
         sort_ind = np.argsort(tens_inds)
 
