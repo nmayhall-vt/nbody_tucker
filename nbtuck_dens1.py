@@ -750,100 +750,19 @@ def build_tucker_blocked_H(n_blocks,tucker_blocks, n_body_order):
 
     Htest = np.zeros((dim_tot, dim_tot))
 
-    if n_body_order == 0:
-        tb_l = tucker_blocks[-1]
-        tb_r = tucker_blocks[-1]
-        Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-
-    elif n_body_order == 1:
         
-        # Fill diagonals
-        tb_l = tucker_blocks[-1]
-        tb_r = tucker_blocks[-1]
-        #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-        Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-        # <0|H|Q>
-        for bi in range(0,n_blocks):
-            tb_r = tucker_blocks[bi]
+    # Fill diagonals
+    tb_l = tucker_blocks[-1]
+    tb_r = tucker_blocks[-1]
+    #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
+    Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
+    # <0|H|Q>
+    for t_l in tucker_blocks:
+        for t_r in tucker_blocks:
+            tb_l = tucker_blocks[t_l]
+            tb_r = tucker_blocks[t_r]
             Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
             Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
-            #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-            #Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H_sectors[tb_l.id,tb_r.id].T 
-        # <Q|H|Q>
-        for bi in range(0,n_blocks):
-            tb_l = tucker_blocks[bi]
-            for bj in range(bi,n_blocks):
-                tb_r = tucker_blocks[bj]
-                Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-                Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
-                #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-                #Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H_sectors[tb_l.id,tb_r.id].T 
-   
-    
-
-    elif n_body_order == 2:
-        dim_tot = 0
-        for ti in sorted(tucker_blocks):
-            tbi = tucker_blocks[ti]
-            dim_tot += tbi.full_dim
-
-
-        Htest = np.zeros((dim_tot, dim_tot))
-        
-        # Fill diagonals
-        tb_l = tucker_blocks[-1]
-        tb_r = tucker_blocks[-1]
-        #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-        Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-        # <0|H|Q>
-        for bi in range(0,n_blocks):
-            tb_r = tucker_blocks[bi]
-            Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-            Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
-            #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-            #Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H_sectors[tb_l.id,tb_r.id].T 
-        # <0|H|QQ>
-        for bi in range(0,n_blocks):
-            for bj in range(bi+1,n_blocks):
-                tb_r = tucker_blocks[(bi,bj)]
-                Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-                Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
-                #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-                #Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H_sectors[tb_l.id,tb_r.id].T 
-        # <Q|H|Q>
-        for bi in range(0,n_blocks):
-            tb_l = tucker_blocks[bi]
-            for bj in range(bi,n_blocks):
-                tb_r = tucker_blocks[bj]
-                Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-                Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
-                #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-                #Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H_sectors[tb_l.id,tb_r.id].T 
-        # <Q|H|QQ>
-        for bi in range(0,n_blocks):
-            tb_l = tucker_blocks[bi]
-            for bj in range(0,n_blocks):
-                for bk in range(bj+1,n_blocks):
-                    tb_r = tucker_blocks[bj,bk]
-                    Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-                    Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
-                    #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-                    #Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H_sectors[tb_l.id,tb_r.id].T 
-        # <QQ|H|QQ>
-        for bi in range(0,n_blocks):
-            for bj in range(bi+1,n_blocks):
-                tb_l = tucker_blocks[bi,bj]
-                for bk in range(0,n_blocks):
-                    for bl in range(bk+1,n_blocks):
-                        index_ij = bj + bi*n_blocks
-                        index_kl = bl + bk*n_blocks
-                        if index_kl >= index_ij:
-                            tb_r = tucker_blocks[bk,bl]
-                            Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-                            Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
-                            #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-                            #Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H_sectors[tb_l.id,tb_r.id].T 
-
 
     return Htest
     #}}}
