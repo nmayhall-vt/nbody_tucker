@@ -291,8 +291,7 @@ for it in range(0,maxiter):
     H,S2 = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
     
     
-    
-    print " Size of H: ", H.shape
+    print " Diagonalize Hamiltonian: Size of H: ", H.shape
     l = np.array([])
     v = np.array([])
     if H.shape[0] > 3000:
@@ -300,7 +299,7 @@ for it in range(0,maxiter):
     else:
         l,v = np.linalg.eigh(H)
     
-   
+    energy_per_iter.append(l[ts]) 
     S2 = v.T.dot(S2).dot(v)
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(l):
@@ -392,22 +391,50 @@ for it in range(0,maxiter):
     print
     print " Compute Eigenvalues of BRDMs:"
     for bi in range(0,n_blocks):
-        brdm_curr = brdms[bi]
+        Bi = lattice_blocks[bi]
+
+        brdm_curr = brdms[bi] + Bi.full_S2
         lx,vx = np.linalg.eigh(brdm_curr)
+            
+        lx = vx.T.dot(brdms[bi]).dot(vx).diagonal()
+       
         sort_ind = np.argsort(lx)[::-1]
         lx = lx[sort_ind]
         vx = vx[:,sort_ind]
-            
-        print " Eigenvalues of BRDM for ", lattice_blocks[bi]
-        for i in range(0,lx.shape[0]):
-            print " %4i %12.8f" %(i,lx[i])
+        
+        vp = vx[:,0:Bi.ss_dims[0]]
+        vq = vx[:,Bi.ss_dims[0]:Bi.ss_dims[0]+Bi.ss_dims[1]]
+        
+        tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vp))
+        tmp, uq = np.linalg.eigh(vq.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vq))
+        
+        vp = vp.dot(up)
+        vq = vq.dot(uq)
 
-        """
-        print "         Fragment: ", fi
+        sort_ind = np.argsort(vp.T.dot(brdms[bi]).dot(vp).diagonal() )[::-1]
+        vp = vp[:,sort_ind]
+        sort_ind = np.argsort(vq.T.dot(brdms[bi]).dot(vq).diagonal() )[::-1]
+        vq = vq[:,sort_ind]
+        
+        v = np.hstack( ( vp,vq) )
+        sz = v.T.dot(Bi.full_Sz).dot(v).diagonal()
+        s2 = v.T.dot(Bi.full_S2).dot(v).diagonal()
+        lx = v.T.dot(brdms[bi]).dot(v).diagonal()
+        h = v.T.dot(Bi.full_H).dot(v).diagonal()
+
+        #update Block vectors
+        Bi.vecs[:,0:Bi.ss_dims[0]] = vp
+        Bi.vecs[:,Bi.ss_dims[0]:Bi.ss_dims[0]+Bi.ss_dims[1]] = vq
+
+        print    
+        print    
+        print "   Eigenvalues of BRDM for ", lattice_blocks[bi]
+        print "   -----------------------------------------------------------------------------"   
         print "   %-12s   %16s  %16s  %12s  %12s "%("Local State", "Occ. Number", "<H>", "<S2>", "<Sz>")
         for si,i in enumerate(lx):
             print "   %-12i   %16.8f  %16.8f  %12.4f  %12.4f "%(si,lx[si],h[si],abs(s2[si]),sz[si])
             #print "   %-4i   %16.8f  %16.8f  %16.4f "%(si,lx[si],h[si],sz[i])
+        """
         print "   %-12s " %("----")
         print "   %-12s   %16.8f  %16.8f  %12.4f  %12.4f" %(
                 "Trace"
@@ -417,4 +444,12 @@ for it in range(0,maxiter):
                 ,Szi[fi].dot(grams[fi]).trace()
                 )
                 """
+
+print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
+for ei,e in enumerate(energy_per_iter):
+    if ei>0:
+        print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter[ei-1])
+    else:
+        print " %10i  %12.8f  %12s" %(ei,e,"")
+
 

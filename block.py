@@ -26,9 +26,15 @@ class Lattice_Block:
         self.Smi = {}                # matrix_rep of i'th S^- in local basis
         self.Szi = {}                # matrix_rep of i'th S^z in local basis
 
+        #   in tucker basis
         self.H     = np.array([])    # Hamiltonian on block sublattice
         self.S2    = np.array([])    # S2 on block sublattice
         self.Sz    = np.array([])    # Sz on block sublattice
+
+        #   in configuration basis
+        self.full_H     = np.array([])    # Hamiltonian on block sublattice
+        self.full_S2    = np.array([])    # S2 on block sublattice
+        self.full_Sz    = np.array([])    # Sz on block sublattice
 
         self.diis_vecs = np.array([]) 
 
@@ -74,10 +80,10 @@ class Lattice_Block:
         self.lattice = lattice[self.sites]
     
     def form_H(self):
-        self.H, tmp, self.S2, self.Sz = form_hdvv_H(self.lattice, self.j12)  # rewrite this
-        self.H = self.vecs.T.dot(self.H).dot(self.vecs)
-        self.S2 = self.vecs.T.dot(self.S2).dot(self.vecs)
-        self.Sz = self.vecs.T.dot(self.Sz).dot(self.vecs)
+        self.full_H, tmp, self.full_S2, self.full_Sz = form_hdvv_H(self.lattice, self.j12)  # rewrite this
+        self.H = self.vecs.T.dot(self.full_H).dot(self.vecs)
+        self.S2 = self.vecs.T.dot(self.full_S2).dot(self.vecs)
+        self.Sz = self.vecs.T.dot(self.full_Sz).dot(self.vecs)
 
     def form_site_operators(self):
         """
