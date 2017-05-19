@@ -65,7 +65,7 @@ $end
 $development
 	1sf_heis_projection	1
 	scf_corresponding_orbs	1
-        heisenberg_n_roots	0
+        heisenberg_n_roots	1
 $end
 
 $molecule
