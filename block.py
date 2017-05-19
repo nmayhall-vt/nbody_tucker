@@ -251,8 +251,12 @@ class Tucker_Block:
         self.n_blocks = 0
         self.full_dim = 1
         self.block_dims = [] 
+        self.initialized = False
 
     def init(self,_id,blocks,add,_start):
+        if self.initialized == True:
+            print " Tucker Block already initialized:", self
+            exit(-1)
         self.address = cp.deepcopy(add)
         self.blocks = blocks 
         self.n_blocks = len(blocks)
@@ -263,6 +267,8 @@ class Tucker_Block:
             self.block_dims.append( self.blocks[bi].ss_dims[self.address[bi]])
         
         self.stop = self.start + self.full_dim
+        self.initialized = True
+
 
     def __str__(self):
         out = ""
