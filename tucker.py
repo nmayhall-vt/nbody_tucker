@@ -323,7 +323,7 @@ def form_1fdm(A, B, open_dims):
         if in_open != 1:
             ind_contract_list.extend([d])
 
-    #print A.shape, B.shape, ind_contract_list
+    print A.shape, B.shape, ind_contract_list
     AB= np.tensordot(A,B,axes=(ind_contract_list,ind_contract_list))
     return AB
 

@@ -80,6 +80,11 @@ class Lattice_Block:
         self.Sz = self.vecs.T.dot(self.Sz).dot(self.vecs)
 
     def form_site_operators(self):
+        """
+            Form the spin operators in the basis of local block states.
+
+            todo: include logic to only compute the portions needed - not very important
+        """
         sx = .5*np.array([[0,1.],[1.,0]])
         sy = .5*np.array([[0,(0-1j)],[(0+1j),0]])
         sz = .5*np.array([[1,0],[0,-1]])
@@ -119,7 +124,10 @@ class Lattice_Block:
             return self.vecs[:, 0:self.np]
         elif i==1:
             assert(self.nq>0)
-            return self.H[:,self.np:self.np+self.nq]
+            return self.vecs[:,self.np:self.np+self.nq]
+        else:
+            print " vectors for i>1 NYI" 
+            exit(-1)
 
     def H_ss(self,i,j):
         """ 
@@ -380,23 +388,22 @@ def build_H(blocks,tb_l, tb_r,j12):
             Bi = blocks[bi]
             dim_e = full_dim / tb_l.block_dims[bi] 
             h1 = Bi.H_ss(tb_l.address[bi],tb_r.address[bi])
-            h = np.kron(h1,np.eye(dim_e))   
-            
-            tens_dims    = []
+            #h = np.kron(h1,np.eye(dim_e))   
+            h1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
+        
             tens_inds    = []
             tens_inds.extend([bi])
-            tens_dims.extend([tb_l.block_dims[bi]])
+            tens_inds.extend([bi+n_blocks])
             for bj in range(0,n_blocks):
                 if (bi != bj):
                     tens_inds.extend([bj])
-                    tens_dims.extend([tb_l.block_dims[bj]])
-            tens_dims = np.append(tens_dims, tens_dims) 
-            #tens_inds = np.append(tens_inds, tens_inds) 
+                    tens_inds.extend([bj+n_blocks])
+                    assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
+                    h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]),axes=0)
 
             sort_ind = np.argsort(tens_inds)
-            swap = np.append(sort_ind,sort_ind+n_blocks) 
 
-            H += h.reshape(tens_dims).transpose(swap)
+            H += h1.transpose(sort_ind)
         
         
         #   <ab|H12|ab> Ic Id
@@ -410,27 +417,24 @@ def build_H(blocks,tb_l, tb_r,j12):
                 dim_e = full_dim / tb_l.block_dims[bi] / tb_l.block_dims[bj]
 
                 #build full Hamiltonian on sublattice
-                h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+                h2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+                h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
 
-                h = np.kron(h12,np.eye(dim_e))   
+                #h = np.kron(h12,np.eye(dim_e))   
             
-                tens_dims    = []
                 tens_inds    = []
-                tens_inds.extend([bi])
-                tens_inds.extend([bj])
-                tens_dims.extend([tb_l.block_dims[bi]])
-                tens_dims.extend([tb_l.block_dims[bj]])
+                tens_inds.extend([bi,bj])
+                tens_inds.extend([bi+n_blocks, bj+n_blocks])
                 for bk in range(0,n_blocks):
                     if (bk != bi) and (bk != bj):
                         tens_inds.extend([bk])
-                        tens_dims.extend([tb_l.block_dims[bk]])
-                tens_dims = np.append(tens_dims, tens_dims) 
-                #tens_inds = np.append(tens_inds, tens_inds) 
+                        tens_inds.extend([bk+n_blocks])
+                        assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
+                        h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
                
                 sort_ind = np.argsort(tens_inds)
-                swap = np.append(sort_ind,sort_ind+n_blocks) 
                
-                H += h.reshape(tens_dims).transpose(swap)
+                H += h2.transpose(sort_ind)
     
     
     
@@ -459,9 +463,6 @@ def build_H(blocks,tb_l, tb_r,j12):
         dim_e = dim_e_l
        
         
-        #HERE NICK!!
-        
-        tens_dims    = []
         tens_inds    = []
         tens_inds.extend([bi])
         tens_inds.extend([bi+n_blocks])
@@ -579,10 +580,6 @@ def build_H(blocks,tb_l, tb_r,j12):
         tens_inds    = []
         tens_inds.extend([bi,bj])
         tens_inds.extend([bi+n_blocks, bj+n_blocks])
-        tens_dims.extend([tb_l.block_dims[bi]])
-        tens_dims.extend([tb_l.block_dims[bj]])
-        tens_dims.extend([tb_r.block_dims[bi]])
-        tens_dims.extend([tb_r.block_dims[bj]])
         for bk in range(0,n_blocks):
             if (bk != bi) and (bk != bj):
                 tens_inds.extend([bk])

@@ -993,6 +993,8 @@ for it in range(0,maxiter):
         if si<args['n_print']:
             print " %5i =  %16.8f  %16.8f  %12.8s" %(si,i*convert,(i-l[0])*convert,"--")
 
+
+
     brdms = {}   # block reduced density matrix
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
@@ -1000,15 +1002,77 @@ for it in range(0,maxiter):
 
     print
     print " Compute Block Reduced Density Matrices (BRDM):"
-    for tb in sorted(tucker_blocks):
-        Tb = tucker_blocks[tb]
-        vb = cp.deepcopy(v[Tb.start:Tb.stop, ts])
+    for tb1 in sorted(tucker_blocks):
+        Tb1 = tucker_blocks[tb1]
+        vb1 = cp.deepcopy(v[Tb1.start:Tb1.stop, ts])
+        vb1.shape = Tb1.block_dims
+        for tb2 in sorted(tucker_blocks):
+            Tb2 = tucker_blocks[tb2]
+
+            # How many blocks are different between left and right?
+            different = []
+            for bi in range(0,n_blocks):
+                if Tb2.address[bi] != Tb1.address[bi]:
+                    different.append(bi)
+            
+            if len(different) == 0:
+                vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
+                vb2.shape = Tb2.block_dims
+                for bi in range(0,n_blocks):
+                    brdm_tmp = form_1fdm(vb1,vb2,[bi])
+                    Bi = lattice_blocks[bi]
+                    u1 = Bi.v_ss(Tb1.address[bi])
+                    u2 = Bi.v_ss(Tb2.address[bi])
+                    brdms[bi] += u1.dot(brdm_tmp).dot(u2.T)
+            if len(different) == 1:
+                vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
+                vb2.shape = Tb2.block_dims
+                bi = different[0]
+                brdm_tmp = form_1fdm(vb1,vb2,[bi])
+                Bi = lattice_blocks[bi]
+                u1 = Bi.v_ss(Tb1.address[bi])
+                u2 = Bi.v_ss(Tb2.address[bi])
+                brdms[bi] += u1.dot(brdm_tmp).dot(u2.T)
+    
+    for b in brdms:
+        print "trace(b): %12.8f" % np.trace(brdms[b])
+
+
+    if 0:
+        print
+        print " Compute Block Reduced Density Matrices (BRDM) FULL!:"
+# {{{
+        dim_tot_list = []
+        full_dim = 1
+        sum_1 = 0
         for bi in range(0,n_blocks):
-            vb.shape = Tb.block_dims
-            brdm_tmp = form_1fdm(vb,vb,[bi])
-            Bi = lattice_blocks[bi]
-            u = Bi.v_ss(Tb.address[bi])
-            brdms[bi] += u.dot(brdm_tmp).dot(u.T)
+            dim_tot_list.append(lattice_blocks[bi].full_dim)
+            full_dim *= lattice_blocks[bi].full_dim
+        
+        vec_curr = np.zeros(dim_tot_list)
+        for tb1 in sorted(tucker_blocks):
+            Tb1 = tucker_blocks[tb1]
+            vb1 = cp.deepcopy(v[Tb1.start:Tb1.stop, ts])
+            sum_1 += vb1.T.dot(vb1)
+            vb1.shape = Tb1.block_dims
+ 
+            vec = []
+            for bi in range(0,n_blocks):
+                Bi = lattice_blocks[bi]
+                vec.append((Bi.v_ss(Tb1.address[bi])))
+
+            #sign = 1
+            #print " tb1: ", tb1
+            #if tb2[0] != 0:
+            #    sign = -1
+            #vec_curr += sign * transform_tensor(vb1,vec)
+            vec_curr += transform_tensor(vb1,vec)
+        Acore, Atfac = tucker_decompose(vec_curr,0,0)
+        vec_curr.shape = (full_dim,1)
+        print "v'v:   %12.8f" % vec_curr.T.dot(vec_curr)
+        print "sum_1: %12.8f" % sum_1 
+ # }}}
+
 
     print
     print " Compute Eigenvalues of BRDMs:"
@@ -1038,12 +1102,4 @@ for it in range(0,maxiter):
                 ,Szi[fi].dot(grams[fi]).trace()
                 )
                 """
-
-
-
-
-
-
-
-
 
