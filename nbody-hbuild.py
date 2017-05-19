@@ -1139,15 +1139,6 @@ for it in range(0,maxiter):
         lp,vp = np.linalg.eigh(Htest)
 
     s2 = vp.T.dot(S2test).dot(vp)
-    print 
-    print " Eigenvectors of compressed Hamiltonian"
-    print " %5s    %12s  %12s  %12s" %("State","Energy","Relative","<S2>")
-    for si,i in enumerate(lp):
-        print " %5i =  %12.8f  %12.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,s2[si,si])
-        if si>10:
-            break
-
-    exit(-1)
     
     target_state = args['target_state'] 
     #

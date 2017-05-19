@@ -1237,14 +1237,14 @@ if n_body_order >= 3:
     for bi in range(0,n_blocks):
         for bj in range(bi+1,n_blocks):
             for bk in range(bj+1,n_blocks):
-                tk = Tucker_Block()
+                tb = Tucker_Block()
                 address = np.zeros(n_blocks,dtype=int)
                 address[bi] = 1
                 address[bj] = 1
                 address[bk] = 1
-                tk.init((bi,bj,bk), blocks,address,dim_tot)
-                tucker_blocks[3,bi,bj,bk] = tk
-                dim_tot += tk.full_dim
+                tb.init((bi,bj,bk), blocks,address,dim_tot)
+                tucker_blocks[3,bi,bj,bk] = tb
+                dim_tot += tb.full_dim
 
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], tucker_blocks[tb].start, tucker_blocks[tb].stop
