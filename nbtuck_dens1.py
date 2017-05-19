@@ -752,8 +752,8 @@ def build_tucker_blocked_H(n_blocks,tucker_blocks, n_body_order):
 
         
     # Fill diagonals
-    tb_l = tucker_blocks[-1]
-    tb_r = tucker_blocks[-1]
+    tb_l = tucker_blocks[0,-1]
+    tb_r = tucker_blocks[0,-1]
     #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
     Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
     # <0|H|Q>
@@ -1211,40 +1211,43 @@ tb_0.init((-1), blocks,address_0, dim_tot)
 dim_tot += tb_0.full_dim
 
 tucker_blocks = {}
-tucker_blocks[-1] = tb_0 
+tucker_blocks[0,-1] = tb_0 
 
 print 
 print " Prepare Tucker blocks:"
-if n_body_order > 0:
+if n_body_order >= 1:
     for bi in range(0,n_blocks):
         tb = Tucker_Block()
         address = np.zeros(n_blocks,dtype=int)
         address[bi] = 1
         tb.init((bi), blocks,address, dim_tot)
-        tucker_blocks[bi] = tb
+        tucker_blocks[1,bi] = tb
         dim_tot += tb.full_dim
-        if n_body_order > 1:
-            for bj in range(bi+1,n_blocks):
-                tb = Tucker_Block()
+if n_body_order >= 2:
+    for bi in range(0,n_blocks):
+        for bj in range(bi+1,n_blocks):
+            tb = Tucker_Block()
+            address = np.zeros(n_blocks,dtype=int)
+            address[bi] = 1
+            address[bj] = 1
+            tb.init((bi,bj), blocks,address,dim_tot)
+            tucker_blocks[2,bi,bj] = tb
+            dim_tot += tb.full_dim
+if n_body_order >= 3:
+    for bi in range(0,n_blocks):
+        for bj in range(bi+1,n_blocks):
+            for bk in range(bj+1,n_blocks):
+                tk = Tucker_Block()
                 address = np.zeros(n_blocks,dtype=int)
                 address[bi] = 1
                 address[bj] = 1
-                tb.init((bi,bj), blocks,address,dim_tot)
-                tucker_blocks[bi,bj] = tb
-                dim_tot += tb.full_dim
-                if n_body_order > 2:
-                    for bk in range(bj+1,n_blocks):
-                        tk = Tucker_Block()
-                        address = np.zeros(n_blocks,dtype=int)
-                        address[bi] = 1
-                        address[bj] = 1
-                        address[bk] = 1
-                        tk.init((bi,bj,bk), blocks,address,dim_tot)
-                        tucker_blocks[bi,bj,bk] = tb
-                        dim_tot += tb.full_dim
+                address[bk] = 1
+                tk.init((bi,bj,bk), blocks,address,dim_tot)
+                tucker_blocks[3,bi,bj,bk] = tk
+                dim_tot += tk.full_dim
 
 for tb in sorted(tucker_blocks):
-    print tucker_blocks[tb]
+    print tucker_blocks[tb], tucker_blocks[tb].start, tucker_blocks[tb].stop
 print 
 print " Build Hamiltonian:"
 Htest = build_tucker_blocked_H(n_blocks, tucker_blocks, n_body_order) 
