@@ -150,6 +150,27 @@ class Lattice_Block:
             assert(self.nq>0)
             return self.H[self.np:self.np+self.np+self.nq, self.np:self.np+self.nq]
 
+    def S2_ss(self,i,j):
+        """ 
+        Get view of space1,space2 block of S2 for whole block 
+        where space1, space2 are the spaces of the bra and ket respectively
+            i.e., H_ss(0,1) would return <P|H|Q>
+        """
+        if   i==0 and j==0:
+            assert(self.np>0)
+            return self.S2[0:self.np, 0:self.np]
+        elif i==1 and j==0:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.S2[self.np:self.np+self.nq , 0:self.np]
+        elif i==0 and j==1:
+            assert(self.np>0)
+            assert(self.nq>0)
+            return self.S2[0:self.np , self.np:self.np+self.nq]
+        elif i==1 and j==1:
+            assert(self.nq>0)
+            return self.S2[self.np:self.np+self.np+self.nq, self.np:self.np+self.nq]
+
     def S2_pp(self):
         # get view of PP block of S2 
         return self.S2[0:self.np, 0:self.np]
@@ -284,18 +305,24 @@ class Tucker_Block:
 def build_dimer_H(tb_l, tb_r, Bi, Bj,j12):
     bi = Bi.index
     bj = Bj.index
+    
     h12 = np.zeros((tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj]))
+    s2 = np.zeros((tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj]))
+    sz = np.zeros((tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj]))
+
     h12.shape = (tb_l.block_dims[bi], tb_r.block_dims[bi], tb_l.block_dims[bj], tb_r.block_dims[bj])
+    s2.shape = (tb_l.block_dims[bi], tb_r.block_dims[bi], tb_l.block_dims[bj], tb_r.block_dims[bj])
+    sz.shape = (tb_l.block_dims[bi], tb_r.block_dims[bi], tb_l.block_dims[bj], tb_r.block_dims[bj])
     for si in Bi.sites:
+        space_i_l = tb_l.address[Bi.index]
+        space_i_r = tb_r.address[Bi.index]
+        spi = Bi.Spi_ss(si,space_i_l,space_i_r)
+        smi = Bi.Smi_ss(si,space_i_l,space_i_r)
+        szi = Bi.Szi_ss(si,space_i_l,space_i_r)
+        
         for sj in Bj.sites:
-            space_i_l = tb_l.address[Bi.index]
-            space_i_r = tb_r.address[Bi.index]
             space_j_l = tb_l.address[Bj.index]
             space_j_r = tb_r.address[Bj.index]
-            spi = Bi.Spi_ss(si,space_i_l,space_i_r)
-            smi = Bi.Smi_ss(si,space_i_l,space_i_r)
-            szi = Bi.Szi_ss(si,space_i_l,space_i_r)
-            
             spj = Bj.Spi_ss(sj,space_j_l,space_j_r)
             smj = Bj.Smi_ss(sj,space_j_l,space_j_r)
             szj = Bj.Szi_ss(sj,space_j_l,space_j_r)
@@ -303,14 +330,23 @@ def build_dimer_H(tb_l, tb_r, Bi, Bj,j12):
             #h12  -= j12[si,sj] * np.kron(spi, smj)
             #h12  -= j12[si,sj] * np.kron(smi, spj)
             #h12  -= j12[si,sj] * np.kron(szi, szj) * 2
-            h12 -= j12[si,sj] * np.tensordot(spi,smj, axes=0)
-            h12 -= j12[si,sj] * np.tensordot(smi,spj, axes=0)
-            h12 -= j12[si,sj] * 2 * np.tensordot(szi,szj, axes=0)
+           
+            s1s2  = np.tensordot(spi,smj, axes=0)
+            s1s2 += np.tensordot(smi,spj, axes=0)
+            s1s2 += 2 * np.tensordot(szi,szj, axes=0)
+            #h12 -= j12[si,sj] * np.tensordot(spi,smj, axes=0)
+            #h12 -= j12[si,sj] * np.tensordot(smi,spj, axes=0)
+            #h12 -= j12[si,sj] * 2 * np.tensordot(szi,szj, axes=0)
+
+            h12 -= j12[si,sj] * s1s2
+            s2  += s1s2
 
     sort_ind = [0,2,1,3]
     h12 = h12.transpose(sort_ind)
     h12 = h12.reshape(tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj])
-    return h12
+    s2 = s2.transpose(sort_ind)
+    s2 = s2.reshape(tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj])
+    return h12, s2
 
 
 
@@ -322,17 +358,23 @@ def build_tucker_blocked_H(n_blocks,tucker_blocks, lattice_blocks, n_body_order,
         dim_tot += tbi.full_dim
 
 
-    Htest = np.zeros((dim_tot, dim_tot))
+    H = np.zeros((dim_tot, dim_tot))
+    S2 = np.zeros((dim_tot, dim_tot))
 
         
     for t_l in tucker_blocks:
         for t_r in tucker_blocks:
             tb_l = tucker_blocks[t_l]
             tb_r = tucker_blocks[t_r]
-            Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(lattice_blocks, tb_l, tb_r, j12)
-            Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
+            h,s2 = build_H(lattice_blocks, tb_l, tb_r, j12)
+            H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = h 
+            H[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = h.T
+            S2[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = s2 
+            S2[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = s2.T
+            #H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(lattice_blocks, tb_l, tb_r, j12)
+            #H[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
 
-    return Htest
+    return H, S2
     #}}}
 
 def build_H(blocks,tb_l, tb_r,j12):
@@ -368,10 +410,12 @@ def build_H(blocks,tb_l, tb_r,j12):
     #    print " Nothing to do, why are we here?"
     #    exit(-1)
     
-    H = np.zeros((tb_l.full_dim,tb_r.full_dim))
+    H  = np.zeros((tb_l.full_dim,tb_r.full_dim))
+    S2 = np.zeros((tb_l.full_dim,tb_r.full_dim))
    
     #print " Ham block size", H.shape, H_dim_layout
     H.shape = H_dim_layout
+    S2.shape = H_dim_layout
     #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
     #   target subspace
 
@@ -387,9 +431,12 @@ def build_H(blocks,tb_l, tb_r,j12):
         for bi in range(0,n_blocks):
             Bi = blocks[bi]
             dim_e = full_dim / tb_l.block_dims[bi] 
+            
             h1 = Bi.H_ss(tb_l.address[bi],tb_r.address[bi])
+            s1 = Bi.S2_ss(tb_l.address[bi],tb_r.address[bi])
             #h = np.kron(h1,np.eye(dim_e))   
             h1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
+            s1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
         
             tens_inds    = []
             tens_inds.extend([bi])
@@ -400,10 +447,12 @@ def build_H(blocks,tb_l, tb_r,j12):
                     tens_inds.extend([bj+n_blocks])
                     assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
                     h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]),axes=0)
+                    s1 = np.tensordot(s1,np.eye(tb_l.block_dims[bj]),axes=0)
 
             sort_ind = np.argsort(tens_inds)
 
-            H += h1.transpose(sort_ind)
+            H  += h1.transpose(sort_ind)
+            S2 += s1.transpose(sort_ind)
         
         
         #   <ab|H12|ab> Ic Id
@@ -417,8 +466,9 @@ def build_H(blocks,tb_l, tb_r,j12):
                 dim_e = full_dim / tb_l.block_dims[bi] / tb_l.block_dims[bj]
 
                 #build full Hamiltonian on sublattice
-                h2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+                h2,s2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
                 h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
+                s2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
 
                 #h = np.kron(h12,np.eye(dim_e))   
             
@@ -431,10 +481,12 @@ def build_H(blocks,tb_l, tb_r,j12):
                         tens_inds.extend([bk+n_blocks])
                         assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
                         h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
+                        s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
                
                 sort_ind = np.argsort(tens_inds)
                
-                H += h2.transpose(sort_ind)
+                H  += h2.transpose(sort_ind)
+                S2 += s2.transpose(sort_ind)
     
     
     
@@ -456,8 +508,10 @@ def build_H(blocks,tb_l, tb_r,j12):
         dim_e_l = full_dim_l / tb_l.block_dims[bi] 
         dim_e_r = full_dim_r / tb_r.block_dims[bi] 
         h1 = Bi.H_ss(tb_l.address[bi],tb_r.address[bi])
+        s1 = Bi.S2_ss(tb_l.address[bi],tb_r.address[bi])
 
         h1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
+        s1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
 
         assert(dim_e_l == dim_e_r)
         dim_e = dim_e_l
@@ -472,10 +526,12 @@ def build_H(blocks,tb_l, tb_r,j12):
                 tens_inds.extend([bj+n_blocks])
                 assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
                 h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]),axes=0)
+                s1 = np.tensordot(s1,np.eye(tb_l.block_dims[bj]),axes=0)
 
         sort_ind = np.argsort(tens_inds)
 
-        H += h1.transpose(sort_ind)
+        H  += h1.transpose(sort_ind)
+        S2 += s1.transpose(sort_ind)
         
         
         #   <ab|H12|Ab> Ic Id
@@ -492,9 +548,10 @@ def build_H(blocks,tb_l, tb_r,j12):
             
             #build full Hamiltonian on sublattice
             #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-            h2 = build_dimer_H(tb_l, tb_r, Bj, Bi, j12)
+            h2,s2 = build_dimer_H(tb_l, tb_r, Bj, Bi, j12)
           
             h2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
+            s2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
          
             
             #h = np.kron(h12,np.eye(dim_e))   
@@ -509,9 +566,11 @@ def build_H(blocks,tb_l, tb_r,j12):
                     tens_inds.extend([bk+n_blocks])
                     assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
                     h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
+                    s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
             
             sort_ind = np.argsort(tens_inds)
-            H += h2.transpose(sort_ind)
+            H  += h2.transpose(sort_ind)
+            S2 += s2.transpose(sort_ind)
         
         for bj in range(bi+1, n_blocks):
             Bj = blocks[bj]
@@ -523,9 +582,10 @@ def build_H(blocks,tb_l, tb_r,j12):
             
             #build full Hamiltonian on sublattice
             #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-            h2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+            h2,s2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
           
             h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
+            s2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
          
             
             #h = np.kron(h12,np.eye(dim_e))   
@@ -540,9 +600,11 @@ def build_H(blocks,tb_l, tb_r,j12):
                     tens_inds.extend([bk+n_blocks])
                     assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
                     h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
+                    s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
             
             sort_ind = np.argsort(tens_inds)
-            H += h2.transpose(sort_ind)
+            H  += h2.transpose(sort_ind)
+            S2 += s2.transpose(sort_ind)
     
     
     
@@ -571,9 +633,10 @@ def build_H(blocks,tb_l, tb_r,j12):
         
         #build full Hamiltonian on sublattice
         #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-        h2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+        h2,s2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
        
         h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
+        s2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
         #h2 = np.kron(h12,np.eye(dim_e))   
         
         tens_dims    = []
@@ -587,13 +650,16 @@ def build_H(blocks,tb_l, tb_r,j12):
                 tens_dims.extend([tb_l.block_dims[bk]])
                 tens_dims.extend([tb_r.block_dims[bk]])
                 h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
+                s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
         
         sort_ind = np.argsort(tens_inds)
         #H += h2.reshape(tens_dims).transpose(sort_ind)
         H += h2.transpose(sort_ind)
+        S2 += s2.transpose(sort_ind)
 
     H = H.reshape(tb_l.full_dim,tb_r.full_dim)
-    return H
+    S2 = S2.reshape(tb_l.full_dim,tb_r.full_dim)
+    return H,S2
 # }}}
 
 
