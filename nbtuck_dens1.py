@@ -740,305 +740,6 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
     return Htest
     #}}}
 
-def build_tucker_blocked_H(n_blocks,tucker_blocks, n_body_order):
-    #{{{
-    dim_tot = 0
-    for ti in sorted(tucker_blocks):
-        tbi = tucker_blocks[ti]
-        dim_tot += tbi.full_dim
-
-
-    Htest = np.zeros((dim_tot, dim_tot))
-
-        
-    # Fill diagonals
-    tb_l = tucker_blocks[0,-1]
-    tb_r = tucker_blocks[0,-1]
-    #Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = H_sectors[tb_l.id,tb_r.id] 
-    Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-    # <0|H|Q>
-    for t_l in tucker_blocks:
-        for t_r in tucker_blocks:
-            tb_l = tucker_blocks[t_l]
-            tb_r = tucker_blocks[t_r]
-            Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(blocks, tb_l, tb_r)
-            Htest[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
-
-    return Htest
-    #}}}
-
-def build_H(blocks,tb_l, tb_r):
-  # {{{
-    """
-    Build the Hamiltonian between two tensor blocks, tb_l and tb_r, without ever constructing a full hilbert space
-    """
-
-    n_blocks = len(blocks)
-    assert(n_blocks == tb_l.n_blocks)
-    assert(n_blocks == tb_r.n_blocks)
-    H_dim_layout = []  # dimensions of Ham block as a tensor (d1,d2,..,d1',d2',...)
-    H_dim_layout = np.append(tb_l.block_dims,tb_r.block_dims)
-   
-    """
-    form one-block and two-block terms of H separately
-        1-body
-
-            for each block, form Hamiltonian in subspace, and combine
-            with identity on other blocks
-
-        2-body
-            
-            for each block-dimer, form Hamiltonian in subspace, and combine
-            with identity on other blocks
-    """
-    # How many blocks are different between left and right?
-    different = []
-    for bi in range(0,n_blocks):
-        if tb_l.address[bi] != tb_r.address[bi]:
-            different.append(bi)
-    #if len(different) > 2:
-    #    print " Nothing to do, why are we here?"
-    #    exit(-1)
-    
-    H = np.zeros((tb_l.full_dim,tb_r.full_dim))
-   
-    #print " Ham block size", H.shape, H_dim_layout
-    H.shape = H_dim_layout
-    #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
-    #   target subspace
-
-    if len(different) == 0:
-
-        assert(tb_l.full_dim == tb_r.full_dim)
-        full_dim = tb_l.full_dim
-        #<abcd|H1+H2+H3+H4|abcd>
-        #
-        #   <a|H1|a> Ib Ic Id
-        # + Ia <b|H1|b> Ic Id + etc
-
-        for bi in range(0,n_blocks):
-            Bi = blocks[bi]
-            dim_e = full_dim / tb_l.block_dims[bi] 
-            h1 = Bi.H_ss(tb_l.address[bi],tb_r.address[bi])
-            h = np.kron(h1,np.eye(dim_e))   
-            
-            tens_dims    = []
-            tens_inds    = []
-            tens_inds.extend([bi])
-            tens_dims.extend([tb_l.block_dims[bi]])
-            for bj in range(0,n_blocks):
-                if (bi != bj):
-                    tens_inds.extend([bj])
-                    tens_dims.extend([tb_l.block_dims[bj]])
-            tens_dims = np.append(tens_dims, tens_dims) 
-            #tens_inds = np.append(tens_inds, tens_inds) 
-
-            sort_ind = np.argsort(tens_inds)
-            swap = np.append(sort_ind,sort_ind+n_blocks) 
-
-            H += h.reshape(tens_dims).transpose(swap)
-        
-        
-        #   <ab|H12|ab> Ic Id
-        # + <ac|H13|ac> Ib Id
-        # + Ia <bc|H23|bc> Id + etc
-        
-        for bi in range(0,n_blocks):
-            for bj in range(bi+1,n_blocks):
-                Bi = blocks[bi]
-                Bj = blocks[bj]
-                dim_e = full_dim / tb_l.block_dims[bi] / tb_l.block_dims[bj]
-
-                #build full Hamiltonian on sublattice
-                h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-
-                h = np.kron(h12,np.eye(dim_e))   
-            
-                tens_dims    = []
-                tens_inds    = []
-                tens_inds.extend([bi])
-                tens_inds.extend([bj])
-                tens_dims.extend([tb_l.block_dims[bi]])
-                tens_dims.extend([tb_l.block_dims[bj]])
-                for bk in range(0,n_blocks):
-                    if (bk != bi) and (bk != bj):
-                        tens_inds.extend([bk])
-                        tens_dims.extend([tb_l.block_dims[bk]])
-                tens_dims = np.append(tens_dims, tens_dims) 
-                #tens_inds = np.append(tens_inds, tens_inds) 
-               
-                sort_ind = np.argsort(tens_inds)
-                swap = np.append(sort_ind,sort_ind+n_blocks) 
-               
-                H += h.reshape(tens_dims).transpose(swap)
-    
-    
-    
-    
-    
-    
-    elif len(different) == 1:
-
-        full_dim_l = tb_l.full_dim
-        full_dim_r = tb_r.full_dim
-        #<abcd|H1+H2+H3+H4|abcd>
-        #
-        #   <a|H1|a> Ib Ic Id  , for block 1 being different
-
-
-        bi = different[0] 
-
-        Bi = blocks[bi]
-        dim_e_l = full_dim_l / tb_l.block_dims[bi] 
-        dim_e_r = full_dim_r / tb_r.block_dims[bi] 
-        h1 = Bi.H_ss(tb_l.address[bi],tb_r.address[bi])
-
-        h1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
-
-        assert(dim_e_l == dim_e_r)
-        dim_e = dim_e_l
-       
-        
-        #HERE NICK!!
-        
-        tens_dims    = []
-        tens_inds    = []
-        tens_inds.extend([bi])
-        tens_inds.extend([bi+n_blocks])
-        for bj in range(0,n_blocks):
-            if (bi != bj):
-                tens_inds.extend([bj])
-                tens_inds.extend([bj+n_blocks])
-                assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
-                h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]),axes=0)
-
-        sort_ind = np.argsort(tens_inds)
-
-        H += h1.transpose(sort_ind)
-        
-        
-        #   <ab|H12|Ab> Ic Id
-        # + <ac|H13|Ac> Ib Id
-        # + <ad|H13|Ad> Ib Id
-        
-        for bj in range(0,bi):
-            Bj = blocks[bj]
-            dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj]
-            dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj]
-         
-            assert(dim_e_l == dim_e_r)
-            dim_e = dim_e_l
-            
-            #build full Hamiltonian on sublattice
-            #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-            h2 = build_dimer_H(tb_l, tb_r, Bj, Bi, j12)
-          
-            h2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
-         
-            
-            #h = np.kron(h12,np.eye(dim_e))   
-            
-            tens_dims    = []
-            tens_inds    = []
-            tens_inds.extend([bj,bi])
-            tens_inds.extend([bj+n_blocks, bi+n_blocks])
-            for bk in range(0,n_blocks):
-                if (bk != bi) and (bk != bj):
-                    tens_inds.extend([bk])
-                    tens_inds.extend([bk+n_blocks])
-                    assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
-                    h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-            
-            sort_ind = np.argsort(tens_inds)
-            H += h2.transpose(sort_ind)
-        
-        for bj in range(bi+1, n_blocks):
-            Bj = blocks[bj]
-            dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj]
-            dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj]
-         
-            assert(dim_e_l == dim_e_r)
-            dim_e = dim_e_l
-            
-            #build full Hamiltonian on sublattice
-            #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-            h2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-          
-            h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
-         
-            
-            #h = np.kron(h12,np.eye(dim_e))   
-            
-            tens_dims    = []
-            tens_inds    = []
-            tens_inds.extend([bi,bj])
-            tens_inds.extend([bi+n_blocks, bj+n_blocks])
-            for bk in range(0,n_blocks):
-                if (bk != bi) and (bk != bj):
-                    tens_inds.extend([bk])
-                    tens_inds.extend([bk+n_blocks])
-                    assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
-                    h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-            
-            sort_ind = np.argsort(tens_inds)
-            H += h2.transpose(sort_ind)
-    
-    
-    
-    
-    elif len(different) == 2:
-    
-        full_dim_l = tb_l.full_dim
-        full_dim_r = tb_r.full_dim
-        #<abcd|H1+H2+H3+H4|abcd> = 0
-
-
-        bi = different[0] 
-        bj = different[1] 
-
-        Bi = blocks[bi]
-        Bj = blocks[bj]
-
-        dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj] 
-        dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj] 
-
-        assert(dim_e_l == dim_e_r)
-        dim_e = dim_e_l
-        
-        
-        #  <ac|H13|Ac> Ib Id  for 1 3 different
-        
-        #build full Hamiltonian on sublattice
-        #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-        h2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-       
-        h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
-        #h2 = np.kron(h12,np.eye(dim_e))   
-        
-        tens_dims    = []
-        tens_inds    = []
-        tens_inds.extend([bi,bj])
-        tens_inds.extend([bi+n_blocks, bj+n_blocks])
-        tens_dims.extend([tb_l.block_dims[bi]])
-        tens_dims.extend([tb_l.block_dims[bj]])
-        tens_dims.extend([tb_r.block_dims[bi]])
-        tens_dims.extend([tb_r.block_dims[bj]])
-        for bk in range(0,n_blocks):
-            if (bk != bi) and (bk != bj):
-                tens_inds.extend([bk])
-                tens_inds.extend([bk+n_blocks])
-                tens_dims.extend([tb_l.block_dims[bk]])
-                tens_dims.extend([tb_r.block_dims[bk]])
-                h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-        
-        sort_ind = np.argsort(tens_inds)
-        #H += h2.reshape(tens_dims).transpose(sort_ind)
-        H += h2.transpose(sort_ind)
-
-    H = H.reshape(tb_l.full_dim,tb_r.full_dim)
-    return H
-# }}}
-
 
 
 
@@ -1075,7 +776,9 @@ parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', he
 parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
-parser.add_argument('-pt_type','--pt_type', type=str, default='en', choices=['mp','en'], help='PT correction denominator type', required=False)
+parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
+parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
+parser.add_argument('-opt','--optimization', type=str, default="None", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
 args = vars(parser.parse_args())
 #
 #   Let minute specification of walltime override hour specification
@@ -1176,7 +879,7 @@ local_states = {}
                     
 
 blocks_in = cp.deepcopy(blocks)
-blocks = {}         # dictionary of block objects
+lattice_blocks = {}         # dictionary of block objects
 
 
 #
@@ -1185,20 +888,20 @@ print
 print " Prepare Lattice Blocks:"
 print n_p_states, n_q_states
 for bi in range(0,n_blocks):
-    blocks[bi] = Block()
-    blocks[bi].init(bi,blocks_in[bi,:],[n_p_states[bi], n_q_states[bi]])
+    lattice_blocks[bi] = Lattice_Block()
+    lattice_blocks[bi].init(bi,blocks_in[bi,:],[n_p_states[bi], n_q_states[bi]])
 
-    blocks[bi].np = n_p_states[bi] 
-    blocks[bi].nq = n_q_states[bi] 
-    blocks[bi].vecs = np.hstack((p_states[bi],q_states[bi]))
+    lattice_blocks[bi].np = n_p_states[bi] 
+    lattice_blocks[bi].nq = n_q_states[bi] 
+    lattice_blocks[bi].vecs = np.hstack((p_states[bi],q_states[bi]))
     
-    blocks[bi].extract_lattice(lattice)
-    blocks[bi].extract_j12(j12)
+    lattice_blocks[bi].extract_lattice(lattice)
+    lattice_blocks[bi].extract_j12(j12)
 
-    blocks[bi].form_H()
-    blocks[bi].form_site_operators()
+    lattice_blocks[bi].form_H()
+    lattice_blocks[bi].form_site_operators()
 
-    print blocks[bi]
+    print lattice_blocks[bi]
 
 n_body_order = args['n_body_order'] 
     
@@ -1206,7 +909,7 @@ dim_tot = 0
 
 tb_0 = Tucker_Block()
 address_0 = np.zeros(n_blocks,dtype=int)
-tb_0.init((-1), blocks,address_0, dim_tot)
+tb_0.init((-1), lattice_blocks,address_0, dim_tot)
 
 dim_tot += tb_0.full_dim
 
@@ -1220,7 +923,7 @@ if n_body_order >= 1:
         tb = Tucker_Block()
         address = np.zeros(n_blocks,dtype=int)
         address[bi] = 1
-        tb.init((bi), blocks,address, dim_tot)
+        tb.init((bi), lattice_blocks,address, dim_tot)
         tucker_blocks[1,bi] = tb
         dim_tot += tb.full_dim
 if n_body_order >= 2:
@@ -1230,7 +933,7 @@ if n_body_order >= 2:
             address = np.zeros(n_blocks,dtype=int)
             address[bi] = 1
             address[bj] = 1
-            tb.init((bi,bj), blocks,address,dim_tot)
+            tb.init((bi,bj), lattice_blocks,address,dim_tot)
             tucker_blocks[2,bi,bj] = tb
             dim_tot += tb.full_dim
 if n_body_order >= 3:
@@ -1242,38 +945,105 @@ if n_body_order >= 3:
                 address[bi] = 1
                 address[bj] = 1
                 address[bk] = 1
-                tb.init((bi,bj,bk), blocks,address,dim_tot)
+                tb.init((bi,bj,bk), lattice_blocks,address,dim_tot)
                 tucker_blocks[3,bi,bj,bk] = tb
                 dim_tot += tb.full_dim
 
 for tb in sorted(tucker_blocks):
-    print tucker_blocks[tb], tucker_blocks[tb].start, tucker_blocks[tb].stop
-print 
-print " Build Hamiltonian:"
-Htest = build_tucker_blocked_H(n_blocks, tucker_blocks, n_body_order) 
-#tb_l = tucker_blocks[0]
-#tb_r = tucker_blocks[0,2]
-#Htest = Htest[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop]
-#Htest = build_H(blocks, tb_l, tb_r)
-#l,s,v = np.linalg.svd(Htest)
-#print s
-#exit(-1)
-
-print " Size of H: ", Htest.shape
-
-l = np.array([])
-v = np.array([])
-
-if Htest.shape[0] > 3000:
-    l,v = scipy.sparse.linalg.eigsh(Htest, k=args["n_roots"] )
-else:
-    l,v = np.linalg.eigh(Htest)
+    print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
 
 
-print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
-for si,i in enumerate(l):
-    print " %5i =  %16.8f  %16.8f  %12.8s" %(si,i*convert,(i-l[0])*convert,"--")
-    if si>args['n_print']:
-        break
+
+
+
+
+
+# loop over compression vector iterations
+energy_per_iter = []
+maxiter = args['max_iter'] 
+last_vector = np.array([])  # used to detect root flipping
+
+diis_err_vecs = {}
+diis_frag_grams = {}
+
+opt = args['optimization'] 
+ts = args['target_state'] 
+
+for bi in range(0,n_blocks):
+    diis_frag_grams[bi] = []
+
+for it in range(0,maxiter):
+    print 
+    print " Build Hamiltonian:"
+    Htest = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
+    
+    
+    
+    print " Size of H: ", Htest.shape
+    l = np.array([])
+    v = np.array([])
+    if Htest.shape[0] > 3000:
+        l,v = scipy.sparse.linalg.eigsh(Htest, k=args["n_roots"] )
+    else:
+        l,v = np.linalg.eigh(Htest)
+    
+    
+    print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+    for si,i in enumerate(l):
+        if si<args['n_print']:
+            print " %5i =  %16.8f  %16.8f  %12.8s" %(si,i*convert,(i-l[0])*convert,"--")
+
+    brdms = {}   # block reduced density matrix
+    for bi in range(0,n_blocks):
+        Bi = lattice_blocks[bi]
+        brdms[bi] = np.zeros(( Bi.full_dim, Bi.full_dim )) 
+
+    print
+    print " Compute Block Reduced Density Matrices (BRDM):"
+    for tb in sorted(tucker_blocks):
+        Tb = tucker_blocks[tb]
+        vb = cp.deepcopy(v[Tb.start:Tb.stop, ts])
+        for bi in range(0,n_blocks):
+            vb.shape = Tb.block_dims
+            brdm_tmp = form_1fdm(vb,vb,[bi])
+            Bi = lattice_blocks[bi]
+            u = Bi.v_ss(Tb.address[bi])
+            brdms[bi] += u.dot(brdm_tmp).dot(u.T)
+
+    print
+    print " Compute Eigenvalues of BRDMs:"
+    for bi in range(0,n_blocks):
+        brdm_curr = brdms[bi]
+        lx,vx = np.linalg.eigh(brdm_curr)
+        sort_ind = np.argsort(lx)[::-1]
+        lx = lx[sort_ind]
+        vx = vx[:,sort_ind]
+            
+        print " Eigenvalues of BRDM for ", lattice_blocks[bi]
+        for i in range(0,lx.shape[0]):
+            print " %4i %12.8f" %(i,lx[i])
+
+        """
+        print "         Fragment: ", fi
+        print "   %-12s   %16s  %16s  %12s  %12s "%("Local State", "Occ. Number", "<H>", "<S2>", "<Sz>")
+        for si,i in enumerate(lx):
+            print "   %-12i   %16.8f  %16.8f  %12.4f  %12.4f "%(si,lx[si],h[si],abs(s2[si]),sz[si])
+            #print "   %-4i   %16.8f  %16.8f  %16.4f "%(si,lx[si],h[si],sz[i])
+        print "   %-12s " %("----")
+        print "   %-12s   %16.8f  %16.8f  %12.4f  %12.4f" %(
+                "Trace"
+                ,(grams[fi]).trace()
+                ,Hi[fi].dot(grams[fi]).trace()
+                ,S2i[fi].dot(grams[fi]).trace()
+                ,Szi[fi].dot(grams[fi]).trace()
+                )
+                """
+
+
+
+
+
+
+
 
 
