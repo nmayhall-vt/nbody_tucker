@@ -399,7 +399,60 @@ for it in range(0,maxiter):
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
 
-        brdm_curr = brdms[bi]
+        brdm_curr = brdms[bi] + Bi.full_S2
+        if opt == "diis":
+            n_diis_vecs = 8 
+            proj_p = Bi.v_ss(0).dot(Bi.v_ss(0).T)
+            error_vector = proj_p.dot(brdm_curr) - (brdm_curr).dot(proj_p)
+            error_vector.shape = (error_vector.shape[0]*error_vector.shape[1],1)
+           
+            print " Dimension of Error Vector matrix: ", Bi.diis_vecs.shape
+            if Bi.diis_vecs.shape[0] == 0:
+                Bi.diis_vecs = error_vector
+            else:
+                Bi.diis_vecs = np.hstack( (Bi.diis_vecs, error_vector) ) 
+
+            diis_frag_grams[bi].append( brdm_curr )
+            
+            n_evecs = Bi.diis_vecs.shape[1]
+            
+            if it>0:
+                S = Bi.diis_vecs.T.dot(Bi.diis_vecs )
+                
+                collapse = 1
+                if collapse:
+                    sort_ind = np.argsort(S.diagonal())
+                    sort_ind = [sort_ind[i] for i in range(0,min(len(sort_ind),n_diis_vecs))]
+                    Bi.diis_vecs = Bi.diis_vecs[:,sort_ind]
+                    tmp = []
+                    for i in sort_ind:
+                        tmp.append(diis_frag_grams[bi][i])
+                    diis_frag_grams[bi] = cp.deepcopy(tmp)
+                    print " Vector errors", S.diagonal()[sort_ind] 
+                    n_evecs = Bi.diis_vecs.shape[1]
+                    S = Bi.diis_vecs.T.dot(Bi.diis_vecs )
+                print " Number of error vectors: %4i " %n_evecs
+                B = np.ones( (n_evecs+1, n_evecs+1) )
+                B[-1,-1] = 0
+                B[0:-1,0:-1] = cp.deepcopy(S) 
+                r = np.zeros( (n_evecs+1,1) )
+                r[-1] = 1
+                if n_evecs > 0: 
+                    x = np.linalg.pinv(B).dot(r)
+                    
+                    extrap_err_vec = np.zeros((Bi.diis_vecs.shape[0]))
+                    extrap_err_vec.shape = (extrap_err_vec.shape[0])
+
+                    for i in range(0,x.shape[0]-1):
+                        brdm_curr += x[i]*diis_frag_grams[bi][i]
+                        extrap_err_vec += x[i]*Bi.diis_vecs[:,i]
+                    
+                    print " DIIS Coeffs"
+                    for i in x:
+                        print "  %12.8f" %i
+                    #print x.T
+                    print " CURRENT           error vector %12.2e " % error_vector.T.dot(error_vector)
+
         lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)
             
         lx = vx.T.dot(brdms[bi]).dot(vx).diagonal()
