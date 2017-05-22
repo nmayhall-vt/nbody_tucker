@@ -48,6 +48,9 @@ class Davidson:
     
     def eigenvectors(self):
         return self.vec().dot(self.ritz_vecs[:,0:self.n_roots])
+    
+    def eigenvalues(self):
+        return self.ritz_vals
 
     def update(self):
         vec = self.vec()
@@ -104,7 +107,7 @@ class Davidson:
         self.iter += 1
 
     def print_iteration(self):
-        print "  Iteration %4i " %self.iter, 
+        print "  Davidson Iter %4i " %self.iter, 
         print "|",
         print " Vecs:%4li : "% self.n_vecs ,
         print "|",

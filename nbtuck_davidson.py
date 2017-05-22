@@ -295,8 +295,13 @@ for it in range(0,maxiter):
 
     # 
     #   Loop over davidson micro-iterations
+    print 
+    print " Solve for supersystem eigenvalues:"
     dav = Davidson(dim_tot, args['n_roots'])
-    dav.form_rand_guess()
+    if it == 0:
+        dav.form_rand_guess()
+    else:
+        dav.vec_curr = last_vectors 
     dav.max_iter = args['dav_max_iter']
     for dit in range(0,dav.max_iter):
         #dav.form_sigma()
@@ -313,8 +318,13 @@ for it in range(0,maxiter):
         print " Davidson Not Converged"
         dav.print_iteration()
     print 
-    v2 = dav.eigenvectors()
 
+    l = dav.eigenvalues()
+    v = dav.eigenvectors()
+
+    last_vectors = v
+
+    """
     print " Diagonalize Hamiltonian: Size of H: ", H.shape
     l = np.array([])
     v = np.array([])
@@ -322,8 +332,7 @@ for it in range(0,maxiter):
         l,v = scipy.sparse.linalg.eigsh(H, k=args["n_roots"] )
     else:
         l,v = np.linalg.eigh(H)
-  
-    print v2.T.dot(v)
+    """
 
     S2 = v.T.dot(S2).dot(v)
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
@@ -332,7 +341,6 @@ for it in range(0,maxiter):
             print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
 
-    exit(-1)
     energy_per_iter.append(l[ts]) 
     thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
