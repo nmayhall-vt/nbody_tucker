@@ -14,7 +14,7 @@ class Davidson:
         self.do_precondition= 0     # Use preconditioning?
         self.n_vecs         = 0     # Current number of vectors in subspace
         self.max_vecs       = 10    # Max number of vectors in subspace
-        self.thresh         = 1e-7  # Convergence threshold
+        self.thresh         = 1e-5  # Convergence threshold
         self.n_roots        = n_roots  # Number of roots to optimize
         self.dim            = dim      # Dimension of matrix to diagonalize
 
@@ -35,11 +35,6 @@ class Davidson:
     def vec(self):
         return np.hstack((self.vec_prev,self.vec_curr))
 
-    def set_preconditioner(self,d):
-        self.precond_diag = d
-        self.precond_diag.shape = (self.dim,1)
-        self.do_precondition = 1
-
     def sig(self):
         return np.hstack((self.sig_prev,self.sig_curr))
 
@@ -47,10 +42,15 @@ class Davidson:
         self.vec_curr, tmp = np.linalg.qr(np.random.rand(self.dim, self.n_roots))
     
     def eigenvectors(self):
-        return self.vec().dot(self.ritz_vecs[:,0:self.n_roots])
+        return self.vec_prev.dot(self.ritz_vecs[:,0:self.n_roots])
     
     def eigenvalues(self):
         return self.ritz_vals
+
+    def set_preconditioner(self,d):
+        self.precond_diag = d
+        self.precond_diag.shape = (self.dim,1)
+        self.do_precondition = 1
 
     def update(self):
         vec = self.vec()

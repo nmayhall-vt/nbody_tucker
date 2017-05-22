@@ -305,8 +305,14 @@ for it in range(0,maxiter):
     dav.max_iter = args['dav_max_iter']
     for dit in range(0,dav.max_iter):
         #dav.form_sigma()
-        dav.sig_curr = H.dot(dav.vec_curr)
+        
+        #dav.sig_curr = H.dot(dav.vec_curr)
+        
+        hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, dav.vec_curr) 
+        dav.sig_curr = hv
+        
         #dav.set_preconditioner(H.diagonal())
+        
         dav.update()
         dav.print_iteration()
         if dav.converged():
