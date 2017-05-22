@@ -276,7 +276,6 @@ for tb in sorted(tucker_blocks):
 # loop over compression vector iterations
 energy_per_iter = []
 maxiter = args['max_iter'] 
-dav_maxiter = args['dav_max_iter'] 
 last_vector = np.array([])  # used to detect root flipping
 
 diis_err_vecs = {}
@@ -298,11 +297,23 @@ for it in range(0,maxiter):
     #   Loop over davidson micro-iterations
     dav = Davidson(dim_tot, args['n_roots'])
     dav.form_rand_guess()
+    dav.max_iter = args['dav_max_iter']
     for dit in range(0,dav.max_iter):
         #dav.form_sigma()
-        dav.sigma = H.dot(dav.vecs)
+        dav.sig_curr = H.dot(dav.vec_curr)
+        #dav.set_preconditioner(H.diagonal())
         dav.update()
-        
+        dav.print_iteration()
+        if dav.converged():
+            break
+    if dav.converged():
+        print " Davidson Converged"
+        dav.print_iteration()
+    else:
+        print " Davidson Not Converged"
+        dav.print_iteration()
+    print 
+    v2 = dav.eigenvectors()
 
     print " Diagonalize Hamiltonian: Size of H: ", H.shape
     l = np.array([])
@@ -311,7 +322,9 @@ for it in range(0,maxiter):
         l,v = scipy.sparse.linalg.eigsh(H, k=args["n_roots"] )
     else:
         l,v = np.linalg.eigh(H)
-    
+  
+    print v2.T.dot(v)
+
     S2 = v.T.dot(S2).dot(v)
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(l):
@@ -319,6 +332,7 @@ for it in range(0,maxiter):
             print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
 
+    exit(-1)
     energy_per_iter.append(l[ts]) 
     thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
