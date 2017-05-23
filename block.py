@@ -15,7 +15,7 @@ class Lattice_Block:
         self.n_sites = 0
         self.sites = []
         self.lattice = [] 
-        self.vectors = np.array([]) # local eigenvector matrix for block [P|Q]
+        self.vecs = np.array([]) # local eigenvector matrix for block [P|Q]
         self.np     = 0            # number of p-space vectors
         self.nq     = 0            # number of q-space vectors
         self.ss_dims= []            # number of vectors in each subspace [P,Q,...]
@@ -69,6 +69,7 @@ class Lattice_Block:
                 out += "%5i" %(self.sites[si])
         out += " : " + str(self.ss_dims)
         return out
+
     def extract_j12(self,j12):
         if self.n_sites == 0:
             print " No sites yet!"
@@ -118,6 +119,12 @@ class Lattice_Block:
     def H_pp(self):
         # get view of PP block of H
         return self.H[0:self.np, 0:self.np]
+
+    def vec(self):
+        """ 
+        Get view of space1,space2 block of H for whole block 
+        """
+        return self.vecs[:,0:self.np+self.nq]
 
     def v_ss(self,i):
         """ 
@@ -300,6 +307,8 @@ class Tucker_Block:
             out += "%4s"%a
         out += " :: "+ "%6i"%self.full_dim
         return out
+
+
 
 ##############################################################################################
 #                   Functions

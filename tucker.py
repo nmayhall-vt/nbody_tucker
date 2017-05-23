@@ -328,7 +328,25 @@ def form_1fdm(A, B, open_dims):
     return AB
 
     
-        
+   
 
+
+"""
+def transform_tucker_block(self, A, tb_l, tb_r):
+    ''' 
+    Perform a multi linear transformation on a tensor
+    tb_l is the current tucker_block basis 
+    tb_r is the destination tucker_block basis 
+    A is the tensor to be transformed
+
+    This assumes that the lattice_blocks are the same
+    '''
+
+    for bi in range(0,self.n_blocks):
+        Bi = self.blocks[bi]
+        Bj = self.blocks[bi]
+        S = Bi.vec().T.dot(Bj.vec())
+        A = np.tensordot(A,S,axes=(0,0))
+"""
     
 #def form_tot_gramiam1(v,P_dims, Q_dims, QQ_dims, blocks, 

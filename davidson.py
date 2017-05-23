@@ -43,9 +43,14 @@ class Davidson:
     
     def form_p_guess(self):
         #self.vec_curr, tmp = np.linalg.qr(np.random.rand(self.dim, self.n_roots))
-        self.vec_curr = np.vstack((np.eye(self.n_roots), np.zeros((self.dim-self.n_roots, self.n_roots)) ))
-        self.vec_curr += np.random.rand(self.dim, self.n_roots)*1e-4
-        self.vec_curr, tmp = np.linalg.qr(self.vec_curr)
+        if self.dim > self.n_roots:
+            self.vec_curr = np.vstack((np.eye(self.n_roots), np.zeros((max(0,self.dim-self.n_roots), self.n_roots)) ))
+            self.vec_curr += np.random.rand(self.dim, self.n_roots)*1e-4
+            self.vec_curr, tmp = np.linalg.qr(self.vec_curr)
+        else:
+            self.vec_curr = np.eye(self.dim)
+            self.vec_curr += np.random.rand(self.dim, self.dim)*1e-4
+            self.vec_curr, tmp = np.linalg.qr(self.vec_curr)
     
     def eigenvectors(self):
         return self.vec_prev.dot(self.ritz_vecs[:,0:self.n_roots])
@@ -78,7 +83,7 @@ class Davidson:
             l_n = l[n]
             ritz_vals.append(l_n)
             v_n = v[:,n]
-	    r_n = (sig - l_n*vec).dot(v_n);
+            r_n = (sig - l_n*vec).dot(v_n);
             b_n = np.linalg.norm(r_n)
             r_n = r_n/b_n
             res_vals.append(b_n)
@@ -96,8 +101,7 @@ class Davidson:
                 
                 if (v_new.shape[1] > 0):
                     r_n = r_n - v_new.dot(np.dot(v_new.T,r_n))
-
-		b_n_p = np.linalg.norm(r_n)
+                b_n_p = np.linalg.norm(r_n)
                 if (b_n / b_n_p > self.thresh*1e-1):
                     r_n = r_n / b_n_p
                     v_new = np.hstack((v_new, r_n))

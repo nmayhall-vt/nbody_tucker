@@ -84,12 +84,19 @@ for fileName in args['infiles']:
     #rt2 = np.sqrt(2)
     #rt2 = 3
     #l = [(0,0),(rt2,rt2),(7,rt2),(rt2+7,0),(14,0),(rt2+14,rt2),(21,rt2),(rt2+21,0)]
+
     layout = g.layout("circle")
 
+    communities = g.community_edge_betweenness(directed=False)
+    clusters = communities.as_clustering()
+   
+    print clusters
+    
     visual_style = {}
     visual_style["edge_curved"] = False 
     visual_style["vertex_size"] = 40
     visual_style["vertex_label"] = g.es["name"]
+    visual_style["vertex_label_color"] = 'white'
     #visual_style["edge_width"] = 20 
     visual_style["edge_width"] = g.es['weight'] 
     visual_style["edge_color"] = edge_colors 

@@ -88,12 +88,14 @@ parser.add_argument('--n_print', type=int, default="10", help='number of states 
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
 parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
-parser.add_argument('--thresh', type=int, default=8, help='Threshold for pspace iterations', required=False)
+parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
+parser.add_argument('-dav_thresh','--dav_thresh', type=int, default=8, help='Threshold for supersystem davidson iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
 parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
 parser.add_argument('-opt','--optimization', type=str, default="None", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
 parser.add_argument('-dmit', '--dav_max_iter', type=int, default=20, help='Max iterations for solving for the CI-type coefficients', required=False)
+parser.add_argument('-precond', '--dav_precond', type=int, default=1, help='Use preconditioner?', required=False)
 args = vars(parser.parse_args())
 #
 #   Let minute specification of walltime override hour specification
@@ -276,7 +278,10 @@ for tb in sorted(tucker_blocks):
 # loop over compression vector iterations
 energy_per_iter = []
 maxiter = args['max_iter'] 
-last_vector = np.array([])  # used to detect root flipping
+last_vectors = np.array([])  # used to detect root flipping
+
+diis_thresh = 1.0*np.power(10.0,-float(args['diis_thresh']))
+dav_thresh = 1.0*np.power(10.0,-float(args['dav_thresh']))
 
 diis_err_vecs = {}
 diis_frag_grams = {}
@@ -298,6 +303,7 @@ for it in range(0,maxiter):
     print 
     print " Solve for supersystem eigenvalues: Dimension = ", dim_tot
     dav = Davidson(dim_tot, args['n_roots'])
+    dav.thresh = dav_thresh 
     s2v = np.array([])
     if it == 0:
         dav.form_p_guess()
@@ -309,12 +315,15 @@ for it in range(0,maxiter):
         #dav.form_sigma()
         
         #dav.sig_curr = H.dot(dav.vec_curr)
+        #hv = H.dot(dav.vec_curr)
+        #s2v = S2.dot(dav.vec_curr)
         
         hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, dav.vec_curr) 
         dav.sig_curr = hv
-        
-        hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
-        dav.set_preconditioner(hv_diag)
+    
+        if args['dav_precond']:
+            hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
+            dav.set_preconditioner(hv_diag)
         #dav.set_preconditioner(H.diagonal())
         
         dav.update()
@@ -332,7 +341,7 @@ for it in range(0,maxiter):
     l = dav.eigenvalues()
     v = dav.eigenvectors()
 
-    last_vectors = v
+    last_vectors = cp.deepcopy(v)
 
     """
     print " Diagonalize Hamiltonian: Size of H: ", H.shape
@@ -356,9 +365,8 @@ for it in range(0,maxiter):
 
 
     energy_per_iter.append(l[ts]) 
-    thresh = 1.0*np.power(10.0,-float(args['thresh']))
     if it > 0:
-        if abs(l[ts]-energy_per_iter[it-1]) < thresh:
+        if abs(l[ts]-energy_per_iter[it-1]) < diis_thresh:
             break
 
 
@@ -445,6 +453,7 @@ for it in range(0,maxiter):
 
     print
     print " Compute Eigenvalues of BRDMs:"
+    overlaps = []
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
 
@@ -530,7 +539,10 @@ for it in range(0,maxiter):
         s2 = v.T.dot(Bi.full_S2).dot(v).diagonal()
         lx = v.T.dot(brdms[bi]).dot(v).diagonal()
         h = v.T.dot(Bi.full_H).dot(v).diagonal()
-        
+
+        # compute transormation matrices to rotate ci vectors to new basis
+        overlaps.append( Bi.vec().T.dot(v))
+
         #update Block vectors
         Bi.vecs[:,0:Bi.ss_dims[0]+Bi.ss_dims[1]] = v
         Bi.form_H()
@@ -544,16 +556,35 @@ for it in range(0,maxiter):
         for si,i in enumerate(lx):
             print "   %-12i   %16.8f  %16.8f  %12.4f  %12.4f "%(si,lx[si],h[si],abs(s2[si]),sz[si])
             #print "   %-4i   %16.8f  %16.8f  %16.4f "%(si,lx[si],h[si],sz[i])
-        """
-        print "   %-12s " %("----")
-        print "   %-12s   %16.8f  %16.8f  %12.4f  %12.4f" %(
-                "Trace"
-                ,(grams[fi]).trace()
-                ,Hi[fi].dot(grams[fi]).trace()
-                ,S2i[fi].dot(grams[fi]).trace()
-                ,Szi[fi].dot(grams[fi]).trace()
-                )
-                """
+    
+    
+    """
+    # Rotate ci vectors to new basis
+    """
+    for si in range(0,last_vectors.shape[1]):
+        for t in sorted(tucker_blocks):
+            Tb = tucker_blocks[t]
+            #print Tb.block_dims, last_vectors.shape
+            v = last_vectors[Tb.start:Tb.stop, si]
+            v.shape = Tb.block_dims
+           
+            for bi in range(0,n_blocks):
+                #print 
+                Bi = lattice_blocks[bi]
+                S = overlaps[bi]
+                
+                if Tb.address[bi] == 0:
+                    S = S[0:Bi.np,:][:,0:Bi.np]
+                elif Tb.address[bi] == 1:
+                    S = S[Bi.np:Bi.np+Bi.nq,:][:,Bi.np:Bi.np+Bi.nq]
+                #print ":: ", v.shape, S.shape
+                v = np.tensordot(v,S,axes=(0,0))
+            v.shape = Tb.full_dim
+            last_vectors[Tb.start:Tb.stop, si] = v
+    #l,u = np.linalg.eigh(last_vectors.T.dot(last_vectors))
+    #last_vectors = last_vectors.dot(u)
+    last_vectors, tmp = np.linalg.qr(last_vectors)
+
 
 print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
 for ei,e in enumerate(energy_per_iter):
