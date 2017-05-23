@@ -309,6 +309,7 @@ class Tucker_Block:
 
 
 def build_dimer_H(tb_l, tb_r, Bi, Bj,j12):
+# {{{
     bi = Bi.index
     bj = Bj.index
     
@@ -353,7 +354,7 @@ def build_dimer_H(tb_l, tb_r, Bi, Bj,j12):
     s2 = s2.transpose(sort_ind)
     s2 = s2.reshape(tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj])
     return h12, s2
-
+# }}}
 
 
 def build_tucker_blocked_H(n_blocks,tucker_blocks, lattice_blocks, n_body_order, j12):
@@ -745,17 +746,17 @@ def build_Hv(blocks,tb_l, tb_r,j12,v):
             # 
             # restructure incoming trial vectors as a tensor
             v_ind = cp.deepcopy(tb_r.block_dims)
-            #v_ind = [n_sig]
-            #v_ind.extend(tb_r.block_dims)
             v_ind.extend([n_sig])
             v_tens = v.reshape(v_ind)
-            #v_tens = v_tens.swapaxes(0,n_blocks)
-
             v_tens = v_tens.swapaxes(bi,0)
+
             h1v = np.tensordot(h1,v_tens,axes=(0,0) )
-            #h1v = np.tensordot(v_tens,h1,axes=(0,0) )
+            s1v = np.tensordot(s1,v_tens,axes=(0,0) )
             h1v = h1v.swapaxes(bi,0)
-            #print "  ", " |||", h1v.shape, h1.shape, bi
+            s1v = s1v.swapaxes(bi,0)
+            
+            Hv  += h1v.reshape(tb_l.full_dim, n_sig)
+            S2v += s1v.reshape(tb_l.full_dim, n_sig)
             """
             tens_ind = []
             for bj in range(0,n_blocks):
@@ -765,28 +766,7 @@ def build_Hv(blocks,tb_l, tb_r,j12,v):
             h1v = h1v.transpose(tens_ind)
             print h1v.shape
             """
-        
-            tens_inds    = []
-            tens_inds.extend([bi])
-            tens_inds.extend([bi+n_blocks])
-            for bj in range(0,n_blocks):
-                if (bi != bj):
-                    tens_inds.extend([bj])
-                    tens_inds.extend([bj+n_blocks])
-                    assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
-                    h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]),axes=0)
-                    s1 = np.tensordot(s1,np.eye(tb_l.block_dims[bj]),axes=0)
-
-            sort_ind = np.argsort(tens_inds)
-
-            H  += h1.transpose(sort_ind)
-            S2 += s1.transpose(sort_ind)
-        
-        
-            #htmp = h1.transpose(sort_ind)
-            #print h1v.reshape(tb_l.full_dim,n_sig) - htmp.reshape(tb_l.full_dim,tb_r.full_dim).dot(v)
-
-            Hv += h1v.reshape(tb_l.full_dim, n_sig)
+            
 
         #   <ab|H12|ab> Ic Id
         # + <ac|H13|ac> Ib Id
@@ -803,27 +783,37 @@ def build_Hv(blocks,tb_l, tb_r,j12,v):
                 h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
                 s2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
 
-                #h = np.kron(h12,np.eye(dim_e))   
+                # 
+                # restructure incoming trial vectors as a tensor
+                #   
+                #   <abcdef| h24 |abcdef> = <ce|h24|ce> I0 I1 I3 I4 I5
+                #
+                #   v(0,1,2,3,4,5) => v(2,1,0,3,4,5) 
+                #                  => v(2,4,0,3,1,5) * h(2,4,2,4) =  sig(2,4,0,3,1,5)
+                #                                                 => sig(0,4,2,3,1,5)
+                #                                                 => sig(0,1,2,3,4,5)
+                #
+                v_ind = cp.deepcopy(tb_r.block_dims)
+                v_ind.extend([n_sig])
+                v_tens = v.reshape(v_ind)
+                
+                sort_ind = [bi,bj]
+                for bk in range(0,n_blocks+1):
+                    if bk != bi and bk != bj:
+                        sort_ind.extend([bk])
+                v_tens = v_tens.transpose(sort_ind)
+                
+                sort_ind = np.argsort(sort_ind)
+
+                h2v = np.tensordot(h2,v_tens,axes=([0,1],[0,1]) )
+                s2v = np.tensordot(s2,v_tens,axes=([0,1],[0,1]) )
+                
+                h2v = h2v.transpose(sort_ind)
+                s2v = s2v.transpose(sort_ind)
+
+                Hv  += h2v.reshape(tb_l.full_dim, n_sig)
+                S2v += s2v.reshape(tb_l.full_dim, n_sig)
             
-                tens_inds    = []
-                tens_inds.extend([bi,bj])
-                tens_inds.extend([bi+n_blocks, bj+n_blocks])
-                for bk in range(0,n_blocks):
-                    if (bk != bi) and (bk != bj):
-                        tens_inds.extend([bk])
-                        tens_inds.extend([bk+n_blocks])
-                        assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
-                        h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-                        s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
-               
-                sort_ind = np.argsort(tens_inds)
-               
-                H  += h2.transpose(sort_ind)
-                S2 += s2.transpose(sort_ind)
-    
-    
-    
-    
     
     
     elif len(different) == 1:
@@ -848,24 +838,26 @@ def build_Hv(blocks,tb_l, tb_r,j12,v):
 
         assert(dim_e_l == dim_e_r)
         dim_e = dim_e_l
+                
        
+        v_ind = cp.deepcopy(tb_r.block_dims)
+        v_ind.extend([n_sig])
+        v_tens = v.reshape(v_ind)
         
-        tens_inds    = []
-        tens_inds.extend([bi])
-        tens_inds.extend([bi+n_blocks])
-        for bj in range(0,n_blocks):
-            if (bi != bj):
-                tens_inds.extend([bj])
-                tens_inds.extend([bj+n_blocks])
-                assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
-                h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]),axes=0)
-                s1 = np.tensordot(s1,np.eye(tb_l.block_dims[bj]),axes=0)
-
-        sort_ind = np.argsort(tens_inds)
-
-        H  += h1.transpose(sort_ind)
-        S2 += s1.transpose(sort_ind)
+        sort_ind = [bi]
+        for bk in range(0,n_blocks+1):
+            if bk != bi:
+                sort_ind.extend([bk])
+        v_tens = v_tens.transpose(sort_ind)
         
+        h1v = np.tensordot(h1,v_tens,axes=([1],[0]) )
+        s1v = np.tensordot(s1,v_tens,axes=([1],[0]) )
+        sort_ind = np.argsort(sort_ind)
+
+        h1v = h1v.transpose(sort_ind)
+        s1v = s1v.transpose(sort_ind)
+        Hv  += h1v.reshape(tb_l.full_dim, n_sig)
+        S2v += s1v.reshape(tb_l.full_dim, n_sig)
         
         #   <ab|H12|Ab> Ic Id
         # + <ac|H13|Ac> Ib Id
@@ -886,24 +878,26 @@ def build_Hv(blocks,tb_l, tb_r,j12,v):
             h2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
             s2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
          
+            v_ind = cp.deepcopy(tb_r.block_dims)
+            v_ind.extend([n_sig])
+            v_tens = v.reshape(v_ind)
             
-            #h = np.kron(h12,np.eye(dim_e))   
+            sort_ind = [bj,bi]
+            for bk in range(0,n_blocks+1):
+                if bk != bi and bk != bj:
+                    sort_ind.extend([bk])
+            v_tens = v_tens.transpose(sort_ind)
             
-            tens_dims    = []
-            tens_inds    = []
-            tens_inds.extend([bj,bi])
-            tens_inds.extend([bj+n_blocks, bi+n_blocks])
-            for bk in range(0,n_blocks):
-                if (bk != bi) and (bk != bj):
-                    tens_inds.extend([bk])
-                    tens_inds.extend([bk+n_blocks])
-                    assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
-                    h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-                    s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
+            h2v = np.tensordot(h2,v_tens,axes=([2,3],[0,1]) )
+            s2v = np.tensordot(s2,v_tens,axes=([2,3],[0,1]) )
+
+            sort_ind = np.argsort(sort_ind)
             
-            sort_ind = np.argsort(tens_inds)
-            H  += h2.transpose(sort_ind)
-            S2 += s2.transpose(sort_ind)
+            h2v = h2v.transpose(sort_ind)
+            s2v = s2v.transpose(sort_ind)
+
+            Hv += h2v.reshape(tb_l.full_dim, n_sig)
+            S2v += s2v.reshape(tb_l.full_dim, n_sig)
         
         for bj in range(bi+1, n_blocks):
             Bj = blocks[bj]
@@ -920,27 +914,26 @@ def build_Hv(blocks,tb_l, tb_r,j12,v):
             h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
             s2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
          
+            v_ind = cp.deepcopy(tb_r.block_dims)
+            v_ind.extend([n_sig])
+            v_tens = v.reshape(v_ind)
             
-            #h = np.kron(h12,np.eye(dim_e))   
+            sort_ind = [bi,bj]
+            for bk in range(0,n_blocks+1):
+                if bk != bi and bk != bj:
+                    sort_ind.extend([bk])
+            v_tens = v_tens.transpose(sort_ind)
             
-            tens_dims    = []
-            tens_inds    = []
-            tens_inds.extend([bi,bj])
-            tens_inds.extend([bi+n_blocks, bj+n_blocks])
-            for bk in range(0,n_blocks):
-                if (bk != bi) and (bk != bj):
-                    tens_inds.extend([bk])
-                    tens_inds.extend([bk+n_blocks])
-                    assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
-                    h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-                    s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
+            h2v = np.tensordot(h2,v_tens,axes=([2,3],[0,1]) )
+            s2v = np.tensordot(s2,v_tens,axes=([2,3],[0,1]) )
+
+            sort_ind = np.argsort(sort_ind)
             
-            sort_ind = np.argsort(tens_inds)
-            H  += h2.transpose(sort_ind)
-            S2 += s2.transpose(sort_ind)
-    
-    
-    
+            h2v = h2v.transpose(sort_ind)
+            s2v = s2v.transpose(sort_ind)
+
+            Hv  += h2v.reshape(tb_l.full_dim, n_sig)
+            S2v += s2v.reshape(tb_l.full_dim, n_sig)
     
     elif len(different) == 2:
     
@@ -970,29 +963,29 @@ def build_Hv(blocks,tb_l, tb_r,j12,v):
        
         h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
         s2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
-        #h2 = np.kron(h12,np.eye(dim_e))   
+            
+        v_ind = cp.deepcopy(tb_r.block_dims)
+        v_ind.extend([n_sig])
+        v_tens = v.reshape(v_ind)
         
-        tens_dims    = []
-        tens_inds    = []
-        tens_inds.extend([bi,bj])
-        tens_inds.extend([bi+n_blocks, bj+n_blocks])
-        for bk in range(0,n_blocks):
-            if (bk != bi) and (bk != bj):
-                tens_inds.extend([bk])
-                tens_inds.extend([bk+n_blocks])
-                tens_dims.extend([tb_l.block_dims[bk]])
-                tens_dims.extend([tb_r.block_dims[bk]])
-                h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-                s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
+        sort_ind = [bi,bj]
+        for bk in range(0,n_blocks+1):
+            if bk != bi and bk != bj:
+                sort_ind.extend([bk])
+        v_tens = v_tens.transpose(sort_ind)
         
-        sort_ind = np.argsort(tens_inds)
-        #H += h2.reshape(tens_dims).transpose(sort_ind)
-        H += h2.transpose(sort_ind)
-        S2 += s2.transpose(sort_ind)
+        h2v = np.tensordot(h2,v_tens,axes=([2,3],[0,1]) )
+        s2v = np.tensordot(s2,v_tens,axes=([2,3],[0,1]) )
+        
+        sort_ind = np.argsort(sort_ind)
+        
+        h2v = h2v.transpose(sort_ind)
+        s2v = s2v.transpose(sort_ind)
 
-    H = H.reshape(tb_l.full_dim,tb_r.full_dim)
-    S2 = S2.reshape(tb_l.full_dim,tb_r.full_dim)
-    return H,S2
+        Hv  += h2v.reshape(tb_l.full_dim, n_sig)
+        S2v += s2v.reshape(tb_l.full_dim, n_sig)
+
+    return Hv,S2v
 # }}}
 
 def build_tucker_blocked_sigma(n_blocks,tucker_blocks, lattice_blocks, n_body_order, j12,v):
@@ -1021,14 +1014,13 @@ def build_tucker_blocked_sigma(n_blocks,tucker_blocks, lattice_blocks, n_body_or
             v_r = cp.deepcopy( v[tb_r.start:tb_r.stop,:])
 
             hv,s2v = build_Hv(lattice_blocks, tb_l, tb_r, j12,v_r)
-            h,s2 = build_H(lattice_blocks, tb_l, tb_r, j12)
+            #h,s2 = build_H(lattice_blocks, tb_l, tb_r, j12)
             
-            Hv[tb_l.start:tb_l.stop,:] += h.dot(v_r)
-            S2v[tb_l.start:tb_l.stop,:] += s2.dot(v_r)
+            Hv[tb_l.start:tb_l.stop,:] += hv
+            S2v[tb_l.start:tb_l.stop,:] += s2v
             #H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = build_H(lattice_blocks, tb_l, tb_r, j12)
             #H[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop].T
 
-    exit(-1)
     return Hv, S2v
     #}}}
 

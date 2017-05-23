@@ -288,18 +288,20 @@ for bi in range(0,n_blocks):
     diis_frag_grams[bi] = []
 
 for it in range(0,maxiter):
-    print 
-    print " Build Hamiltonian:"
-    H,S2 = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
+    #print 
+    #print " Build Hamiltonian:"
+    #H,S2 = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
     
 
     # 
     #   Loop over davidson micro-iterations
     print 
-    print " Solve for supersystem eigenvalues:"
+    print " Solve for supersystem eigenvalues: Dimension = ", dim_tot
     dav = Davidson(dim_tot, args['n_roots'])
+    s2v = np.array([])
     if it == 0:
-        dav.form_rand_guess()
+        dav.form_p_guess()
+        #dav.form_rand_guess()
     else:
         dav.vec_curr = last_vectors 
     dav.max_iter = args['dav_max_iter']
@@ -340,7 +342,11 @@ for it in range(0,maxiter):
         l,v = np.linalg.eigh(H)
     """
 
-    S2 = v.T.dot(S2).dot(v)
+    # compute S2 for converged states    
+    hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, v) 
+    S2 = v.T.dot(s2v)
+    l = v.T.dot(hv).diagonal()
+    print "S2", S2.shape
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(l):
         if si<args['n_print']:
