@@ -44,7 +44,7 @@ class Davidson:
     def form_p_guess(self):
         #self.vec_curr, tmp = np.linalg.qr(np.random.rand(self.dim, self.n_roots))
         self.vec_curr = np.vstack((np.eye(self.n_roots), np.zeros((self.dim-self.n_roots, self.n_roots)) ))
-        self.vec_curr += np.random.rand(self.dim, self.n_roots)*.01
+        self.vec_curr += np.random.rand(self.dim, self.n_roots)*1e-4
         self.vec_curr, tmp = np.linalg.qr(self.vec_curr)
     
     def eigenvectors(self):
@@ -98,7 +98,7 @@ class Davidson:
                     r_n = r_n - v_new.dot(np.dot(v_new.T,r_n))
 
 		b_n_p = np.linalg.norm(r_n)
-                if (b_n / b_n_p > self.thresh):
+                if (b_n / b_n_p > self.thresh*1e-1):
                     r_n = r_n / b_n_p
                     v_new = np.hstack((v_new, r_n))
 

@@ -313,6 +313,8 @@ for it in range(0,maxiter):
         hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, dav.vec_curr) 
         dav.sig_curr = hv
         
+        hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
+        dav.set_preconditioner(hv_diag)
         #dav.set_preconditioner(H.diagonal())
         
         dav.update()

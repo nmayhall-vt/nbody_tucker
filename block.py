@@ -1026,3 +1026,143 @@ def build_tucker_blocked_sigma(n_blocks,tucker_blocks, lattice_blocks, n_body_or
 
 
 
+def build_H_diag(blocks,tb_l, tb_r,j12):
+  # {{{
+    """
+    Build the Hamiltonian between two tensor blocks, tb_l and tb_r, without ever constructing a full hilbert space
+    """
+
+    n_blocks = len(blocks)
+    assert(n_blocks == tb_l.n_blocks)
+    assert(n_blocks == tb_r.n_blocks)
+    H_dim_layout = []  # dimensions of Ham block as a tensor (d1,d2,..,d1',d2',...)
+    H_dim_layout = tb_l.block_dims
+   
+    """
+    form one-block and two-block terms of H separately
+        1-body
+
+            for each block, form Hamiltonian in subspace, and combine
+            with identity on other blocks
+
+        2-body
+            
+            for each block-dimer, form Hamiltonian in subspace, and combine
+            with identity on other blocks
+    """
+    # How many blocks are different between left and right?
+    different = []
+    for bi in range(0,n_blocks):
+        if tb_l.address[bi] != tb_r.address[bi]:
+            different.append(bi)
+    #if len(different) > 2:
+    #    print " Nothing to do, why are we here?"
+    #    exit(-1)
+    
+    Hd  = np.zeros((tb_l.full_dim))
+   
+    #print " Ham block size", H.shape, H_dim_layout
+    Hd.shape = H_dim_layout
+    #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
+    #   target subspace
+
+    if len(different) == 0:
+
+        assert(tb_l.full_dim == tb_r.full_dim)
+        full_dim = tb_l.full_dim
+        #<abcd|H1+H2+H3+H4|abcd>
+        #
+        #   <a|H1|a> Ib Ic Id
+        # + Ia <b|H1|b> Ic Id + etc
+
+        for bi in range(0,n_blocks):
+            Bi = blocks[bi]
+            dim_e = full_dim / tb_l.block_dims[bi] 
+            
+            h1 = Bi.H_ss(tb_l.address[bi],tb_r.address[bi]).diagonal()
+            #h = np.kron(h1,np.eye(dim_e))   
+            h1.shape = (tb_l.block_dims[bi])
+            #h1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
+        
+            tens_inds    = []
+            tens_inds.extend([bi])
+            for bj in range(0,n_blocks):
+                if (bi != bj):
+                    tens_inds.extend([bj])
+                    assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
+                    h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]).diagonal(),axes=0)
+
+            sort_ind = np.argsort(tens_inds)
+           
+            #print Hd.shape, h1.shape
+
+            Hd  += h1.transpose(sort_ind)
+        
+        
+        #   <ab|H12|ab> Ic Id
+        # + <ac|H13|ac> Ib Id
+        # + Ia <bc|H23|bc> Id + etc
+       
+        # do 2body diagonal terms?
+        do_2b_diag = 0
+        if do_2b_diag:
+            print "NYI"
+            exit(-1)
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
+                    Bi = blocks[bi]
+                    Bj = blocks[bj]
+                    dim_e = full_dim / tb_l.block_dims[bi] / tb_l.block_dims[bj]
+            
+                    #build full Hamiltonian on sublattice
+                    h2,s2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+                    h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
+            
+                    #h = np.kron(h12,np.eye(dim_e))   
+                
+                    tens_inds    = []
+                    tens_inds.extend([bi,bj])
+                    tens_inds.extend([bi+n_blocks, bj+n_blocks])
+                    for bk in range(0,n_blocks):
+                        if (bk != bi) and (bk != bj):
+                            tens_inds.extend([bk])
+                            tens_inds.extend([bk+n_blocks])
+                            assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
+                            h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
+                   
+                    sort_ind = np.argsort(tens_inds)
+                   
+                    H  += h2.transpose(sort_ind)
+    
+    
+    Hd = Hd.reshape(tb_l.full_dim)
+    return Hd
+# }}}
+
+def build_tucker_blocked_diagonal(n_blocks,tucker_blocks, lattice_blocks, n_body_order, j12):
+    #{{{
+
+    """
+        s   = <abcd| H | aBcD> v_aBcD
+        
+            = <bd|H24|BD>v_BD I1*v_a I3v_c
+            
+    """
+    dim_tot = 0
+    for ti in sorted(tucker_blocks):
+        tbi = tucker_blocks[ti]
+        dim_tot += tbi.full_dim
+
+
+    Hd = np.zeros((dim_tot))
+
+        
+    for t_l in sorted(tucker_blocks):
+        tb_l = tucker_blocks[t_l]
+        
+        Hd[tb_l.start:tb_l.stop] += build_H_diag(lattice_blocks, tb_l, tb_l, j12)
+
+    return Hd
+    #}}}
+
+
