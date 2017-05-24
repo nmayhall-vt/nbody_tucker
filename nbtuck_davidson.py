@@ -93,7 +93,7 @@ parser.add_argument('-dav_thresh','--dav_thresh', type=int, default=8, help='Thr
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
 parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
-parser.add_argument('-opt','--optimization', type=str, default="None", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
+parser.add_argument('-opt','--optimization', type=str, default="diis", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
 parser.add_argument('-dmit', '--dav_max_iter', type=int, default=20, help='Max iterations for solving for the CI-type coefficients', required=False)
 parser.add_argument('-precond', '--dav_precond', type=int, default=1, help='Use preconditioner?', required=False)
 args = vars(parser.parse_args())
