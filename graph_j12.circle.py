@@ -87,11 +87,6 @@ for fileName in args['infiles']:
 
     layout = g.layout("circle")
 
-    communities = g.community_edge_betweenness(directed=False)
-    clusters = communities.as_clustering()
-   
-    print clusters
-    
     visual_style = {}
     visual_style["edge_curved"] = False 
     visual_style["vertex_size"] = 40

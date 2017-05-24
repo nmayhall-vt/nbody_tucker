@@ -87,7 +87,7 @@ parser.add_argument('-nr','--n_roots', type=int, default="10", help='Number of e
 parser.add_argument('--n_print', type=int, default="10", help='number of states to print', required=False)
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
-parser.add_argument('-mit', '--max_iter', type=int, default=10, help='Max iterations for solving for the compression vectors', required=False)
+parser.add_argument('-mit', '--max_iter', type=int, default=30, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
 parser.add_argument('-dav_thresh','--dav_thresh', type=int, default=8, help='Threshold for supersystem davidson iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
@@ -266,6 +266,36 @@ if n_body_order >= 3:
                 tb.init((bi,bj,bk), lattice_blocks,address,dim_tot)
                 tucker_blocks[3,bi,bj,bk] = tb
                 dim_tot += tb.full_dim
+if n_body_order >= 4:
+    for bi in range(0,n_blocks):
+        for bj in range(bi+1,n_blocks):
+            for bk in range(bj+1,n_blocks):
+                for bl in range(bk+1,n_blocks):
+                    tb = Tucker_Block()
+                    address = np.zeros(n_blocks,dtype=int)
+                    address[bi] = 1
+                    address[bj] = 1
+                    address[bk] = 1
+                    address[bl] = 1
+                    tb.init((bi,bj,bk,bl), lattice_blocks,address,dim_tot)
+                    tucker_blocks[4,bi,bj,bk,bl] = tb
+                    dim_tot += tb.full_dim
+if n_body_order >= 5:
+    for bi in range(0,n_blocks):
+        for bj in range(bi+1,n_blocks):
+            for bk in range(bj+1,n_blocks):
+                for bl in range(bk+1,n_blocks):
+                    for bm in range(bl+1,n_blocks):
+                        tb = Tucker_Block()
+                        address = np.zeros(n_blocks,dtype=int)
+                        address[bi] = 1
+                        address[bj] = 1
+                        address[bk] = 1
+                        address[bl] = 1
+                        address[bm] = 1
+                        tb.init((bi,bj,bk,bl,bm), lattice_blocks,address,dim_tot)
+                        tucker_blocks[5,bi,bj,bk,bl,bm] = tb
+                        dim_tot += tb.full_dim
 
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
