@@ -1,0 +1,74 @@
+$rem
+	exchange 		hf
+	unrestricted		1
+	basis			6-31g	
+	aux_basis		rimp2-vdz
+	scf_guess		core	
+	scf_convergence		8
+	purecart		1111
+	
+	symmetry		0
+	sym_ignore		1
+
+	!correlation		sf-cas
+	!cas_n_spin_flip		1
+	!cas_local		1
+	gui			2
+$end
+
+$development
+	1sf_heis_projection	1
+$end
+
+$molecule
+0 17
+h         -2.51896       -2.61915        2.09844
+h          0.78212        0.78287        1.51341
+h         -2.20246       -0.09369        0.52564
+h          2.54334       -1.43420        0.97807
+h         -0.13444       -3.39674        0.67508
+h          0.49385       -1.77947        3.03101
+h          0.29136       -0.91388       -0.76621
+h         -2.53309       -2.68480       -0.78243
+H         -2.35183       -3.46898       -0.16598
+H         -0.62393       -1.29443       -0.97984
+H         -2.94545       -0.77240        0.64901
+H          2.36223       -0.65020        0.36134
+H          1.20700       -1.06179        2.96599
+H         -1.61000       -2.66422        2.54522
+H          0.78074       -3.01605        0.88891
+H         -0.09799        0.79024        1.01021
+He	10	10	10	
+He	-10	10	10	
+$end
+
+
+@@@
+$rem
+	exchange 		hf
+	unrestricted		0
+	basis			6-31g	
+	aux_basis		rimp2-vdz
+	scf_guess		read	
+	scf_convergence		8
+	purecart		1111
+	
+	symmetry		0
+	sym_ignore		1
+
+	correlation		sf-cas
+	cas_n_spin_flip		1
+	cas_local		1
+	gui			2
+$end
+
+$development
+	1sf_heis_projection	1
+	scf_corresponding_orbs	1
+        heisenberg_n_roots	0
+$end
+
+$molecule
+read
+$end
+
