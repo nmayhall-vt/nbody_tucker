@@ -714,17 +714,12 @@ def build_Hv(blocks,tb_l, tb_r,j12,v):
     #    print " Nothing to do, why are we here?"
     #    exit(-1)
     
-    H  = np.zeros((tb_l.full_dim,tb_r.full_dim))
-    S2 = np.zeros((tb_l.full_dim,tb_r.full_dim))
-   
     n_sig = v.shape[1]  # number of sigma vectors 
 
     Hv  = np.zeros((tb_l.full_dim,n_sig))
     S2v = np.zeros((tb_l.full_dim,n_sig))
 
 
-    H.shape = H_dim_layout
-    S2.shape = H_dim_layout
     #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
     #   target subspace
 
