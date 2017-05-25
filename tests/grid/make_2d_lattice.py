@@ -26,7 +26,7 @@ for i in range(0,m):
                     if ij%2==0 and kl%2==1:
                         J[ij,kl] = -1
                     else:
-                        J[ij,kl] = -1.0/64.0
+                        J[ij,kl] = -1.0/0.5
 print J
 np.savetxt("j12.m",J)
    
