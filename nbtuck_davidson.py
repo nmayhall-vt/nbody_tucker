@@ -336,6 +336,29 @@ if n_body_order >= 7:
                                 tucker_blocks[7,bi,bj,bk,bl,bm,bn,bo] = tb
                                 dim_tot += tb.full_dim
 
+if n_body_order >= 8:
+    for bi in range(0,n_blocks):
+        for bj in range(bi+1,n_blocks):
+            for bk in range(bj+1,n_blocks):
+                for bl in range(bk+1,n_blocks):
+                    for bm in range(bl+1,n_blocks):
+                        for bn in range(bm+1,n_blocks):
+                            for bo in range(bn+1,n_blocks):
+                                for bp in range(bo+1,n_blocks):
+                                    tb = Tucker_Block()
+                                    address = np.zeros(n_blocks,dtype=int)
+                                    address[bi] = 1
+                                    address[bj] = 1
+                                    address[bk] = 1
+                                    address[bl] = 1
+                                    address[bm] = 1
+                                    address[bn] = 1
+                                    address[bo] = 1
+                                    address[bp] = 1
+                                    tb.init((bi,bj,bk,bl,bm,bn,bo,bp), lattice_blocks,address,dim_tot)
+                                    tucker_blocks[8,bi,bj,bk,bl,bm,bn,bo,bp] = tb
+                                    dim_tot += tb.full_dim
+
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
 
