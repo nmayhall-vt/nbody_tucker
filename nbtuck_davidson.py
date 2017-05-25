@@ -312,7 +312,7 @@ if n_body_order >= 6:
                             address[bm] = 1
                             address[bn] = 1
                             tb.init((bi,bj,bk,bl,bm,bn), lattice_blocks,address,dim_tot)
-                            tucker_blocks[5,bi,bj,bk,bl,bm,bn] = tb
+                            tucker_blocks[6,bi,bj,bk,bl,bm,bn] = tb
                             dim_tot += tb.full_dim
 
 for tb in sorted(tucker_blocks):
