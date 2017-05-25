@@ -23,9 +23,10 @@ for i in range(0,m):
             for l in range(0,n):
                 kl = l+k*n
                 if abs(i-k) == 1 and j==l or abs(j-l) == 1 and i==k:
-                    J[ij,kl] = -1
                     if ij%2==0 and kl%2==1:
-                        J[ij,kl] = -1*3
+                        J[ij,kl] = -1
+                    else:
+                        J[ij,kl] = -1.0/64.0
 print J
 np.savetxt("j12.m",J)
    
