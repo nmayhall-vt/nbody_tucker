@@ -541,6 +541,9 @@ for it in range(0,maxiter):
             print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
 
+    if pt == 2:
+        print " Compute PT2 corrections: NYI"
+
     energy_per_iter.append(l[ts]) 
     if it > 0:
         if abs(l[ts]-energy_per_iter[it-1]) < diis_thresh:
