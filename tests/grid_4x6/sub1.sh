@@ -15,6 +15,6 @@ for nb in {2..8}; do
 done
 
 for i in $( ls j12.*.m ); do
-	echo Submitting: $i
-	../../nbtuck_davidson.py -np 4 4 4 4 4 4 4 4 4 4 4 4 -dmit 30 -ju ev -j j12.00.m -nr 1 -mit 1 > ${i::-2}.exact.out  
+	#echo Submitting: $i
+	#../../nbtuck_davidson.py -np 4 4 4 4 4 4 4 4 4 4 4 4 -dmit 30 -ju ev -j j12.00.m -nr 1 -mit 1 > ${i::-2}.exact.out  
 done
