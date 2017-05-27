@@ -90,7 +90,7 @@ parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', he
 parser.add_argument('-mit', '--max_iter', type=int, default=30, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
 parser.add_argument('-dav_thresh','--dav_thresh', type=int, default=8, help='Threshold for supersystem davidson iterations', required=False)
-parser.add_argument('-pt','--pt_order', type=int, default=2, help='PT correction order ?', required=False)
+parser.add_argument('-pt','--pt_order', type=int, default=0, help='PT correction order ?', required=False)
 parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
 parser.add_argument('-opt','--optimization', type=str, default="diis", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
@@ -232,6 +232,7 @@ tb_0.init((-1), lattice_blocks,address_0, dim_tot)
 dim_tot += tb_0.full_dim
 
 tucker_blocks = {}
+tucker_blocks_pt = {}
 tucker_blocks[0,-1] = tb_0 
 
 print 
@@ -359,6 +360,76 @@ if n_body_order >= 8:
                                     tucker_blocks[8,bi,bj,bk,bl,bm,bn,bo,bp] = tb
                                     dim_tot += tb.full_dim
 
+#
+#   Prepare tucker_blocks for perturbation
+dim_tot_pt = 0
+pt_order = args['pt_order']
+if pt_order > 1:
+    if n_body_order == 0:
+        for bi in range(0,n_blocks):
+            tb = Tucker_Block()
+            address = np.zeros(n_blocks,dtype=int)
+            address[bi] = 1
+            tb.init((bi), lattice_blocks,address, dim_tot_pt)
+            tucker_blocks_pt[1,bi] = tb
+            dim_tot_pt += tb.full_dim
+    if n_body_order == 0 or n_body_order == 1:
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                tb = Tucker_Block()
+                address = np.zeros(n_blocks,dtype=int)
+                address[bi] = 1
+                address[bj] = 1
+                tb.init((bi,bj), lattice_blocks,address,dim_tot_pt)
+                tucker_blocks_pt[2,bi,bj] = tb
+                dim_tot_pt += tb.full_dim
+    if n_body_order == 1 or n_body_order == 2:
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                for bk in range(bj+1,n_blocks):
+                    tb = Tucker_Block()
+                    address = np.zeros(n_blocks,dtype=int)
+                    address[bi] = 1
+                    address[bj] = 1
+                    address[bk] = 1
+                    tb.init((bi,bj,bk), lattice_blocks,address,dim_tot_pt)
+                    tucker_blocks_pt[3,bi,bj,bk] = tb
+                    dim_tot_pt += tb.full_dim
+    if n_body_order == 2 or n_body_order == 3:
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                for bk in range(bj+1,n_blocks):
+                    for bl in range(bk+1,n_blocks):
+                        tb = Tucker_Block()
+                        address = np.zeros(n_blocks,dtype=int)
+                        address[bi] = 1
+                        address[bj] = 1
+                        address[bk] = 1
+                        address[bl] = 1
+                        tb.init((bi,bj,bk,bl), lattice_blocks,address,dim_tot_pt)
+                        tucker_blocks_pt[4,bi,bj,bk,bl] = tb
+                        dim_tot_pt += tb.full_dim
+    if n_body_order == 3 or n_body_order == 4:
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                for bk in range(bj+1,n_blocks):
+                    for bl in range(bk+1,n_blocks):
+                        for bm in range(bl+1,n_blocks):
+                            tb = Tucker_Block()
+                            address = np.zeros(n_blocks,dtype=int)
+                            address[bi] = 1
+                            address[bj] = 1
+                            address[bk] = 1
+                            address[bl] = 1
+                            address[bm] = 1
+                            tb.init((bi,bj,bk,bl,bm), lattice_blocks,address,dim_tot_pt)
+                            tucker_blocks_pt[5,bi,bj,bk,bl,bm] = tb
+                            dim_tot_pt += tb.full_dim
+    if n_body_order >= 3:
+        print "n_body_order > 3 NYI for PT2"
+        exit(-1)
+
+
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
 
@@ -405,6 +476,7 @@ for it in range(0,maxiter):
     else:
         dav.vec_curr = last_vectors 
     dav.max_iter = args['dav_max_iter']
+
     for dit in range(0,dav.max_iter):
         #dav.form_sigma()
        
@@ -427,14 +499,24 @@ for it in range(0,maxiter):
             break
     if dav.converged():
         print " Davidson Converged"
-        dav.print_iteration()
     else:
         print " Davidson Not Converged"
-        dav.print_iteration()
     print 
 
-    l = dav.eigenvalues()
-    v = dav.eigenvectors()
+    l = np.array([])
+    v = np.array([])
+    if dav.max_iter == -1 and args['direct'] == 0:
+        print 
+        print " Diagonalizing explicitly:"
+
+        if H.shape[0] > 3000:
+            l,v = scipy.sparse.linalg.eigsh(H, k=args["n_roots"] )
+        else:
+            l,v = np.linalg.eigh(H)
+    else:
+        # get eigen stuff from davidson
+        l = dav.eigenvalues()
+        v = dav.eigenvectors()
 
     last_vectors = cp.deepcopy(v)
 
@@ -452,7 +534,7 @@ for it in range(0,maxiter):
     hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, v) 
     S2 = v.T.dot(s2v)
     l = v.T.dot(hv).diagonal()
-    print "S2", S2.shape
+    print
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(l):
         if si<args['n_print']:
@@ -505,9 +587,6 @@ for it in range(0,maxiter):
                     u2 = Bi.v_ss(Tb2.address[bi])
                     brdm_tmp = u1.dot(brdm_tmp).dot(u2.T)
                     brdms[bi] += brdm_tmp + brdm_tmp.T 
-    
-    for b in brdms:
-        print "trace(b): %12.8f" % np.trace(brdms[b])
 
 
     if 0:
@@ -559,7 +638,7 @@ for it in range(0,maxiter):
             error_vector = proj_p.dot(brdm_curr) - (brdm_curr).dot(proj_p)
             error_vector.shape = (error_vector.shape[0]*error_vector.shape[1],1)
            
-            print " Dimension of Error Vector matrix: ", Bi.diis_vecs.shape
+            #print "   Dimension of Error Vector matrix: ", Bi.diis_vecs.shape
             if Bi.diis_vecs.shape[0] == 0:
                 Bi.diis_vecs = error_vector
             else:
