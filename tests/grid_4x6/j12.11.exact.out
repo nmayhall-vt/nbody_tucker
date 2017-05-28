@@ -126,4 +126,75 @@
   0.50000000
   0.50000000
 
- Prepare Lat
+ Prepare Lattice Blocks:
+[4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4] [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+ Block 0   :    0,    1 : [4, 0, 0]
+ Block 1   :    2,    3 : [4, 0, 0]
+ Block 2   :    4,    5 : [4, 0, 0]
+ Block 3   :    6,    7 : [4, 0, 0]
+ Block 4   :    8,    9 : [4, 0, 0]
+ Block 5   :   10,   11 : [4, 0, 0]
+ Block 6   :   12,   13 : [4, 0, 0]
+ Block 7   :   14,   15 : [4, 0, 0]
+ Block 8   :   16,   17 : [4, 0, 0]
+ Block 9   :   18,   19 : [4, 0, 0]
+ Block 10  :   20,   21 : [4, 0, 0]
+ Block 11  :   22,   23 : [4, 0, 0]
+
+ Prepare Tucker blocks:
+   0   0   0   0   0   0   0   0   0   0   0   0 ::    4   4   4   4   4   4   4   4   4   4   4   4 :: 16777216  Range=        0:16777216
+
+ Solve for supersystem eigenvalues: Dimension =  16777216
+  Davidson Iter    1  |  Vecs:   2 :  |      -18.00000000  |  1.8e+02 
+  Davidson Iter    2  |  Vecs:   3 :  |     -230.90241938  |  1.8e+02 
+  Davidson Iter    3  |  Vecs:   4 :  |     -383.24087081  |  1.7e+02 
+  Davidson Iter    4  |  Vecs:   5 :  |     -496.57047655  |  1.6e+02 
+  Davidson Iter    5  |  Vecs:   6 :  |     -580.83851178  |  1.4e+02 
+  Davidson Iter    6  |  Vecs:   7 :  |     -642.53027090  |  1.2e+02 
+  Davidson Iter    7  |  Vecs:   8 :  |     -686.86986768  |  1.0e+02 
+  Davidson Iter    8  |  Vecs:   9 :  |     -717.59031290  |  8.5e+01 
+  Davidson Iter    9  |  Vecs:  10 :  |     -737.36406027  |  6.6e+01 
+  Davidson Iter   10  |  Vecs:  11 :  |     -748.66800183  |  4.7e+01 
+  Davidson Iter   11  |  Vecs:  12 :  |     -753.87574230  |  2.9e+01 
+  Davidson Iter   12  |  Vecs:  13 :  |     -755.70487740  |  1.6e+01 
+  Davidson Iter   13  |  Vecs:  14 :  |     -756.25468149  |  8.8e+00 
+  Davidson Iter   14  |  Vecs:  15 :  |     -756.41494183  |  4.7e+00 
+  Davidson Iter   15  |  Vecs:  16 :  |     -756.46056798  |  2.5e+00 
+  Davidson Iter   16  |  Vecs:  17 :  |     -756.47344000  |  1.3e+00 
+  Davidson Iter   17  |  Vecs:  18 :  |     -756.47730860  |  7.7e-01 
+  Davidson Iter   18  |  Vecs:  19 :  |     -756.47864562  |  4.7e-01 
+  Davidson Iter   19  |  Vecs:  20 :  |     -756.47913798  |  2.7e-01 
+  Davidson Iter   20  |  Vecs:  21 :  |     -756.47930172  |  1.5e-01 
+  Davidson Iter   21  |  Vecs:  22 :  |     -756.47934969  |  8.6e-02 
+  Davidson Iter   22  |  Vecs:  23 :  |     -756.47936535  |  5.0e-02 
+  Davidson Iter   23  |  Vecs:  24 :  |     -756.47937052  |  3.0e-02 
+  Davidson Iter   24  |  Vecs:  25 :  |     -756.47937243  |  1.8e-02 
+  Davidson Iter   25  |  Vecs:  26 :  |     -756.47937314  |  1.1e-02 
+  Davidson Iter   26  |  Vecs:  27 :  |     -756.47937341  |  6.7e-03 
+  Davidson Iter   27  |  Vecs:  28 :  |     -756.47937351  |  3.9e-03 
+  Davidson Iter   28  |  Vecs:  29 :  |     -756.47937355  |  2.1e-03 
+  Davidson Iter   29  |  Vecs:  30 :  |     -756.47937355  |  1.1e-03 
+  Davidson Iter   30  |  Vecs:  31 :  |     -756.47937356  |  5.9e-04 
+ Davidson Not Converged
+  Davidson Iter   30  |  Vecs:  31 :  |     -756.47937356  |  5.9e-04 
+
+S2 (1, 1)
+ State              Energy          Relative          <S2>
+     0 =     -756.47937356        0.00000000    0.00000000
+
+ Compute Block Reduced Density Matrices (BRDM):
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+trace(b):   1.00000000
+
+ Compute Eigenvalues of BRDMs:
+ Dimension of Error Vector matrix:  (0,)
