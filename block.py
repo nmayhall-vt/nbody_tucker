@@ -1194,6 +1194,8 @@ def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
 
     n_roots = v.shape[1]
     e2 = np.zeros((n_roots))
+    """
+    #This is not correct
     for t_l in sorted(tucker_blocks_pt):
         tb_l = tucker_blocks_pt[t_l]
         D_X = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
@@ -1211,6 +1213,40 @@ def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
                 #e2[s] += Hv.T.dot(np.diag(dx)).dot(Hv)
                 DHv = np.multiply(np.reciprocal(l[s]-D_X), Hv[:,s])
                 e2[s] += Hv[:,s].T.dot(DHv)
+
+    print " check"
+    """
+
+    """
+    e2 = sum_ab(in A) sum_x(in X)  c_as <a|H|x> d_x <x|H|b> c_bs
+    """
+    dim_tot_X = 0
+    dim_tot_A = 0
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        dim_tot_X += tb_l.full_dim
+    for t_l in sorted(tucker_blocks):
+        tb_l = tucker_blocks[t_l]
+        dim_tot_A += tb_l.full_dim
+    
+    H_Xs = np.zeros((dim_tot_X, n_roots))
+    D_X = np.zeros((dim_tot_X))
+
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        D_X[tb_l.start:tb_l.stop] = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
+
+        for t_r in sorted(tucker_blocks):
+            tb_r = tucker_blocks[t_r]
+
+            #H_XA[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop],tmp = build_H(lattice_blocks, tb_l, tb_r, j12)
+            hv,s2v = build_Hv(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
+            H_Xs[tb_l.start:tb_l.stop,:] += hv
+
+    for s in range(0, n_roots):
+        dx = 1/(l[s]-D_X)
+        DHv = np.multiply(dx, H_Xs[:,s])
+        e2[s] = H_Xs[:,s].T.dot(DHv)
 
     return e2
 
