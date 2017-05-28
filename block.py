@@ -1030,10 +1030,12 @@ def build_tucker_blocked_sigma(n_blocks,tucker_blocks, lattice_blocks, n_body_or
 
 
 
-def build_H_diag(blocks,tb_l, tb_r,j12):
+def build_H_diag(blocks,tb_l, tb_r,j12, do_2b_diag):
   # {{{
     """
     Build the Hamiltonian between two tensor blocks, tb_l and tb_r, without ever constructing a full hilbert space
+
+    do_2b_diag: should the 2-block contributions to the diagonal be computed?
     """
 
     n_blocks = len(blocks)
@@ -1108,10 +1110,9 @@ def build_H_diag(blocks,tb_l, tb_r,j12):
         # + Ia <bc|H23|bc> Id + etc
        
         # do 2body diagonal terms?
-        do_2b_diag = 0
         if do_2b_diag:
-            print "NYI"
-            exit(-1)
+            #print "NYI"
+            #exit(-1)
             for bi in range(0,n_blocks):
                 for bj in range(bi+1,n_blocks):
                     Bi = blocks[bi]
@@ -1120,30 +1121,29 @@ def build_H_diag(blocks,tb_l, tb_r,j12):
             
                     #build full Hamiltonian on sublattice
                     h2,s2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-                    h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
+                    h2 = h2.diagonal()
+                    h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj])
             
                     #h = np.kron(h12,np.eye(dim_e))   
                 
                     tens_inds    = []
                     tens_inds.extend([bi,bj])
-                    tens_inds.extend([bi+n_blocks, bj+n_blocks])
                     for bk in range(0,n_blocks):
                         if (bk != bi) and (bk != bj):
                             tens_inds.extend([bk])
-                            tens_inds.extend([bk+n_blocks])
                             assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
-                            h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-                   
+                            h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]).diagonal(),axes=0)
+                 
                     sort_ind = np.argsort(tens_inds)
                    
-                    H  += h2.transpose(sort_ind)
+                    Hd  += h2.transpose(sort_ind)
     
     
     Hd = Hd.reshape(tb_l.full_dim)
     return Hd
 # }}}
 
-def build_tucker_blocked_diagonal(n_blocks,tucker_blocks, lattice_blocks, n_body_order, j12):
+def build_tucker_blocked_diagonal(n_blocks,tucker_blocks, lattice_blocks, n_body_order, j12, do_2b_diag):
     #{{{
 
     """
@@ -1164,37 +1164,53 @@ def build_tucker_blocked_diagonal(n_blocks,tucker_blocks, lattice_blocks, n_body
     for t_l in sorted(tucker_blocks):
         tb_l = tucker_blocks[t_l]
         
-        Hd[tb_l.start:tb_l.stop] += build_H_diag(lattice_blocks, tb_l, tb_l, j12)
+        Hd[tb_l.start:tb_l.stop] += build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
 
     return Hd
     #}}}
 
 
-def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12):
+def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_type):
     """
 
         E(2) = v_sA H_AX [D_XX - E_s^0]^-1 H_XA v_As
 
              = v_sA H_AX
+
+        pt_type: mp or en
+                
+                 mp uses H1 as zeroth-order Hamiltonian
+                 en uses the diagonal of H for zeroth-order
     """
+    do_2b_diag = 0
+
+    if pt_type == "mp":
+        do_2b_diag = 0
+    elif pt_type == "en":
+        do_2b_diag = 1
+    else:
+        print " Bad value for pt_type"
+        exit(-1)
+
     n_roots = v.shape[1]
     e2 = np.zeros((n_roots))
     for t_l in sorted(tucker_blocks_pt):
         tb_l = tucker_blocks_pt[t_l]
-        D_X = build_H_diag(lattice_blocks, tb_l, tb_l, j12)
+        D_X = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
 
         for t_r in sorted(tucker_blocks):
             tb_r = tucker_blocks[t_r]
 
             H_XA,s2 = build_H(lattice_blocks, tb_l, tb_r, j12)
+            
+            Hv = H_XA.dot(v[tb_r.start:tb_r.stop,:])
            
             for s in range(0, n_roots):
-                Hv = H_XA.dot(v[tb_r.start:tb_r.stop,s])
 
                 #dx = 1/(l[s]-D_X)
                 #e2[s] += Hv.T.dot(np.diag(dx)).dot(Hv)
-                DHv = np.multiply(np.reciprocal(l[s]-D_X), Hv)
-                e2[s] += Hv.T.dot(DHv)
+                DHv = np.multiply(np.reciprocal(l[s]-D_X), Hv[:,s])
+                e2[s] += Hv[:,s].T.dot(DHv)
 
     return e2
 

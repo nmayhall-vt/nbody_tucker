@@ -94,7 +94,8 @@ class Davidson:
             v_n = v[:,n]
             r_n = (sig - l_n*vec).dot(v_n);
             b_n = np.linalg.norm(r_n)
-            r_n = r_n/b_n
+            if b_n > 1e-15:
+                r_n = r_n/b_n
             res_vals.append(b_n)
             
             r_n.shape = (r_n.shape[0],1)

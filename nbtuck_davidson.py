@@ -447,7 +447,13 @@ if pt_order > 1:
         print "n_body_order > 4 NYI for PT2"
         exit(-1)
 
+print
+print " Configurations defining the variational space"
+for tb in sorted(tucker_blocks):
+    print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
 
+print 
+print " Configurations defining the perturbative space"
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
 
@@ -464,6 +470,8 @@ last_vectors = np.array([])  # used to detect root flipping
 
 diis_thresh = 1.0*np.power(10.0,-float(args['diis_thresh']))
 dav_thresh = 1.0*np.power(10.0,-float(args['dav_thresh']))
+
+args['n_roots'] = min(args['n_roots'], dim_tot)
 
 diis_err_vecs = {}
 diis_frag_grams = {}
@@ -507,7 +515,7 @@ for it in range(0,maxiter):
             dav.sig_curr = hv
     
         if args['dav_precond']:
-            hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
+            hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, 0) 
             dav.set_preconditioner(hv_diag)
         #dav.set_preconditioner(H.diagonal())
         
@@ -563,7 +571,8 @@ for it in range(0,maxiter):
         print
         print " Compute State-specific PT2 corrections: "
         n_roots = args['n_roots']
-        e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12)
+        pt_type = args['pt_type']
+        e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
         print
         print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
         for i in range(0,n_roots):
