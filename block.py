@@ -1170,3 +1170,33 @@ def build_tucker_blocked_diagonal(n_blocks,tucker_blocks, lattice_blocks, n_body
     #}}}
 
 
+def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12):
+    """
+
+        E(2) = v_sA H_AX [D_XX - E_s^0]^-1 H_XA v_As
+
+             = v_sA H_AX
+    """
+    n_roots = v.shape[1]
+    e2 = np.zeros((n_roots))
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        D_X = build_H_diag(lattice_blocks, tb_l, tb_l, j12)
+
+        for t_r in sorted(tucker_blocks):
+            tb_r = tucker_blocks[t_r]
+
+            H_XA,s2 = build_H(lattice_blocks, tb_l, tb_r, j12)
+           
+            for s in range(0, n_roots):
+                Hv = H_XA.dot(v[tb_r.start:tb_r.stop,s])
+
+                #dx = 1/(l[s]-D_X)
+                #e2[s] += Hv.T.dot(np.diag(dx)).dot(Hv)
+                DHv = np.multiply(np.reciprocal(l[s]-D_X), Hv)
+                e2[s] += Hv.T.dot(DHv)
+
+    return e2
+
+                
+

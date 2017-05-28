@@ -425,8 +425,26 @@ if pt_order > 1:
                             tb.init((bi,bj,bk,bl,bm), lattice_blocks,address,dim_tot_pt)
                             tucker_blocks_pt[5,bi,bj,bk,bl,bm] = tb
                             dim_tot_pt += tb.full_dim
-    if n_body_order >= 3:
-        print "n_body_order > 3 NYI for PT2"
+    if n_body_order == 4 or n_body_order == 5:
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                for bk in range(bj+1,n_blocks):
+                    for bl in range(bk+1,n_blocks):
+                        for bm in range(bl+1,n_blocks):
+                            for bn in range(bm+1,n_blocks):
+                                tb = Tucker_Block()
+                                address = np.zeros(n_blocks,dtype=int)
+                                address[bi] = 1
+                                address[bj] = 1
+                                address[bk] = 1
+                                address[bl] = 1
+                                address[bm] = 1
+                                address[bn] = 1
+                                tb.init((bi,bj,bk,bl,bm,bn), lattice_blocks,address,dim_tot_pt)
+                                tucker_blocks_pt[6,bi,bj,bk,bl,bm,bn] = tb
+                                dim_tot_pt += tb.full_dim
+    if n_body_order >= 5:
+        print "n_body_order > 4 NYI for PT2"
         exit(-1)
 
 
@@ -542,7 +560,16 @@ for it in range(0,maxiter):
 
 
     if pt_order == 2:
-        print " Compute PT2 corrections: NYI"
+        print
+        print " Compute State-specific PT2 corrections: "
+        n_roots = args['n_roots']
+        e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12)
+        print
+        print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
+        for i in range(0,n_roots):
+            e = l[i] + e2[i]
+            e0 = l[0] + e2[0]
+            print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
 
     energy_per_iter.append(l[ts]) 
     if it > 0:
