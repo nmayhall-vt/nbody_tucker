@@ -115,7 +115,7 @@ for fileName in args['infiles']:
     visual_style["edge_curved"] = False 
     visual_style["vertex_size"] = 40
     visual_style["vertex_label"] = g.es["name"]
-    visual_style["vertex_label_color"] = 'white'
+    #visual_style["vertex_label_color"] = 'white'
     #visual_style["edge_width"] = 20 
     visual_style["edge_width"] = g.es['weight'] 
     visual_style["edge_color"] = edge_colors 

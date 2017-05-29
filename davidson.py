@@ -112,7 +112,7 @@ class Davidson:
                 if (v_new.shape[1] > 0):
                     r_n = r_n - v_new.dot(np.dot(v_new.T,r_n))
                 b_n_p = np.linalg.norm(r_n)
-                if (b_n / b_n_p > self.thresh*1e-1):
+                if (b_n / b_n_p > 1e-15):
                     r_n = r_n / b_n_p
                     v_new = np.hstack((v_new, r_n))
 
