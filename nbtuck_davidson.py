@@ -452,10 +452,10 @@ print " Configurations defining the variational space"
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
 
-print 
-print " Configurations defining the perturbative space"
-for tb in sorted(tucker_blocks):
-    print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
+#print 
+#print " Configurations defining the perturbative space"
+#for tb in sorted(tucker_blocks_pt):
+#    print tucker_blocks_pt[tb], " Range= %8i:%-8i" %( tucker_blocks_pt[tb].start, tucker_blocks_pt[tb].stop)
 
 
 
