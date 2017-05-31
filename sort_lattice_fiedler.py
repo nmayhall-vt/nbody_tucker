@@ -15,12 +15,20 @@ args = vars(parser.parse_args())
 
 fv_i = args['vector']
 
+#fv_e = np.zeros((24,24)) 
+#ifile_count = 0
+fv_e = []
 for fileName in args['infiles']:
     print 
     print " Creating Laplacian matrix from exchange coupling constants:"
 
     Ain = np.loadtxt(fileName)
     A = abs(Ain)
+    Amax = np.max(A)
+    for i in range(0,A.shape[0]):
+        for j in range(0,A.shape[0]):
+            #A[i,j] = pow(10,A[i,j]-Amax) 
+            pass
 
     n_sites = A.shape[0]
 
@@ -48,7 +56,7 @@ for fileName in args['infiles']:
     print sort_ind+1
     
     Asorted = Ain[sort_ind,:][:,sort_ind]
-    np.savetxt(fileName+".sorted.m",Asorted)
+    #np.savetxt(fileName+".sorted.m",Asorted)
    
     
     print
@@ -56,10 +64,17 @@ for fileName in args['infiles']:
     for i in range(l.shape[0]):
         print " %4i = %18.8f" %(i,l[i])
 
+   
+    #for i in range(l.shape[0]):
+    #    fv_e[i,file_count]
+    #file_count += 1
+    fv_e.append(l)
+
     print
     print " Fiedler Vector: ", l[fv_i]
     for i in range(fv.shape[0]):
         print " %4i = %18.8f" %(i,fv[i])
 
 
+np.savetxt("graph_eigenvalues.m",np.array(fv_e))
 

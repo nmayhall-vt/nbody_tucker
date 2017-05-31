@@ -1251,4 +1251,11 @@ def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
     return e2
 
                 
+def check_connected(Bi, Bj, j12):
+    for si in Bi.sites:
+        for sj in Bj.sites:
+            if abs(j12[si,sj]) > 1e-12:
+                return 1
+    return 0
+                
 

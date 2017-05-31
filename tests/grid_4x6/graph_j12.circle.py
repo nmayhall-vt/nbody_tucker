@@ -12,26 +12,10 @@ parser = argparse.ArgumentParser(description='fill this out',
 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument('infiles', nargs='+', help='List of input files to process')
-parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='File containing vector of block sizes', required=False)
 args = vars(parser.parse_args())
 
 print igraph.__version__
 
-
-blocks = np.loadtxt(args['blocks']).astype(int)
-n_blocks = len(blocks)
-    
-if len(blocks.shape) == 1:
-    print 'blocks',blocks
-    
-    blocks.shape = (1,len(blocks.transpose()))
-    n_blocks = len(blocks)
-
-block_list = {}
-for bi in range(0,n_blocks):
-    block_list[str(blocks[bi,:])] = 1
-    print str(blocks[bi,:])
-print block_list
 
 relative = 0
 file_idx = 0
@@ -56,9 +40,6 @@ for fileName in args['infiles']:
         labels.append(i+1)
         for j in range(i+1,N):
             if abs(edges[i,j]) >= 1E-5:
-
-                # only add edges inside of blocks
-                #todo
                 g.add_edge(i,j)
                 weights.append(edges[i,j])
             #weights.append(edges[i,j] * abs(edges[i,j]))
@@ -77,16 +58,6 @@ for fileName in args['infiles']:
     #visual_style["edge_width"] = [1 + 2 * int(is_formal) for is_formal in g.es["is_formal"]]
     
     edge_colors = []
-    
-    #g.delete_edges(0,1)
-    #g.delete_edges(2,3)
-    layout = g.layout("circle")
-    layout = g.layout("kk")
-    layout = g.layout("fr")
-    layout = g.layout("grid", width=6)
-    
-    #g.add_edge(0,1)
-    #g.add_edge(2,3)
     
     g.es["weight"] = 30*np.abs(weights)/np.max(np.abs(weights))
     for w in weights:
@@ -111,11 +82,14 @@ for fileName in args['infiles']:
     #rt2 = 3
     #l = [(0,0),(rt2,rt2),(7,rt2),(rt2+7,0),(14,0),(rt2+14,rt2),(21,rt2),(rt2+21,0)]
 
+    layout = g.layout("circle")
+    layout = g.layout("grid", width=6)
+
     visual_style = {}
     visual_style["edge_curved"] = False 
     visual_style["vertex_size"] = 40
     visual_style["vertex_label"] = g.es["name"]
-    #visual_style["vertex_label_color"] = 'white'
+    visual_style["vertex_label_color"] = 'white'
     #visual_style["edge_width"] = 20 
     visual_style["edge_width"] = g.es['weight'] 
     visual_style["edge_color"] = edge_colors 
