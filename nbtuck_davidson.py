@@ -243,8 +243,9 @@ if n_body_order >= 1:
         address = np.zeros(n_blocks,dtype=int)
         address[bi] = 1
         tb.init((bi), lattice_blocks,address, dim_tot)
-        tucker_blocks[1,bi] = tb
-        dim_tot += tb.full_dim
+        if tb.start < tb.stop:
+            tucker_blocks[1,bi] = tb
+            dim_tot += tb.full_dim
 if n_body_order >= 2:
     for bi in range(0,n_blocks):
         for bj in range(bi+1,n_blocks):
@@ -253,8 +254,9 @@ if n_body_order >= 2:
             address[bi] = 1
             address[bj] = 1
             tb.init((bi,bj), lattice_blocks,address,dim_tot)
-            tucker_blocks[2,bi,bj] = tb
-            dim_tot += tb.full_dim
+            if tb.start < tb.stop:
+                tucker_blocks[2,bi,bj] = tb
+                dim_tot += tb.full_dim
 if n_body_order >= 3:
     for bi in range(0,n_blocks):
         for bj in range(bi+1,n_blocks):
@@ -265,8 +267,9 @@ if n_body_order >= 3:
                 address[bj] = 1
                 address[bk] = 1
                 tb.init((bi,bj,bk), lattice_blocks,address,dim_tot)
-                tucker_blocks[3,bi,bj,bk] = tb
-                dim_tot += tb.full_dim
+                if tb.start < tb.stop:
+                    tucker_blocks[3,bi,bj,bk] = tb
+                    dim_tot += tb.full_dim
 if n_body_order >= 4:
     for bi in range(0,n_blocks):
         for bj in range(bi+1,n_blocks):
@@ -279,8 +282,9 @@ if n_body_order >= 4:
                     address[bk] = 1
                     address[bl] = 1
                     tb.init((bi,bj,bk,bl), lattice_blocks,address,dim_tot)
-                    tucker_blocks[4,bi,bj,bk,bl] = tb
-                    dim_tot += tb.full_dim
+                    if tb.start < tb.stop:
+                        tucker_blocks[4,bi,bj,bk,bl] = tb
+                        dim_tot += tb.full_dim
 if n_body_order >= 5:
     for bi in range(0,n_blocks):
         for bj in range(bi+1,n_blocks):
@@ -295,8 +299,9 @@ if n_body_order >= 5:
                         address[bl] = 1
                         address[bm] = 1
                         tb.init((bi,bj,bk,bl,bm), lattice_blocks,address,dim_tot)
-                        tucker_blocks[5,bi,bj,bk,bl,bm] = tb
-                        dim_tot += tb.full_dim
+                        if tb.start < tb.stop:
+                            tucker_blocks[5,bi,bj,bk,bl,bm] = tb
+                            dim_tot += tb.full_dim
 if n_body_order >= 6:
     for bi in range(0,n_blocks):
         for bj in range(bi+1,n_blocks):
@@ -313,8 +318,9 @@ if n_body_order >= 6:
                             address[bm] = 1
                             address[bn] = 1
                             tb.init((bi,bj,bk,bl,bm,bn), lattice_blocks,address,dim_tot)
-                            tucker_blocks[6,bi,bj,bk,bl,bm,bn] = tb
-                            dim_tot += tb.full_dim
+                            if tb.start < tb.stop:
+                                tucker_blocks[6,bi,bj,bk,bl,bm,bn] = tb
+                                dim_tot += tb.full_dim
 
 if n_body_order >= 7:
     for bi in range(0,n_blocks):
@@ -334,8 +340,9 @@ if n_body_order >= 7:
                                 address[bn] = 1
                                 address[bo] = 1
                                 tb.init((bi,bj,bk,bl,bm,bn,bo), lattice_blocks,address,dim_tot)
-                                tucker_blocks[7,bi,bj,bk,bl,bm,bn,bo] = tb
-                                dim_tot += tb.full_dim
+                                if tb.start < tb.stop:
+                                    tucker_blocks[7,bi,bj,bk,bl,bm,bn,bo] = tb
+                                    dim_tot += tb.full_dim
 
 if n_body_order >= 8:
     for bi in range(0,n_blocks):
@@ -357,8 +364,9 @@ if n_body_order >= 8:
                                     address[bo] = 1
                                     address[bp] = 1
                                     tb.init((bi,bj,bk,bl,bm,bn,bo,bp), lattice_blocks,address,dim_tot)
-                                    tucker_blocks[8,bi,bj,bk,bl,bm,bn,bo,bp] = tb
-                                    dim_tot += tb.full_dim
+                                    if tb.start < tb.stop:
+                                        tucker_blocks[8,bi,bj,bk,bl,bm,bn,bo,bp] = tb
+                                        dim_tot += tb.full_dim
 
 #
 #   Prepare tucker_blocks for perturbation
@@ -371,8 +379,9 @@ if pt_order > 1:
             address = np.zeros(n_blocks,dtype=int)
             address[bi] = 1
             tb.init((bi), lattice_blocks,address, dim_tot_pt)
-            tucker_blocks_pt[1,bi] = tb
-            dim_tot_pt += tb.full_dim
+            if tb.start < tb.stop:
+                tucker_blocks_pt[1,bi] = tb
+                dim_tot_pt += tb.full_dim
     if n_body_order == 0 or n_body_order == 1:
         for bi in range(0,n_blocks):
             for bj in range(bi+1,n_blocks):
@@ -381,8 +390,9 @@ if pt_order > 1:
                 address[bi] = 1
                 address[bj] = 1
                 tb.init((bi,bj), lattice_blocks,address,dim_tot_pt)
-                tucker_blocks_pt[2,bi,bj] = tb
-                dim_tot_pt += tb.full_dim
+                if tb.start < tb.stop:
+                    tucker_blocks_pt[2,bi,bj] = tb
+                    dim_tot_pt += tb.full_dim
     if n_body_order == 1 or n_body_order == 2:
         for bi in range(0,n_blocks):
             for bj in range(bi+1,n_blocks):
@@ -393,8 +403,9 @@ if pt_order > 1:
                     address[bj] = 1
                     address[bk] = 1
                     tb.init((bi,bj,bk), lattice_blocks,address,dim_tot_pt)
-                    tucker_blocks_pt[3,bi,bj,bk] = tb
-                    dim_tot_pt += tb.full_dim
+                    if tb.start < tb.stop:
+                        tucker_blocks_pt[3,bi,bj,bk] = tb
+                        dim_tot_pt += tb.full_dim
     if n_body_order == 2 or n_body_order == 3:
         for bi in range(0,n_blocks):
             for bj in range(bi+1,n_blocks):
@@ -407,8 +418,9 @@ if pt_order > 1:
                         address[bk] = 1
                         address[bl] = 1
                         tb.init((bi,bj,bk,bl), lattice_blocks,address,dim_tot_pt)
-                        tucker_blocks_pt[4,bi,bj,bk,bl] = tb
-                        dim_tot_pt += tb.full_dim
+                        if tb.start < tb.stop:
+                            tucker_blocks_pt[4,bi,bj,bk,bl] = tb
+                            dim_tot_pt += tb.full_dim
     if n_body_order == 3 or n_body_order == 4:
         for bi in range(0,n_blocks):
             for bj in range(bi+1,n_blocks):
@@ -423,8 +435,9 @@ if pt_order > 1:
                             address[bl] = 1
                             address[bm] = 1
                             tb.init((bi,bj,bk,bl,bm), lattice_blocks,address,dim_tot_pt)
-                            tucker_blocks_pt[5,bi,bj,bk,bl,bm] = tb
-                            dim_tot_pt += tb.full_dim
+                            if tb.start < tb.stop:
+                                tucker_blocks_pt[5,bi,bj,bk,bl,bm] = tb
+                                dim_tot_pt += tb.full_dim
     if n_body_order == 4 or n_body_order == 5:
         for bi in range(0,n_blocks):
             for bj in range(bi+1,n_blocks):
@@ -441,8 +454,9 @@ if pt_order > 1:
                                 address[bm] = 1
                                 address[bn] = 1
                                 tb.init((bi,bj,bk,bl,bm,bn), lattice_blocks,address,dim_tot_pt)
-                                tucker_blocks_pt[6,bi,bj,bk,bl,bm,bn] = tb
-                                dim_tot_pt += tb.full_dim
+                                if tb.start < tb.stop:
+                                    tucker_blocks_pt[6,bi,bj,bk,bl,bm,bn] = tb
+                                    dim_tot_pt += tb.full_dim
     if n_body_order >= 5:
         print "n_body_order > 4 NYI for PT2"
         exit(-1)
@@ -736,17 +750,18 @@ for it in range(0,maxiter):
         vq = vx[:,Bi.ss_dims[0]:Bi.ss_dims[0]+Bi.ss_dims[1]]
        
         tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vp))
-        tmp, uq = np.linalg.eigh(vq.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vq))
-        
         vp = vp.dot(up)
-        vq = vq.dot(uq)
-
         sort_ind = np.argsort(vp.T.dot(brdms[bi]).dot(vp).diagonal() )[::-1]
         vp = vp[:,sort_ind]
-        sort_ind = np.argsort(vq.T.dot(brdms[bi]).dot(vq).diagonal() )[::-1]
-        vq = vq[:,sort_ind]
-        
-        v = np.hstack( ( vp,vq) )
+        v = vp
+
+        if Bi.nq > 0: 
+            tmp, uq = np.linalg.eigh(vq.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vq))
+            vq = vq.dot(uq)
+            sort_ind = np.argsort(vq.T.dot(brdms[bi]).dot(vq).diagonal() )[::-1]
+            vq = vq[:,sort_ind]
+            v = np.hstack( ( vp,vq) )
+
 
         sz = v.T.dot(Bi.full_Sz).dot(v).diagonal()
         s2 = v.T.dot(Bi.full_S2).dot(v).diagonal()
@@ -799,6 +814,11 @@ for it in range(0,maxiter):
     last_vectors, tmp = np.linalg.qr(last_vectors)
 
 
+ref_norm = np.linalg.norm(v[tucker_blocks[0,-1].start:tucker_blocks[0,-1].stop,ts])
+print
+print " Norm of Reference state %12.8f " %ref_norm
+
+print
 print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
 for ei,e in enumerate(energy_per_iter):
     if ei>0:
