@@ -814,7 +814,7 @@ for it in range(0,maxiter):
     last_vectors, tmp = np.linalg.qr(last_vectors)
 
 
-ref_norm = np.linalg.norm(v[tucker_blocks[0,-1].start:tucker_blocks[0,-1].stop,ts])
+ref_norm = np.linalg.norm(v[tucker_blocks[0,-1].start:tucker_blocks[0,-1].stop])
 print
 print " Norm of Reference state %12.8f " %ref_norm
 
