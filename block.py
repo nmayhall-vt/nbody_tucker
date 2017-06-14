@@ -1017,6 +1017,9 @@ def build_tucker_blocked_sigma(n_blocks,tucker_blocks, lattice_blocks, n_body_or
             tb_r = tucker_blocks[t_r]
             v_r = cp.deepcopy( v[tb_r.start:tb_r.stop,:])
 
+            #print " Here:", tb_l, tb_r
+            #if tb_l.start == tb_r.start:
+            #    continue 
             hv,s2v = build_Hv(lattice_blocks, tb_l, tb_r, j12,v_r)
             #h,s2 = build_H(lattice_blocks, tb_l, tb_r, j12)
             

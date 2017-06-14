@@ -88,12 +88,13 @@ parser.add_argument('--n_print', type=int, default="10", help='number of states 
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
 parser.add_argument('-mit', '--max_iter', type=int, default=30, help='Max iterations for solving for the compression vectors', required=False)
-parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
 parser.add_argument('-dav_thresh','--dav_thresh', type=int, default=8, help='Threshold for supersystem davidson iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=0, help='PT correction order ?', required=False)
 parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
 parser.add_argument('-opt','--optimization', type=str, default="diis", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
+parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
+parser.add_argument('-n_diis_vecs','--n_diis_vecs', type=int, default=8, help='Number of error vectors to keep', required=False)
 parser.add_argument('-direct','--direct', type=int, default=1, help='Evaluate the matrix on the fly?',choices=[0,1], required=False)
 parser.add_argument('-dmit', '--dav_max_iter', type=int, default=20, help='Max iterations for solving for the CI-type coefficients', required=False)
 parser.add_argument('-precond', '--dav_precond', type=int, default=1, help='Use preconditioner?', required=False)
@@ -686,7 +687,7 @@ for it in range(0,maxiter):
 
         brdm_curr = brdms[bi] + Bi.full_S2
         if opt == "diis":
-            n_diis_vecs = 8 
+            n_diis_vecs = args['n_diis_vecs'] 
             proj_p = Bi.v_ss(0).dot(Bi.v_ss(0).T)
             error_vector = proj_p.dot(brdm_curr) - (brdm_curr).dot(proj_p)
             error_vector.shape = (error_vector.shape[0]*error_vector.shape[1],1)
