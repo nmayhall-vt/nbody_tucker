@@ -35,19 +35,23 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
         j_b = j12[:,b][b]
         lat_b = lattice[b]
         H_b, tmp, S2_b, Sz_b = form_hdvv_H(lat_b,j_b)
-    
+
         # Diagonalize an arbitrary linear combination of the quantum numbers we insist on preserving
-        l_b,v_b = np.linalg.eigh(H_b + Sz_b + S2_b) 
-        l_b = v_b.transpose().dot(H_b).dot(v_b).diagonal()
+        l_b,v_b = np.linalg.eigh(H_b + .9*Sz_b + .8*S2_b) 
+        h_b = v_b.transpose().dot(H_b).dot(v_b).diagonal()
         
-        sort_ind = np.argsort(l_b)
-        l_b = l_b[sort_ind]
+        sort_ind = np.argsort(h_b)
+        h_b = h_b[sort_ind]
         v_b = v_b[:,sort_ind]
+        
+        s2_b = v_b.transpose().dot(S2_b).dot(v_b).diagonal()
+        sz_b = v_b.transpose().dot(Sz_b).dot(v_b).diagonal()
             
 
         print " Guess eigenstates"
-        for l in l_b:
-            print "%12.8f" %l
+        print "   %-12s   %16s  %12s  %12s "%("Local State", "<H>", "<S2>", "<Sz>")
+        for si,i in enumerate(l_b):
+            print "   %-12i   %16.8f  %12.4f  %12.4f "%(si,h_b[si],abs(s2_b[si]),sz_b[si])
         p_states.extend([v_b[:,0:n_p_states[bi]]])
         #q_states.extend([v_b[:,n_p_states[bi]::]])
         q_states.extend([v_b[:,n_p_states[bi]: n_p_states[bi]+n_q_states[bi]]])
@@ -88,7 +92,6 @@ parser.add_argument('--n_print', type=int, default="10", help='number of states 
 parser.add_argument('--use_exact_tucker_factors', action="store_true", default=False, help='Use compression vectors from tucker decomposition of exact ground states', required=False)
 parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
 parser.add_argument('-mit', '--max_iter', type=int, default=30, help='Max iterations for solving for the compression vectors', required=False)
-parser.add_argument('-dav_thresh','--dav_thresh', type=int, default=8, help='Threshold for supersystem davidson iterations', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=0, help='PT correction order ?', required=False)
 parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
@@ -98,6 +101,8 @@ parser.add_argument('-n_diis_vecs','--n_diis_vecs', type=int, default=8, help='N
 parser.add_argument('-direct','--direct', type=int, default=1, help='Evaluate the matrix on the fly?',choices=[0,1], required=False)
 parser.add_argument('-dmit', '--dav_max_iter', type=int, default=20, help='Max iterations for solving for the CI-type coefficients', required=False)
 parser.add_argument('-precond', '--dav_precond', type=int, default=1, help='Use preconditioner?', required=False)
+parser.add_argument('-dav_thresh','--dav_thresh', type=int, default=8, help='Threshold for supersystem davidson iterations', required=False)
+parser.add_argument('-dav_max_ss','--dav_max_ss', type=int, default=20, help='Max number of vectors in davidson subspace', required=False)
 args = vars(parser.parse_args())
 #
 #   Let minute specification of walltime override hour specification
@@ -510,6 +515,7 @@ for it in range(0,maxiter):
     print " Solve for supersystem eigenvalues: Dimension = ", dim_tot
     dav = Davidson(dim_tot, args['n_roots'])
     dav.thresh = dav_thresh 
+    dav.max_vecs = args['dav_max_ss']
     s2v = np.array([])
     if it == 0:
         dav.form_p_guess()
@@ -685,7 +691,7 @@ for it in range(0,maxiter):
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
 
-        brdm_curr = brdms[bi] + Bi.full_S2
+        brdm_curr = brdms[bi] + .8*Bi.full_S2
         if opt == "diis":
             n_diis_vecs = args['n_diis_vecs'] 
             proj_p = Bi.v_ss(0).dot(Bi.v_ss(0).T)
@@ -739,7 +745,7 @@ for it in range(0,maxiter):
                     #print x.T
                     print " CURRENT           error vector %12.2e " % error_vector.T.dot(error_vector)
 
-        lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)
+        lx,vx = np.linalg.eigh(brdm_curr + .87*Bi.full_S2)
             
         lx = vx.T.dot(brdms[bi]).dot(vx).diagonal()
        
@@ -750,14 +756,14 @@ for it in range(0,maxiter):
         vp = vx[:,0:Bi.ss_dims[0]]
         vq = vx[:,Bi.ss_dims[0]:Bi.ss_dims[0]+Bi.ss_dims[1]]
        
-        tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vp))
+        tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + .9*Bi.full_H + .8*Bi.full_Sz + .7*Bi.full_S2).dot(vp))
         vp = vp.dot(up)
         sort_ind = np.argsort(vp.T.dot(brdms[bi]).dot(vp).diagonal() )[::-1]
         vp = vp[:,sort_ind]
         v = vp
 
         if Bi.nq > 0: 
-            tmp, uq = np.linalg.eigh(vq.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vq))
+            tmp, uq = np.linalg.eigh(vq.T.dot(brdms[bi] + .9*Bi.full_H + .8*Bi.full_Sz + .7*Bi.full_S2).dot(vq))
             vq = vq.dot(uq)
             sort_ind = np.argsort(vq.T.dot(brdms[bi]).dot(vq).diagonal() )[::-1]
             vq = vq[:,sort_ind]

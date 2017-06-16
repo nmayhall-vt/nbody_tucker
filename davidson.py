@@ -32,6 +32,14 @@ class Davidson:
     def form_sigma(self):
         pass
 
+    def restart(self):
+        self.vec_prev           = self.vec_prev.dot(self.ritz_vecs[:,0:self.n_roots])
+        self.sig_prev           = self.sig_prev.dot(self.ritz_vecs[:,0:self.n_roots])
+        self.ritz_vecs          = np.eye(self.n_roots) 
+        #self.ritz_vecs          = self.ritz_vecs[:,0:self.n_roots] 
+        self.res_vals           = self.vec_prev.T.dot(self.sig_prev).diagonal().tolist() 
+        
+            
     def vec(self):
         return np.hstack((self.vec_prev,self.vec_curr))
 
@@ -62,6 +70,8 @@ class Davidson:
     """
     
     def eigenvectors(self):
+        print self.vec_prev.shape
+        print self.ritz_vecs.shape
         return self.vec_prev.dot(self.ritz_vecs[:,0:self.n_roots])
     
     def eigenvalues(self):
@@ -73,6 +83,9 @@ class Davidson:
         self.do_precondition = 1
 
     def update(self):
+        if self.n_vecs > self.max_vecs:
+            self.restart()
+
         vec = self.vec()
         sig = self.sig()
         T = vec.T.dot(sig)
