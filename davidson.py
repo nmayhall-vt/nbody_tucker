@@ -165,16 +165,21 @@ class Davidson:
         if self.precond_diag.shape[1] == 0:
             print " No diagonal found!"
             exit(-1)
-        lin_dep_thresh = 1e-8
-        m = self.precond_diag - l_n
-        m = 1.0/m
+        lin_dep_thresh = 1e-12
+        m = self.precond_diag - l_n + lin_dep_thresh  
         """
         for i in range(0,self.dim): 
             if abs(m[i]) < lin_dep_thresh:
-	        m[i] = 1.0/lin_dep_thresh;
-	    else:
-	        m[i] = 1.0/m[i];
-            r_n[i] = m[i]*r_n[i]
+                m[i] = lin_dep_thresh;
+                """
+        r_n = r_n/m
+        """
+        for i in range(0,self.dim): 
+            if abs(m[i]) < lin_dep_thresh:
+                m[i] = 1.0/lin_dep_thresh;
+            else:
+                m[i] = 1.0/m[i];
+                r_n[i] = m[i]*r_n[i]
         """
         return r_n
 
