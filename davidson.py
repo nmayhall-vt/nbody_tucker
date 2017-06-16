@@ -167,11 +167,14 @@ class Davidson:
             exit(-1)
         lin_dep_thresh = 1e-8
         m = self.precond_diag - l_n
+        m = 1.0/m
+        """
         for i in range(0,self.dim): 
             if abs(m[i]) < lin_dep_thresh:
 	        m[i] = 1.0/lin_dep_thresh;
 	    else:
 	        m[i] = 1.0/m[i];
             r_n[i] = m[i]*r_n[i]
+        """
         return r_n
 
