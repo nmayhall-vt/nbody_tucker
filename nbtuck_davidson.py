@@ -694,7 +694,7 @@ for it in range(0,maxiter):
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
 
-        brdm_curr = brdms[bi] + .8*Bi.full_S2
+        brdm_curr = brdms[bi] + Bi.full_S2
         if opt == "diis":
             n_diis_vecs = args['n_diis_vecs'] 
             proj_p = Bi.v_ss(0).dot(Bi.v_ss(0).T)
@@ -748,7 +748,7 @@ for it in range(0,maxiter):
                     #print x.T
                     print " CURRENT           error vector %12.2e " % error_vector.T.dot(error_vector)
 
-        lx,vx = np.linalg.eigh(brdm_curr + .87*Bi.full_S2)
+        lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)
             
         lx = vx.T.dot(brdms[bi]).dot(vx).diagonal()
        
@@ -759,14 +759,14 @@ for it in range(0,maxiter):
         vp = vx[:,0:Bi.ss_dims[0]]
         vq = vx[:,Bi.ss_dims[0]:Bi.ss_dims[0]+Bi.ss_dims[1]]
        
-        tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + .9*Bi.full_H + .8*Bi.full_Sz + .7*Bi.full_S2).dot(vp))
+        tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vp))
         vp = vp.dot(up)
         sort_ind = np.argsort(vp.T.dot(brdms[bi]).dot(vp).diagonal() )[::-1]
         vp = vp[:,sort_ind]
         v = vp
 
         if Bi.nq > 0: 
-            tmp, uq = np.linalg.eigh(vq.T.dot(brdms[bi] + .9*Bi.full_H + .8*Bi.full_Sz + .7*Bi.full_S2).dot(vq))
+            tmp, uq = np.linalg.eigh(vq.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vq))
             vq = vq.dot(uq)
             sort_ind = np.argsort(vq.T.dot(brdms[bi]).dot(vq).diagonal() )[::-1]
             vq = vq[:,sort_ind]
