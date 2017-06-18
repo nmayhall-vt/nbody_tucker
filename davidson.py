@@ -48,6 +48,8 @@ class Davidson:
 
     def form_rand_guess(self):
         self.vec_curr, tmp = np.linalg.qr(np.random.rand(self.dim, self.n_roots))
+        #self.vec_curr = np.vstack((np.eye(self.n_roots), np.zeros((max(0,self.dim-self.n_roots), self.n_roots)) ))+np.random.rand(self.dim, self.n_roots)
+        #self.vec_curr, tmp = np.linalg.qr(self.vec_curr)
     
     def form_p_guess(self):
         #self.vec_curr, tmp = np.linalg.qr(np.random.rand(self.dim, self.n_roots))

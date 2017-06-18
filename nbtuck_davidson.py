@@ -103,6 +103,7 @@ parser.add_argument('-dmit', '--dav_max_iter', type=int, default=20, help='Max i
 parser.add_argument('-precond', '--dav_precond', type=int, default=1, help='Use preconditioner?', required=False)
 parser.add_argument('-dav_thresh','--dav_thresh', type=int, default=8, help='Threshold for supersystem davidson iterations', required=False)
 parser.add_argument('-dav_max_ss','--dav_max_ss', type=int, default=20, help='Max number of vectors in davidson subspace', required=False)
+parser.add_argument('-dav_guess','--dav_guess', type=str, default='pspace', help='Initial guess for davidson', required=False)
 args = vars(parser.parse_args())
 #
 #   Let minute specification of walltime override hour specification
@@ -518,8 +519,10 @@ for it in range(0,maxiter):
     dav.max_vecs = args['dav_max_ss']
     s2v = np.array([])
     if it == 0:
-        dav.form_p_guess()
-        #dav.form_rand_guess()
+        if args['dav_guess'] == 'rand':
+            dav.form_rand_guess()
+        else:
+            dav.form_p_guess()
     else:
         dav.vec_curr = last_vectors 
     dav.max_iter = args['dav_max_iter']

@@ -1174,7 +1174,7 @@ def build_tucker_blocked_diagonal(n_blocks,tucker_blocks, lattice_blocks, n_body
 
 
 def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_type):
-    """
+    """# {{{
 
         E(2) = v_sA H_AX [D_XX - E_s^0]^-1 H_XA v_As
 
@@ -1250,7 +1250,7 @@ def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
         dx = 1/(l[s]-D_X)
         DHv = np.multiply(dx, H_Xs[:,s])
         e2[s] = H_Xs[:,s].T.dot(DHv)
-
+# }}}
     return e2
 
                 
