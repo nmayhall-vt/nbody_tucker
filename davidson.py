@@ -129,6 +129,9 @@ class Davidson:
                 b_n_p = np.linalg.norm(r_n)
                 if (b_n / b_n_p > 1e-15):
                     r_n = r_n / b_n_p
+                    tmp = np.hstack((vec,v_new))
+                    r_n = r_n - tmp.dot(np.dot(tmp.T,r_n))
+                    r_n = r_n/np.linalg.norm(r_n)
                     v_new = np.hstack((v_new, r_n))
 
         self.ritz_vecs = v
@@ -137,6 +140,8 @@ class Davidson:
 
         self.sig_prev = np.hstack((self.sig_prev, self.sig_curr))
         self.vec_prev = np.hstack((self.vec_prev, self.vec_curr))
+
+
         self.vec_curr = v_new
         self.n_vecs = self.vec().shape[1]
         self.iter += 1
