@@ -509,6 +509,33 @@ for it in range(0,maxiter):
         print " Build Hamiltonian:"
         H,S2 = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
     
+        do_cepa = 1
+        if do_cepa:
+            tb0 = tucker_blocks[0,-1]
+            H00 = H[tb0.start:tb0.stop,tb0.start:tb0.stop]
+            Hdd = cp.deepcopy(H[tb0.stop::,tb0.stop::])
+            
+            E0,V0 = np.linalg.eigh(H00)
+       
+            Hdd += -np.eye(Hdd.shape[0])*E0
+
+            
+            Hd0 = H[tb0.stop::,tb0.start:tb0.stop]*V0[:,ts]
+       
+            
+            #Cd = -np.linalg.inv(Hdd-np.eye(Hdd.shape[0])*E0).dot(Hd0)
+            #Cd = np.linalg.inv(Hdd).dot(Hd0)
+       
+            Cd = np.linalg.solve(Hdd, -Hd0)
+            
+            print " CEPA(0) Norm  : %16.12f" % np.linalg.norm(Cd)
+            
+            C = np.vstack((V0[:,ts],Cd))
+       
+            E = V0[:,ts].T.dot(H[tb0.start:tb0.stop,:]).dot(C)
+            
+            print " CEPA(0) Energy: %16.12f" % E
+    
 
     # 
     #   Loop over davidson micro-iterations
