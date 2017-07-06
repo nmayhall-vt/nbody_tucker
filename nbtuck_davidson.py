@@ -513,28 +513,48 @@ for it in range(0,maxiter):
         if do_cepa:
             tb0 = tucker_blocks[0,-1]
             H00 = H[tb0.start:tb0.stop,tb0.start:tb0.stop]
-            Hdd = cp.deepcopy(H[tb0.stop::,tb0.stop::])
             
             E0,V0 = np.linalg.eigh(H00)
-       
-            Hdd += -np.eye(Hdd.shape[0])*E0
+            E0 = E0[ts]
+           
+            Ec = 0.0
 
-            
-            Hd0 = H[tb0.stop::,tb0.start:tb0.stop]*V0[:,ts]
+            cepa_shift = 'aqcc'
+            cepa_shift = 'acpf'
+            cepa_mit = 100
+            for cit in range(0,cepa_mit): 
        
-            
-            #Cd = -np.linalg.inv(Hdd-np.eye(Hdd.shape[0])*E0).dot(Hd0)
-            #Cd = np.linalg.inv(Hdd).dot(Hd0)
-       
-            Cd = np.linalg.solve(Hdd, -Hd0)
-            
-            print " CEPA(0) Norm  : %16.12f" % np.linalg.norm(Cd)
-            
-            C = np.vstack((V0[:,ts],Cd))
-       
-            E = V0[:,ts].T.dot(H[tb0.start:tb0.stop,:]).dot(C)
-            
-            print " CEPA(0) Energy: %16.12f" % E
+                Hdd = cp.deepcopy(H[tb0.stop::,tb0.stop::])
+        
+                shift = 0.0
+                if cepa_shift == 'acpf':
+                    shift = Ec * 2.0 / n_blocks
+                    #shift = Ec * 2.0 / n_sites
+                elif cepa_shift == 'aqcc':
+                    shift = (1.0 - (n_blocks-3.0)*(n_blocks - 2.0)/(n_blocks * ( n_blocks-1.0) )) * Ec
+
+                Hdd += -np.eye(Hdd.shape[0])*(E0 + shift)
+                #Hdd += -np.eye(Hdd.shape[0])*(E0 + -0.220751700895 * 2.0 / 8.0)
+                
+                
+                Hd0 = H[tb0.stop::,tb0.start:tb0.stop]*V0[:,ts]
+                
+                #Cd = -np.linalg.inv(Hdd-np.eye(Hdd.shape[0])*E0).dot(Hd0)
+                Cd = np.linalg.inv(Hdd).dot(-Hd0)
+                
+                #Cd = np.linalg.solve(Hdd, -Hd0)
+                
+                print " CEPA(0) Norm  : %16.12f" % np.linalg.norm(Cd)
+                
+                C = np.vstack((V0[:,ts],Cd))
+                
+                E = V0[:,ts].T.dot(H[tb0.start:tb0.stop,:]).dot(C)
+                
+                print " CEPA(0) Energy: %16.12f" % E
+                
+                if abs(E-E0 - Ec) < 1e-10:
+                    break
+                Ec = E - E0
     
 
     # 
