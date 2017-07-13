@@ -30,7 +30,7 @@ formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 #parser.add_argument('-d','--dry_run', default=False, action="store_true", help='Run but don\'t submit.', required=False)
 parser.add_argument('-ju','--j_unit', type=str, default="cm", help='What units are the J values in', choices=['cm','ev'],required=False)
-parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
+#parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
 parser.add_argument('-j','--j12', type=str, default="heis_j12.m", help='File containing matrix of exchange constants', required=False)
 parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='File containing vector of block sizes', required=False)
 parser.add_argument('-np','--n_p_space', type=int, nargs="+", help='Number of vectors in block P space', required=False)
@@ -54,7 +54,8 @@ args = vars(parser.parse_args())
 #   Let minute specification of walltime override hour specification
 
 j12 = np.loadtxt(args['j12'])
-lattice = np.loadtxt(args['lattice']).astype(int)
+#lattice = np.loadtxt(args['lattice']).astype(int)
+lattice = np.ones((j12.shape[0],1))
 blocks = np.loadtxt(args['blocks']).astype(int)
 n_sites = len(lattice)
 n_blocks = len(blocks)
@@ -78,7 +79,7 @@ if args['n_p_space'] == None:
 
 assert(len(args['n_p_space']) == n_blocks)
 
-cmd = "../../nbtuck_davidson.py -ju ev -mit 1 -j %s -nr 1 -direct 0 -nb %s -pt %s " %(args['j12'], args['n_body_order'], args['pt_order'])
+cmd = "../../nbtuck_davidson.py -ju ev -mit 1 -j %s -nr 1 -direct 0 -nb %s -pt %s -b %s" %(args['j12'],args['n_body_order'], args['pt_order'], args['blocks'])
 #p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True
 #print p
 os.system("echo 'Do 0Body' > 0b.txt") 
@@ -87,7 +88,7 @@ pvec = " -np " + str(pvec)[1:-1].replace(",","")
 os.system(cmd + pvec + " >> 0b.txt") 
 print " Done: block "
 
-nb_order = 4
+nb_order = 2
 
 os.system("echo 'Do 1Body' > 1b.txt") 
 for bi in range(0,n_blocks):
