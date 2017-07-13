@@ -489,6 +489,9 @@ energy_per_iter = []
 maxiter = args['max_iter'] 
 last_vectors = np.array([])  # used to detect root flipping
 
+cepa_last_vectors = np.array([])  # used to detect root flipping
+cepa_last_values = 0.0
+
 diis_thresh = 1.0*np.power(10.0,-float(args['diis_thresh']))
 dav_thresh = 1.0*np.power(10.0,-float(args['dav_thresh']))
 
@@ -504,6 +507,7 @@ for bi in range(0,n_blocks):
     diis_frag_grams[bi] = []
 
 for it in range(0,maxiter):
+    do_cepa = 0
     if args['direct'] == 0:
         print 
         print " Build Hamiltonian:"
@@ -516,11 +520,13 @@ for it in range(0,maxiter):
             
             E0,V0 = np.linalg.eigh(H00)
             E0 = E0[ts]
-           
+          
             Ec = 0.0
 
             cepa_shift = 'aqcc'
+            cepa_shift = 'cisd'
             cepa_shift = 'acpf'
+            cepa_mit = 1
             cepa_mit = 100
             for cit in range(0,cepa_mit): 
        
@@ -532,23 +538,31 @@ for it in range(0,maxiter):
                     #shift = Ec * 2.0 / n_sites
                 elif cepa_shift == 'aqcc':
                     shift = (1.0 - (n_blocks-3.0)*(n_blocks - 2.0)/(n_blocks * ( n_blocks-1.0) )) * Ec
+                elif cepa_shift == 'cisd':
+                    shift = Ec
 
                 Hdd += -np.eye(Hdd.shape[0])*(E0 + shift)
                 #Hdd += -np.eye(Hdd.shape[0])*(E0 + -0.220751700895 * 2.0 / 8.0)
                 
                 
-                Hd0 = H[tb0.stop::,tb0.start:tb0.stop]*V0[:,ts]
+                Hd0 = H[tb0.stop::,tb0.start:tb0.stop].dot(V0[:,ts])
                 
                 #Cd = -np.linalg.inv(Hdd-np.eye(Hdd.shape[0])*E0).dot(Hd0)
-                Cd = np.linalg.inv(Hdd).dot(-Hd0)
+                #Cd = np.linalg.inv(Hdd).dot(-Hd0)
                 
-                #Cd = np.linalg.solve(Hdd, -Hd0)
+                Cd = np.linalg.solve(Hdd, -Hd0)
                 
                 print " CEPA(0) Norm  : %16.12f" % np.linalg.norm(Cd)
                 
-                C = np.vstack((V0[:,ts],Cd))
+                V0 = V0[:,ts]
+                V0.shape = (V0.shape[0],1)
+                Cd.shape = (Cd.shape[0],1)
+                C = np.vstack((V0,Cd))
                 
                 E = V0[:,ts].T.dot(H[tb0.start:tb0.stop,:]).dot(C)
+                
+                cepa_last_vectors = C  
+                cepa_last_values  = E
                 
                 print " CEPA(0) Energy: %16.12f" % E
                 
@@ -618,6 +632,17 @@ for it in range(0,maxiter):
     last_vectors = cp.deepcopy(v)
 
     """
+    if do_cepa :
+        print " Get CEPA vectors"
+        last_vectors = cp.deepcopy(cepa_last_vectors)
+        v = cp.deepcopy(cepa_last_vectors) 
+        v = v / np.linalg.norm(v)
+        l = cp.deepcopy(cepa_last_values)
+
+    """
+
+
+    """
     print " Diagonalize Hamiltonian: Size of H: ", H.shape
     l = np.array([])
     v = np.array([])
@@ -650,6 +675,31 @@ for it in range(0,maxiter):
             e = l[i] + e2[i]
             e0 = l[0] + e2[0]
             print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
+        
+        do_bwpt = 0
+        e2_last = 0
+        if do_bwpt:
+            print
+            print " Compute State-specific BW-PT2 corrections: "
+            bw_mit = 100
+            l0 = cp.deepcopy(l)
+            l2 = cp.deepcopy(l)
+            print
+            print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
+            for bwit in range(0,bw_mit):
+                n_roots = args['n_roots']
+                pt_type = args['pt_type']
+                e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l2[0:n_roots], v[:,0:n_roots], j12, pt_type)
+                for si in range(0,n_roots):
+                    l2[si] = l0[si] + 2* ( e2[si] ) / n_blocks
+                for i in range(0,n_roots):
+                    e = l[i] + e2[i]
+                    e0 = l[0] + e2[0]
+                    print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
+                if abs(e2-e2_last) < 1e-10:
+                    break
+                else:
+                    e2_last = e2
 
     energy_per_iter.append(l[ts]) 
     if it > 0:
