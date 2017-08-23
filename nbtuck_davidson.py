@@ -516,6 +516,7 @@ for it in range(0,maxiter):
             Hdd = cp.deepcopy(H[tb0.stop::,tb0.stop::])
             
             E0,V0 = np.linalg.eigh(H00)
+            E0 = E0[ts]
        
             Hdd += -np.eye(Hdd.shape[0])*E0
 
@@ -773,7 +774,7 @@ for it in range(0,maxiter):
                     for i in x:
                         print "  %12.8f" %i
                     #print x.T
-                    print " CURRENT           error vector %12.2e " % error_vector.T.dot(error_vector)
+                    print " CURRENT           error vector %12.2e " % np.sqrt(error_vector.T.dot(error_vector))
 
         lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)
             

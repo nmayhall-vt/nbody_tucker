@@ -56,7 +56,7 @@ for fileName in args['infiles']:
     print sort_ind+1
     
     Asorted = Ain[sort_ind,:][:,sort_ind]
-    #np.savetxt(fileName+".sorted.m",Asorted)
+    np.savetxt(fileName+".fiedler.m",Asorted)
    
     
     print
