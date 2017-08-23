@@ -75,7 +75,7 @@ formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 #parser.add_argument('-d','--dry_run', default=False, action="store_true", help='Run but don\'t submit.', required=False)
 parser.add_argument('-ju','--j_unit', type=str, default="cm", help='What units are the J values in', choices=['cm','ev'],required=False)
-parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
+#parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
 parser.add_argument('-j','--j12', type=str, default="heis_j12.m", help='File containing matrix of exchange constants', required=False)
 parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='File containing vector of block sizes', required=False)
 #parser.add_argument('-s','--save', default=False, action="store_true", help='Save the Hamiltonian and S2 matrices', required=False)
@@ -97,6 +97,7 @@ parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
 parser.add_argument('-opt','--optimization', type=str, default="diis", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
 parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
+parser.add_argument('-diis_start','--diis_start', type=int, default=0, help='When to start pspace diis iterations', required=False)
 parser.add_argument('-n_diis_vecs','--n_diis_vecs', type=int, default=8, help='Number of error vectors to keep', required=False)
 parser.add_argument('-direct','--direct', type=int, default=1, help='Evaluate the matrix on the fly?',choices=[0,1], required=False)
 parser.add_argument('-dmit', '--dav_max_iter', type=int, default=20, help='Max iterations for solving for the CI-type coefficients', required=False)
@@ -109,11 +110,13 @@ args = vars(parser.parse_args())
 #   Let minute specification of walltime override hour specification
 
 j12 = np.loadtxt(args['j12'])
-lattice = np.loadtxt(args['lattice']).astype(int)
+#lattice = np.loadtxt(args['lattice']).astype(int)
+lattice = np.ones((j12.shape[0],1))
 blocks = np.loadtxt(args['blocks']).astype(int)
-n_sites = len(lattice)
+#n_sites = len(lattice)
 n_blocks = len(blocks)
-    
+
+
 if len(blocks.shape) == 1:
     print 'blocks',blocks
     
@@ -145,15 +148,13 @@ if args['j_unit'] == 'cm':
     j12 = j12 * au2ev/au2cm
 
 print " j12:\n", j12
-print " lattice:\n", lattice 
+#print " lattice:\n", lattice 
 print " blocks:\n", blocks
 print " n_blocks:\n", n_blocks
 
 H_tot = np.array([])
 S2_tot = np.array([])
 H_dict = {}
-
-
 
 
 # calculate problem dimensions 
@@ -489,6 +490,9 @@ energy_per_iter = []
 maxiter = args['max_iter'] 
 last_vectors = np.array([])  # used to detect root flipping
 
+cepa_last_vectors = np.array([])  # used to detect root flipping
+cepa_last_values = 0.0
+
 diis_thresh = 1.0*np.power(10.0,-float(args['diis_thresh']))
 dav_thresh = 1.0*np.power(10.0,-float(args['dav_thresh']))
 
@@ -504,6 +508,7 @@ for bi in range(0,n_blocks):
     diis_frag_grams[bi] = []
 
 for it in range(0,maxiter):
+    do_cepa = 0
     if args['direct'] == 0:
         print 
         print " Build Hamiltonian:"
@@ -513,29 +518,58 @@ for it in range(0,maxiter):
         if do_cepa:
             tb0 = tucker_blocks[0,-1]
             H00 = H[tb0.start:tb0.stop,tb0.start:tb0.stop]
-            Hdd = cp.deepcopy(H[tb0.stop::,tb0.stop::])
             
             E0,V0 = np.linalg.eigh(H00)
             E0 = E0[ts]
-       
-            Hdd += -np.eye(Hdd.shape[0])*E0
+          
+            Ec = 0.0
 
-            
-            Hd0 = H[tb0.stop::,tb0.start:tb0.stop]*V0[:,ts]
+            cepa_shift = 'aqcc'
+            cepa_shift = 'cisd'
+            cepa_shift = 'acpf'
+            cepa_mit = 1
+            cepa_mit = 100
+            for cit in range(0,cepa_mit): 
        
-            
-            #Cd = -np.linalg.inv(Hdd-np.eye(Hdd.shape[0])*E0).dot(Hd0)
-            #Cd = np.linalg.inv(Hdd).dot(Hd0)
-       
-            Cd = np.linalg.solve(Hdd, -Hd0)
-            
-            print " CEPA(0) Norm  : %16.12f" % np.linalg.norm(Cd)
-            
-            C = np.vstack((V0[:,ts],Cd))
-       
-            E = V0[:,ts].T.dot(H[tb0.start:tb0.stop,:]).dot(C)
-            
-            print " CEPA(0) Energy: %16.12f" % E
+                Hdd = cp.deepcopy(H[tb0.stop::,tb0.stop::])
+        
+                shift = 0.0
+                if cepa_shift == 'acpf':
+                    shift = Ec * 2.0 / n_blocks
+                    #shift = Ec * 2.0 / n_sites
+                elif cepa_shift == 'aqcc':
+                    shift = (1.0 - (n_blocks-3.0)*(n_blocks - 2.0)/(n_blocks * ( n_blocks-1.0) )) * Ec
+                elif cepa_shift == 'cisd':
+                    shift = Ec
+
+                Hdd += -np.eye(Hdd.shape[0])*(E0 + shift)
+                #Hdd += -np.eye(Hdd.shape[0])*(E0 + -0.220751700895 * 2.0 / 8.0)
+                
+                
+                Hd0 = H[tb0.stop::,tb0.start:tb0.stop].dot(V0[:,ts])
+                
+                #Cd = -np.linalg.inv(Hdd-np.eye(Hdd.shape[0])*E0).dot(Hd0)
+                #Cd = np.linalg.inv(Hdd).dot(-Hd0)
+                
+                Cd = np.linalg.solve(Hdd, -Hd0)
+                
+                print " CEPA(0) Norm  : %16.12f" % np.linalg.norm(Cd)
+                
+                V0 = V0[:,ts]
+                V0.shape = (V0.shape[0],1)
+                Cd.shape = (Cd.shape[0],1)
+                C = np.vstack((V0,Cd))
+                
+                E = V0[:,ts].T.dot(H[tb0.start:tb0.stop,:]).dot(C)
+                
+                cepa_last_vectors = C  
+                cepa_last_values  = E
+                
+                print " CEPA(0) Energy: %16.12f" % E
+                
+                if abs(E-E0 - Ec) < 1e-10:
+                    break
+                Ec = E - E0
     
 
     # 
@@ -599,6 +633,17 @@ for it in range(0,maxiter):
     last_vectors = cp.deepcopy(v)
 
     """
+    if do_cepa :
+        print " Get CEPA vectors"
+        last_vectors = cp.deepcopy(cepa_last_vectors)
+        v = cp.deepcopy(cepa_last_vectors) 
+        v = v / np.linalg.norm(v)
+        l = cp.deepcopy(cepa_last_values)
+
+    """
+
+
+    """
     print " Diagonalize Hamiltonian: Size of H: ", H.shape
     l = np.array([])
     v = np.array([])
@@ -631,6 +676,31 @@ for it in range(0,maxiter):
             e = l[i] + e2[i]
             e0 = l[0] + e2[0]
             print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
+        
+        do_bwpt = 0
+        e2_last = 0
+        if do_bwpt:
+            print
+            print " Compute State-specific BW-PT2 corrections: "
+            bw_mit = 100
+            l0 = cp.deepcopy(l)
+            l2 = cp.deepcopy(l)
+            print
+            print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
+            for bwit in range(0,bw_mit):
+                n_roots = args['n_roots']
+                pt_type = args['pt_type']
+                e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l2[0:n_roots], v[:,0:n_roots], j12, pt_type)
+                for si in range(0,n_roots):
+                    l2[si] = l0[si] + 2* ( e2[si] ) / n_blocks
+                for i in range(0,n_roots):
+                    e = l[i] + e2[i]
+                    e0 = l[0] + e2[0]
+                    print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
+                if abs(e2-e2_last) < 1e-10:
+                    break
+                else:
+                    e2_last = e2
 
     energy_per_iter.append(l[ts]) 
     if it > 0:
@@ -719,8 +789,21 @@ for it in range(0,maxiter):
     print
     print " Compute Eigenvalues of BRDMs:"
     overlaps = []
+    diis_start = args['diis_start']
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
+
+        # TODO: do this with a proper projection, where the user specifies the number of spin states for p space
+        """
+        lx,vx = np.linalg.eigh(Bi.full_S2)
+        spin_proj = np.empty((vx.shape[0],0));
+        for si in range(0,lx.shape[0]):
+            if abs(lx[si]) < 1.0:
+                spin_proj = np.hstack((spin_proj, vx[:,si:si+1]))
+        
+        spin_proj = spin_proj.dot(spin_proj.T)
+        brdm_curr = spin_proj.dot(brdms[bi]).dot(spin_proj)
+        """
 
         brdm_curr = brdms[bi] + Bi.full_S2
         if opt == "diis":
@@ -739,7 +822,7 @@ for it in range(0,maxiter):
             
             n_evecs = Bi.diis_vecs.shape[1]
             
-            if it>0:
+            if it>diis_start:
                 S = Bi.diis_vecs.T.dot(Bi.diis_vecs )
                 
                 collapse = 1
