@@ -1253,7 +1253,89 @@ def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
 # }}}
     return e2
 
-                
+def compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_type):
+  # {{{
+    if len(tucker_blocks) > 1:
+        return
+    print " Do RPA correlation"
+    tb0 = tucker_blocks[0,-1]
+    n_singles = 0;
+   
+    n_blocks = len(lattice_blocks)
+    for bi in range(0,n_blocks):
+        n_singles += tucker_blocks_pt[1,bi].full_dim
+    print "n_singles ", n_singles
+    
+   
+    dim_tot_D = n_singles*(n_singles-1)/2
+    dim_tot_S = n_singles 
+    dim_tot_A = tb0.full_dim 
+    
+    H0,s2v = build_Hv(lattice_blocks, tb0, tb0, j12,v)
+    E0 = v.T.dot(H0)
+
+    Hss = np.zeros((n_singles,n_singles))
+    Hd0 = np.zeros((n_singles,n_singles))
+
+    for bi in range(0,n_blocks):
+        for bj in range(bi,n_blocks):
+            tbi  = tucker_blocks_pt[1,bi]
+            tbj  = tucker_blocks_pt[1,bj]
+            istart = tbi.start
+            jstart = tbj.start
+            istop  = istart + tbi.full_dim
+            jstop  = jstart + tbj.full_dim
+            
+            #print bi,bj
+            #print tbi
+            #print tbj
+            #print "i: ", istart,istop
+            #print "j: ", jstart,jstop
+            #print "tbi: ", tbi.start,tbi.stop
+            #print "tbj: ", tbj.start,tbj.stop
+            
+            H,s2v = build_H(lattice_blocks, tbi, tbj, j12)
+            
+            Hss[istart:istop, jstart:jstop] = H
+            Hss[jstart:jstop, istart:istop] = H
+            
+            if bj > bi:
+                tbij = tucker_blocks_pt[2,bi,bj]
+                H,s2v = build_H(lattice_blocks, tbij, tb0, j12)
+               
+                H.shape = (tbi.full_dim, tbj.full_dim)
+                Hd0[istart:istop, jstart:jstop] = H
+                Hd0[jstart:jstop, istart:istop] = H.T
+          
+
+    n_roots = v.shape[1]
+    e2 = np.zeros((n_roots))
+    for s in range(0, n_roots):
+    
+        E0s = E0[s,s]
+        print E0s
+        A = Hss - E0*np.eye(n_singles)
+        B = Hd0
+        T_old = np.zeros((n_singles,n_singles)) 
+        T = T_old
+        print " Other norm: %12.e" % np.linalg.norm(B + T.dot(A) + A.dot(T) + T.dot(B).dot(T))
+        for i in range(0,20):
+            Q = - B - T_old.dot(B).dot(T_old)
+ 
+            T_new = scipy.linalg.solve_lyapunov(A,Q)
+            error = np.linalg.norm(T_new-T_old)
+            T_old = T_new
+            print " Error is : %12.1e" %(error)
+            if error < 1e-12:
+                break
+ 
+        T = T_old
+        print " Other norm: %12.e" % np.linalg.norm(B + T.dot(A) + A.dot(T) + T.dot(B).dot(T))
+        e_corr = .5*np.trace(B.dot(T_old))
+        print " Correlation energy: %12.8f" %(e_corr)
+        print " RPA energy: %12.8f" %(E0+e_corr)
+    # }}}
+
 def check_connected(Bi, Bj, j12):
     for si in Bi.sites:
         for sj in Bj.sites:

@@ -570,6 +570,68 @@ for it in range(0,maxiter):
                 if abs(E-E0 - Ec) < 1e-10:
                     break
                 Ec = E - E0
+        do_rpa = 1
+        if do_rpa:
+            print " Do RPA correlation"
+            tb0 = tucker_blocks[0,-1]
+            n_singles = 0;
+            for bi in range(0,n_blocks):
+                n_singles += tucker_blocks[1,bi].full_dim
+            print "n_singles ", n_singles
+
+            H00 = cp.deepcopy(H[tb0.start:tb0.stop,tb0.start:tb0.stop])
+            Hss = cp.deepcopy(H[tb0.stop:tb0.stop+n_singles,tb0.stop:tb0.stop+n_singles])
+            Hd0v = cp.deepcopy(H[tb0.stop+n_singles::,tb0.start:tb0.stop])
+
+            Hd0 = np.zeros((n_singles,n_singles))
+            for bi in range(0,n_blocks):
+                for bj in range(bi+1,n_blocks):
+                    tbij = tucker_blocks[2,bi,bj]
+                    tbi  = tucker_blocks[1,bi]
+                    tbj  = tucker_blocks[1,bj]
+                    tmp = cp.deepcopy(H[tbij.start:tbij.stop,tb0.start:tb0.stop]) 
+                    #print bi,bj
+                    #print tmp.shape
+                    tmp.shape = (tbi.full_dim, tbj.full_dim)
+                    #print tmp.shape
+                    #print "tbi: ", tbi.start,tbi.stop
+                    #print "tbj: ", tbj.start,tbj.stop
+                    istart = tbi.start - tb0.stop
+                    jstart = tbj.start - tb0.stop
+                    istop  = istart + tbi.full_dim
+                    jstop  = jstart + tbj.full_dim
+                    Hd0[istart:istop, jstart:jstop] =tmp
+                    Hd0[jstart:jstop, istart:istop] =tmp
+           
+            print H00.shape
+            print Hss.shape
+            print Hd0.shape
+            E0,V0 = np.linalg.eigh(H00)
+            E0 = E0[ts]
+        
+            print  E0*np.eye(n_singles)
+            A = Hss - E0*np.eye(n_singles)
+            B = Hd0
+            T_old = np.zeros((n_singles,n_singles)) 
+            T = T_old
+            print " Other norm: %12.e" % np.linalg.norm(B + T.dot(A) + A.dot(T) + T.dot(B).dot(T))
+            for i in range(0,20):
+                Q = - B - T_old.dot(B).dot(T_old)
+
+                T_new = scipy.linalg.solve_lyapunov(A,Q)
+                error = np.linalg.norm(T_new-T_old)
+                T_old = T_new
+                print " Error is : %12.1e" %(error)
+                if error < 1e-12:
+                    break
+
+            T = T_old
+            print " Other norm: %12.e" % np.linalg.norm(B + T.dot(A) + A.dot(T) + T.dot(B).dot(T))
+            e_corr = .5*np.trace(B.dot(T_old))
+            print " Correlation energy: %12.8f" %(e_corr)
+            print " RPA energy: %12.8f" %(E0+e_corr)
+           
+
     
 
     # 
@@ -669,6 +731,7 @@ for it in range(0,maxiter):
         print " Compute State-specific PT2 corrections: "
         n_roots = args['n_roots']
         pt_type = args['pt_type']
+        e2 = compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
         e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
         print
         print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
