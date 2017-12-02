@@ -93,7 +93,7 @@ parser.add_argument('--use_exact_tucker_factors', action="store_true", default=F
 parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', help='state(s) to target during (possibly state-averaged) optimization', required=False)
 parser.add_argument('-mit', '--max_iter', type=int, default=30, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=0, help='PT correction order ?', required=False)
-parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en'], help='PT correction denominator type', required=False)
+parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en','lcc'], help='PT correction denominator type', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
 parser.add_argument('-opt','--optimization', type=str, default="diis", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
 parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
@@ -665,8 +665,14 @@ for it in range(0,maxiter):
         if si<args['n_print']:
             print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
+    if pt_order ==2 and args['pt_type'] == 'lcc':
+        print "DMBPTinfinity Calculation"
+        n_roots = args['n_roots']
+        pt_type = args['pt_type']
+        PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order, l, v, j12, pt_type)
+       
 
-    if pt_order == 2:
+    if pt_order == 2 and args['pt_type'] != 'lcc':
         print
         print " Compute State-specific PT2 corrections: "
         n_roots = args['n_roots']
