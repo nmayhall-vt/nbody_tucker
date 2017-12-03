@@ -184,6 +184,10 @@ def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_bod
 
     vv_n = 0
     wigner = np.zeros((2*n+2))
+       
+    E_corr = E_mpn[1] 
+
+    print " %6s  %16s  %16s " %("Order","Correction","Energy")
     for i in range(1,n):
         h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,v_n[:,i-1].reshape(dim_tot_X,1))
         vv_n1 = h1.reshape(dim_tot_X)
@@ -195,7 +199,11 @@ def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_bod
         v_n[:,i] = np.multiply(res,vv_n1-vv_n) 
         E_mpn[i+1] = np.dot(H_Xs.T, v_n[:,i])
         wigner[i] = E_mpn[i]
-        
+        E_corr += E_mpn[i+1]
+        print " %6i  %16.8f  %16.8f " %(i,E_mpn[i+1],E_corr)
+       
+        if max(abs(E_mpn[i+1]),abs(E_mpn[i])) < 1e-8:
+            break
         if i >= n/2-1:
             wigner[2*i+1] = np.dot(vv_n1,v_n[:,i]) 
             h2,S2 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,v_n[:,i].reshape(dim_tot_X,1))
@@ -221,15 +229,16 @@ def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_bod
         #       wigner[2*i+1] += wigner[k] * np.dot(v_n[:,m].T,v_n[:,2*i-m-k])
 
 
-    print("Nth order pertubations:") 
+    return E_corr
+    #print("Nth order pertubations:") 
     #for i in range(0,n):
     #    print("Order: %2d  % 10.15f " %(i+1, E_mpn[i]))
     #E_mp = l[0] 
     #for i in range(0,n):
     #    E_mp += E_mpn[i]
     #    print("Order: %d  % 10.15f " %(i+1, E_mp))
-    for i in range(0,2*n):
-        print("Order: %2d  % 10.15f " %(i+1, wigner[i]))
+    #for i in range(0,2*n):
+    #    print("Order: %2d  % 10.15f " %(i+1, wigner[i]))
 
 
 def pt_build_H1(blocks,tb_l, tb_r,j12):

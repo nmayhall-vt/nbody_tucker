@@ -13,6 +13,7 @@ import scipy.sparse.linalg
 from hdvv import *
 from block import *
 from davidson import *
+from pt import *
 
 
 def printm(m):
@@ -380,7 +381,7 @@ if n_body_order >= 8:
 #   Prepare tucker_blocks for perturbation
 dim_tot_pt = 0
 pt_order = args['pt_order']
-if pt_order > 1:
+if pt_order == 2:
     if n_body_order == 0:
         for bi in range(0,n_blocks):
             tb = Tucker_Block()
@@ -468,11 +469,85 @@ if pt_order > 1:
     if n_body_order >= 5:
         print "n_body_order > 4 NYI for PT2"
         exit(-1)
+elif pt_order == 3:
+    if n_body_order == 0:
+        for bi in range(0,n_blocks):
+            tb = Tucker_Block()
+            address = np.zeros(n_blocks,dtype=int)
+            address[bi] = 1
+            tb.init((bi), lattice_blocks,address, dim_tot_pt)
+            if tb.start < tb.stop:
+                tucker_blocks_pt[1,bi] = tb
+                dim_tot_pt += tb.full_dim
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                tb = Tucker_Block()
+                address = np.zeros(n_blocks,dtype=int)
+                address[bi] = 1
+                address[bj] = 1
+                tb.init((bi,bj), lattice_blocks,address,dim_tot_pt)
+                if tb.start < tb.stop:
+                    tucker_blocks_pt[2,bi,bj] = tb
+                    dim_tot_pt += tb.full_dim
+elif pt_order == 4 or pt_order == 5:
+    if n_body_order == 0:
+        for bi in range(0,n_blocks):
+            tb = Tucker_Block()
+            address = np.zeros(n_blocks,dtype=int)
+            address[bi] = 1
+            tb.init((bi), lattice_blocks,address, dim_tot_pt)
+            if tb.start < tb.stop:
+                tucker_blocks_pt[1,bi] = tb
+                dim_tot_pt += tb.full_dim
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                tb = Tucker_Block()
+                address = np.zeros(n_blocks,dtype=int)
+                address[bi] = 1
+                address[bj] = 1
+                tb.init((bi,bj), lattice_blocks,address,dim_tot_pt)
+                if tb.start < tb.stop:
+                    tucker_blocks_pt[2,bi,bj] = tb
+                    dim_tot_pt += tb.full_dim
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                for bk in range(bj+1,n_blocks):
+                    tb = Tucker_Block()
+                    address = np.zeros(n_blocks,dtype=int)
+                    address[bi] = 1
+                    address[bj] = 1
+                    address[bk] = 1
+                    tb.init((bi,bj,bk), lattice_blocks,address,dim_tot_pt)
+                    if tb.start < tb.stop:
+                        tucker_blocks_pt[3,bi,bj,bk] = tb
+                        dim_tot_pt += tb.full_dim
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                for bk in range(bj+1,n_blocks):
+                    for bl in range(bk+1,n_blocks):
+                        tb = Tucker_Block()
+                        address = np.zeros(n_blocks,dtype=int)
+                        address[bi] = 1
+                        address[bj] = 1
+                        address[bk] = 1
+                        address[bl] = 1
+                        tb.init((bi,bj,bk,bl), lattice_blocks,address,dim_tot_pt)
+                        if tb.start < tb.stop:
+                            tucker_blocks_pt[4,bi,bj,bk,bl] = tb
+                            dim_tot_pt += tb.full_dim
+                            pass
+elif pt_order > 5:
+    print "pt_order=",pt_order," NYI"
+    exit(-1)
 
 print
 print " Configurations defining the variational space"
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
+print
+print " Configurations defining the perturbational space"
+for tb in sorted(tucker_blocks_pt):
+    print tucker_blocks_pt[tb], " Range= %8i:%-8i" %( tucker_blocks_pt[tb].start, tucker_blocks_pt[tb].stop),tb 
 
 #print 
 #print " Configurations defining the perturbative space"
@@ -665,11 +740,13 @@ for it in range(0,maxiter):
         if si<args['n_print']:
             print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
-    if pt_order ==2 and args['pt_type'] == 'lcc':
+    if pt_order >= 2 and args['pt_type'] == 'lcc':
         print "DMBPTinfinity Calculation"
         n_roots = args['n_roots']
         pt_type = args['pt_type']
         PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order, l, v, j12, pt_type)
+        print
+        print " Compute State-specific PT2 corrections: "
        
 
     if pt_order == 2 and args['pt_type'] != 'lcc':

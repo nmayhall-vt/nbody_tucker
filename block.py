@@ -1321,8 +1321,8 @@ def compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
         A = Hss - E0*np.eye(n_singles)
         B = Hd0
         
-        T = .0*np.random.rand(n_singles,n_singles) 
-        #T = np.zeros((n_singles,n_singles))
+        #T = 1*np.random.rand(n_singles,n_singles) 
+        T = np.zeros((n_singles,n_singles))
         if 1:
             T = np.zeros((n_singles,n_singles))
             T = cp.deepcopy(Hd0)
@@ -1337,26 +1337,88 @@ def compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
                     T[tbj.start:tbj.stop, tbi.start:tbi.stop] *= dx
         
         print " Other norm: %12.e" % np.linalg.norm(B + T.T.dot(A) + A.dot(T) + T.T.dot(B).dot(T))
-        for i in range(0,30):
+
+        n_diis_vecs = 8
+        diis_start = 1
+        diis_vecs = np.array([])
+        diis_T = []
+        for it in range(0,1000):
         
             e_corr = .5*np.trace(B.dot(T))
-            Q = B + T.T.dot(B).dot(T)
- 
-            T_new = scipy.linalg.solve_sylvester(A,A,-Q)
+            #Q = B + T.T.dot(B).dot(T)
+            Q = B 
+
+            AA = A + B.dot(T)
+            T_new = scipy.linalg.solve_sylvester(AA,A,-Q)
+            #T_new = scipy.linalg.solve_sylvester(A,A,-Q)
 
             T = T_new
-            error0 =  np.linalg.norm(T.dot(A) + A.dot(T) + Q)
-            error =  np.linalg.norm(B + T.dot(A) + A.dot(T) + T.dot(B).dot(T))
-            print "   It: %4i RPA energy: %16.8f Sylv Error: %12.1e Total Error: %12.1e" %(i, E0+e_corr, error0, error)
-            if error < 1e-12:
+            error0 =  np.linalg.norm(T.dot(AA) + A.dot(T) + B)
+            #error0 =  np.linalg.norm(T.dot(A) + A.dot(T) + Q)
+            error_vector = B + T.dot(A) + A.dot(T) + T.dot(B).dot(T)
+            error_vector.shape = (error_vector.shape[0]*error_vector.shape[1],1)
+            error =  np.sqrt(np.linalg.norm(error_vector))
+            print "   It: %4i RPA energy: %16.8f Sylv Error: %12.1e Total Error: %12.1e" %(it, E0+e_corr, error0, error)
+            if error < 1e-6:
                 break
+            if diis_vecs.shape[0] == 0:
+                diis_vecs = error_vector
+            else:
+                diis_vecs = np.hstack( (diis_vecs, error_vector) ) 
+                
+            diis_T.append( T )
+            n_evecs = diis_vecs.shape[1]
+            
+            if it>diis_start:
+                S = diis_vecs.T.dot(diis_vecs )
+                
+                collapse = 1
+                if collapse:
+                    sort_ind = np.argsort(S.diagonal())
+                    sort_ind = [sort_ind[i] for i in range(0,min(len(sort_ind),n_diis_vecs))]
+                    diis_vecs = diis_vecs[:,sort_ind]
+                    tmp = []
+                    for i in sort_ind:
+                        tmp.append(diis_T[i])
+                    diis_T = cp.deepcopy(tmp)
+                    #print " Vector errors", S.diagonal()[sort_ind] 
+                    n_evecs = diis_vecs.shape[1]
+                    S = diis_vecs.T.dot(diis_vecs )
+                
+                #print " Number of error vectors: %4i " %n_evecs
+                BB = np.ones( (n_evecs+1, n_evecs+1) )
+                BB[-1,-1] = 0
+                BB[0:-1,0:-1] = cp.deepcopy(S) 
+                r = np.zeros( (n_evecs+1,1) )
+                r[-1] = 1
+                if n_evecs > 0: 
+                    x = np.linalg.pinv(BB).dot(r)
+                    
+                    extrap_err_vec = np.zeros((diis_vecs.shape[0]))
+                    extrap_err_vec.shape = (extrap_err_vec.shape[0])
+                   
+                    Tnew = np.zeros((n_singles, n_singles))
+                    for i in range(0,x.shape[0]-1):
+                        Tnew += x[i]*diis_T[i]
+                        extrap_err_vec += x[i]*diis_vecs[:,i]
+                    
+                    #print " DIIS Coeffs"
+                    #for i in x:
+                    #    print "  %12.8f" %i
+                    #print " CURRENT           error vector %12.2e " % np.sqrt(error_vector.T.dot(error_vector))
+    
+                    T = Tnew
 
-        #T = scipy.linalg.solve_continuous_are(A, B, B, -np.eye(n_singles))
-        
+
+        #T = scipy.linalg.solve_continuous_are(A, B, B, np.linalg.pinv(B))
+        #print T.shape
+
+        #print np.linalg.norm(A.T.dot(T) + T.dot(A) - T.dot(B).dot(B.T).dot(T) + B)
+        #print np.linalg.norm(A*T + T*A - T*B*B.T*T + B)
         e_corr = .5*np.trace(B.dot(T))
         print " Correlation energy: %12.8f" %(e_corr)
         print " RPA energy: %12.8f" %(E0+e_corr)
-        exit()
+        #exit()
     # }}}
 
 def check_connected(Bi, Bj, j12):
