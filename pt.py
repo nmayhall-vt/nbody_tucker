@@ -190,13 +190,13 @@ def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_bod
     print " %6s  %16s  %16s " %("Order","Correction","Energy")
     for i in range(1,n):
         h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,v_n[:,i-1].reshape(dim_tot_X,1))
-        vv_n1 = h1.reshape(dim_tot_X)
+        v_n[:,i] = h1.reshape(dim_tot_X)
 
         ##RENORMALISED TERMS
-        #for k in range(0,i):
-        #   vv_n += np.multiply(E_mpn[k],v_n[:,i-k-2].reshape(dim_tot_X))
+        for k in range(0,i):
+           v_n[:,i] -= np.multiply(E_mpn[k],v_n[:,i-k-1].reshape(dim_tot_X))
 
-        v_n[:,i] = np.multiply(res,vv_n1-vv_n) 
+        v_n[:,i] = np.multiply(res,v_n[:,i]) 
         E_mpn[i+1] = np.dot(H_Xs.T, v_n[:,i])
         wigner[i] = E_mpn[i]
         E_corr += E_mpn[i+1]
@@ -210,35 +210,8 @@ def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_bod
             vv_n2 = h2.reshape(dim_tot_X)
             wigner[2*i+2] = np.dot(vv_n2,v_n[:,i])
 
-        ##EVEN: Wigner method to get 2n perturbation correction to energy
-        #h2,S2 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,v_n[:,i].reshape(dim_tot_X,1))
-        #
-        #wigner[2*i] = np.dot(v_n[:,i-1],h2)
-        #for k in range(1,2*i-2):
-        #   mini = min(i,2*i-k-1) 
-        #   maxi = max(1,i-k) 
-        #   for m in range(maxi,mini):
-        #       wigner[2*i] += wigner[k] * np.dot(v_n[:,m].T,v_n[:,2*i-m-k])
-        #     
-        ##ODD: Wigner method to get 2n+1 perturbation correction to energy
-        #wigner[2*i+1] = np.dot(v_n[:,i],h2)
-        #for k in range(1,2*i-1):
-        #   mini = min(i+1,2*i-k) 
-        #   maxi = max(1,i+1-k) 
-        #   for m in range(maxi,mini):
-        #       wigner[2*i+1] += wigner[k] * np.dot(v_n[:,m].T,v_n[:,2*i-m-k])
-
 
     return E_corr
-    #print("Nth order pertubations:") 
-    #for i in range(0,n):
-    #    print("Order: %2d  % 10.15f " %(i+1, E_mpn[i]))
-    #E_mp = l[0] 
-    #for i in range(0,n):
-    #    E_mp += E_mpn[i]
-    #    print("Order: %d  % 10.15f " %(i+1, E_mp))
-    #for i in range(0,2*n):
-    #    print("Order: %2d  % 10.15f " %(i+1, wigner[i]))
 
 
 def pt_build_H1(blocks,tb_l, tb_r,j12):
