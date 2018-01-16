@@ -12,6 +12,7 @@ import scipy.sparse.linalg
 
 from hdvv import *
 from block import *
+import block2 
 
 
 def printm(m):
@@ -229,6 +230,20 @@ dim_tot += tb_0.full_dim
 tucker_blocks = {}
 tucker_blocks[0,-1] = tb_0 
 
+
+
+#PPP states
+for bi in range(0,n_blocks):
+    lb = block2.Lattice_Block()
+    lb.init(bi,blocks_in[bi,:],[])
+    lb.extract_j12(j12)
+    lb.form_H_full()
+    print(lb)
+
+
+
+
+exit(-1)
 print 
 print " Prepare Tucker blocks:"
 if n_body_order >= 1:
@@ -297,9 +312,43 @@ for tb in sorted(tucker_blocks):
 
 
 
+tucker_blocks2 = {}
+tucker_blocks2[0,-1] = tb_0 
+print 
+print " Prepare New Tucker blocks:"
+if n_body_order >= 1:
+    for bi in range(0,n_blocks):
+        tb = block2.Tucker_Block()
+        address = np.zeros(n_blocks,dtype=int)
+        address[bi] = 1
+        tb.init((bi), lattice_blocks,address, dim_tot, j12)
+        tucker_blocks2[1,bi] = tb
+        dim_tot += tb.full_dim
+if n_body_order >= 2:
+    for bi in range(0,n_blocks):
+        for bj in range(bi+1,n_blocks):
+            tb = block2.Tucker_Block()
+            address = np.zeros(n_blocks,dtype=int)
+            address[bi] = 1
+            address[bj] = 1
+            tb.init((bi,bj), lattice_blocks,address,dim_tot,j12)
+            tucker_blocks2[2,bi,bj] = tb
+            dim_tot += tb.full_dim
+if n_body_order >= 3:
+    for bi in range(0,n_blocks):
+        for bj in range(bi+1,n_blocks):
+            for bk in range(bj+1,n_blocks):
+                tb = block2.Tucker_Block()
+                address = np.zeros(n_blocks,dtype=int)
+                address[bi] = 1
+                address[bj] = 1
+                address[bk] = 1
+                tb.init((bi,bj,bk), lattice_blocks,address,dim_tot,j12)
+                tucker_blocks2[3,bi,bj,bk] = tb
+                dim_tot += tb.full_dim
 
 
-
+exit(-1)
 
 # loop over compression vector iterations
 energy_per_iter = []
