@@ -330,29 +330,55 @@ for bi in range(0,n_blocks):
         si,UQi = np.linalg.eigh(G1)
         sj,UQj = np.linalg.eigh(G2)
 
+        sort_ind = abs(si).argsort()[::-1]
+        si = si[sort_ind]
+        UQi = UQi[:,sort_ind]
+        
+        sort_ind = np.argsort(abs(sj))[::-1]
+        sj = sj[sort_ind]
+        UQj = UQj[:,sort_ind]
+        
         print
         print(bi, bj)
-        for sii in si:
-            print(" %12.8f "%sii)
-        for sjj in sj:
-            print(" %12.8f "%sjj)
-        # 
-        # For now, just choose n lowest energy states for P space, but later 
-        #   we may which to choose n lowest energy of specify ms value
-        #
-        p = v[:,0:n_p_states[bi]]
-        q = v[:,n_p_states[bi]::]
+        thresh = 1e-6
+        nq_i = 0
+        nq_j = 0
+        for s in si:
+            if abs(s)>thresh:
+                nq_i+=1
+        for s in sj:
+            if abs(s)>thresh:
+                nq_j+=1
+
+        for s in range(len(si)):
+            if max(abs(si[s]), abs(sj[s]))>thresh:
+                print(" %4i %12.8f %12.8f "%(s,si[s],sj[s]))
         
-        bb_p = block3.Block_Basis(lb,"P")
-        bb_q = block3.Block_Basis(lb,"Q")
+        if min(nq_i,nq_j) == 0:
+            continue
+
+        qi = block_basis[bi,"Q"].vecs.dot(UQi[:,0:nq_i]) 
+        qj = block_basis[bj,"Q"].vecs.dot(UQj[:,0:nq_j]) 
         
-        bb_p.set_vecs(p)
-        bb_q.set_vecs(q)
+        bbi = block3.Block_Basis(lbi,("Q",bi,bj))
+        bbj = block3.Block_Basis(lbj,("Q",bi,bj))
+     
+        # possibly reshape a vector into a column matrix
+        if nq_i == 1:
+            qi.shape = (qi.shape[0],1)
+        if nq_j == 1:
+            qj.shape = (qj.shape[0],1)
+
+        bbi.set_vecs(qi)
+        bbj.set_vecs(qj)
+      
+        print(bbi)
+        print(bbj)
         
         #
         #   address the block_basis by a tuple (lb.index,name) 
-        block_basis[(lb.index,bb_p.name)] = bb_p
-        block_basis[(lb.index,bb_q.name)] = bb_q
+        block_basis[(lb.index,bb_p.name)] = bbi
+        block_basis[(lb.index,bb_q.name)] = bbj
 
 
 

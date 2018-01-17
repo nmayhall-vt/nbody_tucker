@@ -68,7 +68,7 @@ class Block_Basis:
         else:
             out = " Block_Basis:  LB=%-4i "%(self.lb.index)
         out += " Dim=%-8i"%self.n_vecs 
-        out += self.name
+        out += str(self.name)
         return out
 
     def set_vecs(self,v):
