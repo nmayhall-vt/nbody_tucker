@@ -1,0 +1,2 @@
+# source this to test
+../../../nbtuck_dens1.py -ju ev -j j12.04.m -nb 2

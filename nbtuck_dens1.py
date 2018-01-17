@@ -270,6 +270,7 @@ for bi in range(0,n_blocks):
     block_basis[(lb.index,bb_p.name)] = bb_p
     block_basis[(lb.index,bb_q.name)] = bb_q
 
+
 print("\n Set up 2b Q states")
 for bi in range(0,n_blocks):
     for bj in range(bi+1,n_blocks):
@@ -338,8 +339,8 @@ for bi in range(0,n_blocks):
         sj = sj[sort_ind]
         UQj = UQj[:,sort_ind]
         
-        print
-        print(bi, bj)
+        #print
+        #print(bi, bj)
         thresh = 1e-6
         nq_i = 0
         nq_j = 0
@@ -350,9 +351,9 @@ for bi in range(0,n_blocks):
             if abs(s)>thresh:
                 nq_j+=1
 
-        for s in range(len(si)):
-            if max(abs(si[s]), abs(sj[s]))>thresh:
-                print(" %4i %12.8f %12.8f "%(s,si[s],sj[s]))
+        #for s in range(len(si)):
+        #    if max(abs(si[s]), abs(sj[s]))>thresh:
+        #        print(" %4i %12.8f %12.8f "%(s,si[s],sj[s]))
         
         if min(nq_i,nq_j) == 0:
             continue
@@ -372,14 +373,137 @@ for bi in range(0,n_blocks):
         bbi.set_vecs(qi)
         bbj.set_vecs(qj)
       
-        print(bbi)
-        print(bbj)
         
         #
         #   address the block_basis by a tuple (lb.index,name) 
-        block_basis[(lb.index,bb_p.name)] = bbi
-        block_basis[(lb.index,bb_q.name)] = bbj
+        block_basis[(lbi.index,bbi.name)] = bbi
+        block_basis[(lbj.index,bbj.name)] = bbj
 
+thresh_3b = 1e-5
+print("\n Set up 3b Q states")
+for bi in range(0,n_blocks):
+    for bj in range(bi+1,n_blocks):
+        for bk in range(bj+1,n_blocks):
+  
+            lbi = lattice_blocks2[bi]
+            lbj = lattice_blocks2[bj]
+            lbk = lattice_blocks2[bk]
+ 
+ 
+            # Form full Hamiltonian for Lattice_Blocks bi and bj
+            lb = block3.Lattice_Block()
+            sites = np.hstack((blocks_in[bi,:],blocks_in[bj,:],blocks_in[bk,:]))
+            lb.init(bi,sites,j12)
+ 
+            lattice = [1]*lb.n_sites  # assume spin-1/2 lattice for now 
+   
+            
+            print "\n"
+            print(bi,bj,bk)
+            #print(lb)
+    
+            # Find basis for bi
+            Qi = np.zeros([lbi.full_dim,0])
+           
+            if (bi,("Q",bi,bj)) in block_basis.keys():
+                Qi = np.hstack((Qi,block_basis[(bi,("Q",bi,bj))].vecs))
+            if (bi,("Q",bi,bk)) in block_basis.keys():
+                Qi = np.hstack((Qi,block_basis[(bi,("Q",bi,bk))].vecs))
+           
+            if Qi.shape[1] > 0:
+                Qi = scipy.linalg.orth(Qi)
+            
+            # Find basis for bj
+            Qj = np.zeros([lbj.full_dim,0])
+           
+            if (bj,("Q",bi,bj)) in block_basis.keys():
+                Qj = np.hstack((Qj,block_basis[(bj,("Q",bi,bj))].vecs))
+            if (bj,("Q",bi,bk)) in block_basis.keys():
+                Qj = np.hstack((Qj,block_basis[(bj,("Q",bj,bk))].vecs))
+           
+            if Qj.shape[1] > 0:
+                Qj = scipy.linalg.orth(Qj)
+            
+            # Find basis for bk
+            Qk = np.zeros([lbk.full_dim,0])
+           
+            if (bk,("Q",bi,bk)) in block_basis.keys():
+                Qk = np.hstack((Qk,block_basis[(bk,("Q",bi,bk))].vecs))
+            if (bk,("Q",bj,bk)) in block_basis.keys():
+                Qk = np.hstack((Qk,block_basis[(bk,("Q",bj,bk))].vecs))
+           
+            if Qk.shape[1] > 0:
+                Qk = scipy.linalg.orth(Qk)
+           
+            nQi = Qi.shape[1]
+            nQj = Qj.shape[1]
+            nQk = Qk.shape[1]
+
+            if min(nQi,nQj,nQk) == 0:
+                continue
+            print(nQi,nQj,nQk)
+
+
+            # Now build the Hamiltonian in this basis, get GS, then Tucker
+            continue
+            print 
+            print " Build Hamiltonian:"
+            Hi,S2i = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
+
+
+            print(bi,bj,bk)
+            print("form matrix")
+            Hi, tmp, S2i, Szi = form_hdvv_H(lattice, lb.j12)  # rewrite this
+            print("diagonalize")
+            e, vijk = scipy.sparse.linalg.eigsh(Hi,1)
+           
+            vijk.shape = (lbi.full_dim, lbj.full_dim, lbk.full_dim) 
+            
+            continue
+            Acore, Atfac = tucker_decompose(vijk, thresh_3b, 0)
+            
+            #print
+            #print(bi, bj)
+            thresh = 1e-6
+            nq_i = 0
+            nq_j = 0
+            for s in si:
+                if abs(s)>thresh:
+                    nq_i+=1
+            for s in sj:
+                if abs(s)>thresh:
+                    nq_j+=1
+ 
+            #for s in range(len(si)):
+            #    if max(abs(si[s]), abs(sj[s]))>thresh:
+            #        print(" %4i %12.8f %12.8f "%(s,si[s],sj[s]))
+            
+            if min(nq_i,nq_j) == 0:
+                continue
+ 
+            qi = block_basis[bi,"Q"].vecs.dot(UQi[:,0:nq_i]) 
+            qj = block_basis[bj,"Q"].vecs.dot(UQj[:,0:nq_j]) 
+            
+            bbi = block3.Block_Basis(lbi,("Q",bi,bj))
+            bbj = block3.Block_Basis(lbj,("Q",bi,bj))
+         
+            # possibly reshape a vector into a column matrix
+            if nq_i == 1:
+                qi.shape = (qi.shape[0],1)
+            if nq_j == 1:
+                qj.shape = (qj.shape[0],1)
+ 
+            bbi.set_vecs(qi)
+            bbj.set_vecs(qj)
+          
+            
+            #
+            #   address the block_basis by a tuple (lb.index,name) 
+            block_basis[(lbi.index,bbi.name)] = bbi
+            block_basis[(lbj.index,bbj.name)] = bbj
+
+for bb in sorted(block_basis):
+    print(bb)
 
 
 exit(-1)
