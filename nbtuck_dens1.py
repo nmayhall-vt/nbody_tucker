@@ -12,7 +12,7 @@ import scipy.sparse.linalg
 
 from hdvv import *
 from block import *
-import block2 
+import block3 
 
 
 def printm(m):
@@ -231,15 +231,128 @@ tucker_blocks = {}
 tucker_blocks[0,-1] = tb_0 
 
 
-
+# New lattice blocks
 #PPP states
+print("\n Set up Lattice_Blocks")
+lattice_blocks2 = []
 for bi in range(0,n_blocks):
-    lb = block2.Lattice_Block()
-    lb.init(bi,blocks_in[bi,:],[])
-    lb.extract_j12(j12)
-    lb.form_H_full()
+    lb = block3.Lattice_Block()
+    lb.init(bi,blocks_in[bi,:],j12)
+    lattice_blocks2.append(lb)
     print(lb)
 
+block_basis = {}
+print("\n Set up P states and 1b Q states")
+for bi in range(0,n_blocks):
+    lb = lattice_blocks2[bi]
+    
+    # Form full Hamiltonian for Lattice_Block bi
+    lattice = [1]*lb.n_sites  # assume spin-1/2 lattice for now 
+    Hi, tmp, S2i, Szi = form_hdvv_H(lattice, lb.j12)  # rewrite this
+   
+    e, v = np.linalg.eigh(Hi)
+   
+    # 
+    # For now, just choose n lowest energy states for P space, but later 
+    #   we may which to choose n lowest energy of specify ms value
+    #
+    p = v[:,0:n_p_states[bi]]
+    q = v[:,n_p_states[bi]::]
+
+    bb_p = block3.Block_Basis(lb,"P")
+    bb_q = block3.Block_Basis(lb,"Q")
+
+    bb_p.set_vecs(p)
+    bb_q.set_vecs(q)
+
+    #
+    #   address the block_basis by a tuple (lb.index,name) 
+    block_basis[(lb.index,bb_p.name)] = bb_p
+    block_basis[(lb.index,bb_q.name)] = bb_q
+
+print("\n Set up 2b Q states")
+for bi in range(0,n_blocks):
+    for bj in range(bi+1,n_blocks):
+  
+        lbi = lattice_blocks2[bi]
+        lbj = lattice_blocks2[bj]
+
+
+        # Form full Hamiltonian for Lattice_Blocks bi and bj
+        lb = block3.Lattice_Block()
+        sites_ij = np.hstack((blocks_in[bi,:],blocks_in[bj,:])) 
+        lb.init(bi,sites_ij,j12)
+
+        lattice = [1]*lb.n_sites  # assume spin-1/2 lattice for now 
+        
+
+        Hi, tmp, S2i, Szi = form_hdvv_H(lattice, lb.j12)  # rewrite this
+      
+        
+        e, vij = scipy.sparse.linalg.eigsh(Hi,1)
+       
+        #
+        #   Notes:
+        # {{{
+        # 2body GS is V(ij) -> V(i,j) 
+        #   
+        #   rdm_i = V(i,j)V(i',j) = D(i,i')
+
+        #   dm_ij = V(i,j)V(i',j') = D(i,j,i',j')
+        #   cumulant_ij = C(i,i',j,j') = D(i,i',j,j') - Di(i,i')Dj(j,j')
+        # 
+        #   where Di(i,i') is just Vi(i,P)Vi(i',P)
+        #   
+        #   Now, we want to Tucker decompose the 2B cumulant
+        #       G(i,i'') = C(i,i',j,j') C(i'',i',j,j')
+        #                = [ D(i,i',j,j') - Di(i,i')Dj(j,j') ][ D(i'',i',j,j') - Di(i'',i')Dj(j,j') ]
+        #                =  D(i,i',j,j')D(i'',i',j,j') - Di(i,i')Dj(j,j')D(i'',i',j,j') -  D(i,i',j,j')Di(i'',i')Dj(j,j') + Di(i,i')Dj(j,j')Di(i'',i')Dj(j,j')
+        #                =  D(i,i',j,j')D(i'',i',j,j') - Vi(i,Pi)D(i'',Pi,Pj,Pj) - D(i,Pi,Pj,Pj)Vi(i'',Pi) + Di(i,i'')I(Pj,Pj') 
+        #                = V(i,j)V(i',j')V(i'',j)V(i',j') - Vi(i,Pi)D(i'',Pi,Pj,Pj) - D(i,Pi,Pj,Pj)Vi(i'',Pi) + Di(i,i'')I(Pj,Pj') 
+        #                = V(i,j)V(i'',j) - Vi(i,Pi)D(i'',Pi,Pj,Pj) - D(i,Pi,Pj,Pj)Vi(i'',Pi) + Di(i,i'')I(Pj,Pj') 
+        #  
+        #   Because we only want to remix the original Q states to get a new Q space, project Cumulant into Q space
+        #
+        #       G(i,i'')Vi(i,Qi)Vi(i'',Qi') = 
+        #       G(Qi,Qi')                   = V(Qi,j)V(Qi',j)  by orthogonality between P and Q
+        #                                   = D(Qi,Qi')    
+        #   
+        #   Thus, the gramian of the 2b cumulant projected into the Q space, is just the 1B RDM projected in that space. 
+        #
+        # }}}
+       
+        vij.shape = (lbi.full_dim, lbj.full_dim) 
+        G1 = block_basis[bi,"Q"].vecs.T.dot(vij) 
+        G1= G1.dot(G1.T)
+        G2 = vij.dot(block_basis[bj,"Q"].vecs)
+        G2= G2.T.dot(G2)
+
+        si,UQi = np.linalg.eigh(G1)
+        sj,UQj = np.linalg.eigh(G2)
+
+        print
+        print(bi, bj)
+        for sii in si:
+            print(" %12.8f "%sii)
+        for sjj in sj:
+            print(" %12.8f "%sjj)
+        # 
+        # For now, just choose n lowest energy states for P space, but later 
+        #   we may which to choose n lowest energy of specify ms value
+        #
+        p = v[:,0:n_p_states[bi]]
+        q = v[:,n_p_states[bi]::]
+        
+        bb_p = block3.Block_Basis(lb,"P")
+        bb_q = block3.Block_Basis(lb,"Q")
+        
+        bb_p.set_vecs(p)
+        bb_q.set_vecs(q)
+        
+        #
+        #   address the block_basis by a tuple (lb.index,name) 
+        block_basis[(lb.index,bb_p.name)] = bb_p
+        block_basis[(lb.index,bb_q.name)] = bb_q
 
 
 

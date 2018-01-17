@@ -28,6 +28,7 @@ class Lattice_Block:
 
         self.full_dim   = 0             # number of spin configurations on current block 
 
+        self.j12 = np.array([])
         self.Spi = {}                   # matrix_rep of i'th S^+ in local basis
         self.Smi = {}                   # matrix_rep of i'th S^- in local basis
         self.Szi = {}                   # matrix_rep of i'th S^z in local basis
@@ -39,11 +40,15 @@ class Lattice_Block:
 
         self.diis_vecs = np.array([])   # DIIS error vectors for converging tucker basis
 
-    def init(self, _index, _sites, _quant_nums):
+    def init(self, _index, _sites, _quant_nums, _p_states, _j12):
         """
         _index = index of block
         _sites = list of lattice sites contained in block
-        _ss    = list of dimensions of vectors per subspace
+
+        _quant_nums = list of Quantum_Number objects: NYI
+        _p_states   = matrix of p vectors for lattice block
+        _j12        = full system J12 matrix
+
         """
         for qn in _quant_nums:
             self.quant_nums.append(qn)
@@ -53,6 +58,14 @@ class Lattice_Block:
         self.n_sites = len(self.sites)
         for si in range(0,self.n_sites):
             self.full_dim *= 2
+        self.extract_j12(_j12)
+    
+        self.vecs_p = cp.deepcopy(_p_states)
+        self.n_vecs = self.vecs_p.shape[1]
+       
+    def update_q_space(self,n_keep):
+        self.form_H_full()
+        E, self.vecs = np.linalg.eigh(self.full_H)
 
     def __str__(self):
         out = " Block %-4i:" %(self.index)
