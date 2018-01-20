@@ -103,18 +103,28 @@ class Tucker_Block:
         self.blocks.append(_block)
         self.full_dim = self.full_dim * _block.n_vecs
         self.stop = self.start + self.full_dim
+        self.address.append(_block.name)
 
     def set_start(self,start):
         self.start = cp.deepcopy(start)
+        self.stop = self.start + self.full_dim
+
+    def set_block(self,_block):
+        bi = _block.lb.index   # cluster id
+        self.blocks[bi] = _block
+        self.full_dim = 1
+        for bj in self.blocks:
+            self.full_dim = self.full_dim * bj.n_vecs
+        self.address[bi] = (_block.name)
         self.stop = self.start + self.full_dim
 
 
     def __str__(self):
         out = ""
         for a in self.address:
-            out += "%4s"%a
+            out += "%4s"%a[0]
         out += " :: "
-        for a in self.block_dims:
-            out += "%4s"%a
-        out += " :: "+ "%6i"%self.full_dim
+        for b in self.blocks:
+            out += "%4i"%b.n_vecs
+        out += " :: "+ "%9i"%self.full_dim
         return out

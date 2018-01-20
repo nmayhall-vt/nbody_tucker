@@ -386,9 +386,50 @@ tucker_blocks2 = {}
 
 
 tb_0 = block3.Tucker_Block((-1))
+for bi in range(0,n_blocks):
+    tb_0.add_block(block_basis[(bi,"P")])
+
 tucker_blocks2[0,-1] = tb_0 
 
-print(tb_0)
+if n_body_order >= 1:
+    for bi in range(0,n_blocks):
+        
+        tb = cp.deepcopy(tb_0)
+        tb.label = (1,bi)
+        tb.set_start(dim_tot)
+        tb.set_block(block_basis[(bi,"Q")]) 
+
+        tucker_blocks2[tb.label] = tb
+        
+        dim_tot += tb.full_dim
+
+if n_body_order >= 2:
+    for bi in range(0,n_blocks):
+        for bj in range(bi+1,n_blocks):
+        
+            tb = cp.deepcopy(tb_0)
+            tb.label = (2,bi,bj)
+            tb.set_start(dim_tot)
+    
+            # check if this tucker block can exist
+            if (bi,("Q",bi,bj)) not in block_basis:
+                continue
+            if (bj,("Q",bi,bj)) not in block_basis:
+                continue
+
+            block_basis_i = block_basis[(bi,("Q",bi,bj))]
+            block_basis_j = block_basis[(bj,("Q",bi,bj))]
+            
+            tb.set_block(block_basis_i) 
+            tb.set_block(block_basis_j) 
+            
+            tucker_blocks2[tb.label] = tb
+            
+            dim_tot += tb.full_dim
+
+for tb in sorted(tucker_blocks2):
+    t = tucker_blocks2[tb]
+    print "%10s"%str(tb), t, " Range= %8i:%-8i" %( t.start, t.stop)
 
 
 exit(-1)
