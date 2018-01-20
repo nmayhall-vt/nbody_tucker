@@ -385,11 +385,11 @@ for bi in range(0,n_blocks):
 tucker_blocks2 = {}
 
 
-tb_0 = block3.Tucker_Block((-1))
+tb_0 = block3.Tucker_Block(())
 for bi in range(0,n_blocks):
     tb_0.add_block(block_basis[(bi,"P")])
 
-tucker_blocks2[0,-1] = tb_0 
+tucker_blocks2[0] = tb_0 
 
 if n_body_order >= 1:
     for bi in range(0,n_blocks):
@@ -429,7 +429,7 @@ if n_body_order >= 2:
 
 for tb in sorted(tucker_blocks2):
     t = tucker_blocks2[tb]
-    print "%10s"%str(tb), t, " Range= %8i:%-8i" %( t.start, t.stop)
+    print "%20s ::"%str(tb), t, " Range= %8i:%-8i" %( t.start, t.stop)
 
 
 exit(-1)

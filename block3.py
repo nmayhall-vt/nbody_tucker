@@ -121,9 +121,9 @@ class Tucker_Block:
 
     def __str__(self):
         out = ""
-        for a in self.address:
-            out += "%4s"%a[0]
-        out += " :: "
+        #for a in self.address:
+        #    out += "%4s"%a[0]
+        #out += " :: "
         for b in self.blocks:
             out += "%4i"%b.n_vecs
         out += " :: "+ "%9i"%self.full_dim
