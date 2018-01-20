@@ -379,6 +379,20 @@ for bi in range(0,n_blocks):
         block_basis[(lbi.index,bbi.name)] = bbi
         block_basis[(lbj.index,bbj.name)] = bbj
 
+
+
+
+tucker_blocks2 = {}
+
+
+tb_0 = block3.Tucker_Block((-1))
+tucker_blocks2[0,-1] = tb_0 
+
+print(tb_0)
+
+
+exit(-1)
+
 thresh_3b = 1e-5
 print("\n Set up 3b Q states")
 for bi in range(0,n_blocks):

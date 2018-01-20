@@ -41,6 +41,8 @@ class Lattice_Block:
         return out
 
 
+
+
 class Block_Basis:
     def __init__(self,lb,name):
         """
@@ -75,3 +77,44 @@ class Block_Basis:
         self.vecs = cp.deepcopy(v)
         self.n_vecs = self.vecs.shape[1]
 
+
+
+
+class Tucker_Block:
+    """
+    Essentially a collection of Block_Basis objects, which defines a particular subspace of the full systems subspace
+        which is given as the direct product space of each Block_Basis.
+    """
+    def __init__(self,_id):
+        self.id = cp.deepcopy(_id)  # (-1):PPP, (1):PQP, (1,3):QPQ, etc 
+        self.start = 0              # starting point in super ci 
+        self.stop = 0               # stopping point in super ci
+        self.address = []           # list of block spaces. e.g.: [0,0,0,1,0,0,1,1,0] means that Blocks 3,6,7 are in their
+                                    #       Q-spaces. This doesn't specify which subspace of their Q-space, just that the local
+                                    #       states in 3,6,7 are orthogonal to their P spaces
+        self.blocks = []            # list of references to Block_Basis objects
+        
+        self.n_blocks = 0
+        self.full_dim = 1
+        self.block_dims = [] 
+   
+
+    def add_block(self,_block):
+        self.blocks.append(_block)
+        self.full_dim = self.full_dim * _block.n_vecs
+        self.stop = self.start + self.full_dim
+
+    def set_start(self,start):
+        self.start = cp.deepcopy(start)
+        self.stop = self.start + self.full_dim
+
+
+    def __str__(self):
+        out = ""
+        for a in self.address:
+            out += "%4s"%a
+        out += " :: "
+        for a in self.block_dims:
+            out += "%4s"%a
+        out += " :: "+ "%6i"%self.full_dim
+        return out
