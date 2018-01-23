@@ -432,9 +432,11 @@ if n_body_order >= 2:
             
             bbi = cp.deepcopy(block_basis[(bi,"P")])
             bbi.append(block_basis[(bi,"Q")])
+            bbi.orthogonalize()
 
             bbj = cp.deepcopy(block_basis[(bj,"P")])
             bbj.append(block_basis[(bj,"Q")])
+            bbj.orthogonalize()
 
             [bbi,bbj] = get_H_compressed_block_states([bbi,bbj],j12)
 

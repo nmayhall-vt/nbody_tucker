@@ -86,6 +86,13 @@ class Block_Basis:
         self.vecs = np.hstack((self.vecs,other.vecs))
         self.n_vecs = self.vecs.shape[1]
 
+    def orthogonalize(self):
+   
+        if len(self.vecs.shape) > 1:
+            if self.vecs.shape[1] > 0:
+                self.vecs = scipy.linalg.orth(self.vecs)
+        else:
+            self.vecs.shape = (self.vecs.shape[0],1)
 
 
 class Tucker_Block:
