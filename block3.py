@@ -77,6 +77,14 @@ class Block_Basis:
         self.vecs = cp.deepcopy(v)
         self.n_vecs = self.vecs.shape[1]
 
+    def append(self,other):
+        if self.lb.index != other.lb.index:
+            print(" Can't add Block_Basis objects from different Lattice_Blocks")
+            exit(-1)
+        self.name = self.name + "|" + other.name
+
+        self.vecs = np.hstack((self.vecs,other.vecs))
+        self.n_vecs = self.vecs.shape[1]
 
 
 

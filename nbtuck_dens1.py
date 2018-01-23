@@ -56,6 +56,26 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
 
 
 
+def get_H_compressed_block_states(block_basis_list,j12):
+    """
+    Build Hamiltonian for this sublattice, get ground state and Tucker 
+        decompose this to get a compressed set of block states
+    
+    lattice_blocks is a list of Lattice_Block objects
+    """
+   
+    lb_curr = block3.Lattice_Block()
+    sites = []
+    for lb in lattice_blocks:
+        sites.extend(lb.sites)
+    
+    lb_curr.init(-1,sites,j12)
+
+    lattice = [1]*lb_curr.n_sites
+    H, tmp, S2i, Szi = form_hdvv_H(lattice,j12)
+    
+    return block_basis_list 
+
 
 
 
@@ -407,10 +427,24 @@ if n_body_order >= 2:
     for bi in range(0,n_blocks):
         for bj in range(bi+1,n_blocks):
         
+            lbi = lattice_blocks2[bi]
+            lbj = lattice_blocks2[bj]
+            
+            bbi = cp.deepcopy(block_basis[(bi,"P")])
+            bbi.append(block_basis[(bi,"Q")])
+
+            bbj = cp.deepcopy(block_basis[(bj,"P")])
+            bbj.append(block_basis[(bj,"Q")])
+
+            [bbi,bbj] = get_H_compressed_block_states([bbi,bbj],j12)
+
+            print(str(bbi),str(bbj))
+            exit(-1)
+        
             tb = cp.deepcopy(tb_0)
             tb.label = (2,bi,bj)
             tb.set_start(dim_tot)
-    
+   
             # check if this tucker block can exist
             if (bi,("Q",bi,bj)) not in block_basis:
                 continue
