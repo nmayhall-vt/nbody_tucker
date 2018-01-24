@@ -258,6 +258,8 @@ lattice_blocks2 = []
 for bi in range(0,n_blocks):
     lb = block3.Lattice_Block()
     lb.init(bi,blocks_in[bi,:],j12)
+    lb.form_site_operators()
+    lb.form_H()
     lattice_blocks2.append(lb)
     print(lb)
 
@@ -426,21 +428,66 @@ if n_body_order >= 1:
 if n_body_order >= 2:
     for bi in range(0,n_blocks):
         for bj in range(bi+1,n_blocks):
-        
+    
+            print "\n Form basis for the following pair of blocks: ", bi, bj
             lbi = lattice_blocks2[bi]
             lbj = lattice_blocks2[bj]
             
             bbi = cp.deepcopy(block_basis[(bi,"P")])
             bbi.append(block_basis[(bi,"Q")])
-            bbi.orthogonalize()
 
             bbj = cp.deepcopy(block_basis[(bj,"P")])
             bbj.append(block_basis[(bj,"Q")])
-            bbj.orthogonalize()
 
-            [bbi,bbj] = get_H_compressed_block_states([bbi,bbj],j12)
+            tb_ij = block3.Tucker_Block("tmp")
+            tb_ij.add_block(bbi)
+            tb_ij.add_block(bbj)
 
-            print(str(bbi),str(bbj))
+            H,S2 = block3.build_H(tb_ij, tb_ij, j12)
+    
+            e, vij = scipy.sparse.linalg.eigsh(H,1)
+          
+            vij = vij[:,0]
+            vij.shape = (tb_ij.block_dims)
+           
+            print " Energy of GS: %12.8f"%e[0]
+            
+            # Tucker decompose the 1RDMs - but not mixing with the P spaces
+            n_modes = len(tb_ij.block_dims)
+            for sd,d in enumerate(tb_ij.block_dims):
+                print " Contract A along index %4i" %(sd),
+                print "   Dimension %4i" %(d)
+                    
+                d_range = range(0,sd) 
+                d_range.extend(range(sd+1,n_modes))
+                AA = np.tensordot(vij,vij,axes=(d_range,d_range))
+            
+                # project onto 1B Q space
+                n_p_i = block_basis[(bi,"P")].n_vecs
+
+                AA = AA[n_p_i::,n_p_i::]
+                l,U = np.linalg.eigh(AA)
+                sort_ind = np.argsort(l)[::-1]
+                l = l[sort_ind]
+                U = U[:,sort_ind]
+        
+        
+                keep = []
+                thresh = 1e-3
+                trace_error = 0
+                print "   Eigenvalues for mode %4i contraction:"%sd
+                for si,i in enumerate(l):
+                    if(abs(i)>=thresh):
+                        print "   %-4i   %16.8f : Keep"%(si,i)
+                        keep.extend([si])
+                    else:
+                        trace_error += i
+                        #print "   %-4i   %16.8f : Toss"%(si,i)
+                print "   %5s  %16.8f : Error : %8.1e" %("Trace", AA.trace(),trace_error)
+                print
+
+
+            continue
             exit(-1)
         
             tb = cp.deepcopy(tb_0)
