@@ -251,10 +251,12 @@ def build_H(tb_l, tb_r,j12):
     
     
     # How many blocks are different between left and right?
-    different = []
+    different = []  # list of lattice blocks indices that have different vector spaces between tb_l and tb_r
     for bi in range(0,n_blocks):
         if tb_l.blocks[bi].label != tb_r.blocks[bi].label:
             different.append(bi)
+            assert(tb_l.blocks[bi].lb.index ==  tb_r.blocks[bi].lb.index ) 
+        
     
    
     
@@ -351,10 +353,10 @@ def build_H(tb_l, tb_r,j12):
     
     
     elif len(different) == 1:
-        print("1-NYI")
-        exit(-1)
+        
         full_dim_l = tb_l.full_dim
         full_dim_r = tb_r.full_dim
+        
         #<abcd|H1+H2+H3+H4|abcd>
         #
         #   <a|H1|a> Ib Ic Id  , for block 1 being different
@@ -362,12 +364,14 @@ def build_H(tb_l, tb_r,j12):
 
         bi = different[0] 
 
-        Bi = blocks[bi]
+        lbi = tb_l.blocks[bi].lb     # Bi is the Lattice_Block which is different
+
         dim_e_l = full_dim_l / tb_l.block_dims[bi] 
         dim_e_r = full_dim_r / tb_r.block_dims[bi] 
-        h1 = Bi.H_ss(tb_l.address[bi],tb_r.address[bi])
-        s1 = Bi.S2_ss(tb_l.address[bi],tb_r.address[bi])
-
+        
+        h1 = tb_l.blocks[bi].vecs.T.dot( lbi.H).dot(tb_r.blocks[bi].vecs)
+        s1 = tb_l.blocks[bi].vecs.T.dot( lbi.S2).dot(tb_r.blocks[bi].vecs)
+        
         h1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
         s1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
 
@@ -397,7 +401,10 @@ def build_H(tb_l, tb_r,j12):
         # + <ad|H13|Ad> Ib Id
         
         for bj in range(0,bi):
-            Bj = blocks[bj]
+            lbj = tb_l.blocks[bj].lb
+
+            assert(lbj.index == tb_r.blocks[bj].lb.index)
+
             dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj]
             dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj]
          
@@ -405,8 +412,7 @@ def build_H(tb_l, tb_r,j12):
             dim_e = dim_e_l
             
             #build full Hamiltonian on sublattice
-            #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-            h2,s2 = build_dimer_H(tb_l, tb_r, Bj, Bi, j12)
+            h2,s2 = build_dimer_H(tb_l, tb_r, bi, bj, j12)
           
             h2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
             s2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
@@ -431,7 +437,10 @@ def build_H(tb_l, tb_r,j12):
             S2 += s2.transpose(sort_ind)
         
         for bj in range(bi+1, n_blocks):
-            Bj = blocks[bj]
+            lbj = tb_l.blocks[bj].lb
+
+            assert(lbj.index == tb_r.blocks[bj].lb.index)
+            
             dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj]
             dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj]
          
@@ -439,8 +448,7 @@ def build_H(tb_l, tb_r,j12):
             dim_e = dim_e_l
             
             #build full Hamiltonian on sublattice
-            #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-            h2,s2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+            h2,s2 = build_dimer_H(tb_l, tb_r, bi, bj, j12)
           
             h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
             s2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
@@ -468,8 +476,6 @@ def build_H(tb_l, tb_r,j12):
     
     
     elif len(different) == 2:
-        print("NYI")
-        exit(-1)
     
         full_dim_l = tb_l.full_dim
         full_dim_r = tb_r.full_dim
@@ -479,8 +485,11 @@ def build_H(tb_l, tb_r,j12):
         bi = different[0] 
         bj = different[1] 
 
-        Bi = blocks[bi]
-        Bj = blocks[bj]
+        lbi = tb_l.blocks[bi].lb
+        lbj = tb_l.blocks[bj].lb
+
+        assert(lbi.index == tb_r.blocks[bi].lb.index)
+        assert(lbj.index == tb_r.blocks[bj].lb.index)
 
         dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj] 
         dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj] 
@@ -493,7 +502,7 @@ def build_H(tb_l, tb_r,j12):
         
         #build full Hamiltonian on sublattice
         #h12 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
-        h2,s2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+        h2,s2 = build_dimer_H(tb_l, tb_r, bi, bj, j12)
        
         h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
         s2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj],tb_r.block_dims[bi],tb_r.block_dims[bj])
@@ -522,6 +531,70 @@ def build_H(tb_l, tb_r,j12):
     return H,S2
 # }}}
 
+
+
+def build_overlap(tb_l, tb_r):
+  # {{{
+    """
+    Build the Overlap between two tucker blocks, tb_l and tb_r
+    """
+
+    assert(len(tb_l.blocks) == len(tb_r.blocks))
+    n_blocks = len(tb_l.blocks)
+   
+    # Make sure both left and right contain the same lattice_blocks
+    for bi in range(n_blocks):
+        assert(tb_l.blocks[bi].lb.index == tb_r.blocks[bi].lb.index)
+
+    
+    O_dim_layout = []  # dimensions of Ham block as a tensor (d1,d2,..,d1',d2',...)
+    O_dim_layout = np.append(tb_l.block_dims,tb_r.block_dims)
+   
+    """
+    """
+    
+    
+    # How many blocks are different between left and right?
+    different = []  # list of lattice blocks indices that have different vector spaces between tb_l and tb_r
+    for bi in range(0,n_blocks):
+        if tb_l.blocks[bi].label != tb_r.blocks[bi].label:
+            different.append(bi)
+            assert(tb_l.blocks[bi].lb.index ==  tb_r.blocks[bi].lb.index ) 
+        
+    
+   
+    
+    O  = np.zeros((tb_l.full_dim,tb_r.full_dim))
+    O.shape = O_dim_layout
+    
+    full_dim = tb_l.full_dim
+
+    for bi in range(0,n_blocks):
+        Bi = tb_l.blocks[bi]
+        dim_e = full_dim / tb_l.block_dims[bi] 
+      
+        lbi = Bi.lb
+
+        o1 = tb_l.blocks[bi].vecs.T.dot(tb_r.blocks[bi].vecs)
+        o1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
+    
+        tens_inds    = []
+        tens_inds.extend([bi])
+        tens_inds.extend([bi+n_blocks])
+        for bj in range(0,n_blocks):
+            if (bi != bj):
+                tens_inds.extend([bj])
+                tens_inds.extend([bj+n_blocks])
+                o1 = np.tensordot(o1,np.eye(tb_l.block_dims[bj]),axes=0)
+
+        sort_ind = np.argsort(tens_inds)
+
+        O  += o1.transpose(sort_ind)
+        
+
+    O = O.reshape(tb_l.full_dim,tb_r.full_dim)
+    return O
+# }}}
 
 
 def build_dimer_H(tb_l, tb_r, bi, bj,j12):
@@ -557,12 +630,12 @@ def build_dimer_H(tb_l, tb_r, bi, bj,j12):
     for si in lbi.sites:
         
         spi = bbli.T.dot(lbi.Spi[si]).dot(bbri)
-        smi = np.transpose(spi) 
+        smi = bbli.T.dot(lbi.Smi[si]).dot(bbri)
         szi = bbli.T.dot(lbi.Szi[si]).dot(bbri)
         
         for sj in lbj.sites:
             spj = bblj.T.dot(lbj.Spi[sj]).dot(bbrj)
-            smj = np.transpose(spj) 
+            smj = bblj.T.dot(lbj.Smi[sj]).dot(bbrj)
             szj = bblj.T.dot(lbj.Szi[sj]).dot(bbrj)
            
             s1s2  = np.tensordot(spi,smj, axes=0)
@@ -589,6 +662,7 @@ def build_tucker_blocked_H(tucker_blocks, j12):
         dim_tot += tbi.full_dim
 
 
+    #O = np.zeros((dim_tot, dim_tot))
     H = np.zeros((dim_tot, dim_tot))
     S2 = np.zeros((dim_tot, dim_tot))
 
@@ -606,12 +680,13 @@ def build_tucker_blocked_H(tucker_blocks, j12):
             
             if tb_r.id >= tb_l.id:
                 h,s2 = build_H(tb_l, tb_r, j12)
+                #o = build_overlap(tb_l, tb_r)
                 H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = h 
                 H[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = h.T
                 S2[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = s2 
                 S2[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = s2.T
 
-    return H, S2
+    return H, S2#, O
     #}}}
 
 
