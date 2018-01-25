@@ -75,7 +75,7 @@ class Lattice_Block:
 
 
 class Block_Basis:
-    def __init__(self,lb,name):
+    def __init__(self,lb,label):
         """
         This is a set of cluster states for a give Lattice_Block
 
@@ -90,7 +90,7 @@ class Block_Basis:
         self.lb = cp.deepcopy(lb)   # Lattice_Block object
 
         self.ms = None  # quantum number of this block. None means don't conserve 
-        self.name = cp.deepcopy(name)
+        self.label = cp.deepcopy(label)
         self.vecs = np.array([])
         self.n_vecs = 0
         
@@ -102,7 +102,7 @@ class Block_Basis:
         else:
             out = " Block_Basis:  LB=%-4i "%(self.lb.index)
         out += " Dim=%-8i"%self.n_vecs 
-        out += str(self.name)
+        out += str(self.label)
         return out
 
     def set_vecs(self,v):
@@ -113,7 +113,7 @@ class Block_Basis:
         if self.lb.index != other.lb.index:
             print(" Can't add Block_Basis objects from different Lattice_Blocks")
             exit(-1)
-        self.name = self.name + "|" + other.name
+        self.label = self.label + "|" + other.label
 
         self.vecs = np.hstack((self.vecs,other.vecs))
         self.n_vecs = self.vecs.shape[1]
@@ -163,18 +163,29 @@ class Tucker_Block:
         self.n_blocks = 0
         self.full_dim = 1
         self.block_dims = [] 
+        self.label = "" 
    
 
     def add_block(self,_block):
         self.blocks.append(_block)
         self.full_dim = self.full_dim * _block.n_vecs
         self.stop = self.start + self.full_dim
-        self.address.append(_block.name)
+        self.address.append(_block.label)
         self.n_blocks = len(self.blocks)
         self.block_dims.append(_block.n_vecs)
 
     def set_start(self,start):
         self.start = cp.deepcopy(start)
+        self.stop = self.start + self.full_dim
+
+    def refresh_dims(self):
+        self.full_dim = 1
+        for bj in range(self.n_blocks):
+            Bj = self.blocks[bj] 
+            self.full_dim = self.full_dim * Bj.n_vecs
+            self.address[bj] = (Bj.label)
+            self.block_dims[bj] = Bj.n_vecs
+        
         self.stop = self.start + self.full_dim
 
     def set_block(self,_block):
@@ -183,7 +194,7 @@ class Tucker_Block:
         self.full_dim = 1
         for bj in self.blocks:
             self.full_dim = self.full_dim * bj.n_vecs
-        self.address[bi] = (_block.name)
+        self.address[bi] = (_block.label)
         self.stop = self.start + self.full_dim
         
         self.block_dims[bi] = _block.n_vecs
@@ -195,9 +206,9 @@ class Tucker_Block:
 
     def __str__(self):
         out = ""
-        #for a in self.address:
-        #    out += "%4s"%a[0]
-        #out += " :: "
+        for a in self.address:
+            out += "%6s"%a
+        out += " :: "
         for b in self.blocks:
             out += "%4i"%b.n_vecs
         out += " :: "+ "%9i"%self.full_dim
@@ -219,7 +230,7 @@ def build_H(tb_l, tb_r,j12):
    
     # Make sure both left and right contain the same lattice_blocks
     for bi in range(n_blocks):
-        assert(tb_l.blocks[bi].lb == tb_r.blocks[bi].lb)
+        assert(tb_l.blocks[bi].lb.index == tb_r.blocks[bi].lb.index)
 
     
     H_dim_layout = []  # dimensions of Ham block as a tensor (d1,d2,..,d1',d2',...)
@@ -242,7 +253,7 @@ def build_H(tb_l, tb_r,j12):
     # How many blocks are different between left and right?
     different = []
     for bi in range(0,n_blocks):
-        if tb_l.blocks[bi].name != tb_r.blocks[bi].name:
+        if tb_l.blocks[bi].label != tb_r.blocks[bi].label:
             different.append(bi)
     
    
@@ -340,7 +351,7 @@ def build_H(tb_l, tb_r,j12):
     
     
     elif len(different) == 1:
-        print("NYI")
+        print("1-NYI")
         exit(-1)
         full_dim_l = tb_l.full_dim
         full_dim_r = tb_r.full_dim
@@ -568,5 +579,42 @@ def build_dimer_H(tb_l, tb_r, bi, bj,j12):
     s2 = s2.reshape(tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj])
     return h12, s2
 # }}}
+
+
+def build_tucker_blocked_H(tucker_blocks, j12):
+    #{{{
+    dim_tot = 0
+    for ti in sorted(tucker_blocks):
+        tbi = tucker_blocks[ti]
+        dim_tot += tbi.full_dim
+
+
+    H = np.zeros((dim_tot, dim_tot))
+    S2 = np.zeros((dim_tot, dim_tot))
+
+        
+    for t_l in tucker_blocks:
+        for t_r in tucker_blocks:
+            tb_l = tucker_blocks[t_l]
+            tb_r = tucker_blocks[t_r]
+            
+            
+            if tb_l.full_dim == 0:
+                continue       
+            if tb_r.full_dim == 0:
+                continue
+            
+            if tb_r.id >= tb_l.id:
+                h,s2 = build_H(tb_l, tb_r, j12)
+                H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = h 
+                H[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = h.T
+                S2[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = s2 
+                S2[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = s2.T
+
+    return H, S2
+    #}}}
+
+
+
 
 

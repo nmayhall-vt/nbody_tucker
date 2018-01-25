@@ -288,9 +288,9 @@ for bi in range(0,n_blocks):
     bb_q.set_vecs(q)
 
     #
-    #   address the block_basis by a tuple (lb.index,name) 
-    block_basis[(lb.index,bb_p.name)] = bb_p
-    block_basis[(lb.index,bb_q.name)] = bb_q
+    #   address the block_basis by a tuple (lb.index,label) 
+    block_basis[(lb.index,bb_p.label)] = bb_p
+    block_basis[(lb.index,bb_q.label)] = bb_q
 
 
 print("\n Set up 2b Q states")
@@ -397,9 +397,9 @@ for bi in range(0,n_blocks):
       
         
         #
-        #   address the block_basis by a tuple (lb.index,name) 
-        block_basis[(lbi.index,bbi.name)] = bbi
-        block_basis[(lbj.index,bbj.name)] = bbj
+        #   address the block_basis by a tuple (lb.index,label) 
+        block_basis[(lbi.index,bbi.label)] = bbi
+        block_basis[(lbj.index,bbj.label)] = bbj
 
 
 
@@ -439,10 +439,14 @@ if n_body_order >= 2:
             bbj = cp.deepcopy(block_basis[(bj,"P")])
             bbj.append(block_basis[(bj,"Q")])
 
+            bbi.label = "Q"+"(%i%i)"%(bi,bj)
+            bbj.label = "Q"+"(%i%i)"%(bi,bj)
+
             tb_ij = block3.Tucker_Block("tmp")
             tb_ij.add_block(bbi)
             tb_ij.add_block(bbj)
 
+            
             H,S2 = block3.build_H(tb_ij, tb_ij, j12)
     
             e, vij = scipy.sparse.linalg.eigsh(H,1)
@@ -465,7 +469,9 @@ if n_body_order >= 2:
                 # project onto 1B Q space
                 n_p_i = block_basis[(bi,"P")].n_vecs
 
-                AA = AA[n_p_i::,n_p_i::]
+                AA[0:n_p_i,::] *= 0.0
+                AA[:,0:n_p_i] *= 0.0
+
                 l,U = np.linalg.eigh(AA)
                 sort_ind = np.argsort(l)[::-1]
                 l = l[sort_ind]
@@ -473,7 +479,7 @@ if n_body_order >= 2:
         
         
                 keep = []
-                thresh = 1e-3
+                thresh = 1e-5
                 trace_error = 0
                 print "   Eigenvalues for mode %4i contraction:"%sd
                 for si,i in enumerate(l):
@@ -485,34 +491,46 @@ if n_body_order >= 2:
                         #print "   %-4i   %16.8f : Toss"%(si,i)
                 print "   %5s  %16.8f : Error : %8.1e" %("Trace", AA.trace(),trace_error)
                 print
+    
+                n_keep = len(keep)
 
+                U = U[:,0:n_keep]
 
-            continue
-            exit(-1)
-        
+                v = tb_ij.blocks[sd].vecs.T.dot(U)
+                tb_ij.blocks[sd].set_vecs(v)
+                tb_ij.refresh_dims()
+       
             tb = cp.deepcopy(tb_0)
-            tb.label = (2,bi,bj)
             tb.set_start(dim_tot)
-   
-            # check if this tucker block can exist
-            if (bi,("Q",bi,bj)) not in block_basis:
-                continue
-            if (bj,("Q",bi,bj)) not in block_basis:
-                continue
-
-            block_basis_i = block_basis[(bi,("Q",bi,bj))]
-            block_basis_j = block_basis[(bj,("Q",bi,bj))]
+            for b in tb_ij.blocks:
+                tb.set_block(b)
             
-            tb.set_block(block_basis_i) 
-            tb.set_block(block_basis_j) 
+            tb.label = (2,bi,bj)
+            
             
             tucker_blocks2[tb.label] = tb
             
             dim_tot += tb.full_dim
+            
 
 for tb in sorted(tucker_blocks2):
     t = tucker_blocks2[tb]
-    print "%20s ::"%str(tb), t, " Range= %8i:%-8i" %( t.start, t.stop)
+    print "%20s ::"%str(t.label), t, " Range= %8i:%-8i" %( t.start, t.stop)
+
+
+
+H  = np.zeros([dim_tot,dim_tot])
+S2 = np.zeros([dim_tot,dim_tot])
+
+H,S2 = block3.build_tucker_blocked_H(tucker_blocks2, j12) 
+l,v = np.linalg.eigh(H)
+
+
+S2 = v.T.dot(S2).dot(v)
+print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+for si,i in enumerate(l):
+    if si<args['n_print']:
+        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
 
 exit(-1)
@@ -636,9 +654,9 @@ for bi in range(0,n_blocks):
           
             
             #
-            #   address the block_basis by a tuple (lb.index,name) 
-            block_basis[(lbi.index,bbi.name)] = bbi
-            block_basis[(lbj.index,bbj.name)] = bbj
+            #   address the block_basis by a tuple (lb.index,label) 
+            block_basis[(lbi.index,bbi.label)] = bbi
+            block_basis[(lbj.index,bbj.label)] = bbj
 
 for bb in sorted(block_basis):
     print(bb)
