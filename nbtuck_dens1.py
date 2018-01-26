@@ -36,7 +36,7 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
         H_b, tmp, S2_b, Sz_b = form_hdvv_H(lat_b,j_b)
     
         # Diagonalize an arbitrary linear combination of the quantum numbers we insist on preserving
-        l_b,v_b = np.linalg.eigh(H_b + Sz_b + S2_b) 
+        l_b,v_b = np.linalg.eigh(H_b + .1*Sz_b + .1*S2_b) 
         l_b = v_b.transpose().dot(H_b).dot(v_b).diagonal()
         
         sort_ind = np.argsort(l_b)
@@ -321,7 +321,7 @@ for it in range(0,maxiter):
     H,S2 = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
    
 
-    do_cepa = 1
+    do_cepa = 0
     if do_cepa:
         tb0 = tucker_blocks[0,-1]
         H00 = H[tb0.start:tb0.stop,tb0.start:tb0.stop]

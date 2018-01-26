@@ -151,8 +151,8 @@ class Tucker_Block:
     Essentially a collection of Block_Basis objects, which defines a particular subspace of the full systems subspace
         which is given as the direct product space of each Block_Basis.
     """
-    def __init__(self,_id):
-        self.id = cp.deepcopy(_id)  # (-1):PPP, (1):PQP, (1,3):QPQ, etc 
+    def __init__(self):
+        #self.id = cp.deepcopy(_id)  # (-1):PPP, (1):PQP, (1,3):QPQ, etc 
         self.start = 0              # starting point in super ci 
         self.stop = 0               # stopping point in super ci
         self.address = []           # list of block spaces. e.g.: [0,0,0,1,0,0,1,1,0] means that Blocks 3,6,7 are in their
@@ -205,9 +205,9 @@ class Tucker_Block:
         """
 
     def __str__(self):
-        out = ""
+        out = "" 
         for a in self.address:
-            out += "%6s"%a
+            out += "%6s"%str(a)
         out += " :: "
         for b in self.blocks:
             out += "%4i"%b.n_vecs
@@ -248,16 +248,40 @@ def build_H(tb_l, tb_r,j12):
             for each block-dimer, form Hamiltonian in subspace, and combine
             with identity on other blocks
     """
-    
+   
+    """
+    <RPRP|H|PQQP>
+        diff 1,2,3
+        <R|H|P><P|Q><R|Q><P|P> = 0
+        <R|P><P|H|Q><R|Q><P|P> = 0
+        <R|P><P|Q><R|H|Q><P|P> = 0
+        <R|P><P|Q><R|Q><P|H|P> = 0
+        
+        <RP|H12|PQ><R|Q><P|P>  != 0
+
+    <QPQP|H|PQQP>
+        diff 1,2
+        <RP|H12|PQ><R|Q><P|P>  != 0
+
+    <QPPP|H|RRPP>
+        diff 1
+        <Q|H|R><PPP|RPP>         = 0
+        <Q|R><P|H|R><PP|PP>     != 0
+        <QP|H12|RR><PP|PP>      != 0
+        <Q|R><PP|H12|RP><P|P>   != 0
+    """
     
     # How many blocks are different between left and right?
     different = []  # list of lattice blocks indices that have different vector spaces between tb_l and tb_r
     for bi in range(0,n_blocks):
-        if tb_l.blocks[bi].label != tb_r.blocks[bi].label:
+        if tb_l.blocks[bi].label[0] != tb_r.blocks[bi].label[0]:
             different.append(bi)
             assert(tb_l.blocks[bi].lb.index ==  tb_r.blocks[bi].lb.index ) 
         
     
+    #print(" in Build_H")
+    #print tb_l.label,tb_r.label
+    #print "different", different
    
     
     H  = np.zeros((tb_l.full_dim,tb_r.full_dim))
@@ -353,6 +377,7 @@ def build_H(tb_l, tb_r,j12):
     
     
     elif len(different) == 1:
+       
         
         full_dim_l = tb_l.full_dim
         full_dim_r = tb_r.full_dim
@@ -366,18 +391,12 @@ def build_H(tb_l, tb_r,j12):
 
         lbi = tb_l.blocks[bi].lb     # Bi is the Lattice_Block which is different
 
-        dim_e_l = full_dim_l / tb_l.block_dims[bi] 
-        dim_e_r = full_dim_r / tb_r.block_dims[bi] 
-        
         h1 = tb_l.blocks[bi].vecs.T.dot( lbi.H).dot(tb_r.blocks[bi].vecs)
         s1 = tb_l.blocks[bi].vecs.T.dot( lbi.S2).dot(tb_r.blocks[bi].vecs)
         
         h1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
         s1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
 
-        assert(dim_e_l == dim_e_r)
-        dim_e = dim_e_l
-       
         
         tens_inds    = []
         tens_inds.extend([bi])
@@ -386,9 +405,13 @@ def build_H(tb_l, tb_r,j12):
             if (bi != bj):
                 tens_inds.extend([bj])
                 tens_inds.extend([bj+n_blocks])
-                assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
-                h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]),axes=0)
-                s1 = np.tensordot(s1,np.eye(tb_l.block_dims[bj]),axes=0)
+                
+                Oj = np.eye(tb_l.block_dims[bj])
+                if tb_l.blocks[bj].label[0] == "Q" or tb_r.blocks[bj].label[0] == "Q" :
+                    Oj = tb_l.blocks[bj].vecs.T.dot(tb_r.blocks[bj].vecs)
+                
+                h1 = np.tensordot(h1,Oj,axes=0)
+                s1 = np.tensordot(s1,Oj,axes=0)
 
         sort_ind = np.argsort(tens_inds)
 
@@ -405,14 +428,9 @@ def build_H(tb_l, tb_r,j12):
 
             assert(lbj.index == tb_r.blocks[bj].lb.index)
 
-            dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj]
-            dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj]
-         
-            assert(dim_e_l == dim_e_r)
-            dim_e = dim_e_l
             
             #build full Hamiltonian on sublattice
-            h2,s2 = build_dimer_H(tb_l, tb_r, bi, bj, j12)
+            h2,s2 = build_dimer_H(tb_l, tb_r, bj, bi, j12)
           
             h2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
             s2.shape = (tb_l.block_dims[bj],tb_l.block_dims[bi],tb_r.block_dims[bj],tb_r.block_dims[bi])
@@ -428,9 +446,14 @@ def build_H(tb_l, tb_r,j12):
                 if (bk != bi) and (bk != bj):
                     tens_inds.extend([bk])
                     tens_inds.extend([bk+n_blocks])
-                    assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
-                    h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-                    s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
+        
+                    Ok = np.eye(tb_l.block_dims[bk])
+                    if tb_l.blocks[bk].label[0] == "Q" or tb_r.blocks[bk].label[0] == "Q" :
+                        #print tb_l.label, tb_r.label
+                        #print tb_l.blocks[bk].label, tb_r.blocks[bk].label
+                        Ok = tb_l.blocks[bk].vecs.T.dot(tb_r.blocks[bk].vecs)
+                    h2 = np.tensordot(h2,Ok,axes=0)
+                    s2 = np.tensordot(s2,Ok,axes=0)
             
             sort_ind = np.argsort(tens_inds)
             H  += h2.transpose(sort_ind)
@@ -441,11 +464,6 @@ def build_H(tb_l, tb_r,j12):
 
             assert(lbj.index == tb_r.blocks[bj].lb.index)
             
-            dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj]
-            dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj]
-         
-            assert(dim_e_l == dim_e_r)
-            dim_e = dim_e_l
             
             #build full Hamiltonian on sublattice
             h2,s2 = build_dimer_H(tb_l, tb_r, bi, bj, j12)
@@ -464,9 +482,13 @@ def build_H(tb_l, tb_r,j12):
                 if (bk != bi) and (bk != bj):
                     tens_inds.extend([bk])
                     tens_inds.extend([bk+n_blocks])
-                    assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
-                    h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-                    s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
+                    
+                    Ok = np.eye(tb_l.block_dims[bk])
+                    if tb_l.blocks[bk].label[0] == "Q" or tb_r.blocks[bk].label[0] == "Q" :
+                        Ok = tb_l.blocks[bk].vecs.T.dot(tb_r.blocks[bk].vecs)
+                
+                    h2 = np.tensordot(h2,Ok,axes=0)
+                    s2 = np.tensordot(s2,Ok,axes=0)
             
             sort_ind = np.argsort(tens_inds)
             H  += h2.transpose(sort_ind)
@@ -491,11 +513,11 @@ def build_H(tb_l, tb_r,j12):
         assert(lbi.index == tb_r.blocks[bi].lb.index)
         assert(lbj.index == tb_r.blocks[bj].lb.index)
 
-        dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj] 
-        dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj] 
+        #dim_e_l = full_dim_l / tb_l.block_dims[bi] / tb_l.block_dims[bj] 
+        #dim_e_r = full_dim_r / tb_r.block_dims[bi] / tb_r.block_dims[bj] 
 
-        assert(dim_e_l == dim_e_r)
-        dim_e = dim_e_l
+        #assert(dim_e_l == dim_e_r)
+        #dim_e = dim_e_l
         
         
         #  <ac|H13|Ac> Ib Id  for 1 3 different
@@ -518,11 +540,15 @@ def build_H(tb_l, tb_r,j12):
                 tens_inds.extend([bk+n_blocks])
                 tens_dims.extend([tb_l.block_dims[bk]])
                 tens_dims.extend([tb_r.block_dims[bk]])
-                h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]),axes=0)
-                s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
+        
+                Ok = np.eye(tb_l.block_dims[bk])
+                if tb_l.blocks[bk].label[0] == "Q" or tb_r.blocks[bk].label[0] == "Q" :
+                    Ok = tb_l.blocks[bk].vecs.T.dot(tb_r.blocks[bk].vecs)
+                
+                h2 = np.tensordot(h2,Ok,axes=0)
+                s2 = np.tensordot(s2,Ok,axes=0)
         
         sort_ind = np.argsort(tens_inds)
-        #H += h2.reshape(tens_dims).transpose(sort_ind)
         H += h2.transpose(sort_ind)
         S2 += s2.transpose(sort_ind)
 
@@ -678,7 +704,7 @@ def build_tucker_blocked_H(tucker_blocks, j12):
             if tb_r.full_dim == 0:
                 continue
             
-            if tb_r.id >= tb_l.id:
+            if tb_r.label >= tb_l.label:
                 h,s2 = build_H(tb_l, tb_r, j12)
                 #o = build_overlap(tb_l, tb_r)
                 H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = h 
@@ -690,6 +716,19 @@ def build_tucker_blocked_H(tucker_blocks, j12):
     #}}}
 
 
+def tucker_block_overlap(tb_l, tb_r):
+    """
+    Compute the overlap of tb_l and tb_r
+    """
+    O  = np.zeros((tb_l.full_dim,tb_r.full_dim))
+    overlap = 1
+    for bi in range(tb_l.n_blocks):
+        v_l = tb_l.blocks[bi].vecs
+        v_r = tb_r.blocks[bi].vecs
+        overlap *= np.trace(v_l.T.dot(v_r))
+
+    print "%12.8f"%overlap
+    return O
 
 
 

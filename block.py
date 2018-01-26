@@ -670,7 +670,6 @@ def build_H(blocks,tb_l, tb_r,j12):
                 s2 = np.tensordot(s2,np.eye(tb_l.block_dims[bk]),axes=0)
         
         sort_ind = np.argsort(tens_inds)
-        #H += h2.reshape(tens_dims).transpose(sort_ind)
         H += h2.transpose(sort_ind)
         S2 += s2.transpose(sort_ind)
 
