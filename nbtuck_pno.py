@@ -268,18 +268,20 @@ for bi in range(0,n_blocks):
     lattice = [1]*lb.n_sites  # assume spin-1/2 lattice for now 
     Hi, tmp, S2i, Szi = form_hdvv_H(lattice, lb.j12)  # rewrite this
    
-    e, v = np.linalg.eigh(Hi)
+    e, v = np.linalg.eigh(Hi + .1*S2i + .01*Szi)
 
-    print "\n Guess P states"
-    for ei in e:
-        print"%12.8f"%ei
+    e = v.T.dot(Hi).dot(v).diagonal()
+    S2i = v.T.dot(S2i).dot(v)
+    print "\n Single Block Eigenstates:"
+    for idx,ei in enumerate(e):
+        print" %12i %12.8f %8.4f"%(idx,ei,S2i[idx,idx])
    
     # 
     # For now, just choose n lowest energy states for P space, but later 
     #   we may which to choose n lowest energy of specify ms value
     #
     p = v[:,0:n_p_states[bi]]
-    q = v[:,n_p_states[bi]::]
+    q = v[:,n_p_states[bi]:n_q_states[bi]+1]
 
     bb_p = block3.Block_Basis(lb,"P")
     bb_q = block3.Block_Basis(lb,"Q")
