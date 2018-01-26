@@ -271,6 +271,11 @@ for bi in range(0,n_blocks):
     e, v = np.linalg.eigh(Hi + .1*S2i + .01*Szi)
 
     e = v.T.dot(Hi).dot(v).diagonal()
+    
+    sort_ind = np.argsort(e)
+    e = e[sort_ind]
+    v = v[:,sort_ind]
+    
     S2i = v.T.dot(S2i).dot(v)
     print "\n Single Block Eigenstates:"
     for idx,ei in enumerate(e):
