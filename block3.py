@@ -119,29 +119,37 @@ class Block_Basis:
         self.n_vecs = self.vecs.shape[1]
 
     def orthogonalize(self):
-        thresh = 1e-12
-
-        if len(self.vecs.shape) > 1:
-            if self.vecs.shape[1] > 0:
-
-                keep = 0
-                o = self.vecs.T.dot(self.vecs)
-                l, v = np.linalg.eigh(o)
-        
-                sort_ind = abs(l).argsort()[::-1]
-                l = l[sort_ind]
-                v = v[:,sort_ind]
-                
-                for li in range(l.shape[0]):
-                    if abs(l[li]) > thresh:
-                        keep += 1
-                
-                v = v[:,0:keep] 
-                self.vecs = self.vecs.dot(v)
-
-        else:
-            self.vecs.shape = (self.vecs.shape[0],1)
-        self.n_vecs = self.vecs.shape[1]
+        if self.n_vecs == 0:
+            return
+        self.vecs = scipy.linalg.orth(self.vecs)
+        return
+#        thresh = 1e-12
+#       
+#        print self.vecs
+#        if len(self.vecs.shape) > 1:
+#            if self.vecs.shape[1] > 0:
+#
+#                keep = 0
+#                o = self.vecs.T.dot(self.vecs)
+#                l, v = np.linalg.eigh(o)
+#        
+#                sort_ind = abs(l).argsort()[::-1]
+#                l = l[sort_ind]
+#                v = v[:,sort_ind]
+#                
+#                for li in range(l.shape[0]):
+#                    print " %12.8e"%l[li]
+#                    if abs(l[li]) > thresh:
+#                        keep += 1
+#                
+#                v = v[:,0:keep] 
+#                self.vecs = self.vecs.dot(v)
+#
+#        else:
+#            self.vecs.shape = (self.vecs.shape[0],1)
+#        self.n_vecs = self.vecs.shape[1]
+#        print self.vecs
+#        print self.vecs.T.dot(self.vecs)
 
 
 

@@ -339,8 +339,8 @@ if n_body_order >= 2:
             bbi.append(block_basis[(bi,"Q")])
             bbj.append(block_basis[(bj,"Q")])
 
-            bbi.label = "Q"+"(%i%i)"%(bi,bj)
-            bbj.label = "Q"+"(%i%i)"%(bi,bj)
+            bbi.label = "Q(%i|%i)"%(bi,bj)
+            bbj.label = "Q(%i|%i)"%(bi,bj)
 
             tb_ij = block3.Tucker_Block()
             tb_ij.add_block(bbi)
@@ -351,24 +351,25 @@ if n_body_order >= 2:
             #   Build and diagonalize dimer Hamiltonian
             H,S2 = block3.build_H(tb_ij, tb_ij, j12)
     
-            e, vij = scipy.sparse.linalg.eigsh(H,1)
+            e, v_curr = scipy.sparse.linalg.eigsh(H,1)
+                
+            s = v_curr.T.dot(S2).dot(v_curr)
+            print " Energy of GS: %12.8f %12.8f <S2>: "%(e[0],s[0,0])
           
            
             #
             #   Tucker decompose the ground state to get 
             #   a new set of Q vectors for this dimer
-            vij = vij[:,0]
-            vij.shape = (tb_ij.block_dims)
-           
-            print " Energy of GS: %12.8f"%e[0]
+            v_curr = v_curr[:,0]
+            v_curr.shape = (tb_ij.block_dims)
            
             n_p_i = block_basis[(bi,"P")].n_vecs
             n_p_j = block_basis[(bj,"P")].n_vecs
 
-            vij = vij[n_p_i::,n_p_j::]
+            v_curr = v_curr[n_p_i::,n_p_j::]
 
             pns_thresh = args["pns_thresh"]
-            v_comp, U = tucker_decompose(vij,pns_thresh,0)
+            v_comp, U = tucker_decompose(v_curr,pns_thresh,0)
            
             vi = tb_ij.blocks[0].vecs[:,n_p_i::].dot(U[0])
             vj = tb_ij.blocks[1].vecs[:,n_p_j::].dot(U[1])
@@ -393,8 +394,8 @@ if n_body_order >= 2:
              
             bbi = cp.deepcopy(block_basis[(bi,"Q")])
             bbj = cp.deepcopy(block_basis[(bj,"Q")])
-            bbi.label = "Q%i|%i"%(bi,bj)
-            bbj.label = "Q%i|%i"%(bi,bj)
+            bbi.label = "Q(%i|%i)"%(bi,bj)
+            bbj.label = "Q(%i|%i)"%(bi,bj)
 
             bbi.set_vecs(vi)
             bbj.set_vecs(vj)
@@ -437,14 +438,24 @@ if n_body_order >= 3:
                 bbj_q = cp.deepcopy(tb_bij.blocks[bj])  # ij:j
                 bbk_q = cp.deepcopy(tb_bik.blocks[bk])  # ik:k
                 
+                bbi_q = cp.deepcopy(tb_bik.blocks[bi])  # ij:i
+                bbj_q = cp.deepcopy(tb_bjk.blocks[bj])  # ij:j
+                bbk_q = cp.deepcopy(tb_bjk.blocks[bk])  # ik:k
+                
                 bbi_q.append(tb_bik.blocks[bi])           # ik:i
-                bbj_q.append(tb_bik.blocks[bj])           # ik:j
+                bbj_q.append(tb_bjk.blocks[bj])           # jk:j
                 bbk_q.append(tb_bjk.blocks[bk])           # jk:k
-   
+    
+                va = tb_bik.blocks[bi].vecs*1 
+                vb = tb_bij.blocks[bi].vecs*1 
+    
                 bbi_q.orthogonalize()
                 bbj_q.orthogonalize()
                 bbk_q.orthogonalize()
-                
+              
+                #print bbi_q.vecs.T.dot(bbi.vecs)
+                #print bbj_q.vecs.T.dot(bbj.vecs)
+                #print bbk_q.vecs.T.dot(bbk.vecs)
                 # Combine P and Q to create trimer Hamiltonian
                 bbi.append(bbi_q)
                 bbj.append(bbj_q)
@@ -459,7 +470,7 @@ if n_body_order >= 3:
                 tb_curr.add_block(bbj)
                 tb_curr.add_block(bbk)
              
-                print "Nick:",(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs)
+                #print "Nick:",(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs)
                 if min(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs) == 0:
                     print " No trimer term needed"
                     # create a zero dimensional Tucker_Block as a place holder for the 
@@ -490,11 +501,16 @@ if n_body_order >= 3:
                 H,S2 = block3.build_H(tb_curr, tb_curr, j12)
         
                 print " Diagonalize local H" 
-                e, v_curr = scipy.sparse.linalg.eigsh(H,1)
+                e = np.array([])
+                v_curr = np.array([])
+                if H.shape[0]> 5000:
+                    e, v_curr = scipy.sparse.linalg.eigsh(H,1)
+                else:
+                    e, v_curr = np.linalg.eigh(H)
                 
-                print " Energy of GS: %12.8f"%e[0]
+                s = v_curr.T.dot(S2).dot(v_curr)
+                print " Energy of GS: %12.8f %12.8f <S2>: "%(e[0],s[0,0])
              
-                exit(-1)
                
                 #
                 #   Tucker decompose the ground state to get 
@@ -583,11 +599,11 @@ if n_body_order >= 4:
                     bbi_q.append(tb_bikl.blocks[bi])         # ikl:i
                     bbj_q.append(tb_bijl.blocks[bj])         # ijl:j
                     bbj_q.append(tb_bjkl.blocks[bj])         # jkl:j
-                    bbk_q.append(tb_bijk.blocks[bk])         # ijk:k
                     bbk_q.append(tb_bikl.blocks[bk])         # ikl:k
+                    bbk_q.append(tb_bjkl.blocks[bk])         # jkl:k
                     bbl_q.append(tb_bikl.blocks[bl])         # ikl:l
                     bbl_q.append(tb_bjkl.blocks[bl])         # jkl:l
-                    
+                   
                     bbi_q.orthogonalize()
                     bbj_q.orthogonalize()
                     bbk_q.orthogonalize()
@@ -609,10 +625,6 @@ if n_body_order >= 4:
                     tb_curr.add_block(bbj)
                     tb_curr.add_block(bbk)
                     tb_curr.add_block(bbl)
-                    print bbi, bbi.lb
-                    print bbj, bbj.lb
-                    print bbk, bbk.lb
-                    print bbl, bbl.lb
                     
                     if min(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs,bbl_q.n_vecs) == 0:
                         print " No term needed"
@@ -638,6 +650,10 @@ if n_body_order >= 4:
                         tucker_blocks[tb.label] = tb
                         continue
                     
+                    print bbi, bbi.lb
+                    print bbj, bbj.lb
+                    print bbk, bbk.lb
+                    print bbl, bbl.lb
                     
                     #
                     #   Build and diagonalize dimer Hamiltonian
@@ -646,9 +662,15 @@ if n_body_order >= 4:
                     H,S2 = block3.build_H(tb_curr, tb_curr, j12)
                     
                     print " Diagonalize local H" 
-                    e, v_curr = scipy.sparse.linalg.eigsh(H,1)
-                    
-                    print " Energy of GS: %12.8f"%e[0]
+                    e = np.array([])
+                    v_curr = np.array([])
+                    if H.shape[0]> 5000:
+                        e, v_curr = scipy.sparse.linalg.eigsh(H,1)
+                    else:
+                        e, v_curr = np.linalg.eigh(H)
+                   
+                    s = v_curr.T.dot(S2).dot(v_curr)
+                    print " Energy of GS: %12.8f %12.8f <S2>: "%(e[0],s[0,0])
                     
                    
                     #
