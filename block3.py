@@ -174,6 +174,17 @@ class Tucker_Block:
         self.n_blocks = len(self.blocks)
         self.block_dims.append(_block.n_vecs)
 
+    def set_block(self,_block):
+        bi = _block.lb.index   # cluster id
+        self.blocks[bi] = _block
+        self.full_dim = 1
+        for bj in self.blocks:
+            self.full_dim = self.full_dim * bj.n_vecs
+        self.address[bi] = (_block.label)
+        self.stop = self.start + self.full_dim
+        
+        self.block_dims[bi] = _block.n_vecs
+
     def set_start(self,start):
         self.start = cp.deepcopy(start)
         self.stop = self.start + self.full_dim
@@ -188,16 +199,18 @@ class Tucker_Block:
         
         self.stop = self.start + self.full_dim
 
-    def set_block(self,_block):
-        bi = _block.lb.index   # cluster id
-        self.blocks[bi] = _block
-        self.full_dim = 1
-        for bj in self.blocks:
-            self.full_dim = self.full_dim * bj.n_vecs
-        self.address[bi] = (_block.label)
-        self.stop = self.start + self.full_dim
-        
-        self.block_dims[bi] = _block.n_vecs
+    def update_label(self):
+        """
+        Use this to get the correct label after changing a bock basis object
+        """
+        active = []
+        n_active = 0
+        for bi in range(self.n_blocks):
+            if self.blocks[bi].label[0] == "Q":
+                n_active += 1
+                active.append(bi)
+        active.insert(0, n_active)
+        self.label = tuple(active)
 
     def build_H(j12):
         """
@@ -206,12 +219,13 @@ class Tucker_Block:
 
     def __str__(self):
         out = "" 
-        for a in self.address:
-            out += "%6s"%str(a)
-        out += " :: "
         for b in self.blocks:
             out += "%4i"%b.n_vecs
-        out += " :: "+ "%9i"%self.full_dim
+        out += " :: "+ "%-6i"%self.full_dim
+        for a in self.address:
+            if a[0] == "P":
+                continue
+            out += "%-10s "%str(a)
         return out
 
 
