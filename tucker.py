@@ -40,14 +40,16 @@ def tucker_decompose(A,thresh,n_keep_max):
 
 
         keep = []
+        trace_error = 0
         print "   Eigenvalues for mode %4i contraction:"%sd
         for si,i in enumerate(l):
             if(abs(i)>=thresh and si<n):
                 print "   %-4i   %16.8f : Keep"%(si,i)
                 keep.extend([si])
             else:
-                print "   %-4i   %16.8f : Toss"%(si,i)
-        print "   %5s  %16.8f" %("Trace", AA.trace())
+                #print "   %-4i   %16.8f : Toss"%(si,i)
+                trace_error += i
+        print "   %5s  %16.8f : Error : %8.1e" %("Trace", AA.trace(),trace_error)
         print
         U = U[:,keep]
 

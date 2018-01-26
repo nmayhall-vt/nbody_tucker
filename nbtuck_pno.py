@@ -452,6 +452,8 @@ if n_body_order >= 2:
 
 for tb in sorted(tucker_blocks):
     t = tucker_blocks[tb]
+    if t.full_dim == 0:
+        continue
     print "%20s ::"%str(t.label), t, " Range= %8i:%-8i" %( t.start, t.stop)
 
 
