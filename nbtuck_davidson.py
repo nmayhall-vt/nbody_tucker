@@ -754,7 +754,7 @@ for it in range(0,maxiter):
         print " Compute State-specific PT2 corrections: "
         n_roots = args['n_roots']
         pt_type = args['pt_type']
-        e2 = compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
+        #e2 = compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
         e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
         print
         print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
