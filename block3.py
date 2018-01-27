@@ -118,6 +118,10 @@ class Block_Basis:
         self.vecs = np.hstack((self.vecs,other.vecs))
         self.n_vecs = self.vecs.shape[1]
 
+    def clear(self):
+        self.vecs = np.zeros((self.vecs.shape[0],0))
+        self.n_vecs = 0
+        
     def orthogonalize(self):
         if self.n_vecs == 0:
             return

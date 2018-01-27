@@ -405,7 +405,13 @@ if n_body_order >= 2:
             
             tb.refresh_dims()
             tb.update_label()
-            
+           
+            if tb.full_dim == 0:
+                for b in tb.blocks:
+                    b.vecs = np.zeros((b.vecs.shape[0],0))
+                    tb.refresh_dims()
+                    tb.update_label()
+
             tucker_blocks[tb.label] = tb
             
             dim_tot += tb.full_dim
@@ -438,16 +444,9 @@ if n_body_order >= 3:
                 bbj_q = cp.deepcopy(tb_bij.blocks[bj])  # ij:j
                 bbk_q = cp.deepcopy(tb_bik.blocks[bk])  # ik:k
                 
-                bbi_q = cp.deepcopy(tb_bik.blocks[bi])  # ij:i
-                bbj_q = cp.deepcopy(tb_bjk.blocks[bj])  # ij:j
-                bbk_q = cp.deepcopy(tb_bjk.blocks[bk])  # ik:k
-                
                 bbi_q.append(tb_bik.blocks[bi])           # ik:i
                 bbj_q.append(tb_bjk.blocks[bj])           # jk:j
                 bbk_q.append(tb_bjk.blocks[bk])           # jk:k
-    
-                va = tb_bik.blocks[bi].vecs*1 
-                vb = tb_bij.blocks[bi].vecs*1 
     
                 bbi_q.orthogonalize()
                 bbj_q.orthogonalize()
@@ -469,7 +468,9 @@ if n_body_order >= 3:
                 tb_curr.add_block(bbi)
                 tb_curr.add_block(bbj)
                 tb_curr.add_block(bbk)
-             
+                print tb_bij 
+                print tb_bik 
+                print tb_bjk 
                 #print "Nick:",(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs)
                 if min(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs) == 0:
                     print " No trimer term needed"
@@ -479,13 +480,13 @@ if n_body_order >= 3:
                     tb = cp.deepcopy(tb_0)
                     tb.set_start(dim_tot)
                 
-                    bbi_q.label = bbi.label
-                    bbj_q.label = bbj.label
-                    bbk_q.label = bbk.label
-                    
-                    tb.set_block(bbi_q)
-                    tb.set_block(bbj_q)
-                    tb.set_block(bbk_q)
+                    tb.blocks[bi].label = bbi.label
+                    tb.blocks[bj].label = bbj.label
+                    tb.blocks[bk].label = bbk.label
+    
+                    tb.blocks[bi].clear()
+                    tb.blocks[bj].clear()
+                    tb.blocks[bk].clear()
                     
                     tb.refresh_dims()
                     tb.update_label()
@@ -510,23 +511,23 @@ if n_body_order >= 3:
                 
                 s = v_curr.T.dot(S2).dot(v_curr)
                 print " Energy of GS: %12.8f %12.8f <S2>: "%(e[0],s[0,0])
-             
-               
+                
                 #
                 #   Tucker decompose the ground state to get 
                 #   a new set of Q vectors for this dimer
                 v_curr = v_curr[:,0]
                 v_curr.shape = (tb_curr.block_dims)
-             
+            
                 n_p_i = block_basis[(bi,"P")].n_vecs
                 n_p_j = block_basis[(bj,"P")].n_vecs
                 n_p_k = block_basis[(bk,"P")].n_vecs
     
                 v_curr = v_curr[n_p_i::,n_p_j::,n_p_k::]
+                #print v_curr
     
                 pns_thresh = args["pns_thresh"]
                 v_comp, U = tucker_decompose(v_curr,pns_thresh,0)
-               
+                
                 vi = tb_curr.blocks[0].vecs[:,n_p_i::].dot(U[0])
                 vj = tb_curr.blocks[1].vecs[:,n_p_j::].dot(U[1])
                 vk = tb_curr.blocks[2].vecs[:,n_p_k::].dot(U[2])
@@ -556,11 +557,17 @@ if n_body_order >= 3:
                 
                 tb.refresh_dims()
                 tb.update_label()
-                
+
+                if tb.full_dim == 0:
+                    tb.blocks[bi].clear()
+                    tb.blocks[bj].clear()
+                    tb.blocks[bk].clear()
+                    tb.refresh_dims()
+
                 tucker_blocks[tb.label] = tb
                 
                 dim_tot += tb.full_dim
-
+                
 
 if n_body_order >= 4:
     for bi in range(0,n_blocks):
@@ -603,7 +610,7 @@ if n_body_order >= 4:
                     bbk_q.append(tb_bjkl.blocks[bk])         # jkl:k
                     bbl_q.append(tb_bikl.blocks[bl])         # ikl:l
                     bbl_q.append(tb_bjkl.blocks[bl])         # jkl:l
-                   
+                    
                     bbi_q.orthogonalize()
                     bbj_q.orthogonalize()
                     bbk_q.orthogonalize()
@@ -625,7 +632,11 @@ if n_body_order >= 4:
                     tb_curr.add_block(bbj)
                     tb_curr.add_block(bbk)
                     tb_curr.add_block(bbl)
-                    
+                    print tb_bijk 
+                    print tb_bijl 
+                    print tb_bikl 
+                    print tb_bjkl 
+                    print tb_curr
                     if min(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs,bbl_q.n_vecs) == 0:
                         print " No term needed"
                         # create a zero dimensional Tucker_Block as a place holder for the 
@@ -634,15 +645,16 @@ if n_body_order >= 4:
                         tb = cp.deepcopy(tb_0)
                         tb.set_start(dim_tot)
                         
-                        bbi_q.label = bbi.label
-                        bbj_q.label = bbj.label
-                        bbk_q.label = bbk.label
-                        bbl_q.label = bbl.label
+                        tb.blocks[bi].label = bbi.label
+                        tb.blocks[bj].label = bbj.label
+                        tb.blocks[bk].label = bbk.label
+                        tb.blocks[bl].label = bbl.label
                         
-                        tb.set_block(bbi_q)
-                        tb.set_block(bbj_q)
-                        tb.set_block(bbk_q)
-                        tb.set_block(bbl_q)
+                        tb.blocks[bi].clear()
+                        tb.blocks[bj].clear()
+                        tb.blocks[bk].clear()
+                        tb.blocks[bl].clear()
+                    
                         
                         tb.refresh_dims()
                         tb.update_label()
