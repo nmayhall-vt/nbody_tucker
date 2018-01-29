@@ -504,14 +504,17 @@ if n_body_order >= 3:
                 print " Diagonalize local H" 
                 e = np.array([])
                 v_curr = np.array([])
-                if H.shape[0]> 5000:
+                if H.shape[0]> 3000:
                     e, v_curr = scipy.sparse.linalg.eigsh(H,1)
                 else:
                     e, v_curr = np.linalg.eigh(H)
                 
                 s = v_curr.T.dot(S2).dot(v_curr)
                 print " Energy of GS: %12.8f %12.8f <S2>: "%(e[0],s[0,0])
-                
+                for si,i in enumerate(e):
+                    if si<args['n_print']:
+                        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-e[0])*convert,abs(s[si,si]))
+               
                 #
                 #   Tucker decompose the ground state to get 
                 #   a new set of Q vectors for this dimer
@@ -522,16 +525,30 @@ if n_body_order >= 3:
                 n_p_j = block_basis[(bj,"P")].n_vecs
                 n_p_k = block_basis[(bk,"P")].n_vecs
     
-                v_curr = v_curr[n_p_i::,n_p_j::,n_p_k::]
+                #v_curr = v_curr[n_p_i::,n_p_j::,n_p_k::]
                 #print v_curr
+                    
+                proj = [n_p_i,n_p_j,n_p_k]
     
                 pns_thresh = args["pns_thresh"]
-                v_comp, U = tucker_decompose(v_curr,pns_thresh,0)
+                v_comp, U = tucker_decompose_proj(v_curr,pns_thresh,0,proj)
                 
-                vi = tb_curr.blocks[0].vecs[:,n_p_i::].dot(U[0])
-                vj = tb_curr.blocks[1].vecs[:,n_p_j::].dot(U[1])
-                vk = tb_curr.blocks[2].vecs[:,n_p_k::].dot(U[2])
-    
+                vi = tb_curr.blocks[0].vecs.dot(U[0])
+                vj = tb_curr.blocks[1].vecs.dot(U[1])
+                vk = tb_curr.blocks[2].vecs.dot(U[2])
+   
+                #vi_p = tb_curr.blocks[0].vecs[:,0:n_p_i]
+                #vj_p = tb_curr.blocks[1].vecs[:,0:n_p_j]
+                #vk_p = tb_curr.blocks[2].vecs[:,0:n_p_k]
+
+                #vi = vi - vi_p.dot(vi_p.T.dot(vi))
+                #vj = vj - vj_p.dot(vj_p.T.dot(vj))
+                #vk = vk - vk_p.dot(vk_p.T.dot(vk))
+
+                #vi = scipy.linalg.orth(vi)
+                #vj = scipy.linalg.orth(vj)
+                #vk = scipy.linalg.orth(vk)
+
                 #
                 #   Create a new Tucker_Block instance with these vectors and 
                 #   add it to the active list
@@ -696,15 +713,23 @@ if n_body_order >= 4:
                     n_p_k = block_basis[(bk,"P")].n_vecs
                     n_p_l = block_basis[(bl,"P")].n_vecs
                     
-                    v_curr = v_curr[n_p_i::,n_p_j::,n_p_k::,n_p_l::]
-                    
+                    proj = [n_p_i,n_p_j,n_p_k,n_p_l]
+
                     pns_thresh = args["pns_thresh"]
-                    v_comp, U = tucker_decompose(v_curr,pns_thresh,0)
-                   
-                    vi = tb_curr.blocks[0].vecs[:,n_p_i::].dot(U[0])
-                    vj = tb_curr.blocks[1].vecs[:,n_p_j::].dot(U[1])
-                    vk = tb_curr.blocks[2].vecs[:,n_p_k::].dot(U[2])
-                    vl = tb_curr.blocks[3].vecs[:,n_p_l::].dot(U[3])
+                    v_comp, U = tucker_decompose_proj(v_curr,pns_thresh,0,proj)
+                 
+
+                    vi = tb_curr.blocks[0].vecs.dot(U[0])
+                    vj = tb_curr.blocks[1].vecs.dot(U[1])
+                    vk = tb_curr.blocks[2].vecs.dot(U[2])
+                    vl = tb_curr.blocks[3].vecs.dot(U[3])
+  
+                    
+                    vi = scipy.linalg.orth(vi)
+                    vj = scipy.linalg.orth(vj)
+                    vk = scipy.linalg.orth(vk)
+                    vl = scipy.linalg.orth(vl)
+
                     
                     #
                     #   Create a new Tucker_Block instance with these vectors and 

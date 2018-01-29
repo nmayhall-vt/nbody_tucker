@@ -49,9 +49,76 @@ def tucker_decompose(A,thresh,n_keep_max):
             else:
                 #print "   %-4i   %16.8f : Toss"%(si,i)
                 trace_error += i
+        print "   ------------------------------------------" 
         print "   %5s  %16.8f : Error : %8.1e" %("Trace", AA.trace(),trace_error)
         print
         U = U[:,keep]
+
+        #print U.shape, core.shape, sd
+        core = np.tensordot(core,U,axes=(0,0))
+        #print "core: ", core.shape
+        #print "A   : ", A.shape
+        tucker_factors.append(U)
+
+    return core, tucker_factors
+
+
+def tucker_decompose_proj(A,thresh,n_keep_max,proj):
+    """
+    Perform tucker decomposition of input tensor
+    
+        Toss vectors with eigenvalues less than thresh 
+        
+        specify max number of vectors to keep (n=0: all)
+        
+        proj is  a list of indices to not include in the gramian diagonalization. 
+    """
+    dims = A.shape
+    n_modes = len(dims)
+    tucker_factors = []
+    core = cp.deepcopy(A)
+    n = n_keep_max
+
+    if n_keep_max <= 0:
+        n = max(dims)
+    
+    for sd,d in enumerate(dims):
+
+        print " Contract A along index %4i" %(sd),
+        print "   Dimension %4i" %(d)
+            
+        d_range = range(0,sd) 
+        d_range.extend(range(sd+1,n_modes))
+        
+        AA = np.tensordot(A,A,axes=(d_range,d_range))
+        
+        proj_d = proj[sd]
+
+        AA = AA[ proj_d::,:][:,proj_d::]
+        
+        l,U = np.linalg.eigh(AA)
+        sort_ind = np.argsort(l)[::-1]
+        l = l[sort_ind]
+        U = U[:,sort_ind]
+
+
+        keep = []
+        trace_error = 0
+        print "   Eigenvalues for mode %4i contraction:"%sd
+        for si,i in enumerate(l):
+            if(abs(i)>=thresh and si<n):
+                print "   %-4i   %16.8f : Keep"%(si,i)
+                keep.extend([si])
+            else:
+                #print "   %-4i   %16.8f : Toss"%(si,i)
+                trace_error += i
+        print "   ------------------------------------------" 
+        print "   %5s  %16.8f : Error : %8.1e" %("Trace", AA.trace(),trace_error)
+        print
+
+        padding = np.zeros((proj_d,len(keep)))
+        
+        U = np.vstack((padding,U[:,keep]))
 
         #print U.shape, core.shape, sd
         core = np.tensordot(core,U,axes=(0,0))
