@@ -991,7 +991,7 @@ for it in range(0,maxiter):
         for si,i in enumerate(lx):
             print "   %-12i   %16.8f  %16.8f  %12.4f  %12.4f "%(si,lx[si],h[si],abs(s2[si]),sz[si])
             #print "   %-4i   %16.8f  %16.8f  %16.4f "%(si,lx[si],h[si],sz[i])
-    
+   
     
     """
     # Rotate ci vectors to new basis

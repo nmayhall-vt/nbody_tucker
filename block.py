@@ -337,6 +337,8 @@ def build_dimer_H(tb_l, tb_r, Bi, Bj,j12):
         szi = Bi.Szi_ss(si,space_i_l,space_i_r)
         
         for sj in Bj.sites:
+            if abs(j12[si,sj]) < 1e-8:
+                continue
             space_j_l = tb_l.address[Bj.index]
             space_j_r = tb_r.address[Bj.index]
             spj = Bj.Spi_ss(sj,space_j_l,space_j_r)

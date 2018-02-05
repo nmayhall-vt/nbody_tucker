@@ -439,27 +439,104 @@ if n_body_order >= 3:
                 tb_bij = tucker_blocks[(2,bi,bj)]
                 tb_bik = tucker_blocks[(2,bi,bk)]
                 tb_bjk = tucker_blocks[(2,bj,bk)]
+               
+                vi_1 = cp.deepcopy(tb_bij.blocks[bi].vecs)
+                vi_2 = cp.deepcopy(tb_bik.blocks[bi].vecs)
                 
+                vj_1 = cp.deepcopy(tb_bij.blocks[bj].vecs)
+                vj_2 = cp.deepcopy(tb_bjk.blocks[bj].vecs)
+                
+                vk_1 = cp.deepcopy(tb_bik.blocks[bk].vecs)
+                vk_2 = cp.deepcopy(tb_bjk.blocks[bk].vecs)
+             
+                print tb_bij
+                print tb_bik
+                print tb_bjk
+                
+#                Oi = vi_1.T.dot(vi_2)
+#                Oj = vj_1.T.dot(vj_2)
+#                Ok = vk_1.T.dot(vk_2)
+#                if min(Oi.shape) > 0:
+#                    U,s,V = np.linalg.svd(Oi)
+#                    for si in s:
+#                        print "   %12.8f " %si
+#                if min(Oj.shape) > 0:
+#                    U,s,V = np.linalg.svd(Oj,full_matrices=True)
+#                    V = V.T
+#                    keep = []
+#                    for sj in range(len(s)):
+#                        if abs(s[sj]-1) > 1e-8:
+#                            keep.append(sj)
+#                            print "   %12.8f : New" %s[sj]
+#                        else:
+#                            print "   %12.8f : Same" %s[sj]
+#                    #U = U[:,keep]
+#                    V = V[:,keep]
+#                    #vj_1 = vj_1.dot(U)
+#                    #vj_2 = vj_2.dot(V)
+#                if min(Ok.shape) > 0:
+#                    U,s,V = np.linalg.svd(Ok)
+#                    for sk in s:
+#                        print "   %12.8f " %sk
+                
+                vi = np.hstack((vi_1,vi_2))
+                vj = np.hstack((vj_1,vj_2))
+                vk = np.hstack((vk_1,vk_2))
+              
+                if min(vi.shape) > 0:
+                    U,s,V = np.linalg.svd(vi,full_matrices=True)
+                    keep = []
+                    for si in range(len(s)):
+                        if abs(s[si])> 1e-12:
+                            keep.append(si)
+                    vi = U[:,keep]
+                
+                if min(vj.shape) > 0:
+                    U,s,V = np.linalg.svd(vj,full_matrices=True)
+                    keep = []
+                    for si in range(len(s)):
+                        if abs(s[si])> 1e-12:
+                            keep.append(si)
+                    vj = U[:,keep]
+
+                if min(vk.shape) > 0:
+                    U,s,V = np.linalg.svd(vk,full_matrices=True)
+                    keep = []
+                    for si in range(len(s)):
+                        if abs(s[si])> 1e-12:
+                            keep.append(si)
+                    vk = U[:,keep]
+
+
                 bbi_q = cp.deepcopy(tb_bij.blocks[bi])  # ij:i
                 bbj_q = cp.deepcopy(tb_bij.blocks[bj])  # ij:j
                 bbk_q = cp.deepcopy(tb_bik.blocks[bk])  # ik:k
                 
-                bbi_q.append(tb_bik.blocks[bi])           # ik:i
-                bbj_q.append(tb_bjk.blocks[bj])           # jk:j
-                bbk_q.append(tb_bjk.blocks[bk])           # jk:k
-    
-                bbi_q.orthogonalize()
-                bbj_q.orthogonalize()
-                bbk_q.orthogonalize()
+                bbi_q.set_vecs(vi) 
+                bbj_q.set_vecs(vj) 
+                bbk_q.set_vecs(vk) 
               
+                # make sure that new eigenvectors are orthogonal to p spaces
+
                 #print bbi_q.vecs.T.dot(bbi.vecs)
                 #print bbj_q.vecs.T.dot(bbj.vecs)
                 #print bbk_q.vecs.T.dot(bbk.vecs)
                 # Combine P and Q to create trimer Hamiltonian
+                
+                # From the appropriate initial Q spaces
+                #tb_bi = tucker_blocks[(1,bi)]
+                #tb_bj = tucker_blocks[(1,bj)]
+                #tb_bk = tucker_blocks[(1,bk)]
+                
+                #bbi_q = cp.deepcopy(tb_bi.blocks[bi])  # ij:i
+                #bbj_q = cp.deepcopy(tb_bj.blocks[bj])  # ij:j
+                #bbk_q = cp.deepcopy(tb_bk.blocks[bk])  # ik:k
+                
+                
                 bbi.append(bbi_q)
                 bbj.append(bbj_q)
                 bbk.append(bbk_q)
-               
+                
                 bbi.label = "Q(%i|%i|%i)"%(bi,bj,bk)
                 bbj.label = "Q(%i|%i|%i)"%(bi,bj,bk)
                 bbk.label = "Q(%i|%i|%i)"%(bi,bj,bk)
@@ -468,9 +545,7 @@ if n_body_order >= 3:
                 tb_curr.add_block(bbi)
                 tb_curr.add_block(bbj)
                 tb_curr.add_block(bbk)
-                print tb_bij 
-                print tb_bik 
-                print tb_bjk 
+                
                 #print "Nick:",(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs)
                 if min(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs) == 0:
                     print " No trimer term needed"
@@ -497,7 +572,7 @@ if n_body_order >= 3:
     
                 #
                 #   Build and diagonalize dimer Hamiltonian
-                print " ", tb_curr
+                print " Current subsystem tb", tb_curr
                 print " Build local Hamiltonian"
                 H,S2 = block3.build_H(tb_curr, tb_curr, j12)
         
@@ -529,10 +604,11 @@ if n_body_order >= 3:
                 #print v_curr
                     
                 proj = [n_p_i,n_p_j,n_p_k]
-    
+   
+        
                 pns_thresh = args["pns_thresh"]
                 v_comp, U = tucker_decompose_proj(v_curr,pns_thresh,0,proj)
-                
+               
                 vi = tb_curr.blocks[0].vecs.dot(U[0])
                 vj = tb_curr.blocks[1].vecs.dot(U[1])
                 vk = tb_curr.blocks[2].vecs.dot(U[2])
@@ -613,25 +689,80 @@ if n_body_order >= 4:
                     tb_bijl = tucker_blocks[(3,bi,bj,bl)]
                     tb_bikl = tucker_blocks[(3,bi,bk,bl)]
                     tb_bjkl = tucker_blocks[(3,bj,bk,bl)]
-                   
+                  
+                    vi =   cp.deepcopy(tb_bijk.blocks[bi].vecs)
+                    vi = np.hstack((vi,tb_bijl.blocks[bi].vecs))
+                    vi = np.hstack((vi,tb_bikl.blocks[bi].vecs))
+
+                    vj =   cp.deepcopy(tb_bijk.blocks[bj].vecs)
+                    vj = np.hstack((vj,tb_bijl.blocks[bj].vecs))
+                    vj = np.hstack((vj,tb_bjkl.blocks[bj].vecs))
+
+                    vk =   cp.deepcopy(tb_bijk.blocks[bk].vecs)
+                    vk = np.hstack((vk,tb_bikl.blocks[bk].vecs))
+                    vk = np.hstack((vk,tb_bjkl.blocks[bk].vecs))
+
+                    vl =   cp.deepcopy(tb_bijl.blocks[bl].vecs)
+                    vl = np.hstack((vl,tb_bikl.blocks[bl].vecs))
+                    vl = np.hstack((vl,tb_bjkl.blocks[bl].vecs))
+                
+                    if min(vi.shape) > 0:
+                        U,s,V = np.linalg.svd(vi,full_matrices=True)
+                        keep = []
+                        for si in range(len(s)):
+                            if abs(s[si])> 1e-12:
+                                keep.append(si)
+                        vi = U[:,keep]
+                    
+                    if min(vj.shape) > 0:
+                        U,s,V = np.linalg.svd(vj,full_matrices=True)
+                        keep = []
+                        for si in range(len(s)):
+                            if abs(s[si])> 1e-12:
+                                keep.append(si)
+                        vj = U[:,keep]
+                    
+                    if min(vk.shape) > 0:
+                        U,s,V = np.linalg.svd(vk,full_matrices=True)
+                        keep = []
+                        for si in range(len(s)):
+                            if abs(s[si])> 1e-12:
+                                keep.append(si)
+                        vk = U[:,keep]
+                    
+                    if min(vl.shape) > 0:
+                        U,s,V = np.linalg.svd(vl,full_matrices=True)
+                        keep = []
+                        for si in range(len(s)):
+                            if abs(s[si])> 1e-12:
+                                keep.append(si)
+                        vl = U[:,keep]
+
+
                     bbi_q = cp.deepcopy(tb_bijk.blocks[bi])  # ijk:i
                     bbj_q = cp.deepcopy(tb_bijk.blocks[bj])  # ijk:j
                     bbk_q = cp.deepcopy(tb_bijk.blocks[bk])  # ijk:k
                     bbl_q = cp.deepcopy(tb_bijl.blocks[bl])  # ijl:l
+                
+                    bbi_q.set_vecs(vi) 
+                    bbj_q.set_vecs(vj) 
+                    bbk_q.set_vecs(vk) 
+                    bbl_q.set_vecs(vl) 
+
                     
-                    bbi_q.append(tb_bijl.blocks[bi])         # ijl:i
-                    bbi_q.append(tb_bikl.blocks[bi])         # ikl:i
-                    bbj_q.append(tb_bijl.blocks[bj])         # ijl:j
-                    bbj_q.append(tb_bjkl.blocks[bj])         # jkl:j
-                    bbk_q.append(tb_bikl.blocks[bk])         # ikl:k
-                    bbk_q.append(tb_bjkl.blocks[bk])         # jkl:k
-                    bbl_q.append(tb_bikl.blocks[bl])         # ikl:l
-                    bbl_q.append(tb_bjkl.blocks[bl])         # jkl:l
-                    
-                    bbi_q.orthogonalize()
-                    bbj_q.orthogonalize()
-                    bbk_q.orthogonalize()
-                    bbl_q.orthogonalize()
+#                    bbi_q.append(tb_bijl.blocks[bi])         # ijl:i
+#                    bbi_q.append(tb_bikl.blocks[bi])         # ikl:i
+#                    bbj_q.append(tb_bijl.blocks[bj])         # ijl:j
+#                    bbj_q.append(tb_bjkl.blocks[bj])         # jkl:j
+#                    bbk_q.append(tb_bikl.blocks[bk])         # ikl:k
+#                    bbk_q.append(tb_bjkl.blocks[bk])         # jkl:k
+#                    bbl_q.append(tb_bikl.blocks[bl])         # ikl:l
+#                    bbl_q.append(tb_bjkl.blocks[bl])         # jkl:l
+#                    
+#                    bbi_q.orthogonalize()
+#                    bbj_q.orthogonalize()
+#                    bbk_q.orthogonalize()
+#                    bbl_q.orthogonalize()
                     
                     # Combine P and Q to create trimer Hamiltonian
                     bbi.append(bbi_q)
@@ -686,14 +817,13 @@ if n_body_order >= 4:
                     
                     #
                     #   Build and diagonalize dimer Hamiltonian
-                    print " ", tb_curr
                     print " Build local Hamiltonian"
                     H,S2 = block3.build_H(tb_curr, tb_curr, j12)
                     
                     print " Diagonalize local H" 
                     e = np.array([])
                     v_curr = np.array([])
-                    if H.shape[0]> 5000:
+                    if H.shape[0]> 3000:
                         e, v_curr = scipy.sparse.linalg.eigsh(H,1)
                     else:
                         e, v_curr = np.linalg.eigh(H)

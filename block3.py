@@ -126,34 +126,46 @@ class Block_Basis:
         if self.n_vecs == 0:
             return
         self.vecs = scipy.linalg.orth(self.vecs)
+        self.n_vecs = self.vecs.shape[1]
         return
 #        thresh = 1e-12
-#       
-#        print self.vecs
+#        
+#        print self.vecs.T.dot(self.vecs)
+#      
+#        a = self.vecs * 1 
 #        if len(self.vecs.shape) > 1:
 #            if self.vecs.shape[1] > 0:
 #
-#                keep = 0
 #                o = self.vecs.T.dot(self.vecs)
-#                l, v = np.linalg.eigh(o)
+#                #l, v = np.linalg.eigh(o)
+#                v,l,V = np.linalg.svd(o)
 #        
 #                sort_ind = abs(l).argsort()[::-1]
 #                l = l[sort_ind]
 #                v = v[:,sort_ind]
 #                
+#                #keep = 0
+#                keep = []
 #                for li in range(l.shape[0]):
-#                    print " %12.8e"%l[li]
 #                    if abs(l[li]) > thresh:
-#                        keep += 1
+#                        print " %12.8e Keep"%l[li]
+#                        #keep += 1
+#                        keep.append(li)
+#                    else:
+#                        print " %12.8e Toss"%l[li]
 #                
-#                v = v[:,0:keep] 
-#                self.vecs = self.vecs.dot(v)
-#
+#                a = self.vecs.dot(v[keep,:].T)
+#               
 #        else:
 #            self.vecs.shape = (self.vecs.shape[0],1)
+#        
 #        self.n_vecs = self.vecs.shape[1]
-#        print self.vecs
+#        #print self.vecs
+#        self.vecs = a*1
+#        print "here1:"
+#        print a.T.dot(a)
 #        print self.vecs.T.dot(self.vecs)
+#        print "here2:"
 
 
 
