@@ -20,7 +20,7 @@ def printm(m):
         print
     # }}}
 
-def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order, l, v, j12, pt_type):
+def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
     """# {{{
 
         E(2) = v_sA H_AX [D_XX - E_s^0]^-1 H_XA v_As
@@ -34,7 +34,7 @@ def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_or
     """
     do_2b_diag = 0
 
-    if pt_type == "mp":
+    if pt_type == "mp" or pt_type == "lcc":
         do_2b_diag = 0
     elif pt_type == "en":
         do_2b_diag = 1
@@ -79,17 +79,6 @@ def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_or
     tucker_blocks_pt always forms  +2 tuceker vectors from NBn.
     """
 
-    v = np.append(v,H_Xs).reshape(dim_tot_X+dim_tot_A,1)
-    H_Xv = np.zeros((dim_tot_X, n_roots))
-    H_Xv,temp = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,DHv)
-
-    H_XA = np.zeros((dim_tot_X, n_roots))
-    for t_l in sorted(tucker_blocks_pt):
-        tb_l = tucker_blocks_pt[t_l]
-        for t_r in sorted(tucker_blocks):
-            tb_r = tucker_blocks[t_r]
-            H_XA[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop],tmp = build_H(lattice_blocks, tb_l, tb_r, j12)
-
     #####Vibin checking SZ for diagonal##########################
     #Szzz = np.zeros((dim_tot_X,dim_tot_X)) 
     #for t_l in sorted(tucker_blocks_pt):
@@ -107,27 +96,270 @@ def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_or
     #printm(Szz)
     ################################################
 
-    res2 = np.multiply(dx,H_XA[:,0])
-    res2 = res2.reshape(dim_tot_X,1)
-    res4 = np.multiply(dx,H_Xv[:,0]).reshape(dim_tot_X,1)
-    H_Xv4,temp = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,H_Xv)
-    res5 = np.multiply(dx,H_Xv4[:,0]).reshape(dim_tot_X,1)
 
-    #print res.shape
-    Hvv,Svv = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,res4)
-    Hmp3,Smp3 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,res2)
-    Hmp5,Smp5 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,res5)
-    e4 = np.dot(DHv.T, Hvv)
-    e3 = np.dot(DHv.T, Hmp3)
-    e5 = np.dot(DHv.T, Hmp5)
     print("pt 2 % 10.15f " %e2)
+
+    res3 = np.multiply(dx,H_Xs[:,0]).reshape(dim_tot_X,1)
+    Hmp3,Smp3 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,res3)
+    e3 = np.dot(DHv.T, Hmp3)
     print("pt 3 % 10.15f " %e3)
+
+
+    H_Xv,temp = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,DHv)
+    res4 = np.multiply(dx,H_Xv[:,0]).reshape(dim_tot_X,1)
+    Hmp4,Smp4 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,res4)
+    e4 = np.dot(DHv.T, Hmp4)
     print("pt 4 % 10.15f " %e4)
+
+
+    res5 = np.multiply(dx, Hmp4[:,0]).reshape(dim_tot_X,1)
+    Hmp5,Smp5 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,res5)
+    e5 = np.dot(DHv.T, Hmp5)
     print("pt 5 % 10.15f " %e5)
-    #print " %5s    %16s  %16s  %12s" %("State","Energy PT3","Relative","<S2>")
+
+
+
     return e2
 
-def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order, l, v, j12, pt_type):
+#def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, n_body_order,pt_order, l, v, j12, pt_type):
+def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
+    do_2b_diag = 0
+
+    if pt_type == "lcc":
+        do_2b_diag = 0
+    else:
+        print " Bad value for pt_type"
+        exit(-1)
+    """
+    C(n) = R * V * C(n-1) - sum_k  R * E(k) * C(n-k)
+    
+    The second term is omitted coz it is the non renormalised term and makes the method non size consistent.
+    """
+    n = 20 #the order of wf
+    var_order = 0
+    pt_order = n_body_order - var_order
+
+    n_roots = v.shape[1]
+    e2 = np.zeros((n_roots))
+
+    tucker_blocks_0 = {}
+    tucker_blocks_1 = {}
+    for t_l in sorted(tucker_blocks):
+        if t_l[0] <= var_order:
+            tucker_blocks_0[t_l] = tucker_blocks[t_l]
+        else:
+            tucker_blocks_1[t_l] = tucker_blocks[t_l]
+            
+
+    print lattice_blocks
+
+    dim_tot_X = 0 #Dim of orthogonal space
+    dim_tot_A = 0 #Dim of model space
+    for t_l in sorted(tucker_blocks_1):
+        tb_l = tucker_blocks_1[t_l]
+        dim_tot_X += tb_l.full_dim
+    for t_l in sorted(tucker_blocks_0):
+        tb_l = tucker_blocks_0[t_l]
+        dim_tot_A += tb_l.full_dim
+
+    D_X = np.zeros((dim_tot_X))     #diagonal of X space
+    H_Xs = np.zeros((dim_tot_X, n_roots))
+    E_mpn = np.zeros((n+1,n_roots))         #PT energy
+    v_n = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
+       
+
+    #Forming the resolvent
+
+    for t_l in sorted(tucker_blocks_1):
+        tb_l = tucker_blocks_1[t_l]
+        D_X[tb_l.start:tb_l.stop] = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
+        for t_r in sorted(tucker_blocks_0):
+            tb_r = tucker_blocks_0[t_r]
+            hv,s2v = pt_build_H1v(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
+            H_Xs[tb_l.start:tb_l.stop,:] += hv
+
+    #print v
+    #print l
+    #print H_Xs
+    #print D_X
+
+    """
+    H_Xs = H_Xs.reshape(dim_tot_X,n_roots)
+
+    for s in range(0, n_roots):
+        res = 1/(l[s]-D_X)
+        v_n[: ,s] = np.multiply(res, H_Xs[:,s])
+        E_mpn[0,s] = np.dot(H_Xs[:,s].T,v_n[:,s])
+        #DHv = np.multiply(res, H_Xs[:,s])
+        #e2[s] = H_Xs[:,s].T.dot(DHv)
+
+
+        for i in range(1,n):
+            h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order+pt_order, j12,v_n[:,s].reshape(dim_tot_X,1))
+            v_n[:,s] = h1.reshape(dim_tot_X)
+            v_n[:,s] = np.multiply(res,v_n[:,s]) 
+            E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,s])
+            #print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i],E_corr)
+            #E_corr += E_mpn[i+1]
+         
+            if max(abs(E_mpn[i+1,s]),abs(E_mpn[i,s])) < 1e-8:
+                break
+
+    v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
+    #printm(v)
+    printm(E_mpn)
+    return v
+
+    """
+
+
+
+def PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
+    do_2b_diag = 0
+
+    if pt_type == "lcc":
+        do_2b_diag = 0
+    else:
+        print " Bad value for pt_type"
+        exit(-1)
+    """
+    C(n) = R * V * C(n-1) - sum_k  R * E(k) * C(n-k)
+    
+    The second term is omitted coz it is the non renormalised term and makes the method non size consistent.
+    """
+    n = 20 #the order of wf
+
+    n_roots = v.shape[1]
+    e2 = np.zeros((n_roots))
+
+
+    dim_tot_X = 0 #Dim of orthogonal space
+    dim_tot_A = 0 #Dim of model space
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        dim_tot_X += tb_l.full_dim
+    for t_l in sorted(tucker_blocks):
+        tb_l = tucker_blocks[t_l]
+        dim_tot_A += tb_l.full_dim
+
+    D_X = np.zeros((dim_tot_X))     #diagonal of X space
+    H_Xs = np.zeros((dim_tot_X, n_roots))
+    E_mpn = np.zeros((n+1,n_roots))         #PT energy
+    v_n = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
+       
+
+    #Forming the resolvent
+
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        D_X[tb_l.start:tb_l.stop] = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
+        for t_r in sorted(tucker_blocks):
+            tb_r = tucker_blocks[t_r]
+            hv,s2v = pt_build_H1v(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
+            H_Xs[tb_l.start:tb_l.stop,:] += hv
+
+    #print v
+    #print l
+    #print H_Xs
+    #print D_X
+
+    H_Xs = H_Xs.reshape(dim_tot_X,n_roots)
+
+    for s in range(0, n_roots):
+        res = 1/(l[s]-D_X)
+        v_n[: ,s] = np.multiply(res, H_Xs[:,s])
+        E_mpn[0,s] = np.dot(H_Xs[:,s].T,v_n[:,s])
+        #DHv = np.multiply(res, H_Xs[:,s])
+        #e2[s] = H_Xs[:,s].T.dot(DHv)
+
+
+        for i in range(1,n):
+            h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,v_n[:,s].reshape(dim_tot_X,1))
+            v_n[:,s] = h1.reshape(dim_tot_X)
+            v_n[:,s] = np.multiply(res,v_n[:,s]) 
+            E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,s])
+            #print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i],E_corr)
+            #E_corr += E_mpn[i+1]
+         
+            if max(abs(E_mpn[i+1,s]),abs(E_mpn[i,s])) < 1e-8:
+                break
+
+    v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
+    #printm(v)
+    printm(E_mpn)
+    return v
+
+def PT_lcc(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
+    do_2b_diag = 0
+
+    if pt_type == "lcc":
+        do_2b_diag = 0
+    else:
+        print " Bad value for pt_type"
+        exit(-1)
+    """
+    C(n) = R * V * C(n-1) - sum_k  R * E(k) * C(n-k)
+    
+    The second term is omitted coz it is the non renormalised term and makes the method non size consistent.
+    """
+    n = 10 #the order of wf
+
+    dim_tot_X = 0 #Dim of orthogonal space
+    dim_tot_A = 0 #Dim of model space
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        dim_tot_X += tb_l.full_dim
+    for t_l in sorted(tucker_blocks):
+        tb_l = tucker_blocks[t_l]
+        dim_tot_A += tb_l.full_dim
+
+    D_X = np.zeros((dim_tot_X))     #diagonal of X space
+    H_Xs = np.zeros((dim_tot_X, 1))
+    E_mpn = np.zeros((n+2))         #PT energy
+    v_n = np.zeros((dim_tot_X,1))   #list of PT vectors
+       
+
+    #Forming the resolvent
+
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        D_X[tb_l.start:tb_l.stop] = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
+        for t_r in sorted(tucker_blocks):
+            tb_r = tucker_blocks[t_r]
+            hv,s2v = pt_build_H1v(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
+            H_Xs[tb_l.start:tb_l.stop,:] += hv
+
+    res = 1/(l - D_X) 
+
+
+
+    #First order wavefunction
+    H_Xs = H_Xs.reshape(dim_tot_X)
+    v_n[: ,0] = np.multiply(res, H_Xs)
+
+    #Second order energy
+    E_mpn[1] = np.dot(H_Xs.T,v_n[:,0])
+    emp2 = E_mpn[1]
+       
+    print " %6s  %16s  %16s " %("Order","Correction","Energy")
+    print " %6i  %16.8f  %16.8f " %(1,E_mpn[0], 0.0)
+    E_corr = E_mpn[1] 
+    for i in range(1,n):
+        h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,v_n[:,0].reshape(dim_tot_X,1))
+        v_n[:,0] = h1.reshape(dim_tot_X)
+        v_n[:,0] = np.multiply(res,v_n[:,0]) 
+        E_mpn[i+1] = np.dot(H_Xs.T, v_n[:,0])
+        print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i],E_corr)
+        E_corr += E_mpn[i+1]
+       
+        if max(abs(E_mpn[i+1]),abs(E_mpn[i])) < 1e-8:
+            break
+    return E_corr
+
+
+
+
+def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
     do_2b_diag = 0
 
     if pt_type == "lcc":
@@ -188,27 +420,34 @@ def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_bod
     E_corr = E_mpn[1] 
 
     print " %6s  %16s  %16s " %("Order","Correction","Energy")
+    print " %6i  %16.8f  %16.8f " %(1,E_mpn[0], 0.0)
+    E_corr = E_mpn[1] 
     for i in range(1,n):
-        h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,v_n[:,i-1].reshape(dim_tot_X,1))
+        h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,v_n[:,i-1].reshape(dim_tot_X,1))
         v_n[:,i] = h1.reshape(dim_tot_X)
 
         ##RENORMALISED TERMS
-        for k in range(0,i):
-           v_n[:,i] -= np.multiply(E_mpn[k],v_n[:,i-k-1].reshape(dim_tot_X))
+        #for k in range(0,i):
+        #    v_n[:,i] -= np.multiply(E_mpn[k],v_n[:,i-k-1].reshape(dim_tot_X))
+
+        ##RENORMALISED TERMS for size consistent part
+        #if i < pt_order/2:
+        #    for k in range(0,pt_order):
+        #        v_n[:,i] -= np.multiply(E_mpn[k],v_n[:,i-k-1].reshape(dim_tot_X))
 
         v_n[:,i] = np.multiply(res,v_n[:,i]) 
         E_mpn[i+1] = np.dot(H_Xs.T, v_n[:,i])
         wigner[i] = E_mpn[i]
+        print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i],E_corr)
         E_corr += E_mpn[i+1]
-        print " %6i  %16.8f  %16.8f " %(i,E_mpn[i+1],E_corr)
        
         if max(abs(E_mpn[i+1]),abs(E_mpn[i])) < 1e-8:
             break
-        if i >= n/2-1:
-            wigner[2*i+1] = np.dot(vv_n1,v_n[:,i]) 
-            h2,S2 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+2, j12,v_n[:,i].reshape(dim_tot_X,1))
-            vv_n2 = h2.reshape(dim_tot_X)
-            wigner[2*i+2] = np.dot(vv_n2,v_n[:,i])
+        #if i >= n/2-1:
+        #    wigner[2*i+1] = np.dot(vv_n1,v_n[:,i]) 
+        #    h2,S2 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,v_n[:,i].reshape(dim_tot_X,1))
+        #    vv_n2 = h2.reshape(dim_tot_X)
+        #    wigner[2*i+2] = np.dot(vv_n2,v_n[:,i])
 
 
     return E_corr

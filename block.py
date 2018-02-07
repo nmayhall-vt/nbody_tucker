@@ -1187,7 +1187,7 @@ def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
     """
     do_2b_diag = 0
 
-    if pt_type == "mp":
+    if pt_type == "mp" or "lcc":
         do_2b_diag = 0
     elif pt_type == "en":
         do_2b_diag = 1

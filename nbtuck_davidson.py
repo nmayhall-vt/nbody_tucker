@@ -744,7 +744,13 @@ for it in range(0,maxiter):
         print "DMBPTinfinity Calculation"
         n_roots = args['n_roots']
         pt_type = args['pt_type']
-        PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order, l, v, j12, pt_type)
+        #PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+        #e_lcc =PT_lcc(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+        #v_pt = PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+        PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+        #e3 = vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
+        e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
+        print e2
         print
         print " Compute State-specific PT2 corrections: "
        
@@ -799,6 +805,12 @@ for it in range(0,maxiter):
         Bi = lattice_blocks[bi]
         brdms[bi] = np.zeros(( Bi.full_dim, Bi.full_dim )) 
 
+      
+    """"
+    changing v to v_pt
+    """
+    #if pt_order >= 2 and args['pt_type'] == 'lcc':
+    #  v = v_pt
     print
     print " Compute Block Reduced Density Matrices (BRDM):"
     for tb1 in sorted(tucker_blocks):
