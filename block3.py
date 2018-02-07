@@ -217,6 +217,7 @@ class Tucker_Block:
         self.full_dim = 1
         for bj in range(self.n_blocks):
             Bj = self.blocks[bj] 
+            assert(Bj.vecs.shape[1] == Bj.n_vecs)
             self.full_dim = self.full_dim * Bj.n_vecs
             self.address[bj] = (Bj.label)
             self.block_dims[bj] = Bj.n_vecs
@@ -351,6 +352,11 @@ def build_H(tb_l, tb_r,j12):
             h1 = tb_l.blocks[bi].vecs.T.dot( lbi.H).dot(tb_r.blocks[bi].vecs)
             s1 = tb_l.blocks[bi].vecs.T.dot( lbi.S2).dot(tb_r.blocks[bi].vecs)
             #h = np.kron(h1,np.eye(dim_e))   
+            #print tb_l,tb_r
+            #print tb_l.blocks[bi],tb_r.blocks[bi]
+            #print tb_l.block_dims[bi], tb_r.block_dims[bi], tb_l.block_dims, tb_r.block_dims
+            #print h1.shape, lbi.H.shape
+            #print tb_l.blocks[bi].vecs.shape, tb_r.blocks[bi].vecs.shape
             h1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
             s1.shape = (tb_l.block_dims[bi],tb_r.block_dims[bi])
         
@@ -670,6 +676,7 @@ def build_dimer_H(tb_l, tb_r, bi, bj,j12):
 
     dim_l = tb_l.blocks[bi].n_vecs * tb_l.blocks[bj].n_vecs
 
+    #print (bi,bj), tb_l.block_dims, ":", tb_r.block_dims
     h12 = np.zeros((tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj]))
     s2 = np.zeros((tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj]))
     sz = np.zeros((tb_l.block_dims[bi]*tb_l.block_dims[bj],tb_r.block_dims[bi]*tb_r.block_dims[bj]))
@@ -696,8 +703,13 @@ def build_dimer_H(tb_l, tb_r, bi, bj,j12):
         spi = bbli.T.dot(lbi.Spi[si]).dot(bbri)
         smi = bbli.T.dot(lbi.Smi[si]).dot(bbri)
         szi = bbli.T.dot(lbi.Szi[si]).dot(bbri)
-        
+       
+        #print spi.shape, smi.shape, szi.shape
+        #print lbi.Spi[si].shape, lbi.Smi[si].shape, lbi.Szi[si].shape
+        #print bbli.shape, bbri.shape 
         for sj in lbj.sites:
+            #if abs(j12[si,sj]) < 1e-8:
+            #    continue
             spj = bblj.T.dot(lbj.Spi[sj]).dot(bbrj)
             smj = bblj.T.dot(lbj.Smi[sj]).dot(bbrj)
             szj = bblj.T.dot(lbj.Szi[sj]).dot(bbrj)
@@ -705,6 +717,8 @@ def build_dimer_H(tb_l, tb_r, bi, bj,j12):
             s1s2  = np.tensordot(spi,smj, axes=0)
             s1s2 += np.tensordot(smi,spj, axes=0)
             s1s2 += 2 * np.tensordot(szi,szj, axes=0)
+            
+            #print spj.shape, smj.shape, szj.shape
 
             h12 -= j12[si,sj] * s1s2
             s2  += s1s2
@@ -731,8 +745,8 @@ def build_tucker_blocked_H(tucker_blocks, j12):
     S2 = np.zeros((dim_tot, dim_tot))
 
         
-    for t_l in tucker_blocks:
-        for t_r in tucker_blocks:
+    for t_l in sorted(tucker_blocks):
+        for t_r in sorted(tucker_blocks):
             tb_l = tucker_blocks[t_l]
             tb_r = tucker_blocks[t_r]
             
@@ -743,6 +757,8 @@ def build_tucker_blocked_H(tucker_blocks, j12):
                 continue
             
             if tb_r.label >= tb_l.label:
+                #print t_l, t_r, tb_l, tb_r
+                #print 
                 h,s2 = build_H(tb_l, tb_r, j12)
                 #o = build_overlap(tb_l, tb_r)
                 H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = h 
