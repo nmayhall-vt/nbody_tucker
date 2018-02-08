@@ -65,6 +65,7 @@ def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_or
             hv,s2v = pt_build_H1v(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
             H_Xs[tb_l.start:tb_l.stop,:] += hv
 
+    print D_X
     DHv = np.array(())
     for s in range(0, n_roots):
         dx = 1/(l[s]-D_X)
@@ -144,23 +145,26 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
 
     tucker_blocks_0 = {}
     tucker_blocks_1 = {}
-    for t_l in sorted(tucker_blocks):
-        if t_l[0] <= var_order:
-            tucker_blocks_0[t_l] = tucker_blocks[t_l]
-        else:
-            tucker_blocks_1[t_l] = tucker_blocks[t_l]
-            
-
-    print lattice_blocks
-
     dim_tot_X = 0 #Dim of orthogonal space
     dim_tot_A = 0 #Dim of model space
-    for t_l in sorted(tucker_blocks_1):
-        tb_l = tucker_blocks_1[t_l]
-        dim_tot_X += tb_l.full_dim
-    for t_l in sorted(tucker_blocks_0):
-        tb_l = tucker_blocks_0[t_l]
-        dim_tot_A += tb_l.full_dim
+    for t_l in sorted(tucker_blocks):
+        if t_l[0] <= var_order:
+            tb_l = cp.deepcopy(tucker_blocks[t_l])
+            tb_l.start = dim_tot_A
+            tb_l.stop = tb_l.start + tb_l.full_dim 
+            
+            tucker_blocks_0[t_l] = tb_l 
+            
+            dim_tot_A += tb_l.full_dim
+        else:
+            tb_l = cp.deepcopy(tucker_blocks[t_l])
+            tb_l.start = dim_tot_X
+            tb_l.stop = tb_l.start + tb_l.full_dim 
+            
+            tucker_blocks_1[t_l] = tb_l 
+            
+            dim_tot_X += tb_l.full_dim
+            
 
     D_X = np.zeros((dim_tot_X))     #diagonal of X space
     H_Xs = np.zeros((dim_tot_X, n_roots))
@@ -168,7 +172,12 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
     v_n = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
        
 
-    #Forming the resolvent
+    for t_l in sorted(tucker_blocks_0):
+        print " 0: ", tucker_blocks_0[t_l]
+   
+    for t_l in sorted(tucker_blocks_1):
+        print " 1: ", tucker_blocks_1[t_l]
+  
 
     for t_l in sorted(tucker_blocks_1):
         tb_l = tucker_blocks_1[t_l]
@@ -183,34 +192,46 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
     #print H_Xs
     #print D_X
 
-    """
     H_Xs = H_Xs.reshape(dim_tot_X,n_roots)
 
+    v_lcc = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
+    v_upper = np.zeros((dim_tot_A,n_roots))   #list of PT vectors
+    print "v_lcc",v_lcc.shape
+
+    
     for s in range(0, n_roots):
         res = 1/(l[s]-D_X)
         v_n[: ,s] = np.multiply(res, H_Xs[:,s])
         E_mpn[0,s] = np.dot(H_Xs[:,s].T,v_n[:,s])
         #DHv = np.multiply(res, H_Xs[:,s])
         #e2[s] = H_Xs[:,s].T.dot(DHv)
+        v_lcc[:,s] = v_n[:,s] 
+        E_corr = E_mpn[0,s] 
 
+        print " %6i  %16.8f  %16.8f " %(1,E_mpn[0,s],E_corr)
 
         for i in range(1,n):
-            h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order+pt_order, j12,v_n[:,s].reshape(dim_tot_X,1))
+            h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order, j12,v_n[:,s].reshape(dim_tot_X,1))
             v_n[:,s] = h1.reshape(dim_tot_X)
             v_n[:,s] = np.multiply(res,v_n[:,s]) 
             E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,s])
-            #print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i],E_corr)
-            #E_corr += E_mpn[i+1]
+            print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i,s],E_corr)
+            E_corr += E_mpn[i,s]
+            v_lcc[:,s] += v_n[:,s].reshape(dim_tot_X)
          
             if max(abs(E_mpn[i+1,s]),abs(E_mpn[i,s])) < 1e-8:
                 break
+        v_upper[:,s] = v[0:dim_tot_A,s]
 
-    v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
-    #printm(v)
-    printm(E_mpn)
-    return v
+    #v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
+    #print v_upper.shape
+    #print v_lcc.shape
+    v_lcc = np.append(v_upper,v_lcc).reshape(dim_tot_X+dim_tot_A,n_roots)
+    #printm(E_mpn)
+    np.set_printoptions(suppress = True, precision = 5, linewidth=200)
+    #print(v_lcc)
+    return v_lcc
 
-    """
 
 
 
@@ -252,6 +273,7 @@ def PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
 
     for t_l in sorted(tucker_blocks_pt):
         tb_l = tucker_blocks_pt[t_l]
+        print "a: ", build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
         D_X[tb_l.start:tb_l.stop] = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
         for t_r in sorted(tucker_blocks):
             tb_r = tucker_blocks[t_r]
@@ -272,6 +294,8 @@ def PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
         #DHv = np.multiply(res, H_Xs[:,s])
         #e2[s] = H_Xs[:,s].T.dot(DHv)
 
+        E_corr = E_mpn[0,s] 
+        print " %6i  %16.8f  %16.8f " %(1,E_mpn[0,s],E_corr)
 
         for i in range(1,n):
             h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,v_n[:,s].reshape(dim_tot_X,1))
@@ -280,13 +304,15 @@ def PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
             E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,s])
             #print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i],E_corr)
             #E_corr += E_mpn[i+1]
+            E_corr += E_mpn[i+1,s]
+            print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i,s],E_corr)
          
             if max(abs(E_mpn[i+1,s]),abs(E_mpn[i,s])) < 1e-8:
                 break
 
-    v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
+    v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,n_roots)
     #printm(v)
-    printm(E_mpn)
+
     return v
 
 def PT_lcc(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
