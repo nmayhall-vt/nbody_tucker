@@ -333,6 +333,7 @@ pns_thresh = args["pns_thresh"]
 dim_tot_X = 0
 
 e_curr = l[0]
+tucker_blocks_0 = cp.deepcopy(tucker_blocks)
 for bi in range(n_blocks):
     for bj in range(bi+1,n_blocks):
         tb = cp.deepcopy(tucker_blocks[0])
@@ -348,16 +349,25 @@ for bi in range(n_blocks):
         tucker_blocks_pt = {}
         tucker_blocks_pt[tb.label] = tb
        
-        lpt,vpt = block3.form_pt2_v(tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12)
+        lpt,vpt = block3.form_pt2_v(tucker_blocks_0, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12)
       
-        #v.shape = (tb.block_dims)
-        #v_comp, U = tucker_decompose(v,pns_thresh,0)
-
+        vpt.shape = (tb.block_dims)
+        v_comp, U = tucker_decompose(vpt,pns_thresh,0)
+        
+        tb.blocks[bi].set_vecs(tb.blocks[bi].vecs.dot(U[bi]))
+        tb.blocks[bj].set_vecs(tb.blocks[bj].vecs.dot(U[bj]))
+        tb.refresh_dims()
+        tb.update_label()
         e_curr += lpt[0]
+        tucker_blocks[tb.label] = tb
+
 
 
 print " Final energy: %12.8f" %e_curr
 #e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
+for tbi in sorted(tucker_blocks):
+    t = tucker_blocks[tbi]
+    print " TB: ", t
 exit(-1)
 
 if n_body_order >= 1:

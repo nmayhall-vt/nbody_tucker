@@ -200,7 +200,7 @@ class Tucker_Block:
 
     def set_block(self,_block):
         bi = _block.lb.index   # cluster id
-        self.blocks[bi] = _block
+        self.blocks[bi] = cp.deepcopy(_block)
         self.full_dim = 1
         for bj in self.blocks:
             self.full_dim = self.full_dim * bj.n_vecs
