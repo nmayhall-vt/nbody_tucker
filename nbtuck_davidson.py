@@ -799,6 +799,7 @@ for it in range(0,maxiter):
         Bi = lattice_blocks[bi]
         brdms[bi] = np.zeros(( Bi.full_dim, Bi.full_dim )) 
 
+
     print
     print " Compute Block Reduced Density Matrices (BRDM):"
     for tb1 in sorted(tucker_blocks):

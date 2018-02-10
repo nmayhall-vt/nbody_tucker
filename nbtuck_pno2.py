@@ -253,6 +253,7 @@ dim_tot += tb_0.full_dim
 
 
 
+
 # New lattice blocks
 #PPP states
 print("\n Set up Lattice_Blocks")
@@ -317,6 +318,48 @@ for bi in range(0,n_blocks):
 
 tucker_blocks[0] = tb_0 
 
+
+H,S2 = block3.build_tucker_blocked_H(tucker_blocks, j12) 
+l,v = np.linalg.eigh(H + S2*.01)
+l = v.T.dot(H).dot(v).diagonal()
+S2 = v.T.dot(S2).dot(v)
+        
+nb_order = 0      
+tucker_blocks_pt = {}
+
+n_roots = args['n_roots']
+pns_thresh = args["pns_thresh"]
+
+dim_tot_X = 0
+
+e_curr = l[0]
+for bi in range(n_blocks):
+    for bj in range(bi+1,n_blocks):
+        tb = cp.deepcopy(tucker_blocks[0])
+        tb.set_block(block_basis[(bi,"Q")])
+        tb.set_block(block_basis[(bj,"Q")])
+        
+        #tb.set_start(dim_tot_X)
+        #dim_tot_X += tb.full_dim
+        
+        tb.refresh_dims()
+        tb.update_label()
+        print " PT: ",tb
+        tucker_blocks_pt = {}
+        tucker_blocks_pt[tb.label] = tb
+       
+        lpt,vpt = block3.form_pt2_v(tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12)
+      
+        #v.shape = (tb.block_dims)
+        #v_comp, U = tucker_decompose(v,pns_thresh,0)
+
+        e_curr += lpt[0]
+
+
+print " Final energy: %12.8f" %e_curr
+#e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
+exit(-1)
+
 if n_body_order >= 1:
     for bi in range(0,n_blocks):
         
@@ -328,6 +371,13 @@ if n_body_order >= 1:
         tucker_blocks[tb.label] = tb
         
         dim_tot += tb.full_dim
+
+
+print "\n NB0 Eigenstates:"
+for idx,ei in enumerate(l):
+    print" %12i %12.8f %8.4f"%(idx,ei,S2[idx,idx])
+
+exit(-1)
 
 if n_body_order >= 2:
     for bi in range(0,n_blocks):

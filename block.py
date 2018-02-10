@@ -1240,12 +1240,20 @@ def compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l, v, j12, pt_t
         tb_l = tucker_blocks_pt[t_l]
         D_X[tb_l.start:tb_l.stop] = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
 
+        #print D_X[tb_l.start:tb_l.stop]
         for t_r in sorted(tucker_blocks):
             tb_r = tucker_blocks[t_r]
 
             #H_XA[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop],tmp = build_H(lattice_blocks, tb_l, tb_r, j12)
             hv,s2v = build_Hv(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
             H_Xs[tb_l.start:tb_l.stop,:] += hv
+        
+        #dx = 1/(l[0]-D_X[tb_l.start:tb_l.stop])
+        #DHv = np.multiply(dx, H_Xs[tb_l.start:tb_l.stop,0])
+        #print tb_l
+        #print " Ecorr: %12.8f" %H_Xs[tb_l.start:tb_l.stop,0].T.dot(DHv)
+        #print np.linalg.norm(H_Xs[tb_l.start:tb_l.stop])
+        #print np.linalg.norm(D_X[tb_l.start:tb_l.stop])
 
     for s in range(0, n_roots):
         dx = 1/(l[s]-D_X)

@@ -785,4 +785,165 @@ def tucker_block_overlap(tb_l, tb_r):
     return O
 
 
+def form_pt2_v(tucker_blocks, tucker_blocks_pt, l, v0, j12):
+    """# {{{
+
+        E(2) = v_sA H_AX [D_XX - E_s^0]^-1 H_XA v_As
+
+             = v_sA H_AX
+
+        pt_type: mp or en
+                
+                 mp uses H1 as zeroth-order Hamiltonian
+                 en uses the diagonal of H for zeroth-order
+    """
+
+    n_roots = v0.shape[1]
+
+    assert(l.shape[0] == n_roots)
+    """
+    e2 = sum_ab(in A) sum_x(in X)  c_as <a|H|x> d_x <x|H|b> c_bs
+    """
+    dim_tot_X = 0
+    dim_tot_A = 0
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        dim_tot_X += tb_l.full_dim
+    for t_l in sorted(tucker_blocks):
+        tb_l = tucker_blocks[t_l]
+        dim_tot_A += tb_l.full_dim
+    
+    e2 = np.zeros((n_roots))
+    DHv = np.zeros((dim_tot_X,n_roots))
+    
+    H_Xs = np.zeros((dim_tot_X, n_roots))
+    D_X = np.zeros((dim_tot_X))
+    
+    do_2b_diag = 0
+    for t_l in sorted(tucker_blocks_pt):
+        tb_l = tucker_blocks_pt[t_l]
+        D_X[tb_l.start:tb_l.stop] = build_H_diag(tb_l, tb_l, j12, do_2b_diag)
+        
+        #print D_X[tb_l.start:tb_l.stop]
+        for t_r in sorted(tucker_blocks):
+            tb_r = tucker_blocks[t_r]
+
+            hv,tmp = build_H(tb_l, tb_r, j12)
+            #hv,s2v = build_Hv(tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
+            H_Xs[tb_l.start:tb_l.stop,:] += hv.dot(v0[tb_r.start:tb_r.stop,:])
+
+
+    for s in range(0, n_roots):
+        dx = 1/(l[s]-D_X)
+        DHv[:,s] = np.multiply(dx, H_Xs[:,s])
+        e2[s] = H_Xs[:,s].T.dot(DHv[:,s])
+# }}}
+    return e2,DHv
+
+def build_H_diag(tb_l, tb_r,j12, do_2b_diag):
+  # {{{
+    """
+    Build the Hamiltonian between two tensor blocks, tb_l and tb_r, without ever constructing a full hilbert space
+
+    do_2b_diag: should the 2-block contributions to the diagonal be computed?
+    """
+
+    assert(tb_l.n_blocks == tb_r.n_blocks)
+    n_blocks = tb_l.n_blocks
+   
+    
+    H_dim_layout = []  # dimensions of Ham block as a tensor (d1,d2,..,d1',d2',...)
+    H_dim_layout = tb_l.block_dims
+   
+    """
+    form one-block and two-block terms of H separately
+        1-body
+
+            for each block, form Hamiltonian in subspace, and combine
+            with identity on other blocks
+
+        2-body
+            
+            for each block-dimer, form Hamiltonian in subspace, and combine
+            with identity on other blocks
+    """
+    # How many blocks are different between left and right?
+    different = []
+    
+    Hd  = np.zeros((tb_l.full_dim))
+   
+    #print " Ham block size", H.shape, H_dim_layout
+    Hd.shape = H_dim_layout
+    #   Add up all the one-body contributions, making sure that the results is properly dimensioned for the 
+    #   target subspace
+
+    assert(tb_l.label == tb_r.label)
+    full_dim = tb_l.full_dim
+    #<abcd|H1+H2+H3+H4|abcd>
+    #
+    #   <a|H1|a> Ib Ic Id
+    # + Ia <b|H1|b> Ic Id + etc
+
+    for bi in range(0,n_blocks):
+        Bi = tb_l.blocks[bi]
+        dim_e = full_dim / tb_l.block_dims[bi] 
+    
+        lbi = Bi.lb
+        h1 = tb_l.blocks[bi].vecs.T.dot( lbi.H).dot(tb_r.blocks[bi].vecs).diagonal()
+        h1.shape = (tb_l.block_dims[bi])
+   
+        #print h1
+        tens_inds    = []
+        tens_inds.extend([bi])
+        for bj in range(0,n_blocks):
+            if (bi != bj):
+                tens_inds.extend([bj])
+                assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
+                h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]).diagonal(),axes=0)
+
+        sort_ind = np.argsort(tens_inds)
+       
+        #print Hd.shape, h1.shape
+
+        Hd  += h1.transpose(sort_ind)
+    
+    
+    #   <ab|H12|ab> Ic Id
+    # + <ac|H13|ac> Ib Id
+    # + Ia <bc|H23|bc> Id + etc
+    
+    # do 2body diagonal terms?
+    if do_2b_diag:
+        print "NYI"
+        exit(-1)
+        for bi in range(0,n_blocks):
+            for bj in range(bi+1,n_blocks):
+                Bi = blocks[bi]
+                Bj = blocks[bj]
+                dim_e = full_dim / tb_l.block_dims[bi] / tb_l.block_dims[bj]
+        
+                #build full Hamiltonian on sublattice
+                h2,s2 = build_dimer_H(tb_l, tb_r, Bi, Bj, j12)
+                h2 = h2.diagonal()
+                h2.shape = (tb_l.block_dims[bi],tb_l.block_dims[bj])
+        
+                #h = np.kron(h12,np.eye(dim_e))   
+            
+                tens_inds    = []
+                tens_inds.extend([bi,bj])
+                for bk in range(0,n_blocks):
+                    if (bk != bi) and (bk != bj):
+                        tens_inds.extend([bk])
+                        assert(tb_l.block_dims[bk] == tb_r.block_dims[bk] )
+                        h2 = np.tensordot(h2,np.eye(tb_l.block_dims[bk]).diagonal(),axes=0)
+             
+                sort_ind = np.argsort(tens_inds)
+               
+                Hd  += h2.transpose(sort_ind)
+    
+    
+    Hd.shape = (tb_l.full_dim)
+    return Hd
+# }}}
+
 
