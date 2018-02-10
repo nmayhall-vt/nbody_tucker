@@ -15,6 +15,106 @@ from block import *
 from davidson import *
 from pt import *
 
+def do_variational_microiteration_update(nblocks, tucker_blocks, lattice_blocks, n_order, j12):
+
+    """
+    varialtionally solve the blocks and output E and v
+
+    """   
+        
+    # 
+    #   Loop over davidson micro-iterations
+    print 
+    print " Solve for supersystem eigenvalues: Dimension = ", dim_tot
+    dav = Davidson(dim_tot, args['n_roots'])
+    dav.thresh = dav_thresh 
+    dav.max_vecs = args['dav_max_ss']
+    s2v = np.array([])
+    if it == 0:
+        if args['dav_guess'] == 'rand':
+            dav.form_rand_guess()
+        else:
+            dav.form_p_guess()
+    else:
+        dav.vec_curr = last_vectors 
+    dav.max_iter = args['dav_max_iter']
+
+    for dit in range(0,dav.max_iter):
+        #dav.form_sigma()
+       
+        if args['direct'] == 0:
+            dav.sig_curr = H.dot(dav.vec_curr)
+            hv = H.dot(dav.vec_curr)
+            s2v = S2.dot(dav.vec_curr)
+        else:
+            hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_order, j12, dav.vec_curr) 
+            dav.sig_curr = hv
+    
+        if args['dav_precond']:
+            hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_order, j12, 0) 
+            dav.set_preconditioner(hv_diag)
+        #dav.set_preconditioner(H.diagonal())
+        
+        dav.update()
+        dav.print_iteration()
+        if dav.converged():
+            break
+    if dav.converged():
+        print " Davidson Converged"
+    else:
+        print " Davidson Not Converged"
+    print 
+        
+    l = dav.eigenvalues()
+    v = dav.eigenvectors()
+
+    return l,v
+
+def form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12):
+    brdms = {}   # block reduced density matrix
+    for bi in range(0,n_blocks):
+        Bi = lattice_blocks[bi]
+        brdms[bi] = np.zeros(( Bi.full_dim, Bi.full_dim )) 
+      
+    """"
+    changing v to v_pt
+    """
+    print
+    print " Compute Block Reduced Density Matrices (BRDM):"
+    for tb1 in sorted(tucker_blocks):
+        Tb1 = tucker_blocks[tb1]
+        vb1 = cp.deepcopy(v[Tb1.start:Tb1.stop, ts])
+        vb1.shape = Tb1.block_dims
+        for tb2 in sorted(tucker_blocks):
+            Tb2 = tucker_blocks[tb2]
+            
+            if Tb1.id <= Tb2.id:
+                # How many blocks are different between left and right?
+                different = []
+                for bi in range(0,n_blocks):
+                    if Tb2.address[bi] != Tb1.address[bi]:
+                        different.append(bi)
+                
+                if len(different) == 0:
+                    vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
+                    vb2.shape = Tb2.block_dims
+                    for bi in range(0,n_blocks):
+                        brdm_tmp = form_1fdm(vb1,vb2,[bi])
+                        Bi = lattice_blocks[bi]
+                        u1 = Bi.v_ss(Tb1.address[bi])
+                        u2 = Bi.v_ss(Tb2.address[bi])
+                        brdms[bi] += u1.dot(brdm_tmp).dot(u2.T)
+                if len(different) == 1:
+                    vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
+                    vb2.shape = Tb2.block_dims
+                    bi = different[0]
+                    brdm_tmp = form_1fdm(vb1,vb2,[bi])
+                    Bi = lattice_blocks[bi]
+                    u1 = Bi.v_ss(Tb1.address[bi])
+                    u2 = Bi.v_ss(Tb2.address[bi])
+                    brdm_tmp = u1.dot(brdm_tmp).dot(u2.T)
+                    brdms[bi] += brdm_tmp + brdm_tmp.T 
+    return brdms
 
 def printm(m):
     # {{{
@@ -647,67 +747,13 @@ for it in range(0,maxiter):
                 Ec = E - E0
            
 
-    
+    if pt_order == 0:
+        l,v = do_variational_microiteration_update(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12)  
+        last_vectors = cp.deepcopy(v)
+        hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, v) 
+        S2 = v.T.dot(s2v)
+        l = v.T.dot(hv).diagonal()
 
-    # 
-    #   Loop over davidson micro-iterations
-    print 
-    print " Solve for supersystem eigenvalues: Dimension = ", dim_tot
-    dav = Davidson(dim_tot, args['n_roots'])
-    dav.thresh = dav_thresh 
-    dav.max_vecs = args['dav_max_ss']
-    s2v = np.array([])
-    if it == 0:
-        if args['dav_guess'] == 'rand':
-            dav.form_rand_guess()
-        else:
-            dav.form_p_guess()
-    else:
-        dav.vec_curr = last_vectors 
-    dav.max_iter = args['dav_max_iter']
-
-    for dit in range(0,dav.max_iter):
-        #dav.form_sigma()
-       
-        if args['direct'] == 0:
-            dav.sig_curr = H.dot(dav.vec_curr)
-            hv = H.dot(dav.vec_curr)
-            s2v = S2.dot(dav.vec_curr)
-        else:
-            hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, dav.vec_curr) 
-            dav.sig_curr = hv
-    
-        if args['dav_precond']:
-            hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, 0) 
-            dav.set_preconditioner(hv_diag)
-        #dav.set_preconditioner(H.diagonal())
-        
-        dav.update()
-        dav.print_iteration()
-        if dav.converged():
-            break
-    if dav.converged():
-        print " Davidson Converged"
-    else:
-        print " Davidson Not Converged"
-    print 
-
-    l = np.array([])
-    v = np.array([])
-    if dav.max_iter == -1 and args['direct'] == 0:
-        print 
-        print " Diagonalizing explicitly:"
-
-        if H.shape[0] > 3000:
-            l,v = scipy.sparse.linalg.eigsh(H, k=args["n_roots"] )
-        else:
-            l,v = np.linalg.eigh(H)
-    else:
-        # get eigen stuff from davidson
-        l = dav.eigenvalues()
-        v = dav.eigenvectors()
-
-    last_vectors = cp.deepcopy(v)
 
     """
     if do_cepa :
@@ -730,17 +776,16 @@ for it in range(0,maxiter):
         l,v = np.linalg.eigh(H)
     """
 
-    # compute S2 for converged states    
-    hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, v) 
-    S2 = v.T.dot(s2v)
-    l = v.T.dot(hv).diagonal()
-    print
-    print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
-    for si,i in enumerate(l):
-        if si<args['n_print']:
-            print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
     if pt_order >= 2 and args['pt_type'] == 'lcc':
+
+        l,v = do_variational_microiteration_update(n_blocks, tucker_blocks, lattice_blocks, 0, j12)  
+        last_vectors = cp.deepcopy(v)
+        hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, 0, j12, v) 
+        S2 = v.T.dot(s2v)
+        l = v.T.dot(hv).diagonal()
+        print " %16.8f " %(l[0])
+
         print "DMBPTinfinity Calculation"
         n_roots = args['n_roots']
         pt_type = args['pt_type']
@@ -750,7 +795,13 @@ for it in range(0,maxiter):
         if n_body_order ==0:
             v_pt = PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
         else:
-            PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            print
+            print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
+            for i in range(0,n_roots):
+                e = l[i] + e2[i]
+                e0 = l[0] + e2[0]
+                print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
         print
         print " Compute State-specific PT2 corrections: "
        
@@ -760,7 +811,7 @@ for it in range(0,maxiter):
         print " Compute State-specific PT2 corrections: "
         n_roots = args['n_roots']
         pt_type = args['pt_type']
-        e2 = compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
+        #e2 = compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
         e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
         print
         print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
@@ -769,84 +820,30 @@ for it in range(0,maxiter):
             e0 = l[0] + e2[0]
             print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
         
-        do_bwpt = 0
-        e2_last = 0
-        if do_bwpt:
-            print
-            print " Compute State-specific BW-PT2 corrections: "
-            bw_mit = 100
-            l0 = cp.deepcopy(l)
-            l2 = cp.deepcopy(l)
-            print
-            print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
-            for bwit in range(0,bw_mit):
-                n_roots = args['n_roots']
-                pt_type = args['pt_type']
-                e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l2[0:n_roots], v[:,0:n_roots], j12, pt_type)
-                for si in range(0,n_roots):
-                    l2[si] = l0[si] + 2* ( e2[si] ) / n_blocks
-                for i in range(0,n_roots):
-                    e = l[i] + e2[i]
-                    e0 = l[0] + e2[0]
-                    print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
-                if abs(e2-e2_last) < 1e-10:
-                    break
-                else:
-                    e2_last = e2
+
+    # compute S2 for converged states    
+    print "Compute <S2> for coneverged states"
+    print
+    print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+    for si,i in enumerate(l):
+        if si<args['n_print']:
+            print "Olay"
+            print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
+
+
 
     energy_per_iter.append(l[ts]) 
     if it > 0:
         if abs(l[ts]-energy_per_iter[it-1]) < diis_thresh:
             break
 
+    if pt_order >= 2 and args['pt_type'] == 'lcc':
+        v = v_pt
+        last_vectors = cp.deepcopy(v)
 
-    brdms = {}   # block reduced density matrix
-    for bi in range(0,n_blocks):
-        Bi = lattice_blocks[bi]
-        brdms[bi] = np.zeros(( Bi.full_dim, Bi.full_dim )) 
 
-      
-    """"
-    changing v to v_pt
-    """
-    #if pt_order >= 2 and args['pt_type'] == 'lcc':
-    #  v = v_pt
-    print
-    print " Compute Block Reduced Density Matrices (BRDM):"
-    for tb1 in sorted(tucker_blocks):
-        Tb1 = tucker_blocks[tb1]
-        vb1 = cp.deepcopy(v[Tb1.start:Tb1.stop, ts])
-        vb1.shape = Tb1.block_dims
-        for tb2 in sorted(tucker_blocks):
-            Tb2 = tucker_blocks[tb2]
-            
-            if Tb1.id <= Tb2.id:
-                # How many blocks are different between left and right?
-                different = []
-                for bi in range(0,n_blocks):
-                    if Tb2.address[bi] != Tb1.address[bi]:
-                        different.append(bi)
-                
-                if len(different) == 0:
-                    vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
-                    vb2.shape = Tb2.block_dims
-                    for bi in range(0,n_blocks):
-                        brdm_tmp = form_1fdm(vb1,vb2,[bi])
-                        Bi = lattice_blocks[bi]
-                        u1 = Bi.v_ss(Tb1.address[bi])
-                        u2 = Bi.v_ss(Tb2.address[bi])
-                        brdms[bi] += u1.dot(brdm_tmp).dot(u2.T)
-                if len(different) == 1:
-                    vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
-                    vb2.shape = Tb2.block_dims
-                    bi = different[0]
-                    brdm_tmp = form_1fdm(vb1,vb2,[bi])
-                    Bi = lattice_blocks[bi]
-                    u1 = Bi.v_ss(Tb1.address[bi])
-                    u2 = Bi.v_ss(Tb2.address[bi])
-                    brdm_tmp = u1.dot(brdm_tmp).dot(u2.T)
-                    brdms[bi] += brdm_tmp + brdm_tmp.T 
 
+    brdms = form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12)
 
     if 0:
         print
