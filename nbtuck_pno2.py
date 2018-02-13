@@ -316,21 +316,37 @@ tb_0 = block3.Tucker_Block()
 for bi in range(0,n_blocks):
     tb_0.add_block(block_basis[(bi,"P")])
 
+dim_tot = 0
+dim_tot += tb_0.full_dim
+tb_0.update_label()
 tucker_blocks[0] = tb_0 
 
+for bi in range(0,n_blocks):
+    tb = cp.deepcopy(tucker_blocks[0])
+    tb.set_block(block_basis[(bi,"Q")])
+    tb.refresh_dims()
+    tb.update_label()
+    
+    tb.set_start(dim_tot)
+    dim_tot += tb.full_dim
+    tucker_blocks[tb.label] = tb
+    
+    print tb
+
+n_roots = args['n_roots']
 
 H,S2 = block3.build_tucker_blocked_H(tucker_blocks, j12) 
 l,v = np.linalg.eigh(H + S2*.01)
+v = v[:,0:n_roots]
 l = v.T.dot(H).dot(v).diagonal()
 S2 = v.T.dot(S2).dot(v)
+for si,i in enumerate(l):
+    print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
         
 nb_order = 0      
 tucker_blocks_pt = {}
 
-n_roots = args['n_roots']
 pns_thresh = args["pns_thresh"]
-
-dim_tot_X = 0
 
 e_curr = l[0]
 tucker_blocks_0 = cp.deepcopy(tucker_blocks)
@@ -340,827 +356,124 @@ for bi in range(n_blocks):
         tb.set_block(block_basis[(bi,"Q")])
         tb.set_block(block_basis[(bj,"Q")])
         
-        #tb.set_start(dim_tot_X)
-        #dim_tot_X += tb.full_dim
         
         tb.refresh_dims()
         tb.update_label()
         print " PT: ",tb
-        tucker_blocks_pt = {}
-        tucker_blocks_pt[tb.label] = tb
+        tucker_blocks_pt_curr = {}
+        tucker_blocks_pt_curr[tb.label] = tb
        
-        lpt,vpt = block3.form_pt2_v(tucker_blocks_0, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12)
-      
+        lpt,vpt = block3.form_pt2_v(tucker_blocks_0, tucker_blocks_pt_curr, l[0:n_roots], v[:,0:n_roots], j12)
+     
+        vpt = vpt[:,args["target_state"]]
+        print vpt.shape
+        print tb.block_dims
         vpt.shape = (tb.block_dims)
-        v_comp, U = tucker_decompose(vpt,pns_thresh,0)
+        v_comp, U, V = tucker_decompose(vpt,pns_thresh,0)
         
         tb.blocks[bi].set_vecs(tb.blocks[bi].vecs.dot(U[bi]))
         tb.blocks[bj].set_vecs(tb.blocks[bj].vecs.dot(U[bj]))
         tb.refresh_dims()
         tb.update_label()
+        
+        tb.set_start(dim_tot)
+        dim_tot += tb.full_dim
+        
         e_curr += lpt[0]
         tucker_blocks[tb.label] = tb
+   
+        tb = cp.deepcopy(tucker_blocks[0])
+        tb.set_block(block_basis[(bi,"Q")])
+        tb.set_block(block_basis[(bj,"Q")])
+        tb.blocks[bi].set_vecs(tb.blocks[bi].vecs.dot(V[bi]))
+        tb.blocks[bj].set_vecs(tb.blocks[bj].vecs.dot(V[bj]))
+        tb.blocks[bi].label = "R"
+        tb.blocks[bj].label = "R"
+        tb.refresh_dims()
+        tb.update_label()
+        tucker_blocks_pt[tb.label] = tb
+   
+        tb = cp.deepcopy(tucker_blocks[0])
+        tb.set_block(block_basis[(bi,"Q")])
+        tb.set_block(block_basis[(bj,"Q")])
+        tb.blocks[bi].set_vecs(tb.blocks[bi].vecs.dot(U[bi]))
+        tb.blocks[bj].set_vecs(tb.blocks[bj].vecs.dot(V[bj]))
+        tb.blocks[bi].label = "Q"
+        tb.blocks[bj].label = "R"
+        tb.refresh_dims()
+        tb.update_label()
+        tucker_blocks_pt[tb.label] = tb
+   
+        tb = cp.deepcopy(tucker_blocks[0])
+        tb.set_block(block_basis[(bi,"Q")])
+        tb.set_block(block_basis[(bj,"Q")])
+        tb.blocks[bi].set_vecs(tb.blocks[bi].vecs.dot(V[bi]))
+        tb.blocks[bj].set_vecs(tb.blocks[bj].vecs.dot(U[bj]))
+        tb.blocks[bi].label = "R"
+        tb.blocks[bj].label = "Q"
+        tb.refresh_dims()
+        tb.update_label()
+        tucker_blocks_pt[tb.label] = tb
 
 
-
+dim_tot = 0
+dim_tot_X = 0
 print " Final energy: %12.8f" %e_curr
 #e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
 for tbi in sorted(tucker_blocks):
     t = tucker_blocks[tbi]
     print " TB: ", t
-exit(-1)
+    dim_tot += t.full_dim
+for tbi in sorted(tucker_blocks_pt):
+    t = tucker_blocks_pt[tbi]
+    t.set_start(dim_tot_X)
+    print " TB: ", t
+    dim_tot_X += t.full_dim
 
-if n_body_order >= 1:
-    for bi in range(0,n_blocks):
-        
-        tb = cp.deepcopy(tb_0)
-        tb.label = (1,bi)
-        tb.set_start(dim_tot)
-        tb.set_block(block_basis[(bi,"Q")]) 
-
-        tucker_blocks[tb.label] = tb
-        
-        dim_tot += tb.full_dim
-
-
-print "\n NB0 Eigenstates:"
-for idx,ei in enumerate(l):
-    print" %12i %12.8f %8.4f"%(idx,ei,S2[idx,idx])
-
-exit(-1)
-
-if n_body_order >= 2:
-    for bi in range(0,n_blocks):
-        for bj in range(bi+1,n_blocks):
-    
-            print "\n Form basis for the following pair of blocks: ", bi, bj
-            
-            #
-            #   create a small tucker block object involving only Blocks bi and bj 
-            #   to create a small dimer hamiltonian for the full hilbert space on bi and bj
-            bbi = cp.deepcopy(block_basis[(bi,"P")])
-            bbj = cp.deepcopy(block_basis[(bj,"P")])
-            
-            bbi.append(block_basis[(bi,"Q")])
-            bbj.append(block_basis[(bj,"Q")])
-
-            bbi.label = "Q(%i|%i)"%(bi,bj)
-            bbj.label = "Q(%i|%i)"%(bi,bj)
-
-            tb_ij = block3.Tucker_Block()
-            tb_ij.add_block(bbi)
-            tb_ij.add_block(bbj)
-          
-
-            #
-            #   Build and diagonalize dimer Hamiltonian
-            H,S2 = block3.build_H(tb_ij, tb_ij, j12)
-    
-            e, v_curr = scipy.sparse.linalg.eigsh(H,1)
-                
-            s = v_curr.T.dot(S2).dot(v_curr)
-            print " Energy of GS: %12.8f %12.8f <S2>: "%(e[0],s[0,0])
-          
-           
-            #
-            #   Tucker decompose the ground state to get 
-            #   a new set of Q vectors for this dimer
-            v_curr = v_curr[:,0]
-            v_curr.shape = (tb_ij.block_dims)
-           
-            n_p_i = block_basis[(bi,"P")].n_vecs
-            n_p_j = block_basis[(bj,"P")].n_vecs
-
-            v_curr = v_curr[n_p_i::,n_p_j::]
-
-            pns_thresh = args["pns_thresh"]
-            v_comp, U = tucker_decompose(v_curr,pns_thresh,0)
-           
-            vi = tb_ij.blocks[0].vecs[:,n_p_i::].dot(U[0])
-            vj = tb_ij.blocks[1].vecs[:,n_p_j::].dot(U[1])
-
-            #test_1 = 0
-            #if test_1:
-            #    """ 
-            #    use this to check how much benefit we get from using 
-            #    pair specific states
-            #    """
-            #    nkeep_i = U[0].shape[1]
-            #    nkeep_j = U[1].shape[1]
-            #    vi = block_basis[(bi,"Q")].vecs[:,0:nkeep_i]
-            #    vj = block_basis[(bj,"Q")].vecs[:,0:nkeep_j]
-
-            #
-            #   Create a new Tucker_Block instance with these vectors and 
-            #   add it to the active list
-            tb = block3.Tucker_Block()
-            tb = cp.deepcopy(tb_0)
-            tb.set_start(dim_tot)
-             
-            bbi = cp.deepcopy(block_basis[(bi,"Q")])
-            bbj = cp.deepcopy(block_basis[(bj,"Q")])
-            bbi.label = "Q(%i|%i)"%(bi,bj)
-            bbj.label = "Q(%i|%i)"%(bi,bj)
-
-            bbi.set_vecs(vi)
-            bbj.set_vecs(vj)
-            
-            tb.set_block(bbi)
-            tb.set_block(bbj)
-            
-            tb.refresh_dims()
-            tb.update_label()
-           
-            #if tb.full_dim == 0:
-                #for b in tb.blocks:
-                    #b.set_vecs(np.zeros((b.vecs.shape[0],0)))
-                    #tb.refresh_dims()
-                    #tb.update_label()
-
-            tucker_blocks[tb.label] = tb
-            
-            dim_tot += tb.full_dim
-            
-if n_body_order >= 3:
-    for bi in range(0,n_blocks):
-        for bj in range(bi+1,n_blocks):
-            for bk in range(bj+1,n_blocks):
-    
-                print "\n\n Form basis for the following tuple of blocks: ", bi, bj, bk
-                
-                #
-                #   create a small tucker block object involving only Blocks bi and bj and bk 
-                #   to create a small dimer hamiltonian 
-                #   
-                #   Unlike for the dimer case, we want to restrict the space in which we represent
-                #   the trimer hamiltonian.  We take the span of all the constituent dimer q spaces
-
-                # Start by collecting all the P spaces for bi bj bk
-                bbi = cp.deepcopy(tb_0.blocks[bi])
-                bbj = cp.deepcopy(tb_0.blocks[bj])
-                bbk = cp.deepcopy(tb_0.blocks[bk])
-              
-                # From the appropriate initial Q spaces
-                tb_bij = tucker_blocks[(2,bi,bj)]
-                tb_bik = tucker_blocks[(2,bi,bk)]
-                tb_bjk = tucker_blocks[(2,bj,bk)]
-               
-                vi_1 = cp.deepcopy(tb_bij.blocks[bi].vecs)
-                vi_2 = cp.deepcopy(tb_bik.blocks[bi].vecs)
-                
-                vj_1 = cp.deepcopy(tb_bij.blocks[bj].vecs)
-                vj_2 = cp.deepcopy(tb_bjk.blocks[bj].vecs)
-                
-                vk_1 = cp.deepcopy(tb_bik.blocks[bk].vecs)
-                vk_2 = cp.deepcopy(tb_bjk.blocks[bk].vecs)
-             
-                print tb_bij
-                print tb_bik
-                print tb_bjk
-                
-#                Oi = vi_1.T.dot(vi_2)
-#                Oj = vj_1.T.dot(vj_2)
-#                Ok = vk_1.T.dot(vk_2)
-#                if min(Oi.shape) > 0:
-#                    U,s,V = np.linalg.svd(Oi)
-#                    for si in s:
-#                        print "   %12.8f " %si
-#                if min(Oj.shape) > 0:
-#                    U,s,V = np.linalg.svd(Oj,full_matrices=True)
-#                    V = V.T
-#                    keep = []
-#                    for sj in range(len(s)):
-#                        if abs(s[sj]-1) > 1e-8:
-#                            keep.append(sj)
-#                            print "   %12.8f : New" %s[sj]
-#                        else:
-#                            print "   %12.8f : Same" %s[sj]
-#                    #U = U[:,keep]
-#                    V = V[:,keep]
-#                    #vj_1 = vj_1.dot(U)
-#                    #vj_2 = vj_2.dot(V)
-#                if min(Ok.shape) > 0:
-#                    U,s,V = np.linalg.svd(Ok)
-#                    for sk in s:
-#                        print "   %12.8f " %sk
-                
-                vi = np.hstack((vi_1,vi_2))
-                vj = np.hstack((vj_1,vj_2))
-                vk = np.hstack((vk_1,vk_2))
-              
-                if min(vi.shape) > 0:
-                    U,s,V = np.linalg.svd(vi,full_matrices=True)
-                    keep = []
-                    for si in range(len(s)):
-                        if abs(s[si])> 1e-12:
-                            keep.append(si)
-                    vi = U[:,keep]
-                
-                if min(vj.shape) > 0:
-                    U,s,V = np.linalg.svd(vj,full_matrices=True)
-                    keep = []
-                    for si in range(len(s)):
-                        if abs(s[si])> 1e-12:
-                            keep.append(si)
-                    vj = U[:,keep]
-
-                if min(vk.shape) > 0:
-                    U,s,V = np.linalg.svd(vk,full_matrices=True)
-                    keep = []
-                    for si in range(len(s)):
-                        if abs(s[si])> 1e-12:
-                            keep.append(si)
-                    vk = U[:,keep]
-
-
-                bbi_q = cp.deepcopy(tb_bij.blocks[bi])  # ij:i
-                bbj_q = cp.deepcopy(tb_bij.blocks[bj])  # ij:j
-                bbk_q = cp.deepcopy(tb_bik.blocks[bk])  # ik:k
-                
-                bbi_q.set_vecs(vi) 
-                bbj_q.set_vecs(vj) 
-                bbk_q.set_vecs(vk) 
-              
-                # make sure that new eigenvectors are orthogonal to p spaces
-
-                #print bbi_q.vecs.T.dot(bbi.vecs)
-                #print bbj_q.vecs.T.dot(bbj.vecs)
-                #print bbk_q.vecs.T.dot(bbk.vecs)
-                # Combine P and Q to create trimer Hamiltonian
-                
-                # From the appropriate initial Q spaces
-                #tb_bi = tucker_blocks[(1,bi)]
-                #tb_bj = tucker_blocks[(1,bj)]
-                #tb_bk = tucker_blocks[(1,bk)]
-                
-                #bbi_q = cp.deepcopy(tb_bi.blocks[bi])  # ij:i
-                #bbj_q = cp.deepcopy(tb_bj.blocks[bj])  # ij:j
-                #bbk_q = cp.deepcopy(tb_bk.blocks[bk])  # ik:k
-                
-                
-                bbi.append(bbi_q)
-                bbj.append(bbj_q)
-                bbk.append(bbk_q)
-                
-                bbi.label = "Q(%i|%i|%i)"%(bi,bj,bk)
-                bbj.label = "Q(%i|%i|%i)"%(bi,bj,bk)
-                bbk.label = "Q(%i|%i|%i)"%(bi,bj,bk)
-    
-                tb_curr = block3.Tucker_Block()
-                tb_curr.add_block(bbi)
-                tb_curr.add_block(bbj)
-                tb_curr.add_block(bbk)
-                
-                #print "Nick:",(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs)
-                if min(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs) == 0:
-                    print " No trimer term needed"
-                    # create a zero dimensional Tucker_Block as a place holder for the 
-                    # dimension of the space to grow with iterations.
-                    tb = block3.Tucker_Block()
-                    tb = cp.deepcopy(tb_0)
-                    tb.set_start(dim_tot)
-                
-                    tb.blocks[bi].label = bbi.label
-                    tb.blocks[bj].label = bbj.label
-                    tb.blocks[bk].label = bbk.label
-    
-                    tb.blocks[bi].clear()
-                    tb.blocks[bj].clear()
-                    tb.blocks[bk].clear()
-                    
-                    tb.refresh_dims()
-                    tb.update_label()
-                    
-                    tucker_blocks[tb.label] = tb
-                    continue
-
-    
-                #
-                #   Build and diagonalize dimer Hamiltonian
-                print " Current subsystem tb", tb_curr
-                print " Build local Hamiltonian"
-                H,S2 = block3.build_H(tb_curr, tb_curr, j12)
-        
-                print " Diagonalize local H" 
-                e = np.array([])
-                v_curr = np.array([])
-                if H.shape[0]> 3000:
-                    e, v_curr = scipy.sparse.linalg.eigsh(H,1)
-                else:
-                    e, v_curr = np.linalg.eigh(H)
-                
-                s = v_curr.T.dot(S2).dot(v_curr)
-                print " Energy of GS: %12.8f %12.8f <S2>: "%(e[0],s[0,0])
-                for si,i in enumerate(e):
-                    if si<args['n_print']:
-                        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-e[0])*convert,abs(s[si,si]))
-               
-                #
-                #   Tucker decompose the ground state to get 
-                #   a new set of Q vectors for this dimer
-                v_curr = v_curr[:,0]
-                v_curr.shape = (tb_curr.block_dims)
-            
-                n_p_i = block_basis[(bi,"P")].n_vecs
-                n_p_j = block_basis[(bj,"P")].n_vecs
-                n_p_k = block_basis[(bk,"P")].n_vecs
-    
-                #v_curr = v_curr[n_p_i::,n_p_j::,n_p_k::]
-                #print v_curr
-                    
-                proj = [n_p_i,n_p_j,n_p_k]
-   
-        
-                pns_thresh = args["pns_thresh"]
-                v_comp, U = tucker_decompose_proj(v_curr,pns_thresh,0,proj)
-               
-                vi = tb_curr.blocks[0].vecs.dot(U[0])
-                vj = tb_curr.blocks[1].vecs.dot(U[1])
-                vk = tb_curr.blocks[2].vecs.dot(U[2])
-   
-                #vi_p = tb_curr.blocks[0].vecs[:,0:n_p_i]
-                #vj_p = tb_curr.blocks[1].vecs[:,0:n_p_j]
-                #vk_p = tb_curr.blocks[2].vecs[:,0:n_p_k]
-
-                #vi = vi - vi_p.dot(vi_p.T.dot(vi))
-                #vj = vj - vj_p.dot(vj_p.T.dot(vj))
-                #vk = vk - vk_p.dot(vk_p.T.dot(vk))
-
-                #vi = scipy.linalg.orth(vi)
-                #vj = scipy.linalg.orth(vj)
-                #vk = scipy.linalg.orth(vk)
-
-                #
-                #   Create a new Tucker_Block instance with these vectors and 
-                #   add it to the active list
-                tb = block3.Tucker_Block()
-                tb = cp.deepcopy(tb_0)
-                tb.set_start(dim_tot)
-                 
-                bbi = cp.deepcopy(block_basis[(bi,"Q")])
-                bbj = cp.deepcopy(block_basis[(bj,"Q")])
-                bbk = cp.deepcopy(block_basis[(bk,"Q")])
-
-                bbi.label = "Q(%i|%i|%i)"%(bi,bj,bk)
-                bbj.label = "Q(%i|%i|%i)"%(bi,bj,bk)
-                bbk.label = "Q(%i|%i|%i)"%(bi,bj,bk)
-    
-                bbi.set_vecs(vi)
-                bbj.set_vecs(vj)
-                bbk.set_vecs(vk)
-                
-                tb.set_block(bbi)
-                tb.set_block(bbj)
-                tb.set_block(bbk)
-                
-                tb.refresh_dims()
-                tb.update_label()
-
-                if tb.full_dim == 0:
-                    tb.blocks[bi].clear()
-                    tb.blocks[bj].clear()
-                    tb.blocks[bk].clear()
-                    tb.refresh_dims()
-
-                tucker_blocks[tb.label] = tb
-                
-                dim_tot += tb.full_dim
-                
-
-if n_body_order >= 4:
-    for bi in range(0,n_blocks):
-        for bj in range(bi+1,n_blocks):
-            for bk in range(bj+1,n_blocks):
-                for bl in range(bk+1,n_blocks):
-    
-                    print "\n Form basis for the following tuple of blocks: ", bi, bj, bk, bl
-                    
-                    #
-                    #   create a small tucker block object involving only Blocks bi and bj and bk 
-                    #   to create a small dimer hamiltonian 
-                    #   
-                    #   Unlike for the dimer case, we want to restrict the space in which we represent
-                    #   the trimer hamiltonian.  We take the span of all the constituent dimer q spaces
-                    
-                    # Start by collecting all the P spaces for bi bj bk
-                    
-                    bbi = cp.deepcopy(tb_0.blocks[bi])
-                    bbj = cp.deepcopy(tb_0.blocks[bj])
-                    bbk = cp.deepcopy(tb_0.blocks[bk])
-                    bbl = cp.deepcopy(tb_0.blocks[bl])
-                    
-                    # From the appropriate initial Q spaces
-                    tb_bijk = tucker_blocks[(3,bi,bj,bk)]
-                    tb_bijl = tucker_blocks[(3,bi,bj,bl)]
-                    tb_bikl = tucker_blocks[(3,bi,bk,bl)]
-                    tb_bjkl = tucker_blocks[(3,bj,bk,bl)]
-                  
-                    vi =   cp.deepcopy(tb_bijk.blocks[bi].vecs)
-                    vi = np.hstack((vi,tb_bijl.blocks[bi].vecs))
-                    vi = np.hstack((vi,tb_bikl.blocks[bi].vecs))
-
-                    vj =   cp.deepcopy(tb_bijk.blocks[bj].vecs)
-                    vj = np.hstack((vj,tb_bijl.blocks[bj].vecs))
-                    vj = np.hstack((vj,tb_bjkl.blocks[bj].vecs))
-
-                    vk =   cp.deepcopy(tb_bijk.blocks[bk].vecs)
-                    vk = np.hstack((vk,tb_bikl.blocks[bk].vecs))
-                    vk = np.hstack((vk,tb_bjkl.blocks[bk].vecs))
-
-                    vl =   cp.deepcopy(tb_bijl.blocks[bl].vecs)
-                    vl = np.hstack((vl,tb_bikl.blocks[bl].vecs))
-                    vl = np.hstack((vl,tb_bjkl.blocks[bl].vecs))
-                
-                    if min(vi.shape) > 0:
-                        U,s,V = np.linalg.svd(vi,full_matrices=True)
-                        keep = []
-                        for si in range(len(s)):
-                            if abs(s[si])> 1e-12:
-                                keep.append(si)
-                        vi = U[:,keep]
-                    
-                    if min(vj.shape) > 0:
-                        U,s,V = np.linalg.svd(vj,full_matrices=True)
-                        keep = []
-                        for si in range(len(s)):
-                            if abs(s[si])> 1e-12:
-                                keep.append(si)
-                        vj = U[:,keep]
-                    
-                    if min(vk.shape) > 0:
-                        U,s,V = np.linalg.svd(vk,full_matrices=True)
-                        keep = []
-                        for si in range(len(s)):
-                            if abs(s[si])> 1e-12:
-                                keep.append(si)
-                        vk = U[:,keep]
-                    
-                    if min(vl.shape) > 0:
-                        U,s,V = np.linalg.svd(vl,full_matrices=True)
-                        keep = []
-                        for si in range(len(s)):
-                            if abs(s[si])> 1e-12:
-                                keep.append(si)
-                        vl = U[:,keep]
-
-
-                    bbi_q = cp.deepcopy(tb_bijk.blocks[bi])  # ijk:i
-                    bbj_q = cp.deepcopy(tb_bijk.blocks[bj])  # ijk:j
-                    bbk_q = cp.deepcopy(tb_bijk.blocks[bk])  # ijk:k
-                    bbl_q = cp.deepcopy(tb_bijl.blocks[bl])  # ijl:l
-                
-                    bbi_q.set_vecs(vi) 
-                    bbj_q.set_vecs(vj) 
-                    bbk_q.set_vecs(vk) 
-                    bbl_q.set_vecs(vl) 
-
-                    
-#                    bbi_q.append(tb_bijl.blocks[bi])         # ijl:i
-#                    bbi_q.append(tb_bikl.blocks[bi])         # ikl:i
-#                    bbj_q.append(tb_bijl.blocks[bj])         # ijl:j
-#                    bbj_q.append(tb_bjkl.blocks[bj])         # jkl:j
-#                    bbk_q.append(tb_bikl.blocks[bk])         # ikl:k
-#                    bbk_q.append(tb_bjkl.blocks[bk])         # jkl:k
-#                    bbl_q.append(tb_bikl.blocks[bl])         # ikl:l
-#                    bbl_q.append(tb_bjkl.blocks[bl])         # jkl:l
-#                    
-#                    bbi_q.orthogonalize()
-#                    bbj_q.orthogonalize()
-#                    bbk_q.orthogonalize()
-#                    bbl_q.orthogonalize()
-                    
-                    # Combine P and Q to create trimer Hamiltonian
-                    bbi.append(bbi_q)
-                    bbj.append(bbj_q)
-                    bbk.append(bbk_q)
-                    bbl.append(bbl_q)
-                   
-                    bbi.label = "Q(%i|%i|%i|%i)"%(bi,bj,bk,bl)
-                    bbj.label = "Q(%i|%i|%i|%i)"%(bi,bj,bk,bl)
-                    bbk.label = "Q(%i|%i|%i|%i)"%(bi,bj,bk,bl)
-                    bbl.label = "Q(%i|%i|%i|%i)"%(bi,bj,bk,bl)
-                    
-                    tb_curr = block3.Tucker_Block()
-                    tb_curr.add_block(bbi)
-                    tb_curr.add_block(bbj)
-                    tb_curr.add_block(bbk)
-                    tb_curr.add_block(bbl)
-                    print tb_bijk 
-                    print tb_bijl 
-                    print tb_bikl 
-                    print tb_bjkl 
-                    print tb_curr
-                    if min(bbi_q.n_vecs, bbj_q.n_vecs,bbk_q.n_vecs,bbl_q.n_vecs) == 0:
-                        print " No term needed"
-                        # create a zero dimensional Tucker_Block as a place holder for the 
-                        # dimension of the space to grow with iterations.
-                        tb = block3.Tucker_Block()
-                        tb = cp.deepcopy(tb_0)
-                        tb.set_start(dim_tot)
-                        
-                        tb.blocks[bi].label = bbi.label
-                        tb.blocks[bj].label = bbj.label
-                        tb.blocks[bk].label = bbk.label
-                        tb.blocks[bl].label = bbl.label
-                        
-                        tb.blocks[bi].clear()
-                        tb.blocks[bj].clear()
-                        tb.blocks[bk].clear()
-                        tb.blocks[bl].clear()
-                    
-                        
-                        tb.refresh_dims()
-                        tb.update_label()
-                        
-                        tucker_blocks[tb.label] = tb
-                        continue
-                    
-                    #print bbi, bbi.lb
-                    #print bbj, bbj.lb
-                    #print bbk, bbk.lb
-                    #print bbl, bbl.lb
-                    
-                    #
-                    #   Build and diagonalize dimer Hamiltonian
-                    print " Build local Hamiltonian"
-                    H,S2 = block3.build_H(tb_curr, tb_curr, j12)
-                    
-                    print " Diagonalize local H" 
-                    e = np.array([])
-                    v_curr = np.array([])
-                    if H.shape[0]> 3000:
-                        e, v_curr = scipy.sparse.linalg.eigsh(H,1)
-                    else:
-                        e, v_curr = np.linalg.eigh(H)
-                   
-                    s = v_curr.T.dot(S2).dot(v_curr)
-                    print " Energy of GS: %12.8f %12.8f <S2>: "%(e[0],s[0,0])
-                    
-                   
-                    #
-                    #   Tucker decompose the ground state to get 
-                    #   a new set of Q vectors for this dimer
-                    v_curr = v_curr[:,0]
-                    v_curr.shape = (tb_curr.block_dims)
-                    
-                    n_p_i = block_basis[(bi,"P")].n_vecs
-                    n_p_j = block_basis[(bj,"P")].n_vecs
-                    n_p_k = block_basis[(bk,"P")].n_vecs
-                    n_p_l = block_basis[(bl,"P")].n_vecs
-                    
-                    proj = [n_p_i,n_p_j,n_p_k,n_p_l]
-
-                    pns_thresh = args["pns_thresh"]
-                    v_comp, U = tucker_decompose_proj(v_curr,pns_thresh,0,proj)
-                 
-
-                    vi = tb_curr.blocks[0].vecs.dot(U[0])
-                    vj = tb_curr.blocks[1].vecs.dot(U[1])
-                    vk = tb_curr.blocks[2].vecs.dot(U[2])
-                    vl = tb_curr.blocks[3].vecs.dot(U[3])
-  
-                    
-                    vi = scipy.linalg.orth(vi)
-                    vj = scipy.linalg.orth(vj)
-                    vk = scipy.linalg.orth(vk)
-                    vl = scipy.linalg.orth(vl)
-
-                    
-                    #
-                    #   Create a new Tucker_Block instance with these vectors and 
-                    #   add it to the active list
-                    tb = block3.Tucker_Block()
-                    tb = cp.deepcopy(tb_0)
-                    tb.set_start(dim_tot)
-                     
-                    bbi = cp.deepcopy(block_basis[(bi,"Q")])
-                    bbj = cp.deepcopy(block_basis[(bj,"Q")])
-                    bbk = cp.deepcopy(block_basis[(bk,"Q")])
-                    bbl = cp.deepcopy(block_basis[(bl,"Q")])
-                        
-                    bbi.label = "Q(%i|%i|%i|%i)"%(bi,bj,bk,bl)
-                    bbj.label = "Q(%i|%i|%i|%i)"%(bi,bj,bk,bl)
-                    bbk.label = "Q(%i|%i|%i|%i)"%(bi,bj,bk,bl)
-                    bbl.label = "Q(%i|%i|%i|%i)"%(bi,bj,bk,bl)
-                    
-                    
-                    bbi.set_vecs(vi)
-                    bbj.set_vecs(vj)
-                    bbk.set_vecs(vk)
-                    bbl.set_vecs(vl)
-                    
-                    tb.set_block(bbi)
-                    tb.set_block(bbj)
-                    tb.set_block(bbk)
-                    tb.set_block(bbl)
-                    
-                    tb.refresh_dims()
-                    tb.update_label()
-                    
-                    tucker_blocks[tb.label] = tb
-                    
-                    dim_tot += tb.full_dim
-            
-
-
-for tb in sorted(tucker_blocks):
-    t = tucker_blocks[tb]
-    if t.full_dim == 0:
-        continue
-    print "%20s ::"%str(t.label), t
-print " Full dimension of all Tucker Blocks: ", dim_tot
-    #print "%20s ::"%str(t.label), t, " Range= %8i:%-8i" %( t.start, t.stop)
-
-
-H  = np.zeros([dim_tot,dim_tot])
-S2 = np.zeros([dim_tot,dim_tot])
-#O  = np.zeros([dim_tot,dim_tot])    # overlap
-
-#for i in sorted(tucker_blocks):
-#    for j in sorted(tucker_blocks):
-#        tb_i = tucker_blocks[i]
-#        tb_j = tucker_blocks[j]
-#
-#        o = block3.tucker_block_overlap(tb_i,tb_j)
-#
+print " Full dimension of all VAR Tucker Blocks: ", dim_tot
+print " Full dimension of all PT  Tucker Blocks: ", dim_tot_X
 
 H,S2 = block3.build_tucker_blocked_H(tucker_blocks, j12) 
 
 print(" Diagonalize Full H")
 l,v = scipy.sparse.linalg.eigsh(H,args["n_roots"])
 
-
 S2 = v.T.dot(S2).dot(v)
 print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
 for si,i in enumerate(l):
-    if si<args['n_print']:
-        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
-    
-print " Check for further compression:"
-ts = args['target_state']
-for tbi in sorted(tucker_blocks):
+    print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
+    #if si<args['n_print']:
+    #    print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
-    t = tucker_blocks[tbi]
-    print " TB: ", t
-    vi = v[t.start:t.stop,ts]
+lpt,vpt = block3.form_pt2_v(tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12)
 
-    #print vi.shape, t.block_dims
-
-    vi.shape = t.block_dims
-    v_comp, U = tucker_decompose(vi,0,0)
+print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+for si,i in enumerate(lpt):
+    e = i+l[si]
+    e0 = lpt[0]+l[0]
+    print " %5i =  %16.8f  %16.8f  %12.8f" %(si,(e)*convert,(e-e0)*convert,abs(S2[si,si]))
 
 
-exit(-1)
+for t_0 in sorted(tucker_blocks):
+    tb_0 = tucker_blocks[t_0]
+    if tb_0.label[0] == 2:
 
-for pno_it in range(1):
-    print
-    print "   Compute Block Reduced Density Matrices (BRDM) FULL!:"
-    
-
-    dim_tot_list = []
-    config_basis_dim = 1
-    sum_1 = 0
-    ts = args['target_state']
-    
-    form_all_brdms(tucker_blocks,v[:,ts])
-    
-    for bi in range(0,n_blocks):
-         
-        bbi = cp.deepcopy(block_basis[(bi,"P")])
-        dim_tot_list.append(bbi.lb.full_dim)
-        config_basis_dim *= bbi.lb.full_dim
-    
-    vec_curr = np.zeros(dim_tot_list)
-    for tb1 in sorted(tucker_blocks):
-        Tb1 = tucker_blocks[tb1]
-        if Tb1.full_dim == 0:
-            continue
-        vb1 = cp.deepcopy(v[Tb1.start:Tb1.stop, ts])
-        sum_1 += vb1.T.dot(vb1)
-        vb1.shape = Tb1.block_dims
-
-        vec = []
-        for bi in range(0,n_blocks):
-            vec.append(Tb1.blocks[bi].vecs)
-
-        vec_curr += transform_tensor(vb1,vec)
-
-    
-    
-    dim_tot = tb_0.full_dim
-
-    if n_body_order >= 1:
-        for bi in range(0,n_blocks):
-            dim_tot += tucker_blocks[(1,bi)].full_dim
-
-    if n_body_order >= 2:
-        for bi in range(0,n_blocks):
+        for bi in range(n_blocks):
             for bj in range(bi+1,n_blocks):
-                print "\n Form RDM for the following pair of blocks: ", bi, bj
-             
-                tb = cp.deepcopy(tucker_blocks[(2,bi,bj)])
-                
-                tb.set_start(dim_tot)
-                
-                ts = args['target_state']
-                #
-                #   create a small tucker block object involving only Blocks bi and bj 
-                #   to create a small dimer hamiltonian for the full hilbert space on bi and bj
-                
-                bbi = cp.deepcopy(block_basis[(bi,"P")])
-                bbj = cp.deepcopy(block_basis[(bj,"P")])
-                
-                bbi.append(block_basis[(bi,"Q")])
-                bbj.append(block_basis[(bj,"Q")])
-            
-                vq_i = bbi.vecs * 1.0
-                vq_j = bbj.vecs * 1.0
-            
-                contract_list = []
-                for bk in range(n_blocks):
-                    if bk != bi and bk != bj:
-                        contract_list.append(bk)
-                #print vec_curr.shape
-                #print contract_list
-                contract_list = range(n_blocks-2)
-                vij = np.tensordot(vec_curr,vq_i, axes=(bi,0))
-                vij = np.tensordot(vij,vq_j, axes=(bj-1,0))
-                Dij = np.tensordot(vij,vij, axes=(contract_list,contract_list))
-               
-                n_p_i = block_basis[(bi,"P")].n_vecs
-                n_p_j = block_basis[(bj,"P")].n_vecs
-              
-                #proj = [0]*n_blocks
-                #proj[n_blocks-2] = n_p_i
-                #proj[n_blocks-1] = n_p_j
-               
-                proj = [n_p_i,n_p_j,n_p_i,n_p_j]
-                #print proj
-                #print vij.shape
-                v_comp, U = tucker_decompose_proj(Dij,pns_thresh,0,proj)
-               
-            
-                #vq_i = vq_i.dot(U[n_blocks-2])
-                #vq_j = vq_j.dot(U[n_blocks-1])
-                vq_i = vq_i.dot(U[0])
-                vq_j = vq_j.dot(U[1])
+                if tb_0.blocks[bi].label == "P" and tb_0.blocks[bj].label == "P": 
 
-                
-                bbi = cp.deepcopy(block_basis[(bi,"Q")])
-                bbj = cp.deepcopy(block_basis[(bj,"Q")])
-                bbi.label = "Q(%i|%i)"%(bi,bj)
-                bbj.label = "Q(%i|%i)"%(bi,bj)
-                
-                bbi.set_vecs(vq_i)
-                bbj.set_vecs(vq_j)
-                
-                tb.set_block(bbi)
-                tb.set_block(bbj)
-                
-                tb.refresh_dims()
-                
-                #tb.update_label()
-               
-                if tb.full_dim == 0:
-                    for b in tb.blocks:
-                        #b.vecs = np.zeros((b.vecs.shape[0],0))
-                        b.clear()
-                        tb.refresh_dims()
-                        #tb.update_label()
-                
-                tucker_blocks[tb.label] = tb
-             
-                print tb
-                #print tb.blocks[bi].vecs.shape
-                #print tb.blocks[bj].vecs.shape
-                #print tb.full_dim, tb.block_dims
-                dim_tot += tb.full_dim
-
-
-	for tb in sorted(tucker_blocks):
-	    t = tucker_blocks[tb]
-	    if t.full_dim == 0:
-	        continue
-	    print "%20s ::"%str(t.label), "%6i"%t.start, t
-	print " Full dimension of all Tucker Blocks: ", dim_tot
-	    #print "%20s ::"%str(t.label), t, " Range= %8i:%-8i" %( t.start, t.stop)
-	
-	
-	H  = np.zeros([dim_tot,dim_tot])
-	S2 = np.zeros([dim_tot,dim_tot])
-	H,S2 = block3.build_tucker_blocked_H(tucker_blocks, j12) 
-	
-	print(" Diagonalize Full H")
-	l,v = scipy.sparse.linalg.eigsh(H,args["n_roots"])
-	
-	
-	S2 = v.T.dot(S2).dot(v)
-	print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
-	for si,i in enumerate(l):
-	    if si<args['n_print']:
-	        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
-
-                
-
+                    tb = cp.deepcopy(tb_0)
+                    tb.set_block(block_basis[(bi,"Q")])
+                    tb.set_block(block_basis[(bj,"Q")])
+                    tb.set_start(dim_tot_X)
+                    
+                    tb.refresh_dims()
+                    tb.update_label()
+                    print " PT: ",tb
+                    tucker_blocks_pt_curr = {}
+                    tucker_blocks_pt_curr[tb.label] = tb
                   
-
+                    lpt,vpt = block3.form_pt2_v(tucker_blocks, tucker_blocks_pt_curr, l[0:1], v[:,0:1], j12)
+                    
+                    #vpt.shape = (tb.block_dims)
+                    #v_comp, U, V = tucker_decompose(vpt,pns_thresh,0)

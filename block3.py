@@ -233,7 +233,10 @@ class Tucker_Block:
         for bi in range(self.n_blocks):
             if self.blocks[bi].label[0] == "Q":
                 n_active += 1
-                active.append(bi)
+                active.append((bi,"Q"))
+            elif self.blocks[bi].label[0] == "R":
+                n_active += 1
+                active.append((bi,"R"))
         active.insert(0, n_active)
         self.label = tuple(active)
 
@@ -247,10 +250,12 @@ class Tucker_Block:
         for b in self.blocks:
             out += "%4i"%b.n_vecs
         out += " :: "+ "%-6i"%self.full_dim
-        for a in self.address:
-            if a[0] == "P":
-                continue
-            out += "%-10s "%str(a)
+        out += "%6i:%-8i"%(self.start,self.stop)
+        out += str(self.label)
+        #for a in self.address:
+        #    if a[0] == "P":
+        #        continue
+        #    out += "%-10s "%str(a)
         return out
 
 
@@ -367,7 +372,7 @@ def build_H(tb_l, tb_r,j12):
                 if (bi != bj):
                     tens_inds.extend([bj])
                     tens_inds.extend([bj+n_blocks])
-                    assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
+                    #assert(tb_l.block_dims[bj] == tb_r.block_dims[bj] )
                     h1 = np.tensordot(h1,np.eye(tb_l.block_dims[bj]),axes=0)
                     s1 = np.tensordot(s1,np.eye(tb_l.block_dims[bj]),axes=0)
 
@@ -760,6 +765,8 @@ def build_tucker_blocked_H(tucker_blocks, j12):
                 #print t_l, t_r, tb_l, tb_r
                 #print 
                 h,s2 = build_H(tb_l, tb_r, j12)
+                #if tb_l.label == tb_r.label:
+                #    print "a:", h
                 #o = build_overlap(tb_l, tb_r)
                 H[tb_l.start:tb_l.stop, tb_r.start:tb_r.stop] = h 
                 H[tb_r.start:tb_r.stop, tb_l.start:tb_l.stop] = h.T
@@ -822,6 +829,8 @@ def form_pt2_v(tucker_blocks, tucker_blocks_pt, l, v0, j12):
     do_2b_diag = 0
     for t_l in sorted(tucker_blocks_pt):
         tb_l = tucker_blocks_pt[t_l]
+        if tb_l.full_dim == 0:
+            continue
         D_X[tb_l.start:tb_l.stop] = build_H_diag(tb_l, tb_l, j12, do_2b_diag)
         
         #print D_X[tb_l.start:tb_l.stop]
