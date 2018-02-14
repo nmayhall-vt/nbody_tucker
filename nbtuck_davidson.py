@@ -12,63 +12,9 @@ import scipy.sparse.linalg
 
 from hdvv import *
 from block import *
-from davidson import *
+from micro_iter_solvers import *
 from pt import *
 
-def do_variational_microiteration_update(nblocks, tucker_blocks, lattice_blocks, n_order, j12):
-
-    """
-    varialtionally solve the blocks and output E and v
-
-    """   
-        
-    # 
-    #   Loop over davidson micro-iterations
-    print 
-    print " Solve for supersystem eigenvalues: Dimension = ", dim_tot
-    dav = Davidson(dim_tot, args['n_roots'])
-    dav.thresh = dav_thresh 
-    dav.max_vecs = args['dav_max_ss']
-    s2v = np.array([])
-    if it == 0:
-        if args['dav_guess'] == 'rand':
-            dav.form_rand_guess()
-        else:
-            dav.form_p_guess()
-    else:
-        dav.vec_curr = last_vectors 
-    dav.max_iter = args['dav_max_iter']
-
-    for dit in range(0,dav.max_iter):
-        #dav.form_sigma()
-       
-        if args['direct'] == 0:
-            dav.sig_curr = H.dot(dav.vec_curr)
-            hv = H.dot(dav.vec_curr)
-            s2v = S2.dot(dav.vec_curr)
-        else:
-            hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_order, j12, dav.vec_curr) 
-            dav.sig_curr = hv
-    
-        if args['dav_precond']:
-            hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_order, j12, 0) 
-            dav.set_preconditioner(hv_diag)
-        #dav.set_preconditioner(H.diagonal())
-        
-        dav.update()
-        dav.print_iteration()
-        if dav.converged():
-            break
-    if dav.converged():
-        print " Davidson Converged"
-    else:
-        print " Davidson Not Converged"
-    print 
-        
-    l = dav.eigenvalues()
-    v = dav.eigenvectors()
-
-    return l,v
 
 def form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12):
     brdms = {}   # block reduced density matrix
@@ -645,9 +591,9 @@ print " Configurations defining the variational space"
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
 print
-print " Configurations defining the perturbational space"
-for tb in sorted(tucker_blocks_pt):
-    print tucker_blocks_pt[tb], " Range= %8i:%-8i" %( tucker_blocks_pt[tb].start, tucker_blocks_pt[tb].stop),tb 
+#print " Configurations defining the perturbational space"
+#for tb in sorted(tucker_blocks_pt):
+#    print tucker_blocks_pt[tb], " Range= %8i:%-8i" %( tucker_blocks_pt[tb].start, tucker_blocks_pt[tb].stop),tb 
 
 #print 
 #print " Configurations defining the perturbative space"
@@ -664,6 +610,7 @@ for tb in sorted(tucker_blocks_pt):
 energy_per_iter = []
 maxiter = args['max_iter'] 
 last_vectors = np.array([])  # used to detect root flipping
+last_vectors_0 = np.array([])  # used to detect root flipping
 
 cepa_last_vectors = np.array([])  # used to detect root flipping
 cepa_last_values = 0.0
@@ -748,7 +695,7 @@ for it in range(0,maxiter):
            
 
     if pt_order == 0:
-        l,v = do_variational_microiteration_update(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12)  
+        l,v = do_variational_microiteration_update(args,n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12,dav_thresh,it,last_vectors)  
         last_vectors = cp.deepcopy(v)
         hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, v) 
         S2 = v.T.dot(s2v)
@@ -779,14 +726,25 @@ for it in range(0,maxiter):
 
     if pt_order >= 2 and args['pt_type'] == 'lcc':
 
-        l,v = do_variational_microiteration_update(n_blocks, tucker_blocks, lattice_blocks, 0, j12)  
-        last_vectors = cp.deepcopy(v)
-        hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, 0, j12, v) 
+        tucker_blocks_0 = {}
+        for tb in tucker_blocks:
+            if tb[0] <= n_body_order - pt_order:
+                tucker_blocks_0[tb] = cp.deepcopy(tucker_blocks[tb])
+                #tucker_blocks_0[tb] = tucker_blocks[tb]
+                
+ 
+        l,v = do_variational_microiteration_update(args, n_blocks, tucker_blocks_0, lattice_blocks, n_body_order - pt_order, j12,dav_thresh,it,last_vectors_0)  
+        hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks_0, lattice_blocks, n_body_order - pt_order, j12, v) 
         S2 = v.T.dot(s2v)
         l = v.T.dot(hv).diagonal()
-        print " %16.8f " %(l[0])
+        last_vectors_0 = cp.deepcopy(v)
 
-        print "DMBPTinfinity Calculation"
+
+        print
+        print "-----------------------------------------------------------------------------"   
+        print "                         DMBPT-infinity Calculation"
+        print "-----------------------------------------------------------------------------"   
+        print
         n_roots = args['n_roots']
         pt_type = args['pt_type']
         #PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
@@ -798,14 +756,12 @@ for it in range(0,maxiter):
         else:
             e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
             print
-            print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
+            print " %5s    %16s  %16s  %12s" %("State","Energy LCC","Relative","<S2>")
             for i in range(0,n_roots):
                 e = l[i] + e2[i]
                 e0 = l[0] + e2[0]
                 print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
-        print
-        print " Compute State-specific PT2 corrections: "
-       
+
 
     if pt_order == 2 and args['pt_type'] != 'lcc':
         print
@@ -820,7 +776,7 @@ for it in range(0,maxiter):
             e = l[i] + e2[i]
             e0 = l[0] + e2[0]
             print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
-        
+
 
     # compute S2 for converged states    
     print "Compute <S2> for coneverged states"

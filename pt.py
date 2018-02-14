@@ -141,7 +141,7 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
     
     The second term is omitted coz it is the non renormalised term and makes the method non size consistent.
     """
-    n = 1 #the order of wf
+    n = 5 #the order of wf
     var_order = 0
     var_order = n_body_order - pt_order
 
@@ -177,11 +177,15 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
     v_n = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
        
 
+    print " Configurations defining the variational space"
     for t_l in sorted(tucker_blocks_0):
-        print " 0: ", tucker_blocks_0[t_l]
-   
+        #print " 0: ", tucker_blocks_0[t_l]
+        print tucker_blocks_0[t_l], " Range= %8i:%-8i" %( tucker_blocks_0[t_l].start, tucker_blocks_0[t_l].stop)
+    print 
+    print " Configurations defining the perturbational space"
     for t_l in sorted(tucker_blocks_1):
-        print " 1: ", tucker_blocks_1[t_l]
+        print tucker_blocks_1[t_l], " Range= %8i:%-8i" %( tucker_blocks_1[t_l].start, tucker_blocks_1[t_l].stop)
+        #print " 1: ", tucker_blocks_1[t_l]
   
 
     for t_l in sorted(tucker_blocks_1):
@@ -204,6 +208,8 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
 
     E_corr = np.zeros(n_roots)
     
+    print
+    print "     LCC Iterations"
     for s in range(0, n_roots):
         res = 1/(l[s]-D_X)
         v_n[: ,s] = np.multiply(res, H_Xs[:,s])
@@ -213,6 +219,7 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
         v_lcc[:,s] = v_n[:,s] 
         E_corr[s] = E_mpn[0,s] 
 
+        print " %6s  %16s  %16s " %("Order","Correction","Energy")
         print " %6i  %16.8f  %16.8f " %(1,E_mpn[0,s],E_corr[s])
 
         for i in range(1,n):
@@ -226,8 +233,11 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
          
             if max(abs(E_mpn[i+1,s]),abs(E_mpn[i,s])) < 1e-8:
                 break
+            elif i+1 == n:
+                print " Converged only upto  %16.8f " %(abs(E_mpn[i+1,s]-E_mpn[i,s]))
+                
         v_upper[:,s] = v[0:dim_tot_A,s]
-        print "Correlation %16.8f " %(E_corr[s])
+        #print "Correlation %16.8f " %(E_corr[s])
 
     #v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
     #print v_upper.shape
@@ -236,6 +246,11 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
     #printm(E_mpn)
     np.set_printoptions(suppress = True, precision = 5, linewidth=200)
     #print(v_lcc)
+    
+    norm = np.linalg.norm(v_lcc)
+    print
+    print "Norm of the LCC vector:    %16.8f " %(norm)
+    v_lcc = v_lcc/norm
     return E_corr, v_lcc
 
 
