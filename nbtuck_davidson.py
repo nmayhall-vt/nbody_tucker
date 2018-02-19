@@ -12,9 +12,55 @@ import scipy.sparse.linalg
 
 from hdvv import *
 from block import *
-from davidson import *
+from micro_iter_solvers import *
 from pt import *
 
+
+def form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12):
+    brdms = {}   # block reduced density matrix
+    for bi in range(0,n_blocks):
+        Bi = lattice_blocks[bi]
+        brdms[bi] = np.zeros(( Bi.full_dim, Bi.full_dim )) 
+      
+    """"
+    changing v to v_pt
+    """
+    print
+    print " Compute Block Reduced Density Matrices (BRDM):"
+    for tb1 in sorted(tucker_blocks):
+        Tb1 = tucker_blocks[tb1]
+        vb1 = cp.deepcopy(v[Tb1.start:Tb1.stop, ts])
+        vb1.shape = Tb1.block_dims
+        for tb2 in sorted(tucker_blocks):
+            Tb2 = tucker_blocks[tb2]
+            
+            if Tb1.id <= Tb2.id:
+                # How many blocks are different between left and right?
+                different = []
+                for bi in range(0,n_blocks):
+                    if Tb2.address[bi] != Tb1.address[bi]:
+                        different.append(bi)
+                
+                if len(different) == 0:
+                    vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
+                    vb2.shape = Tb2.block_dims
+                    for bi in range(0,n_blocks):
+                        brdm_tmp = form_1fdm(vb1,vb2,[bi])
+                        Bi = lattice_blocks[bi]
+                        u1 = Bi.v_ss(Tb1.address[bi])
+                        u2 = Bi.v_ss(Tb2.address[bi])
+                        brdms[bi] += u1.dot(brdm_tmp).dot(u2.T)
+                if len(different) == 1:
+                    vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
+                    vb2.shape = Tb2.block_dims
+                    bi = different[0]
+                    brdm_tmp = form_1fdm(vb1,vb2,[bi])
+                    Bi = lattice_blocks[bi]
+                    u1 = Bi.v_ss(Tb1.address[bi])
+                    u2 = Bi.v_ss(Tb2.address[bi])
+                    brdm_tmp = u1.dot(brdm_tmp).dot(u2.T)
+                    brdms[bi] += brdm_tmp + brdm_tmp.T 
+    return brdms
 
 def printm(m):
     # {{{
@@ -545,9 +591,9 @@ print " Configurations defining the variational space"
 for tb in sorted(tucker_blocks):
     print tucker_blocks[tb], " Range= %8i:%-8i" %( tucker_blocks[tb].start, tucker_blocks[tb].stop)
 print
-print " Configurations defining the perturbational space"
-for tb in sorted(tucker_blocks_pt):
-    print tucker_blocks_pt[tb], " Range= %8i:%-8i" %( tucker_blocks_pt[tb].start, tucker_blocks_pt[tb].stop),tb 
+#print " Configurations defining the perturbational space"
+#for tb in sorted(tucker_blocks_pt):
+#    print tucker_blocks_pt[tb], " Range= %8i:%-8i" %( tucker_blocks_pt[tb].start, tucker_blocks_pt[tb].stop),tb 
 
 #print 
 #print " Configurations defining the perturbative space"
@@ -562,8 +608,10 @@ for tb in sorted(tucker_blocks_pt):
 
 # loop over compression vector iterations
 energy_per_iter = []
+energy_per_iter_lcc = []
 maxiter = args['max_iter'] 
 last_vectors = np.array([])  # used to detect root flipping
+last_vectors_0 = np.array([])  # used to detect root flipping
 
 cepa_last_vectors = np.array([])  # used to detect root flipping
 cepa_last_values = 0.0
@@ -647,67 +695,18 @@ for it in range(0,maxiter):
                 Ec = E - E0
            
 
-    
+    if pt_order == 0:
+        l,v = do_variational_microiteration_update(args,n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12,dav_thresh,it,last_vectors)  
+        last_vectors = cp.deepcopy(v)
+        hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, v) 
+        S2 = v.T.dot(s2v)
+        l = v.T.dot(hv).diagonal()
 
-    # 
-    #   Loop over davidson micro-iterations
-    print 
-    print " Solve for supersystem eigenvalues: Dimension = ", dim_tot
-    dav = Davidson(dim_tot, args['n_roots'])
-    dav.thresh = dav_thresh 
-    dav.max_vecs = args['dav_max_ss']
-    s2v = np.array([])
-    if it == 0:
-        if args['dav_guess'] == 'rand':
-            dav.form_rand_guess()
-        else:
-            dav.form_p_guess()
-    else:
-        dav.vec_curr = last_vectors 
-    dav.max_iter = args['dav_max_iter']
+        energy_per_iter.append(l[ts]) 
 
-    for dit in range(0,dav.max_iter):
-        #dav.form_sigma()
-       
-        if args['direct'] == 0:
-            dav.sig_curr = H.dot(dav.vec_curr)
-            hv = H.dot(dav.vec_curr)
-            s2v = S2.dot(dav.vec_curr)
-        else:
-            hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, dav.vec_curr) 
-            dav.sig_curr = hv
-    
-        if args['dav_precond']:
-            hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, 0) 
-            dav.set_preconditioner(hv_diag)
-        #dav.set_preconditioner(H.diagonal())
-        
-        dav.update()
-        dav.print_iteration()
-        if dav.converged():
-            break
-    if dav.converged():
-        print " Davidson Converged"
-    else:
-        print " Davidson Not Converged"
-    print 
-
-    l = np.array([])
-    v = np.array([])
-    if dav.max_iter == -1 and args['direct'] == 0:
-        print 
-        print " Diagonalizing explicitly:"
-
-        if H.shape[0] > 3000:
-            l,v = scipy.sparse.linalg.eigsh(H, k=args["n_roots"] )
-        else:
-            l,v = np.linalg.eigh(H)
-    else:
-        # get eigen stuff from davidson
-        l = dav.eigenvalues()
-        v = dav.eigenvectors()
-
-    last_vectors = cp.deepcopy(v)
+        if it > 0:
+            if abs(l[ts]-energy_per_iter[it-1]) < diis_thresh:
+                break
 
     """
     if do_cepa :
@@ -730,111 +729,82 @@ for it in range(0,maxiter):
         l,v = np.linalg.eigh(H)
     """
 
+
+    if pt_order >= 2:
+
+        tucker_blocks_0 = {}
+        for tb in tucker_blocks:
+            if tb[0] <= n_body_order - pt_order:
+                tucker_blocks_0[tb] = cp.deepcopy(tucker_blocks[tb])
+                #tucker_blocks_0[tb] = tucker_blocks[tb]
+                
+ 
+        l,v = do_variational_microiteration_update(args, n_blocks, tucker_blocks_0, lattice_blocks, n_body_order - pt_order, j12,dav_thresh,it,last_vectors_0)  
+        hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks_0, lattice_blocks, n_body_order - pt_order, j12, v) 
+        S2 = v.T.dot(s2v)
+        l = v.T.dot(hv).diagonal()
+        last_vectors_0 = cp.deepcopy(v)
+        l_lcc = np.zeros(v.shape[1])
+
+
+        print
+        print "-----------------------------------------------------------------------------"   
+        print "                         DMBPT-infinity Calculation"
+        print "-----------------------------------------------------------------------------"   
+        print
+        n_roots = args['n_roots']
+        pt_type = args['pt_type']
+        #PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+        #e_lcc =PT_lcc(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+        #v_pt = PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+        if n_body_order ==0:
+            #v_pt = PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+        elif pt_type == 'lcc':
+            
+            e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            print "PT type : LCC"
+            print
+            print " %5s    %16s  %16s  %12s" %("State","Energy LCC","Relative","<S2>")
+            for i in range(0,n_roots):
+                e = l[i] + e2[i]
+                e0 = l[0] + e2[0]
+                l_lcc[i] = l[i] +  e2[i]
+                print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
+
+        elif pt_type == 'mp':
+            print "PT type : MP"
+            print 
+            if pt_order != n_body_order:
+                print "WARNING: Excitation order not same as PT order (The method might not be size extensive)"
+            e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            print
+            print " %5s    %16s  %16s  %12s" %("State","Energy LCC","Relative","<S2>")
+            for i in range(0,n_roots):
+                e = l[i] + e2[i]
+                e0 = l[0] + e2[0]
+                l_lcc[i] = l[i] +  e2[i]
+                print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
+
+
+        v = v_pt
+        last_vectors = cp.deepcopy(v)
+        energy_per_iter_lcc.append(l_lcc[ts])
+        if it > 0:
+            if abs(l_lcc[ts]-energy_per_iter_lcc[it-1]) < diis_thresh:
+                break
+
+
     # compute S2 for converged states    
-    hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, v) 
-    S2 = v.T.dot(s2v)
-    l = v.T.dot(hv).diagonal()
     print
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(l):
         if si<args['n_print']:
             print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
-    if pt_order >= 2 and args['pt_type'] == 'lcc':
-        print "DMBPTinfinity Calculation"
-        n_roots = args['n_roots']
-        pt_type = args['pt_type']
-        PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order, l, v, j12, pt_type)
-        print
-        print " Compute State-specific PT2 corrections: "
-       
-
-    if pt_order == 2 and args['pt_type'] != 'lcc':
-        print
-        print " Compute State-specific PT2 corrections: "
-        n_roots = args['n_roots']
-        pt_type = args['pt_type']
-        e2 = compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
-        e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
-        print
-        print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
-        for i in range(0,n_roots):
-            e = l[i] + e2[i]
-            e0 = l[0] + e2[0]
-            print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
-        
-        do_bwpt = 0
-        e2_last = 0
-        if do_bwpt:
-            print
-            print " Compute State-specific BW-PT2 corrections: "
-            bw_mit = 100
-            l0 = cp.deepcopy(l)
-            l2 = cp.deepcopy(l)
-            print
-            print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
-            for bwit in range(0,bw_mit):
-                n_roots = args['n_roots']
-                pt_type = args['pt_type']
-                e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l2[0:n_roots], v[:,0:n_roots], j12, pt_type)
-                for si in range(0,n_roots):
-                    l2[si] = l0[si] + 2* ( e2[si] ) / n_blocks
-                for i in range(0,n_roots):
-                    e = l[i] + e2[i]
-                    e0 = l[0] + e2[0]
-                    print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
-                if abs(e2-e2_last) < 1e-10:
-                    break
-                else:
-                    e2_last = e2
-
-    energy_per_iter.append(l[ts]) 
-    if it > 0:
-        if abs(l[ts]-energy_per_iter[it-1]) < diis_thresh:
-            break
 
 
-    brdms = {}   # block reduced density matrix
-    for bi in range(0,n_blocks):
-        Bi = lattice_blocks[bi]
-        brdms[bi] = np.zeros(( Bi.full_dim, Bi.full_dim )) 
-
-    print
-    print " Compute Block Reduced Density Matrices (BRDM):"
-    for tb1 in sorted(tucker_blocks):
-        Tb1 = tucker_blocks[tb1]
-        vb1 = cp.deepcopy(v[Tb1.start:Tb1.stop, ts])
-        vb1.shape = Tb1.block_dims
-        for tb2 in sorted(tucker_blocks):
-            Tb2 = tucker_blocks[tb2]
-            
-            if Tb1.id <= Tb2.id:
-                # How many blocks are different between left and right?
-                different = []
-                for bi in range(0,n_blocks):
-                    if Tb2.address[bi] != Tb1.address[bi]:
-                        different.append(bi)
-                
-                if len(different) == 0:
-                    vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
-                    vb2.shape = Tb2.block_dims
-                    for bi in range(0,n_blocks):
-                        brdm_tmp = form_1fdm(vb1,vb2,[bi])
-                        Bi = lattice_blocks[bi]
-                        u1 = Bi.v_ss(Tb1.address[bi])
-                        u2 = Bi.v_ss(Tb2.address[bi])
-                        brdms[bi] += u1.dot(brdm_tmp).dot(u2.T)
-                if len(different) == 1:
-                    vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
-                    vb2.shape = Tb2.block_dims
-                    bi = different[0]
-                    brdm_tmp = form_1fdm(vb1,vb2,[bi])
-                    Bi = lattice_blocks[bi]
-                    u1 = Bi.v_ss(Tb1.address[bi])
-                    u2 = Bi.v_ss(Tb2.address[bi])
-                    brdm_tmp = u1.dot(brdm_tmp).dot(u2.T)
-                    brdms[bi] += brdm_tmp + brdm_tmp.T 
-
+    brdms = form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12)
 
     if 0:
         print
@@ -1025,12 +995,21 @@ ref_norm = np.linalg.norm(v[tucker_blocks[0,-1].start:tucker_blocks[0,-1].stop])
 print
 print " Norm of Reference state %12.8f " %ref_norm
 
-print
-print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
-for ei,e in enumerate(energy_per_iter):
-    if ei>0:
-        print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter[ei-1])
-    else:
-        print " %10i  %12.8f  %12s" %(ei,e,"")
+if pt_order == 0:
+    print
+    print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
+    for ei,e in enumerate(energy_per_iter):
+        if ei>0:
+            print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter[ei-1])
+        else:
+            print " %10i  %12.8f  %12s" %(ei,e,"")
 
 
+if pt_order >= 2:
+    print
+    print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
+    for ei,e in enumerate(energy_per_iter_lcc):
+        if ei>0:
+            print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter_lcc[ei-1])
+        else:
+            print " %10i  %12.8f  %12s" %(ei,e,"")
