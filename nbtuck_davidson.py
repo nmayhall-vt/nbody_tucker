@@ -608,6 +608,7 @@ print
 
 # loop over compression vector iterations
 energy_per_iter = []
+energy_per_iter_lcc = []
 maxiter = args['max_iter'] 
 last_vectors = np.array([])  # used to detect root flipping
 last_vectors_0 = np.array([])  # used to detect root flipping
@@ -701,6 +702,11 @@ for it in range(0,maxiter):
         S2 = v.T.dot(s2v)
         l = v.T.dot(hv).diagonal()
 
+        energy_per_iter.append(l[ts]) 
+
+        if it > 0:
+            if abs(l[ts]-energy_per_iter[it-1]) < diis_thresh:
+                break
 
     """
     if do_cepa :
@@ -724,7 +730,7 @@ for it in range(0,maxiter):
     """
 
 
-    if pt_order >= 2 and args['pt_type'] == 'lcc':
+    if pt_order >= 2:
 
         tucker_blocks_0 = {}
         for tb in tucker_blocks:
@@ -738,6 +744,7 @@ for it in range(0,maxiter):
         S2 = v.T.dot(s2v)
         l = v.T.dot(hv).diagonal()
         last_vectors_0 = cp.deepcopy(v)
+        l_lcc = np.zeros(v.shape[1])
 
 
         print
@@ -753,50 +760,47 @@ for it in range(0,maxiter):
         if n_body_order ==0:
             #v_pt = PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
             vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
-        else:
+        elif pt_type == 'lcc':
+            
+            e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            print "PT type : LCC"
+            print
+            print " %5s    %16s  %16s  %12s" %("State","Energy LCC","Relative","<S2>")
+            for i in range(0,n_roots):
+                e = l[i] + e2[i]
+                e0 = l[0] + e2[0]
+                l_lcc[i] = l[i] +  e2[i]
+                print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
+
+        elif pt_type == 'mp':
+            print "PT type : MP"
+            print 
+            if pt_order != n_body_order:
+                print "WARNING: Excitation order not same as PT order (The method might not be size extensive)"
             e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
             print
             print " %5s    %16s  %16s  %12s" %("State","Energy LCC","Relative","<S2>")
             for i in range(0,n_roots):
                 e = l[i] + e2[i]
                 e0 = l[0] + e2[0]
+                l_lcc[i] = l[i] +  e2[i]
                 print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
 
 
-    if pt_order == 2 and args['pt_type'] != 'lcc':
-        print
-        print " Compute State-specific PT2 corrections: "
-        n_roots = args['n_roots']
-        pt_type = args['pt_type']
-        #e2 = compute_rpa(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
-        e2 = compute_pt2(lattice_blocks, tucker_blocks, tucker_blocks_pt, l[0:n_roots], v[:,0:n_roots], j12, pt_type)
-        print
-        print " %5s    %16s  %16s  %12s" %("State","Energy PT2","Relative","<S2>")
-        for i in range(0,n_roots):
-            e = l[i] + e2[i]
-            e0 = l[0] + e2[0]
-            print " %5i =  %16.8f  %16.8f  %12.8f" %(i,e*convert,(e-e0)*convert,abs(S2[i,i]))
+        v = v_pt
+        last_vectors = cp.deepcopy(v)
+        energy_per_iter_lcc.append(l_lcc[ts])
+        if it > 0:
+            if abs(l_lcc[ts]-energy_per_iter_lcc[it-1]) < diis_thresh:
+                break
 
 
     # compute S2 for converged states    
-    print "Compute <S2> for coneverged states"
     print
     print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
     for si,i in enumerate(l):
         if si<args['n_print']:
-            print "Olay"
             print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
-
-
-
-    energy_per_iter.append(l[ts]) 
-    if it > 0:
-        if abs(l[ts]-energy_per_iter[it-1]) < diis_thresh:
-            break
-
-    if pt_order >= 2 and args['pt_type'] == 'lcc':
-        v = v_pt
-        last_vectors = cp.deepcopy(v)
 
 
 
@@ -991,12 +995,21 @@ ref_norm = np.linalg.norm(v[tucker_blocks[0,-1].start:tucker_blocks[0,-1].stop])
 print
 print " Norm of Reference state %12.8f " %ref_norm
 
-print
-print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
-for ei,e in enumerate(energy_per_iter):
-    if ei>0:
-        print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter[ei-1])
-    else:
-        print " %10i  %12.8f  %12s" %(ei,e,"")
+if pt_order == 0:
+    print
+    print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
+    for ei,e in enumerate(energy_per_iter):
+        if ei>0:
+            print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter[ei-1])
+        else:
+            print " %10i  %12.8f  %12s" %(ei,e,"")
 
 
+if pt_order >= 2:
+    print
+    print " %10s  %12s  %12s" %("Iteration", "Energy", "Delta")
+    for ei,e in enumerate(energy_per_iter_lcc):
+        if ei>0:
+            print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter_lcc[ei-1])
+        else:
+            print " %10i  %12.8f  %12s" %(ei,e,"")
