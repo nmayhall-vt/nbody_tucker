@@ -38,6 +38,8 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
         # Diagonalize an arbitrary linear combination of the quantum numbers we insist on preserving
         l_b,v_b = np.linalg.eigh(H_b + Sz_b + S2_b) 
         l_b = v_b.transpose().dot(H_b).dot(v_b).diagonal()
+       
+        Sz_b = v_b.transpose().dot(Sz_b).dot(v_b).diagonal()
         
         sort_ind = np.argsort(l_b)
         l_b = l_b[sort_ind]
@@ -45,8 +47,8 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
             
 
         print " Guess eigenstates"
-        for l in l_b:
-            print "%12.8f" %l
+        for l in range(len(l_b)):
+            print " %6i %12.8f %12.8f" %(l,l_b[l],Sz_b[l])
         p_states.extend([v_b[:,0:n_p_states[bi]]])
         #q_states.extend([v_b[:,n_p_states[bi]::]])
         q_states.extend([v_b[:,n_p_states[bi]: n_p_states[bi]+n_q_states[bi]]])
@@ -319,8 +321,64 @@ for it in range(0,maxiter):
     print 
     print " Build Hamiltonian:"
     H,S2 = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
+   
+    print " Make full system"
+    H_tot, tmp, S2_tot, Sz_tot = form_hdvv_H(lattice,j12)
+    H_tot.shape = (2,2,2,2,2,2,2,2)
+    alpha = np.array([1,0])
+    beta  = np.array([0,1])
+    s0 = (np.kron(alpha,beta)-np.kron(beta,alpha)) / np.sqrt(2)
+    s1 = np.kron(alpha,alpha)
+    s0.shape = (4,1)
+    s1.shape = (4,1)
+    print s0
+    print s1
+    W = s1.dot(s0.T)
+    print W
+    U,s,V = np.linalg.svd(W,full_matrices=1)
+    W = U.dot(V)
+    print "W s0="
+    print W.dot(s0)
+    #W.shape = (2,2,2,2)
+    print 
+    print W
+
+    U1 = lattice_blocks[0].v_ss(0)
+    U2 = lattice_blocks[1].v_ss(0)
     
+    U1 = lattice_blocks[0].vecs[:,[0,1,2,3]]
+    U2 = lattice_blocks[1].vecs[:,[0,1,2,3]]
+    #U1 = np.eye(4)
+    #U2 = np.eye(4)
+    #U1.shape = (2,2) 
+    #U2.shape = (2,2) 
+   
+    l0 = np.kron(np.eye(2),W)
+    l0 = np.kron(l0,np.eye(2))
+    l0.shape = (16,16)
+    print  "l0.shape: ", l0.shape
+    l1 = np.kron(U1,U2)
+    print  "l1.shape: ", l1.shape
+    print l1
+    print H_tot.shape
     
+    H = H_tot
+    H.shape = (16,16)
+    #H = l0.T.dot(H).dot(l0)
+    H = l1.T.dot(H).dot(l1)
+    
+    S2 = S2_tot
+    S2.shape = (16,16)
+    #S2 = l0.T.dot(S2).dot(l0)
+    S2 = l1.T.dot(S2).dot(l1)
+    
+    Sz = Sz_tot
+    Sz.shape = (16,16)
+    #Sz = l0.T.dot(Sz).dot(l0)
+    Sz = l1.T.dot(Sz).dot(l1)
+  
+    print "Sz:"
+    print Sz
     print " Diagonalize Hamiltonian: Size of H: ", H.shape
     l = np.array([])
     v = np.array([])
