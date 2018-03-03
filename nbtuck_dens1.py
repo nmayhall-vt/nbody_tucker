@@ -327,27 +327,28 @@ for it in range(0,maxiter):
     H_tot.shape = (2,2,2,2,2,2,2,2)
     alpha = np.array([1,0])
     beta  = np.array([0,1])
-    s0 = (np.kron(alpha,beta)-np.kron(beta,alpha)) / np.sqrt(2)
-    s1 = np.kron(alpha,alpha)
+    s0 = np.kron(alpha,alpha)
+    s1 = (np.kron(alpha,beta)-np.kron(beta,alpha)) / np.sqrt(2)
     s0.shape = (4,1)
     s1.shape = (4,1)
     print s0
     print s1
     W = s1.dot(s0.T)
-    print W
     U,s,V = np.linalg.svd(W,full_matrices=1)
     W = U.dot(V)
     print "W s0="
     print W.dot(s0)
-    #W.shape = (2,2,2,2)
+    print "W' s1="
+    print W.T.dot(s1)
     print 
     print W
+    W.shape = (2,2,2,2)
 
-    U1 = lattice_blocks[0].v_ss(0)
-    U2 = lattice_blocks[1].v_ss(0)
     
     U1 = lattice_blocks[0].vecs[:,[0,1,2,3]]
     U2 = lattice_blocks[1].vecs[:,[0,1,2,3]]
+    U1 = lattice_blocks[0].v_ss(0)
+    U2 = lattice_blocks[1].v_ss(0)
     #U1 = np.eye(4)
     #U2 = np.eye(4)
     #U1.shape = (2,2) 
@@ -363,22 +364,59 @@ for it in range(0,maxiter):
     print H_tot.shape
     
     H = H_tot
-    H.shape = (16,16)
-    #H = l0.T.dot(H).dot(l0)
-    H = l1.T.dot(H).dot(l1)
-    
     S2 = S2_tot
-    S2.shape = (16,16)
-    #S2 = l0.T.dot(S2).dot(l0)
-    S2 = l1.T.dot(S2).dot(l1)
-    
     Sz = Sz_tot
+   
+    #U = np.eye(4)
+    U.shape = (2,2,2,2)
+    print H.shape
+    print W.shape
+    #H = np.einsum("imjnkolp,nqor->imjqkrlp",H,U)
+    #H = np.einsum("imjnkolp,qnro->imjqkrlp",H,U)
+    #H = np.einsum("iqrlmnop,jkqr->ijklmnop",H,U)
+    #H = np.einsum("ijklmqrp,noqr->ijklmnop",H,U)
+    #H = np.einsum("ijklmnop,jkqr->iqrlmnop",H,U)
+    #H = np.einsum("ijklmnop,noqr->ijklmqrp",H,U)
+  
+    w1 = U1
+    w2 = U2
+    w1.shape = (2,2)
+    w2.shape = (2,2)
+
+    print " %10s %12s %12s"%("Iteration", "tr(GU)", "-sum(s)") 
+    for it in range(90):
+        G = np.einsum("ijklmnop,qrno->ijklmqrp",H,U)
+        G = np.einsum("ijklmnop,mn->ijklop",G,w1)
+        G = np.einsum("ijklmn,mn->ijkl",G,w2)
+        G = np.einsum("ijkl,im->jklm",G,w1)
+        G = np.einsum("ijkl,mk->ijlm",G,w2)
+        E = np.einsum("ijkl,ijkl->",G,U)
+
+        G = G.reshape(4,4)
+        u,s,v = np.linalg.svd(G)
+        print " %10i %12.8f %12.8f " %(it,E,-sum(s)) 
+        U = -v.dot(u)
+        U.shape = (2,2,2,2)
+
+    print
+    print
+    print
+
+    W.shape = (4,4)
+    H.shape = (16,16)
+    S2.shape = (16,16)
     Sz.shape = (16,16)
-    #Sz = l0.T.dot(Sz).dot(l0)
+    
+    H  = l0.T.dot(H).dot(l0)
+    S2 = l0.T.dot(S2).dot(l0)
+    Sz = l0.T.dot(Sz).dot(l0)
+    
+    H = l1.T.dot(H).dot(l1)
+    S2 = l1.T.dot(S2).dot(l1)
     Sz = l1.T.dot(Sz).dot(l1)
   
     print "Sz:"
-    print Sz
+    print Sz.diagonal()
     print " Diagonalize Hamiltonian: Size of H: ", H.shape
     l = np.array([])
     v = np.array([])
