@@ -349,11 +349,12 @@ for it in range(0,maxiter):
     U2 = lattice_blocks[1].vecs[:,[0,1,2,3]]
     U1 = lattice_blocks[0].v_ss(0)
     U2 = lattice_blocks[1].v_ss(0)
-    
-    U1 = np.random.rand(4,1)
-    U1 = U1/np.linalg.norm(U1)
-    U2 = np.random.rand(4,1)
-    U2 = U2/np.linalg.norm(U2)
+   
+    U1 = np.array([[0,1,-1,0],[0,1,1,0]])/np.sqrt(2)
+    U1 = U1.T
+    U2 = U1
+    #U1 = scipy.linalg.orth(np.random.rand(4,2))
+    #U2 = scipy.linalg.orth(np.random.rand(4,2))
 
     #U1 = np.eye(4)
     #U2 = np.eye(4)
@@ -389,82 +390,72 @@ for it in range(0,maxiter):
   
     w1 = U1
     w2 = U2
-    w1.shape = (2,2)
-    w2.shape = (2,2)
+    
+    w1.shape = (2,2,2)
+    w2.shape = (2,2,2)
     G_old = np.zeros((4,4))
     print " %10s %12s %12s"%("Iteration", "tr(GU)", "-sum(s)") 
-    for it in range(2000):
-        
-        # get environment for w1 
-        for it2 in range(1000):
-        
-            
-            w1_old = w1
-            G = np.einsum("ijklmnop,qrno->ijklmqrp",H,U)
-            G = np.einsum("ijklmnop,mn->ijklop",G,w1)
-            G = np.einsum("ijklmn,mn->ijkl",G,w2)
-            sigma = G
-            G = np.einsum("ijkl,mnjk->imnl",sigma,U)
-            G = np.einsum("ijkl,kl->ij",G,w2)
-            E2 = np.einsum("ij,ij->",G,w1)
-            
-            G = G.reshape(4,1)
-            #u,s2,v = np.linalg.svd(G)
-            #u = u[:,0]
-            #w1 = u
-            norm_G = np.linalg.norm(G)
-            w1 = G/np.linalg.norm(G)
-            w1.shape = (2,2)
-            #if (abs(E2 + sum(s2)) > 1e-3): 
-            #    print " %10i %12.8f %12.8f " %(it,E2,-sum(s2)) 
-            #    continue
-            # get environment for w2 
-            
-            G = np.einsum("ijkl,mnjk->imnl",sigma,U)
-            G = np.einsum("ijkl,ij->kl",G,w1_old)
-            E3 = np.einsum("ij,ij->",G,w2)
-            
-            G = G.reshape(4,1)
-            #u,s3,v = np.linalg.svd(G)
-            #u = u[:,0]
-            #w2 = u
-            w2 = G/np.linalg.norm(G)
-            w2.shape = (2,2)
-            
-            print " %10i %12.8f %12.8f %12.8f " %(it,E2,E3,norm_G) 
-            #print " %10i,%10i %12.8f %12.8f %12.8f " %(it, it2,E1,E2,-sum(s)) 
-    
-        
-            if abs(E2 + norm_G) < 1e-5:
-                #print "break"
-                break
-            #if abs(E2 + sum(s2)) < 1e-8:
-            #    #print "break"
-            #    break
-        
-        print
-        U_old = U
+    for it in range(100):
         G = np.einsum("ijklmnop,qrno->ijklmqrp",H,U)
-        G = np.einsum("ijklmnop,mn->ijklop",G,w1)
-        G = np.einsum("ijklmn,mn->ijkl",G,w2)
+        G = np.einsum("ijklmnop,mnq->ijklqop",G,w1)
+        G = np.einsum("ijklmno,nop->ijklmp",G,w2)
         sigma = G
+        G = np.einsum("ijklmn,opjk->ioplmn",G,U)
+        G = np.einsum("ijklmn,ijo->oklmn",G,w1)
+        G = np.einsum("ijklm,jkn->inlm",G,w2)
+        
+        G.shape = (4,4)
+        l,v = np.linalg.eigh(G)
+        v = v[:,0]
+        v.shape = (2,2)
+        G.shape = (2,2,2,2)
+        
+        G = np.einsum("ijkl,ij->kl",G,v)
+        G = np.einsum("ij,ij->",G,v)
+        E_curr = G
+       
+        sigma = np.einsum("ijklmn,mn->ijkl",sigma,v)
 
-        # get environment for U
-        G = np.einsum("ijkl,im->jklm",sigma,w1)
-        G = np.einsum("ijkl,mk->ijlm",G,w2)
-        E1 = np.einsum("ijkl,klij->",G,U)
-
-        G = G.reshape(4,4)
-        G = .5*(G + G_old)
-        G_old = G
-        u,s,v = np.linalg.svd(G)
-        U = -v.dot(u)
-        U.shape = (2,2,2,2)
+        # get environment for u 
+        Gu = np.einsum("ijkl,imn,olp,np->jkmo",sigma,w1,w2,v)
       
-        print " %10i %12.8f %12.8f " %(it,E1,-sum(s)) 
-        if (abs(E1 + sum(s)) < 1e-10): 
-            print " %10i %12.8f %12.8f " %(it,E1,-sum(s)) 
-            break 
+        U_old = U
+        Gu = Gu.reshape(4,4)
+        u0,s0,v0 = np.linalg.svd(Gu)
+        U = -v0.T.dot(u0.T)
+        U.shape = (2,2,2,2)
+        Gu.shape = (2,2,2,2)
+        Eu = np.einsum("ijkl,klij->",Gu,U)
+       
+        for it2 in range(1):
+            # get environment for w1 
+            #G1 = np.einsum("ijkl,mnjk->imnl",sigma,U)
+            #G1 = np.einsum("imnl,nlp->imp",G1,w2)
+            #G1 = np.einsum("imp,op->imo",G1,v)
+            G1 = np.einsum("ijkl,mnjk,nlp,op->imo",sigma,U,w2,v)
+            w1_old = w1 
+            
+            G1 = G1.reshape(4,2)
+            u1,s1,v1 = np.linalg.svd(G1)
+            u1 = u1[:,0:2]
+            v1 = v1[0:2,:]
+            w1 = -u1.dot(v1)
+            w1.shape = (2,2,2)
+            G1.shape = (2,2,2)
+            E1 = np.einsum("ijk,ijk->",G1,w1)
+             
+            G2 = np.einsum("ijkl,mnjk,imo,op->nlp",sigma,U,w1_old,v)
+            G2 = G2.reshape(4,2)
+            u2,s2,v2 = np.linalg.svd(G2)
+            u2 = u2[:,0:2]
+            v2 = v2[0:2,:]
+            w2 = -u2.dot(v2)
+            w2.shape = (2,2,2)
+            G2.shape = (2,2,2)
+            E2 = np.einsum("ijk,ijk->",G2,w2)
+        
+        
+        print " Energy: %12.8f : %12.8f %12.8f %12.8f" %( E_curr, Eu, E1, E2)
 
     print
     print
