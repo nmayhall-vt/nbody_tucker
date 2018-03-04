@@ -349,6 +349,10 @@ for it in range(0,maxiter):
     U2 = lattice_blocks[1].vecs[:,[0,1,2,3]]
     U1 = lattice_blocks[0].v_ss(0)
     U2 = lattice_blocks[1].v_ss(0)
+    U1 = np.random.rand(4,1)
+    U2 = np.random.rand(4,1)
+    U1 = U1/np.linalg.norm(U1)
+    U2 = U2/np.linalg.norm(U2)
     #U1 = np.eye(4)
     #U2 = np.eye(4)
     #U1.shape = (2,2) 
@@ -367,7 +371,7 @@ for it in range(0,maxiter):
     S2 = S2_tot
     Sz = Sz_tot
    
-    #U = np.eye(4)
+    U = np.eye(4)
     U.shape = (2,2,2,2)
     print H.shape
     print W.shape
@@ -384,19 +388,57 @@ for it in range(0,maxiter):
     w2.shape = (2,2)
 
     print " %10s %12s %12s"%("Iteration", "tr(GU)", "-sum(s)") 
-    for it in range(90):
+    for it in range(1000):
+        U_old = U
+        w1_old = w1
         G = np.einsum("ijklmnop,qrno->ijklmqrp",H,U)
         G = np.einsum("ijklmnop,mn->ijklop",G,w1)
         G = np.einsum("ijklmn,mn->ijkl",G,w2)
-        G = np.einsum("ijkl,im->jklm",G,w1)
+        sigma = G
+
+        # get environment for U
+        G = np.einsum("ijkl,im->jklm",sigma,w1)
         G = np.einsum("ijkl,mk->ijlm",G,w2)
-        E = np.einsum("ijkl,ijkl->",G,U)
+        E1 = np.einsum("ijkl,klij->",G,U)
 
         G = G.reshape(4,4)
         u,s,v = np.linalg.svd(G)
-        print " %10i %12.8f %12.8f " %(it,E,-sum(s)) 
         U = -v.dot(u)
         U.shape = (2,2,2,2)
+        
+        #if (E1 + sum(s) > 1e-3): 
+        #    print " %10i %12.8f %12.8f " %(it,E1,-sum(s)) 
+        #    continue
+        # get environment for w1 
+        
+        G = np.einsum("ijkl,mnjk->imnl",sigma,U_old)
+        G = np.einsum("ijkl,kl->ij",G,w2)
+        E2 = np.einsum("ij,ij->",G,w1)
+
+        G = G.reshape(4,1)
+        u,s2,v = np.linalg.svd(G)
+        u = u[:,0]
+        w1 = u
+        w1 = G/np.linalg.norm(G)
+        w1.shape = (2,2)
+        
+        #if (abs(E2 + sum(s2)) > 1e-3): 
+        #    print " %10i %12.8f %12.8f " %(it,E2,-sum(s2)) 
+        #    continue
+        # get environment for w2 
+        
+        G = np.einsum("ijkl,mnjk->imnl",sigma,U_old)
+        G = np.einsum("ijkl,ij->kl",G,w1_old)
+        E3 = np.einsum("ij,ij->",G,w2)
+
+        G = G.reshape(4,1)
+        u,s3,v = np.linalg.svd(G)
+        u = u[:,0]
+        w2 = u
+        w2.shape = (2,2)
+        
+        print " %10i %12.8f %12.8f %12.8f %12.8f " %(it,E1,E2,E3,-sum(s)) 
+
 
     print
     print
