@@ -18,23 +18,6 @@ args = vars(parser.parse_args())
 print igraph.__version__
 
 
-"""
-blocks = np.loadtxt(args['blocks']).astype(int)
-n_blocks = len(blocks)
-    
-if len(blocks.shape) == 1:
-    print 'blocks',blocks
-    
-    blocks.shape = (1,len(blocks.transpose()))
-    n_blocks = len(blocks)
-
-block_list = {}
-for bi in range(0,n_blocks):
-    block_list[str(blocks[bi,:])] = 1
-    print str(blocks[bi,:])
-print block_list
-"""
-
 relative = 0
 file_idx = 0
 edges_ref = []
@@ -82,10 +65,13 @@ for fileName in args['infiles']:
     
     #g.delete_edges(0,1)
     #g.delete_edges(2,3)
-    layout = g.layout("grid", width=2)
-    layout = g.layout("kk")
-    layout = g.layout("fr")
-    layout = g.layout("circle")
+
+
+
+    layout = g.layout("grid", width=6)
+    #layout = g.layout("kk")
+    #layout = g.layout("fr")
+    #layout = g.layout("circle")
     
     #g.add_edge(0,1)
     #g.add_edge(2,3)
@@ -96,6 +82,7 @@ for fileName in args['infiles']:
         if w > 0:
             wn = 1
             c = "99,166,159,%3f" % wn
+            #c = "09,066,059,%3f" % wn
             edge_colors.append(c)
             #edge_colors.append('99,166,159,.7')
             #edge_colors.append('#63A69F')
@@ -121,7 +108,7 @@ for fileName in args['infiles']:
     #visual_style["edge_width"] = 20 
     visual_style["edge_width"] = g.es['weight'] 
     visual_style["edge_color"] = edge_colors 
-    visual_style["vertex_color"] = 'black'
+    visual_style["vertex_color"] = 'lightblue'
     #visual_style["layout"] = l
     visual_style["layout"] = layout
     visual_style["bbox"] = (900, 900)
