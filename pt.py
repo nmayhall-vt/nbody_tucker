@@ -65,10 +65,10 @@ def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_or
             hv,s2v = pt_build_H1v(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
             H_Xs[tb_l.start:tb_l.stop,:] += hv
 
-    DHv = np.array(())
+    RHv = np.array(())
     res = 1/(l-D_X)
-    DHv = np.multiply(res, H_Xs[:,0]).reshape(dim_tot_X,1)
-    e2 = H_Xs[:,0].T.dot(DHv)
+    RHv = np.multiply(res, H_Xs[:,0]).reshape(dim_tot_X,1)
+    e2 = H_Xs[:,0].T.dot(RHv)
 
     """
     Vibin adding stuff
@@ -97,30 +97,38 @@ def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_or
 
     print("pt 2 % 10.15f " %e2)
 
-    res3 = np.multiply(res,H_Xs[:,0]).reshape(dim_tot_X,1)
-    Hmp3,Smp3 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,res3)
-    e3 = np.dot(DHv.T, Hmp3)
+    HRHv,Smp3 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,RHv)
+    e3 = np.dot(RHv.T, HRHv)
     print("pt 3 % 10.15f " %e3)
 
 
-    H_Xv,temp = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,DHv)
-    res4 = np.multiply(res,H_Xv[:,0]).reshape(dim_tot_X,1)
-    Hmp4,Smp4 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,res4)
-    e4 = np.dot(DHv.T, Hmp4)
+    RHRHv = np.multiply(res,HRHv[:,0]).reshape(dim_tot_X,1)
+    HRHRHv,Smp4 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,RHRHv)
+    e4_main = np.dot(RHv.T, HRHRHv)
 
-    vrrv = np.dot(res3.T,res3)
-    e4_2 = e2 * vrrv
+    HRRH = np.dot(RHv.T,RHv)
+    e4_renorm = e2 * HRRH
+    #print("pt 4 % 10.15f " %e4_main)
+    #print("pt 4 % 10.15f " %e4_renorm)
+    e4 = e4_main - e4_renorm
+
     print("pt 4 % 10.15f " %e4)
-    e4 = e4 - e4_2
-
-    print("pt 4 % 10.15f " %e4)
 
 
-    res5 = np.multiply(res, Hmp4[:,0]).reshape(dim_tot_X,1)
-    Hmp5,Smp5 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,res5)
-    e5 = np.dot(DHv.T, Hmp5)
+    RHRHRHv = np.multiply(res, HRHRHv[:,0]).reshape(dim_tot_X,1)
+    HRHRHRHv,Smp5 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,RHRHRHv)
+    e5_main = np.dot(RHv.T, HRHRHRHv)
+
+    HRRHRH = np.dot(RHv.T,RHRHv)
+
+    e5_renorm1 = 2 * e2 * HRRHRH
+    e5_renorm2 = e3 * HRRH
+
+
+    e5 = e5_main - e5_renorm1 - e5_renorm2
+
+
     print("pt 5 % 10.15f " %e5)
-
 
     exit (-1)
     return e2
@@ -140,7 +148,6 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
     
     The second term is omitted coz it is the non renormalised term and makes the method non size consistent.
     """
-    n = 40 #the order of wf
     var_order = 0
     var_order = n_body_order - pt_order
 
@@ -172,8 +179,9 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
 
     D_X = np.zeros((dim_tot_X))     #diagonal of X space
     H_Xs = np.zeros((dim_tot_X, n_roots))
-    E_mpn = np.zeros((n+1,n_roots))         #PT energy
-    v_n = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
+    E_mpn = np.zeros((pt_order+1,n_roots))         #PT energy
+    #v_n = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
+    v_n = np.zeros((dim_tot_X,n_roots*(pt_order+1)))   #list of PT vectors
        
 
     print " Configurations defining the variational space"
@@ -203,10 +211,16 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
 
     E_corr = np.zeros(n_roots)
     
+    
+    print "WOINAWIOAION"
+    #first_order_E = np.zeros((n_roots,n_roots))
+    first_order_E = H_Xs[0:n_roots,:]
+    first_order_E = v.dot(first_order_E)
+
+
     print
     print "     PT correction   "
-    if n_roots !=1:
-        print "Costly to do MRPT of higher order"
+
     for s in range(0, n_roots):
         res = 1/(l[s]-D_X)
         v_n[: ,s] = np.multiply(res, H_Xs[:,s])
@@ -214,32 +228,32 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
         #DHv = np.multiply(res, H_Xs[:,s])
         #e2[s] = H_Xs[:,s].T.dot(DHv)
         v_lcc[:,s] = v_n[:,s] 
-        E_corr[s] = E_mpn[0,s] 
 
         print " %6s  %16s  %16s " %("Order","Correction","Energy")
-        print " %6i  %16.8f  %16.8f " %(1,E_mpn[0,s],E_corr[s])
+        print " %6i  %16.8f  %16.8f " %(1,first_order_E[0,s],E_corr[s])
 
-        for i in range(1,pt_order):
-            h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order, j12,v_n[:,s].reshape(dim_tot_X,1))
-            v_n[:,s] = h1.reshape(dim_tot_X)
-            v_n[:,s] = np.multiply(res,v_n[:,s]) 
+        E_corr[s] = E_mpn[0,s] 
+        print " %6i  %16.8f  %16.8f " %(2,E_mpn[0,s],E_corr[s])
+
+        for i in range(1,pt_order-1):
+            h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order, j12,v_n[:,(i-1)*n_roots+s].reshape(dim_tot_X,1))
+            v_n[:,i*n_roots+s] = h1.reshape(dim_tot_X)
             #RENORMALISED TERMS
             for k in range(0,i):
-                v_n[:,i] -= np.multiply(E_mpn[k],v_n[:,i-k-1].reshape(dim_tot_X))
-            E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,s])
-            print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i,s],E_corr[s])
+                v_n[:,i*n_roots+s] -= np.multiply(E_mpn[k-1,s],v_n[:,(i-k-1)*n_roots+s].reshape(dim_tot_X))
+
+
+            v_n[:,i*n_roots+s] = np.multiply(res,v_n[:,i*n_roots+s])
+
+            E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,i*n_roots+s])
             E_corr[s] += E_mpn[i,s]
-            v_lcc[:,s] += v_n[:,s].reshape(dim_tot_X)
+            print " %6i  %16.8f  %16.8f " %(i+2,E_mpn[i,s],E_corr[s]+E_mpn[i,s])
+            v_lcc[:,s] += v_n[:,i*n_roots+s].reshape(dim_tot_X)
          
-            if max(abs(E_mpn[i+1,s]),abs(E_mpn[i,s])) < 1e-8:
-                print "LCC Converged"
-                break
-            elif i+1 == n:
-                print
-                print " Converged only upto  %12.1e order " %(abs(E_mpn[i+1,s]-E_mpn[i,s]))
                 
         v_upper[:,s] = v[0:dim_tot_A,s]
         #print "Correlation %16.8f " %(E_corr[s])
+
 
     #v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
     #print v_upper.shape
@@ -251,14 +265,13 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
     
     norm = np.linalg.norm(v_lcc)
     print
-    print "Norm of the LCC vector:    %16.8f " %(norm)
+    print "Norm of the PT vector:    %16.8f " %(norm)
     v_lcc = v_lcc/norm
     return E_corr, v_lcc
 
 
 
-#def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, n_body_order,pt_order, l, v, j12, pt_type):
-def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
+def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type,n):
     do_2b_diag = 0
 
     if pt_type == "lcc" or "mp":
@@ -271,7 +284,7 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
     
     The second term is omitted coz it is the non renormalised term and makes the method non size consistent.
     """
-    n = 40 #the order of wf
+    n = n-1
     var_order = 0
     var_order = n_body_order - pt_order
 
@@ -350,15 +363,15 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
         E_corr[s] = E_mpn[0,s] 
 
         print " %6s  %16s  %16s " %("Order","Correction","Energy")
-        print " %6i  %16.8f  %16.8f " %(1,E_mpn[0,s],E_corr[s])
+        print " %6i  %16.8f  %16.8f " %(2,E_mpn[0,s],E_corr[s])
 
         for i in range(1,n):
             h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order, j12,v_n[:,s].reshape(dim_tot_X,1))
             v_n[:,s] = h1.reshape(dim_tot_X)
             v_n[:,s] = np.multiply(res,v_n[:,s]) 
             E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,s])
-            print " %6i  %16.8f  %16.8f " %(i+1,E_mpn[i,s],E_corr[s])
             E_corr[s] += E_mpn[i,s]
+            print " %6i  %16.8f  %16.8f " %(i+2,E_mpn[i,s],E_corr[s])
             v_lcc[:,s] += v_n[:,s].reshape(dim_tot_X)
          
             if max(abs(E_mpn[i+1,s]),abs(E_mpn[i,s])) < 1e-8:

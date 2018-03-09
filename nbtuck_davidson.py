@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2.7
 import numpy as np
 import scipy
 import scipy.linalg
@@ -7,6 +7,7 @@ import copy as cp
 import argparse
 import scipy.sparse
 import scipy.sparse.linalg
+import sys
 #import sys
 #sys.path.insert(0, '../')
 
@@ -15,8 +16,11 @@ from block import *
 from micro_iter_solvers import *
 from pt import *
 
+np.set_printoptions(suppress = True, precision = 8, linewidth=200)
+
 
 def form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12):
+    # {{{
     brdms = {}   # block reduced density matrix
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
@@ -60,6 +64,7 @@ def form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12):
                     u2 = Bi.v_ss(Tb2.address[bi])
                     brdm_tmp = u1.dot(brdm_tmp).dot(u2.T)
                     brdms[bi] += brdm_tmp + brdm_tmp.T 
+    # }}}
     return brdms
 
 def printm(m):
@@ -107,9 +112,6 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
 
 
 
-
-
-
        
 
 
@@ -141,6 +143,7 @@ parser.add_argument('-ts','--target_state', type=int, default="0", nargs='+', he
 parser.add_argument('-mit', '--max_iter', type=int, default=30, help='Max iterations for solving for the compression vectors', required=False)
 parser.add_argument('-pt','--pt_order', type=int, default=0, help='PT correction order ?', required=False)
 parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp','en','lcc'], help='PT correction denominator type', required=False)
+parser.add_argument('-pt_mit', '--pt_max_iter', type=int, default=80, help='Max iterations for the PT convergence to get lcc (same as pt_order for mp pt ', required=False)
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
 parser.add_argument('-opt','--optimization', type=str, default="diis", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
 parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
@@ -162,6 +165,14 @@ lattice = np.ones((j12.shape[0],1))
 blocks = np.loadtxt(args['blocks']).astype(int)
 #n_sites = len(lattice)
 n_blocks = len(blocks)
+
+
+print
+print " Input arguments"
+for i in range(0,len(list(sys.argv))):
+    print sys.argv[i],
+print
+
 
 
 if len(blocks.shape) == 1:
@@ -427,6 +438,7 @@ if n_body_order >= 8:
 #   Prepare tucker_blocks for perturbation
 dim_tot_pt = 0
 pt_order = args['pt_order']
+pt_mit = args['pt_max_iter']
 if pt_order == 2:
     if n_body_order == 0:
         for bi in range(0,n_blocks):
@@ -582,9 +594,9 @@ elif pt_order == 4 or pt_order == 5:
                             tucker_blocks_pt[4,bi,bj,bk,bl] = tb
                             dim_tot_pt += tb.full_dim
                             pass
-elif pt_order > 5:
-    print "pt_order=",pt_order," NYI"
-    exit(-1)
+#elif pt_order > 5:
+#    print "pt_order=",pt_order," NYI"
+#    exit(-1)
 
 print
 print " Configurations defining the variational space"
@@ -758,11 +770,23 @@ for it in range(0,maxiter):
         #e_lcc =PT_lcc(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
         #v_pt = PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
         if n_body_order ==0:
+            l,v = do_variational_microiteration_update(args,n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12,dav_thresh,it,last_vectors)  
+            last_vectors = cp.deepcopy(v)
+            hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, v) 
+            S2 = v.T.dot(s2v)
+            l = v.T.dot(hv).diagonal()
+
+            energy_per_iter.append(l[ts]) 
+
+            if it > 0:
+                if abs(l[ts]-energy_per_iter[it-1]) < diis_thresh:
+                    break
+
             #v_pt = PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
             vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
         elif pt_type == 'lcc':
             
-            e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type, pt_mit)
             print "PT type : LCC"
             print
             print " %5s    %16s  %16s  %12s" %("State","Energy LCC","Relative","<S2>")
@@ -777,7 +801,7 @@ for it in range(0,maxiter):
             print 
             if pt_order != n_body_order:
                 print "WARNING: Excitation order not same as PT order (The method might not be size extensive)"
-            e2, v_pt = PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            e2, v_pt = PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
             print
             print " %5s    %16s  %16s  %12s" %("State","Energy LCC","Relative","<S2>")
             for i in range(0,n_roots):
@@ -794,14 +818,27 @@ for it in range(0,maxiter):
             if abs(l_lcc[ts]-energy_per_iter_lcc[it-1]) < diis_thresh:
                 break
 
+    if pt_order == 0:
+        # compute S2 for converged states    
+        print
+        print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+        for si,i in enumerate(l):
+            if si<args['n_print']:
+                print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
-    # compute S2 for converged states    
-    print
-    print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
-    for si,i in enumerate(l):
-        if si<args['n_print']:
-            print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
+    if pt_order >= 2:
+        # compute S2 for converged states    
+        print
+        print " Variational Part"
+        print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+        for si,i in enumerate(l):
+            if si<args['n_print']:
+                print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-l[0])*convert,abs(S2[si,si]))
 
+        print pt_type," Correction"
+        for si,i in enumerate(energy_per_iter_lcc):
+            if si<args['n_print']:
+                print " %5i =  %16.8f  %16.8f" %(si,i*convert,(i-energy_per_iter_lcc[0])*convert)
 
 
     brdms = form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12)
@@ -1013,3 +1050,9 @@ if pt_order >= 2:
             print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter_lcc[ei-1])
         else:
             print " %10i  %12.8f  %12s" %(ei,e,"")
+
+print
+print " Input arguments"
+for i in range(0,len(list(sys.argv))):
+    print sys.argv[i],
+
