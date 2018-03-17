@@ -164,7 +164,6 @@ for it in range(10000):
     Gu1_curr = np.einsum("abcdefgh,dekl,fgmn,aio,jkp,lmq,nhr,pqst,osu,trv,uvw,w->bcij",sigma,u2,u3,w1,w2,w3,w4,u4,w5,w6,w7,v)
     Gu2_curr = np.einsum("abcdefgh,bcij,fgmn,aio,jkp,lmq,nhr,pqst,osu,trv,uvw,w->dekl",sigma,u1,u3,w1,w2,w3,w4,u4,w5,w6,w7,v)
     Gu3_curr = np.einsum("abcdefgh,bcij,dekl,aio,jkp,lmq,nhr,pqst,osu,trv,uvw,w->fgmn",sigma,u1,u2,w1,w2,w3,w4,u4,w5,w6,w7,v)
-    
     Gu1_curr = Gu1_curr.reshape(4,4)
     u0,s0,v0 = np.linalg.svd(Gu1_curr)
     u1 = -u0.dot(v0)
@@ -181,6 +180,9 @@ for it in range(10000):
     u3.shape = (2,2,2,2)
     
     Gw1_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,jkp,lmq,nhr,pqst,osu,trv,uvw,w->aio",sigma,u1,u2,u3,w2,w3,w4,u4,w5,w6,w7,v)
+    Gw2_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,lmq,nhr,pqst,osu,trv,uvw,w->jkp",sigma,u1,u2,u3,w1,w3,w4,u4,w5,w6,w7,v)
+    Gw3_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,nhr,pqst,osu,trv,uvw,w->lmq",sigma,u1,u2,u3,w1,w2,w4,u4,w5,w6,w7,v)
+    Gw4_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,pqst,osu,trv,uvw,w->nhr",sigma,u1,u2,u3,w1,w2,w3,u4,w5,w6,w7,v)
     Gw1_curr = Gw1_curr.reshape(4,chi)
     u0,s0,v0 = np.linalg.svd(Gw1_curr)
     u0 = u0[:,0:chi]
@@ -188,7 +190,6 @@ for it in range(10000):
     w1 = -u0.dot(v0)
     w1.shape = (2,2,chi)
     
-    Gw2_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,lmq,nhr,pqst,osu,trv,uvw,w->jkp",sigma,u1,u2,u3,w1,w3,w4,u4,w5,w6,w7,v)
     Gw2_curr = Gw2_curr.reshape(4,chi)
     u0,s0,v0 = np.linalg.svd(Gw2_curr)
     u0 = u0[:,0:chi]
@@ -196,7 +197,6 @@ for it in range(10000):
     w2 = -u0.dot(v0)
     w2.shape = (2,2,chi)
     
-    Gw3_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,nhr,pqst,osu,trv,uvw,w->lmq",sigma,u1,u2,u3,w1,w2,w4,u4,w5,w6,w7,v)
     Gw3_curr = Gw3_curr.reshape(4,chi)
     u0,s0,v0 = np.linalg.svd(Gw3_curr)
     u0 = u0[:,0:chi]
@@ -204,7 +204,6 @@ for it in range(10000):
     w3 = -u0.dot(v0)
     w3.shape = (2,2,chi)
             
-    Gw4_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,pqst,osu,trv,uvw,w->nhr",sigma,u1,u2,u3,w1,w2,w3,u4,w5,w6,w7,v)
     Gw4_curr = Gw4_curr.reshape(4,chi)
     u0,s0,v0 = np.linalg.svd(Gw4_curr)
     u0 = u0[:,0:chi]
@@ -222,6 +221,7 @@ for it in range(10000):
     
     
     Gw5_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,nhr,pqst,trv,uvw,w->osu",sigma,u1,u2,u3,w1,w2,w3,w4,u4,w6,w7,v)
+    Gw6_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,nhr,pqst,osu,uvw,w->trv",sigma,u1,u2,u3,w1,w2,w3,w4,u4,w5,w7,v)
     Gw5_curr = Gw5_curr.reshape(chi*chi,chi)
     u0,s0,v0 = np.linalg.svd(Gw5_curr)
     u0 = u0[:,0:chi]
@@ -229,7 +229,6 @@ for it in range(10000):
     w5 = -u0.dot(v0)
     w5.shape = (chi,chi,chi)
     
-    Gw6_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,nhr,pqst,osu,uvw,w->trv",sigma,u1,u2,u3,w1,w2,w3,w4,u4,w5,w7,v)
     Gw6_curr = Gw6_curr.reshape(chi*chi,chi)
     u0,s0,v0 = np.linalg.svd(Gw6_curr)
     u0 = u0[:,0:chi]
@@ -245,6 +244,84 @@ for it in range(10000):
     w7 = -u0.dot(v0)
     w7.shape = (chi,chi,chi)
    
+    # Now back...
+    continue
+
+    Gw6_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,nhr,pqst,osu,uvw,w->trv",sigma,u1,u2,u3,w1,w2,w3,w4,u4,w5,w7,v)
+    Gw6_curr = Gw6_curr.reshape(chi*chi,chi)
+    u0,s0,v0 = np.linalg.svd(Gw6_curr)
+    u0 = u0[:,0:chi]
+    v0 = v0[0:chi,:]
+    w6 = -u0.dot(v0)
+    w6.shape = (chi,chi,chi)
+    
+    Gw5_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,nhr,pqst,trv,uvw,w->osu",sigma,u1,u2,u3,w1,w2,w3,w4,u4,w6,w7,v)
+    Gw5_curr = Gw5_curr.reshape(chi*chi,chi)
+    u0,s0,v0 = np.linalg.svd(Gw5_curr)
+    u0 = u0[:,0:chi]
+    v0 = v0[0:chi,:]
+    w5 = -u0.dot(v0)
+    w5.shape = (chi,chi,chi)
+    
+    
+    Gu4_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,nhr,osu,trv,uvw,w->pqst",sigma,u1,u2,u3,w1,w2,w3,w4,w5,w6,w7,v)
+    Gu4_curr = Gu4_curr.reshape(chi*chi,chi*chi)
+    u0,s0,v0 = np.linalg.svd(Gu4_curr)
+    u4 = -u0.dot(v0)
+    u4.shape = (chi,chi,chi,chi)
+    
+    
+    Gw4_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,lmq,pqst,osu,trv,uvw,w->nhr",sigma,u1,u2,u3,w1,w2,w3,u4,w5,w6,w7,v)
+    Gw4_curr = Gw4_curr.reshape(4,chi)
+    u0,s0,v0 = np.linalg.svd(Gw4_curr)
+    u0 = u0[:,0:chi]
+    v0 = v0[0:chi,:]
+    w4 = -u0.dot(v0)
+    w4.shape = (2,2,chi)
+    
+    Gw3_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,jkp,nhr,pqst,osu,trv,uvw,w->lmq",sigma,u1,u2,u3,w1,w2,w4,u4,w5,w6,w7,v)
+    Gw3_curr = Gw3_curr.reshape(4,chi)
+    u0,s0,v0 = np.linalg.svd(Gw3_curr)
+    u0 = u0[:,0:chi]
+    v0 = v0[0:chi,:]
+    w3 = -u0.dot(v0)
+    w3.shape = (2,2,chi)
+    
+    Gw2_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,aio,lmq,nhr,pqst,osu,trv,uvw,w->jkp",sigma,u1,u2,u3,w1,w3,w4,u4,w5,w6,w7,v)
+    Gw2_curr = Gw2_curr.reshape(4,chi)
+    u0,s0,v0 = np.linalg.svd(Gw2_curr)
+    u0 = u0[:,0:chi]
+    v0 = v0[0:chi,:]
+    w2 = -u0.dot(v0)
+    w2.shape = (2,2,chi)
+    
+    Gw1_curr = np.einsum("abcdefgh,bcij,dekl,fgmn,jkp,lmq,nhr,pqst,osu,trv,uvw,w->aio",sigma,u1,u2,u3,w2,w3,w4,u4,w5,w6,w7,v)
+    Gw1_curr = Gw1_curr.reshape(4,chi)
+    u0,s0,v0 = np.linalg.svd(Gw1_curr)
+    u0 = u0[:,0:chi]
+    v0 = v0[0:chi,:]
+    w1 = -u0.dot(v0)
+    w1.shape = (2,2,chi)
+   
+
+    Gu3_curr = np.einsum("abcdefgh,bcij,dekl,aio,jkp,lmq,nhr,pqst,osu,trv,uvw,w->fgmn",sigma,u1,u2,w1,w2,w3,w4,u4,w5,w6,w7,v)
+    Gu3_curr = Gu3_curr.reshape(4,4)
+    u0,s0,v0 = np.linalg.svd(Gu3_curr)
+    u3 = -u0.dot(v0)
+    u3.shape = (2,2,2,2)
+    
+    Gu2_curr = np.einsum("abcdefgh,bcij,fgmn,aio,jkp,lmq,nhr,pqst,osu,trv,uvw,w->dekl",sigma,u1,u3,w1,w2,w3,w4,u4,w5,w6,w7,v)
+    Gu2_curr = Gu2_curr.reshape(4,4)
+    u0,s0,v0 = np.linalg.svd(Gu2_curr)
+    u2 = -u0.dot(v0)
+    u2.shape = (2,2,2,2)
+    
+    Gu1_curr = np.einsum("abcdefgh,dekl,fgmn,aio,jkp,lmq,nhr,pqst,osu,trv,uvw,w->bcij",sigma,u2,u3,w1,w2,w3,w4,u4,w5,w6,w7,v)
+    Gu1_curr = Gu1_curr.reshape(4,4)
+    u0,s0,v0 = np.linalg.svd(Gu1_curr)
+    u1 = -u0.dot(v0)
+    u1.shape = (2,2,2,2)
+    
     continue
     
 
