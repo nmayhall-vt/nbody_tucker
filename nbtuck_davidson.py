@@ -75,7 +75,7 @@ formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 #parser.add_argument('-d','--dry_run', default=False, action="store_true", help='Run but don\'t submit.', required=False)
 parser.add_argument('-ju','--j_unit', type=str, default="cm", help='What units are the J values in', choices=['cm','ev'],required=False)
-parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
+#parser.add_argument('-l','--lattice', type=str, default="heis_lattice.m", help='File containing vector of sizes number of electrons per lattice site', required=False)
 parser.add_argument('-j','--j12', type=str, default="heis_j12.m", help='File containing matrix of exchange constants', required=False)
 parser.add_argument('-b','--blocks', type=str, default="heis_blocks.m", help='File containing vector of block sizes', required=False)
 #parser.add_argument('-s','--save', default=False, action="store_true", help='Save the Hamiltonian and S2 matrices', required=False)
@@ -97,6 +97,7 @@ parser.add_argument('-pt_type','--pt_type', type=str, default='mp', choices=['mp
 parser.add_argument('-ms','--target_ms', type=float, default=0, help='Target ms space', required=False)
 parser.add_argument('-opt','--optimization', type=str, default="diis", help='Optimization algorithm for Tucker factors',choices=["none", "diis"], required=False)
 parser.add_argument('-diis_thresh','--diis_thresh', type=int, default=8, help='Threshold for pspace diis iterations', required=False)
+parser.add_argument('-diis_start','--diis_start', type=int, default=0, help='When to start pspace diis iterations', required=False)
 parser.add_argument('-n_diis_vecs','--n_diis_vecs', type=int, default=8, help='Number of error vectors to keep', required=False)
 parser.add_argument('-direct','--direct', type=int, default=1, help='Evaluate the matrix on the fly?',choices=[0,1], required=False)
 parser.add_argument('-dmit', '--dav_max_iter', type=int, default=20, help='Max iterations for solving for the CI-type coefficients', required=False)
@@ -109,11 +110,13 @@ args = vars(parser.parse_args())
 #   Let minute specification of walltime override hour specification
 
 j12 = np.loadtxt(args['j12'])
-lattice = np.loadtxt(args['lattice']).astype(int)
+#lattice = np.loadtxt(args['lattice']).astype(int)
+lattice = np.ones((j12.shape[0],1))
 blocks = np.loadtxt(args['blocks']).astype(int)
-n_sites = len(lattice)
+#n_sites = len(lattice)
 n_blocks = len(blocks)
-    
+
+
 if len(blocks.shape) == 1:
     print 'blocks',blocks
     
@@ -145,15 +148,13 @@ if args['j_unit'] == 'cm':
     j12 = j12 * au2ev/au2cm
 
 print " j12:\n", j12
-print " lattice:\n", lattice 
+#print " lattice:\n", lattice 
 print " blocks:\n", blocks
 print " n_blocks:\n", n_blocks
 
 H_tot = np.array([])
 S2_tot = np.array([])
 H_dict = {}
-
-
 
 
 # calculate problem dimensions 
@@ -691,8 +692,21 @@ for it in range(0,maxiter):
     print
     print " Compute Eigenvalues of BRDMs:"
     overlaps = []
+    diis_start = args['diis_start']
     for bi in range(0,n_blocks):
         Bi = lattice_blocks[bi]
+
+        # TODO: do this with a proper projection, where the user specifies the number of spin states for p space
+        """
+        lx,vx = np.linalg.eigh(Bi.full_S2)
+        spin_proj = np.empty((vx.shape[0],0));
+        for si in range(0,lx.shape[0]):
+            if abs(lx[si]) < 1.0:
+                spin_proj = np.hstack((spin_proj, vx[:,si:si+1]))
+        
+        spin_proj = spin_proj.dot(spin_proj.T)
+        brdm_curr = spin_proj.dot(brdms[bi]).dot(spin_proj)
+        """
 
         brdm_curr = brdms[bi] + Bi.full_S2
         if opt == "diis":
@@ -711,7 +725,7 @@ for it in range(0,maxiter):
             
             n_evecs = Bi.diis_vecs.shape[1]
             
-            if it>0:
+            if it>diis_start:
                 S = Bi.diis_vecs.T.dot(Bi.diis_vecs )
                 
                 collapse = 1
@@ -748,6 +762,7 @@ for it in range(0,maxiter):
                     #print x.T
                     print " CURRENT           error vector %12.2e " % error_vector.T.dot(error_vector)
 
+        #lx,vx = np.linalg.eigh(brdm_curr)
         lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)
             
         lx = vx.T.dot(brdms[bi]).dot(vx).diagonal()
