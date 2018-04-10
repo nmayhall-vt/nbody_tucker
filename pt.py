@@ -21,7 +21,8 @@ def printm(m):
     # }}}
 
 def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
-    """# {{{
+# {{{
+    """
 
         E(2) = v_sA H_AX [D_XX - E_s^0]^-1 H_XA v_As
 
@@ -132,10 +133,11 @@ def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_or
 
     exit (-1)
     return e2
-
+# }}}
 
 
 def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
+# {{{
     do_2b_diag = 0
 
     if pt_type == "lcc" or "mp":
@@ -247,7 +249,8 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
 
             E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,i*n_roots+s])
             E_corr[s] += E_mpn[i,s]
-            print " %6i  %16.8f  %16.8f " %(i+2,E_mpn[i,s],E_corr[s]+E_mpn[i,s])
+            #print " %6i  %16.8f  %16.8f " %(i+2,E_mpn[i,s],E_corr[s]+E_mpn[i,s])
+            print " %6i  %16.8f  %16.8f " %(i+2,E_mpn[i,s],E_corr[s])
             v_lcc[:,s] += v_n[:,i*n_roots+s].reshape(dim_tot_X)
          
                 
@@ -268,10 +271,11 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
     print "Norm of the PT vector:    %16.8f " %(norm)
     v_lcc = v_lcc/norm
     return E_corr, v_lcc
-
+# }}}
 
 
 def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type,n):
+# {{{
     do_2b_diag = 0
 
     if pt_type == "lcc" or "mp":
@@ -398,11 +402,11 @@ def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
     v_lcc = v_lcc/norm
     return E_corr, v_lcc
 
-
+# }}}
 
 
 def PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
-    do_2b_diag = 0
+    do_2b_diag = 0# {{{
 
     if pt_type == "lcc":
         do_2b_diag = 0
@@ -480,9 +484,10 @@ def PT_lcc_2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_ord
     v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,n_roots)
     #printm(v)
 
-    return v
+    return v# }}}
 
 def PT_lcc(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
+# {{{
     do_2b_diag = 0
 
     if pt_type == "lcc":
@@ -549,10 +554,11 @@ def PT_lcc(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order
             break
     return E_corr
 
-
+# }}}
 
 
 def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
+# {{{
     do_2b_diag = 0
 
     if pt_type == "lcc":
@@ -644,7 +650,7 @@ def PT_nth_vector(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_bod
 
 
     return E_corr
-
+# }}}
 
 def pt_build_H1(blocks,tb_l, tb_r,j12):
   # {{{
