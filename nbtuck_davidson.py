@@ -802,6 +802,10 @@ for it in range(0,maxiter):
             if pt_order != n_body_order:
                 print "WARNING: Excitation order not same as PT order (The method might not be size extensive)"
             e2, v_pt = PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+            
+            ##For checking each renormalised and normal terms, use this function.
+            #e2 = eqn_pt(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type)
+
             print
             print " %5s    %16s  %16s  %12s" %("State","Energy LCC","Relative","<S2>")
             for i in range(0,n_roots):

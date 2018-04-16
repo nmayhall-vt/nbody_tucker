@@ -128,13 +128,172 @@ def vibin_pt2(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_or
 
     e5 = e5_main - e5_renorm1 - e5_renorm2
 
-
     print("pt 5 % 10.15f " %e5)
+
+    RHRHRHRHv = np.multiply(res, HRHRHRHv[:,0]).reshape(dim_tot_X,1)
+    HRHRHRHRHv,Smp5 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_pt, lattice_blocks, n_body_order+pt_order, j12,RHRHRHRHv)
+    e6_main = np.dot(RHv.T, HRHRHRHRHv)
+
+    print("pt 6 % 10.15f " %e6_main)
+
+
+    RRHv = np.multiply(res, RHv[:,0]).reshape(dim_tot_X,1)
+    RRRHv = np.multiply(res,RRHv[:,0]).reshape(dim_tot_X,1)
+
+    HRRRH = np.dot(RHv.T,RRHv)
+    HRRRRH = np.dot(RHv.T,RRRHv)
+
+    e_8_1 = e2 * e2 * e2 * HRRRRH
+    e_8_2 = e2 * e2 * HRRH * HRRRH
+    e_8_3 = e2 * HRRH * HRRH * HRRH
+
+
+    
+
+
+
+
+
+
 
     exit (-1)
     return e2
 # }}}
 
+def eqn_pt(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
+# {{{
+    do_2b_diag = 0
+
+    if pt_type == "lcc" or "mp":
+        do_2b_diag = 0
+    else:
+        print " Bad value for pt_type"
+        exit(-1)
+    """
+    C(n) = R * V * C(n-1) - sum_k  R * E(k) * C(n-k)
+    
+    The second term is omitted coz it is the non renormalised term and makes the method non size consistent.
+    """
+    var_order = 0
+    var_order = n_body_order - pt_order
+
+    n_roots = v.shape[1]
+    e2 = np.zeros((n_roots))
+
+    tucker_blocks_0 = {}
+    tucker_blocks_1 = {}
+    dim_tot_X = 0 #Dim of orthogonal space
+    dim_tot_A = 0 #Dim of model space
+    for t_l in sorted(tucker_blocks):
+        if t_l[0] <= var_order:
+            tb_l = cp.deepcopy(tucker_blocks[t_l])
+            tb_l.start = dim_tot_A
+            tb_l.stop = tb_l.start + tb_l.full_dim 
+            
+            tucker_blocks_0[t_l] = tb_l 
+            
+            dim_tot_A += tb_l.full_dim
+        else:
+            tb_l = cp.deepcopy(tucker_blocks[t_l])
+            tb_l.start = dim_tot_X
+            tb_l.stop = tb_l.start + tb_l.full_dim 
+            
+            tucker_blocks_1[t_l] = tb_l 
+            
+            dim_tot_X += tb_l.full_dim
+            
+
+    D_X = np.zeros((dim_tot_X))     #diagonal of X space
+    H_Xs = np.zeros((dim_tot_X, n_roots))
+    E_mpn = np.zeros((pt_order+1,n_roots))         #PT energy
+    #v_n = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
+    v_n = np.zeros((dim_tot_X,n_roots*(pt_order+1)))   #list of PT vectors
+       
+
+    print " Configurations defining the variational space"
+    for t_l in sorted(tucker_blocks_0):
+        #print " 0: ", tucker_blocks_0[t_l]
+        print tucker_blocks_0[t_l], " Range= %8i:%-8i" %( tucker_blocks_0[t_l].start, tucker_blocks_0[t_l].stop)
+    print 
+    print " Configurations defining the perturbational space"
+    for t_l in sorted(tucker_blocks_1):
+        print tucker_blocks_1[t_l], " Range= %8i:%-8i" %( tucker_blocks_1[t_l].start, tucker_blocks_1[t_l].stop)
+        #print " 1: ", tucker_blocks_1[t_l]
+  
+
+    for t_l in sorted(tucker_blocks_1):
+        tb_l = tucker_blocks_1[t_l]
+        D_X[tb_l.start:tb_l.stop] = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
+        for t_r in sorted(tucker_blocks_0):
+            tb_r = tucker_blocks_0[t_r]
+            hv,s2v = pt_build_H1v(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
+            H_Xs[tb_l.start:tb_l.stop,:] += hv
+
+    RHv = np.array(())
+    res = 1/(l-D_X)
+    RHv = np.multiply(res, H_Xs[:,0]).reshape(dim_tot_X,1)
+    e2 = H_Xs[:,0].T.dot(RHv)
+
+    print("pt 2 % 10.15f " %e2)
+
+    HRHv,Smp3 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order+pt_order, j12,RHv)
+    e3 = np.dot(RHv.T, HRHv)
+    print("pt 3 % 10.15f " %e3)
+
+
+    RHRHv = np.multiply(res,HRHv[:,0]).reshape(dim_tot_X,1)
+    HRHRHv,Smp4 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order+pt_order, j12,RHRHv)
+    e4_main = np.dot(RHv.T, HRHRHv)
+
+    HRRH = np.dot(RHv.T,RHv)
+    e4_renorm = e2 * HRRH
+    #print("pt 4 % 10.15f " %e4_main)
+    #print("pt 4 % 10.15f " %e4_renorm)
+    e4 = e4_main - e4_renorm
+
+    print("pt 4 % 10.15f " %e4)
+
+
+    RHRHRHv = np.multiply(res, HRHRHv[:,0]).reshape(dim_tot_X,1)
+    HRHRHRHv,Smp5 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order+pt_order, j12,RHRHRHv)
+    e5_main = np.dot(RHv.T, HRHRHRHv)
+
+    HRRHRH = np.dot(RHv.T,RHRHv)
+
+    e5_renorm1 = 2 * e2 * HRRHRH
+    e5_renorm2 = e3 * HRRH
+
+
+    e5 = e5_main - e5_renorm1 - e5_renorm2
+
+    print("pt 5 % 10.15f " %e5)
+
+    RHRHRHRHv = np.multiply(res, HRHRHRHv[:,0]).reshape(dim_tot_X,1)
+    HRHRHRHRHv,Smp5 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order+pt_order, j12,RHRHRHRHv)
+    e6_main = np.dot(RHv.T, HRHRHRHRHv)
+
+    print("pt 6 % 10.15f " %e6_main)
+
+
+    RRHv = np.multiply(res, RHv[:,0]).reshape(dim_tot_X,1)
+    RRRHv = np.multiply(res,RRHv[:,0]).reshape(dim_tot_X,1)
+
+    HRRRH = np.dot(RHv.T,RRHv)
+    HRRRRH = np.dot(RHv.T,RRRHv)
+
+    e_8_1 = e2 * e2 * e2 * HRRRRH
+    e_8_2 = e2 * e2 * HRRH * HRRRH
+    e_8_3 = e2 * HRRH * HRRH * HRRH
+
+    e8_cut = 4 * e_8_1 + 12 * e_8_2 + 4 * e_8_3
+
+    print("pt8ct % 10.15f " %e8_cut)
+
+
+
+    exit (-1)
+    return e2
+# }}}
 
 def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type):
 # {{{
