@@ -137,13 +137,15 @@ def form_hdvv_U_1v(lattice,a):
     U_tot = np.zeros([n_configs,n_configs])
 
     
+    sij = 0
     for si,i in enumerate(lattice):
         i1 = np.eye(np.power(2,si))
         i2 = np.eye(np.power(2,n_sites-si-1))
 
         for sj,j in enumerate(lattice):
             if sj>si :
-                aij = a[sj+si*n_sites]
+                aij = a[sij]
+                #aij = a[sj+si*n_sites]
                 i1 = np.eye(np.power(2,si))
                 i2 = np.eye(np.power(2,sj-si-1))
                 i3 = np.eye(np.power(2,n_sites-sj-1))
@@ -152,5 +154,40 @@ def form_hdvv_U_1v(lattice,a):
                 SzSz = np.kron(i1,np.kron(sz,np.kron(i2,np.kron(sz,i3))))
                
                 U_tot += aij*(SpSm + SmSp + 2*SzSz)
+                sij += 1
 
     return U_tot
+
+def form_hdvv_operators(lattice,operators):
+    """
+    Form Heisenberg-Dirac van-Vleck Hamiltonian
+    """
+    n_sites = len(lattice)
+    n_configs = np.power(2,n_sites) 
+
+    sx = .5*np.array([[0,1.],[1.,0]])
+    sy = .5*np.array([[0,(0-1j)],[(0+1j),0]])
+    sz = .5*np.array([[1,0],[0,-1]])
+    s2 = .75*np.array([[1,0],[0,1]])
+    s1 = sx + sy + sz
+    I1 = np.eye(2)
+
+    sp = sx + sy*(0+1j)
+    sm = sx - sy*(0+1j)
+
+    sp = sp.real
+    sm = sm.real
+    for si,i in enumerate(lattice):
+        for sj,j in enumerate(lattice):
+            if sj>si :
+                U_tot = np.zeros([n_configs,n_configs])
+                i1 = np.eye(np.power(2,si))
+                i2 = np.eye(np.power(2,sj-si-1))
+                i3 = np.eye(np.power(2,n_sites-sj-1))
+                SpSm = np.kron(i1,np.kron(sp,np.kron(i2,np.kron(sm,i3))))
+                SmSp = np.kron(i1,np.kron(sm,np.kron(i2,np.kron(sp,i3))))
+                SzSz = np.kron(i1,np.kron(sz,np.kron(i2,np.kron(sz,i3))))
+               
+                operators.append(SpSm + SmSp + 2*SzSz)
+
+    return
