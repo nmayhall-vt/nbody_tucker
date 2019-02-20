@@ -7,7 +7,7 @@ ipython==5.8.0
 ipython-genutils==0.2.0
 kiwisolver==1.0.1
 matplotlib==2.2.3
-nbody-tucker==0
+nbody-tucker==0.1
 numpy==1.16.1
 pathlib2==2.3.3
 pexpect==4.6.0
