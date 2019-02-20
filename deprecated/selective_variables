@@ -1,0 +1,221 @@
+#! /usr/bin/env python
+
+import autograd.numpy as np
+from autograd import grad  
+
+import autograd.scipy as scipy
+
+#import numpy as np
+#import autograd.scipy as scipy
+import scipy.linalg
+import scipy.io
+import copy as cp
+import argparse
+import scipy.sparse
+import scipy.sparse.linalg
+#import sys
+#sys.path.insert(0, '../')
+
+from hdvv import *
+from block import *
+
+
+from scipy.optimize import minimize
+
+
+
+
+
+n_sites = 6
+j12 = np.zeros((n_sites,n_sites))
+for i in range(n_sites-1):
+    j12[i,i+1] -= 1
+    j12[i+1,i] -= 1
+
+lattice = np.ones((n_sites))
+lattice_guess = np.ones((4))
+j12_guess = j12[0:4][0:4] 
+
+np.random.seed(2)
+
+    
+H, tmp, S2, Sz = form_hdvv_H(lattice,j12)
+l_full, v_full = np.linalg.eigh(H)
+s2 = v_full.T.dot(S2).dot(v_full)
+print " Exact Energies:"
+for s in range(10):
+    print "   %16.12f %16.12f " %(l_full[s],s2[s,s])
+
+
+
+a = (np.random.rand(n_sites,n_sites)-.5)/100
+b = (np.random.rand(n_sites,n_sites)-.5)/100
+
+v0 = np.random.rand(v_full.shape[0])
+v0 = v0/np.linalg.norm(v0)
+
+# Add component along the exact solution to get better starting point
+#v0 += cp.deepcopy(v_full[:,0])*2
+#v0 = v0/np.linalg.norm(v0)
+
+aa = np.zeros((n_sites,n_sites))
+bb = np.zeros((n_sites,n_sites))
+Uold = np.zeros(H.shape)
+  
+a = a.flatten()
+Uops = form_hdvv_U_1v_op(lattice)
+U1,U2 = form_hdvv_U_2v_op(lattice,j12)
+
+v2_input = {}
+for key in U1:
+    v2_input[key] = (np.random.rand(1)-.5)/100
+
+print j12
+print v2_input
+variable_mapping = {}
+
+#num_variables = len(U1.keys())  
+num_variables = len(U1.keys()) + len(U2.keys())  
+a = (np.random.rand(num_variables)-.5)/100
+
+print num_variables
+
+
+#def form_energy(inp):
+#
+#    #aa = inp[0:n_sites*n_sites]
+#    #bb = inp[n_sites*n_sites::]
+#    #aa.resize(n_sites,n_sites) 
+#    #bb.shape = (n_sites,n_sites) 
+#    
+#    #U = form_hdvv_U(lattice,aa,bb)
+#    U = np.zeros(H.shape)
+#    for si,i in enumerate(lattice):
+#        for sj,j in enumerate(lattice):
+#            if sj>si :
+#                aij = a[sj+si*n_sites]
+#                U += aij * Uops[si,sj] 
+#    
+#   
+#    E = v0.T.dot(U.T).dot(H).dot(U).dot(v0) / v0.T.dot(U.T).dot(U).dot(v0)
+#    print E
+#    return E
+#
+#input_data = [a,b]
+
+#print "grad: ", grad_E(a)
+
+#result = minimize(form_energy, a, jac=grad_E, options={'gtol': 1e-6, 'disp': True})
+#
+#
+##options={'xtol': 1e-8, 'disp': True})
+#if result.success:
+#    fitted_params = result.x
+#    print(fitted_params)
+#else:
+#    raise ValueError(result.message)
+
+generator = np.zeros(H.shape)
+Uv = np.zeros(H.shape)
+do_ucc = 0
+
+def form_energy(inp):
+
+    U = np.zeros(H.shape)
+    
+    n_op = 0
+    for opi in sorted(U1):
+        U += inp[n_op] * U1[opi] 
+        n_op += 1
+    
+    for opi in sorted(U2):
+        U += inp[n_op] * U2[opi] 
+        n_op += 1
+
+
+    Uv = np.dot(U,v0)
+    if do_ucc:
+        generator = U
+        #generator = U-U.T
+        #Ucc = scipy.linalg.expm(generator)
+        #Uv = scipy.sparse.linalg.expm_multiply(generator,v0)
+        Uv = np.dot(generator,v0) + .5*np.dot(generator,np.dot(generator,v0))
+        #Uv = np.dot(generator,v0) + .5*np.dot(generator,np.dot(generator,v0)) + np.dot(generator,np.dot(generator,np.dot(generator,v0)))
+        
+    E = np.dot(Uv.T,H) 
+    E = np.dot(E,Uv)  
+    E = E / np.dot(Uv.T,Uv) 
+    #E = Uv.T.dot(H).dot(Uv) / Uv.T.dot(Uv) 
+
+    #E = v0.T.dot(U.T).dot(H).dot(U).dot(v0) / v0.T.dot(U.T).dot(U).dot(v0)
+    #print E
+    return E
+
+grad_E = grad(form_energy)
+
+thresh = 1e-12
+
+a = a.flatten()
+prev_E = 0
+for it in range(100):
+
+    #result = minimize(form_energy, a, method='CG', options={'gtol': thresh/10, 'disp': True})
+    result = minimize(form_energy, a, method='BFGS', options={'gtol': thresh/10, 'disp': True})
+    #result = minimize(form_energy, a, method='CG', jac=grad_E, options={'gtol': thresh/10, 'disp': True})
+    #result = minimize(form_energy, a, method='BFGS', jac=grad_E, options={'gtol': thresh/10, 'disp': True})
+    #result = minimize(form_energy, a, method='L-BFGS-B', jac=grad_E, options={'gtol': 1e-2, 'disp': True})
+    if abs(result.fun - prev_E) < thresh:
+        print " Converged"
+        break
+    
+    a = result.x
+    U = np.zeros(H.shape)
+    """
+    for si,i in enumerate(lattice):
+        for sj,j in enumerate(lattice):
+            if sj>si :
+                aij = a[sj+si*n_sites]
+                U += aij * Uops[si,sj] 
+                """
+    U = np.zeros(H.shape)
+    
+    n_op = 0
+    for opi in sorted(U1):
+        U += a[n_op] * U1[opi] 
+        n_op += 1
+    
+    for opi in sorted(U2):
+        U += a[n_op] * U2[opi] 
+        n_op += 1
+    
+   
+    print " Current amplitudes"
+    print a
+    
+    #set new initial guess amplitudes
+    a = (np.random.rand(n_sites,n_sites)-.5)/100
+    #a = a.flatten()
+    #a = result.x/10
+
+    if do_ucc:
+        generator = U
+        #generator = U-U.T
+        #Ucc = scipy.linalg.expm(generator)
+        #v0 = scipy.sparse.linalg.expm_multiply(generator,v0)
+        v0 = np.dot(generator,v0) + .5*np.dot(generator,np.dot(generator,v0))
+        #v0 = np.dot(generator,v0) + .5*np.dot(generator,np.dot(generator,v0)) + np.dot(generator,np.dot(generator,np.dot(generator,v0)))
+    else:
+        v0 = U.dot(v0)
+
+    #v0 = U.dot(v0)
+    
+    print " Iteration: %4i  Current Energy: %16.12f  Delta Energy: %16.12f" %(it, result.fun, result.fun-prev_E)
+    
+    prev_E = result.fun
+
+
+
+print
+print " Exact Energies:"
+for s in range(10):
+    print "   %16.12f %12.8f " %(l_full[s],s2[s,s])

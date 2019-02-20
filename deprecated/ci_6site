@@ -1,0 +1,725 @@
+ Exact Energies:
+    -4.987154267776   0.000000000000 
+    -4.003990713797   2.000000000000 
+    -4.003990713797   2.000000000000 
+    -4.003990713797   2.000000000000 
+    -2.842923082777   2.000000000000 
+    -2.842923082777   2.000000000000 
+    -2.842923082777   2.000000000000 
+    -2.370453837972  -0.000000000000 
+    -2.028414055235   2.000000000000 
+    -2.028414055235   2.000000000000 
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.961110
+         Iterations: 118
+         Function evaluations: 7601
+         Gradient evaluations: 200
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.961110
+         Iterations: 65
+         Function evaluations: 2661
+         Gradient evaluations: 70
+ Current amplitudes
+[-6.40050979e-04 -7.86677447e-01  3.90837420e-01 -7.06812974e-03
+  1.07134412e-01 -2.66216164e-01 -2.95351366e-03  1.19270966e-03
+ -1.93782029e-01  3.68748744e-01  2.94123289e-01 -1.23396501e-01
+ -3.65420055e-03  1.35781213e-04 -3.15560134e-03 -5.09804541e-01
+  1.96552504e-01  1.98430755e-01  3.46561485e-03 -4.20354523e-03
+  5.24609012e-05 -4.34713496e-03 -1.61428052e-01  6.81061465e-01
+ -3.72840028e-03  9.67453090e-04 -2.73987999e-03 -3.93054316e-03
+ -2.79693793e-03 -2.55858372e-01 -3.22125154e-04 -2.98256774e-03
+  1.40406725e-03 -1.69301644e-04  5.23672002e-05 -1.13107349e-03]
+ Iteration:    0  Current Energy:  -4.961109591245  Delta Energy:  -4.961109
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.984866
+         Iterations: 106
+         Function evaluations: 8675
+         Gradient evaluations: 228
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.984866
+         Iterations: 21
+         Function evaluations: 1797
+         Gradient evaluations: 47
+ Current amplitudes
+[ 3.45113116e-03  9.04496138e-03  1.00764065e-04  2.66488899e-03
+  4.97108080e-03  4.49349910e-03  3.70145893e-03 -2.82597574e-03
+  1.09676153e-02  6.37070496e-03  2.20849791e-03  1.22933028e-03
+ -2.70425971e-03  2.04627499e-03 -4.12437491e-03  1.08340623e-02
+  1.54353370e-04  4.66263404e-03 -4.47777273e-03 -4.34336334e-03
+ -4.56498814e-03 -1.04849242e-03  7.90799210e-03  2.21291802e-03
+  3.76266452e-03 -6.76109046e-04  1.19641464e-03 -2.09573257e-03
+  1.15254573e-03  1.32567510e-02 -5.19852835e-04 -2.92950162e-03
+ -7.46327081e-04 -5.54257352e-04  7.61748667e-05  2.57332498e-04]
+ Iteration:    1  Current Energy:  -4.984865994952  Delta Energy:  -0.023756
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.986482
+         Iterations: 322
+         Function evaluations: 24587
+         Gradient evaluations: 647
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.986482
+         Iterations: 143
+         Function evaluations: 6575
+         Gradient evaluations: 173
+ Current amplitudes
+[-4.57570808e-03 -3.83958484e-01 -2.44110870e-01 -8.13041369e-02
+ -5.58259686e-02 -2.29245126e-01  2.77875251e-05  4.56747593e-03
+ -4.89563257e-01  1.47479874e-01  1.00188933e-01 -7.99323901e-02
+ -8.55399449e-04  3.48684514e-03 -5.54290582e-04 -6.84382267e-01
+ -2.19425676e-01 -3.16738370e-01  4.40450494e-03 -3.97862052e-03
+  1.61967790e-03 -2.16741256e-03 -5.24513367e-01 -7.36115061e-02
+  4.25901597e-03  7.02742098e-04  4.16714612e-03  2.02264241e-03
+  1.21645169e-05 -6.78749061e-01 -2.81179214e-03 -4.95336477e-03
+ -8.21637560e-04  6.33761103e-04  3.76561868e-03  1.77584840e-03]
+ Iteration:    2  Current Energy:  -4.986481780251  Delta Energy:  -0.001615
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.986886
+         Iterations: 157
+         Function evaluations: 12704
+         Gradient evaluations: 334
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.986886
+         Iterations: 17
+         Function evaluations: 2140
+         Gradient evaluations: 56
+ Current amplitudes
+[ 0.00342333  0.00653576  0.00188563  0.00306204  0.00177469  0.0021456
+ -0.00291498  0.00367382  0.00585586  0.00294594  0.00114766  0.00108622
+  0.00333161 -0.00294206  0.0023068   0.00682749  0.00166466  0.00138746
+ -0.00064916 -0.00279119  0.00380622  0.00219688  0.00529906 -0.00106512
+ -0.00169253 -0.0027139   0.00126344 -0.00085521  0.00436781  0.00604781
+ -0.001131    0.0035512  -0.00119207 -0.0032169   0.00281659 -0.00027791]
+ Iteration:    3  Current Energy:  -4.986885795162  Delta Energy:  -0.000404
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987032
+         Iterations: 691
+         Function evaluations: 55112
+         Gradient evaluations: 1450
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987032
+         Iterations: 84
+         Function evaluations: 4219
+         Gradient evaluations: 111
+ Current amplitudes
+[-2.40519596e-03 -4.56039110e-01  5.45289433e-03 -1.70687637e-01
+ -5.46516226e-02 -1.72664402e-01 -3.79960208e-03  3.38902595e-03
+ -4.13662116e-01 -1.68343384e-01 -3.74573128e-02 -1.11269838e-01
+ -3.24275807e-03 -4.20761829e-03 -3.01100908e-03 -5.77704755e-01
+ -1.99144907e-01 -2.16832378e-01  2.15730588e-03 -3.98255189e-03
+ -3.24400929e-03  2.13321562e-03 -4.43031103e-01 -4.28305054e-02
+  1.52906951e-03 -2.22636470e-04 -4.12212445e-03  5.89507947e-04
+ -3.18849771e-03 -5.18552385e-01  1.08930149e-03  3.33212490e-03
+ -1.76249418e-03  4.88862093e-03  4.94950260e-03  3.26150819e-03]
+ Iteration:    4  Current Energy:  -4.987031844038  Delta Energy:  -0.000146
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987097
+         Iterations: 526
+         Function evaluations: 40129
+         Gradient evaluations: 1056
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987097
+         Iterations: 184
+         Function evaluations: 12362
+         Gradient evaluations: 325
+ Current amplitudes
+[ 1.94152545e-03  5.31004334e-01  2.42092873e-02  1.95114579e-01
+  1.03498198e-01  1.60573692e-01 -4.26501615e-03  1.23384714e-03
+  4.53074959e-01  1.80580945e-01  4.72590798e-02  5.36520853e-02
+  2.66384239e-04 -3.65507438e-04 -1.06987119e-04  5.84874632e-01
+  2.03890530e-01  1.75924481e-01 -4.84943866e-03  3.92905883e-03
+ -4.70850682e-03 -1.27107116e-03  4.39716752e-01 -2.17851386e-02
+  4.42420612e-03 -1.28728828e-03  2.29000802e-03 -3.73839891e-03
+ -2.48717078e-03  4.91996604e-01  4.03296150e-03 -2.12364742e-03
+  4.67113132e-03  1.68099336e-03  3.00677353e-05 -1.21997591e-03]
+ Iteration:    5  Current Energy:  -4.987096594241  Delta Energy:  -0.000064
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987127
+         Iterations: 272
+         Function evaluations: 23116
+         Gradient evaluations: 608
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987126
+         Iterations: 48
+         Function evaluations: 3925
+         Gradient evaluations: 103
+ Current amplitudes
+[-1.62631706e-03  4.69769245e-01 -2.41214814e-02  1.69169360e-01
+  5.40888290e-02  1.52293770e-01  4.43170723e-03  5.68601662e-04
+  4.29207350e-01  1.37682742e-01 -1.19835178e-02  5.65930643e-02
+ -3.29314474e-03 -1.55020040e-03 -2.97350949e-03  6.32670043e-01
+  1.42594368e-01  1.72974030e-01 -4.30339410e-03  4.35153563e-03
+ -2.93902365e-03 -3.57876500e-04  4.33463920e-01 -2.31471892e-02
+ -1.76471485e-03 -2.88402417e-03 -2.19731712e-03 -3.82894964e-03
+  1.89251875e-03  4.78772463e-01 -1.88470597e-03  3.80298956e-03
+ -1.13624275e-03  1.11089300e-03  2.31693262e-04 -1.74943196e-03]
+ Iteration:    6  Current Energy:  -4.987126387761  Delta Energy:  -0.000029
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987141
+         Iterations: 282
+         Function evaluations: 23572
+         Gradient evaluations: 620
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987141
+         Iterations: 62
+         Function evaluations: 3345
+         Gradient evaluations: 88
+ Current amplitudes
+[ 0.0042979   0.49427028  0.03047285  0.16915659  0.07746061  0.13697458
+  0.00437913 -0.00365573  0.46128798  0.17034557  0.05088474  0.07585389
+ -0.00193635  0.00275798 -0.00467146  0.58495738  0.17210896  0.16640523
+  0.00205503 -0.00401531  0.00403846  0.00322312  0.4521553   0.01342381
+ -0.00437195 -0.00191391  0.00213192  0.00313182 -0.00173412  0.48452174
+ -0.00172606  0.00464367 -0.00403909 -0.00337817  0.00194239 -0.00360237]
+ Iteration:    7  Current Energy:  -4.987140864836  Delta Energy:  -0.000014
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987148
+         Iterations: 293
+         Function evaluations: 22231
+         Gradient evaluations: 585
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987147
+         Iterations: 32
+         Function evaluations: 2205
+         Gradient evaluations: 58
+ Current amplitudes
+[-2.33374107e-03  7.06509725e-01 -1.58633764e-01  6.35946388e-02
+  4.00592898e-02  1.64389336e-01 -2.51265711e-03 -2.10324509e-03
+  5.49201685e-01 -3.09894516e-03 -5.92508550e-02  4.41239624e-02
+ -2.79698345e-03  6.28573989e-04  3.94610946e-04  7.00677636e-01
+  1.46221131e-03  5.62978476e-02  2.86228517e-03  3.12505581e-03
+  3.28408875e-04  3.06335214e-03  5.54547152e-01 -1.79192953e-01
+  2.48185028e-03 -1.15130103e-03 -1.82101510e-03  7.20088130e-04
+ -1.27579485e-03  7.12434097e-01 -1.13028775e-03  3.36249195e-03
+  1.01763720e-03  4.12018777e-03 -1.59464256e-04  4.58514067e-03]
+ Iteration:    8  Current Energy:  -4.987147473588  Delta Energy:  -0.000006
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987152
+         Iterations: 741
+         Function evaluations: 73721
+         Gradient evaluations: 1940
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987151
+         Iterations: 47
+         Function evaluations: 3812
+         Gradient evaluations: 100
+ Current amplitudes
+[ 7.67096605e-04 -6.27214965e-01  1.30800349e-01 -1.24481516e-01
+ -5.63337482e-02 -2.04885791e-01  6.34260361e-04  2.40701911e-03
+ -5.06371323e-01 -3.48312373e-02  7.43524661e-02 -5.88109916e-02
+  4.61390197e-03  5.69687327e-04  3.16683919e-04 -7.47108194e-01
+ -5.26173473e-02 -1.36288866e-01 -1.31596770e-03  1.79326014e-03
+  6.41078119e-04 -2.92024984e-03 -5.03120613e-01  1.34597994e-01
+ -1.62280379e-03  1.62635201e-03 -4.38846231e-03 -1.27228574e-03
+ -6.58906531e-04 -6.29186950e-01  1.98199355e-03  1.25788620e-03
+ -3.44055488e-03 -6.49075736e-04 -1.28764901e-03  4.40397550e-03]
+ Iteration:    9  Current Energy:  -4.987150726898  Delta Energy:  -0.000003
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987152
+         Iterations: 92
+         Function evaluations: 9511
+         Gradient evaluations: 250
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987152
+         Iterations: 38
+         Function evaluations: 2129
+         Gradient evaluations: 56
+ Current amplitudes
+[-4.71823688e-04  6.15635763e-01 -2.19558336e-01  1.42873542e-02
+ -1.24709056e-02  1.00251240e-01  4.51293754e-03 -3.45064483e-03
+  5.14491780e-01 -2.29992252e-02 -8.26453902e-02  2.40111134e-02
+ -6.48773813e-04  4.12677153e-03  6.99766520e-04  6.98866216e-01
+ -3.20854275e-02  2.82212390e-02  4.82078709e-03  4.98503260e-03
+ -5.35318917e-04  2.62430558e-03  5.11955848e-01 -2.12893636e-01
+  7.92019601e-04  1.54241935e-03  9.37403702e-04  4.14766390e-04
+  9.18790685e-04  6.35313958e-01  2.70977974e-03 -4.10949804e-03
+  4.13495490e-03 -5.03749949e-04  1.96621116e-03 -1.12360951e-03]
+ Iteration:   10  Current Energy:  -4.987152355862  Delta Energy:  -0.000001
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987153
+         Iterations: 292
+         Function evaluations: 23605
+         Gradient evaluations: 621
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987153
+         Iterations: 66
+         Function evaluations: 5321
+         Gradient evaluations: 140
+ Current amplitudes
+[-4.48942851e-03  5.55521954e-01 -1.53688269e-01  1.35638964e-01
+  6.59501521e-02  1.95557192e-01 -2.03795046e-03  3.41867633e-03
+  4.37130628e-01  9.42733413e-02 -7.65849922e-02  4.78302027e-02
+ -3.31946879e-03  2.44255891e-03 -7.57936815e-04  6.50600661e-01
+ -7.28587899e-02  7.22326655e-02 -4.27674677e-03  3.46107712e-03
+ -7.63510636e-04 -3.59258645e-03  4.18575909e-01 -1.22807948e-01
+ -5.37150325e-04 -2.66735641e-03 -2.61234505e-03  1.93173253e-03
+  1.47769478e-03  5.48477443e-01  3.12517699e-03 -3.59815817e-03
+ -2.59435756e-03 -4.86096175e-03  6.25483534e-05  3.50932049e-03]
+ Iteration:   11  Current Energy:  -4.987153239595  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 152
+         Function evaluations: 13035
+         Gradient evaluations: 343
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 33
+         Function evaluations: 3117
+         Gradient evaluations: 82
+ Current amplitudes
+[ 4.29737084e-03  5.55094227e-01 -1.68297156e-01  2.32992229e-02
+  2.22230107e-02  1.26248843e-01 -2.57040910e-03  4.53691549e-03
+  4.08279850e-01 -8.61567083e-02 -9.28945729e-02  1.62833705e-02
+  3.15270316e-03  2.53386829e-03  2.02162266e-03  5.79202973e-01
+ -6.89151292e-02 -1.94966876e-02 -3.63037652e-03 -7.26225306e-04
+ -3.98511843e-03 -4.12744385e-03  4.44141884e-01 -2.39828728e-01
+ -2.71315879e-04  1.24912398e-03  4.38968884e-03 -1.93676774e-03
+ -3.18878552e-03  5.74605419e-01 -1.96414202e-03 -2.22346927e-03
+ -3.49872104e-03 -5.53181778e-04 -2.68525274e-03 -1.41138403e-03]
+ Iteration:   12  Current Energy:  -4.987153699825  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 192
+         Function evaluations: 16732
+         Gradient evaluations: 440
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 14
+         Function evaluations: 1798
+         Gradient evaluations: 47
+ Current amplitudes
+[-1.66353423e-03 -6.34285357e-01  2.07849140e-01 -9.01364651e-02
+ -8.64832232e-03 -2.54660407e-01  4.98279530e-03 -2.61726092e-03
+ -3.69808515e-01  5.19710307e-02  1.87672462e-01 -1.05877821e-02
+ -4.94427683e-03  2.45553258e-03 -4.16971501e-03 -5.75796253e-01
+  5.42163861e-02 -8.59991787e-02  4.21324750e-03  8.32644794e-04
+ -4.37679633e-04 -3.76623980e-04 -3.72928830e-01  2.12559810e-01
+  3.15979549e-03  4.91925237e-03 -1.99118287e-03  7.98507254e-04
+  1.82067861e-03 -6.37302185e-01  8.41780001e-04 -3.03482782e-03
+ -1.86131796e-03 -3.65053168e-03  1.42778709e-03 -1.65857020e-03]
+ Iteration:   13  Current Energy:  -4.987153938218  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 19
+         Function evaluations: 1445
+         Gradient evaluations: 38
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 18
+         Function evaluations: 799
+         Gradient evaluations: 21
+ Current amplitudes
+[-7.51637643e-04  5.93526936e-01 -1.96309528e-01  8.44154031e-02
+  8.30597188e-03  2.34901348e-01  3.98699319e-03  1.75623222e-03
+  3.47599762e-01 -4.47584638e-02 -1.76864238e-01  2.19688776e-03
+  2.46471607e-03  7.87477045e-04 -2.83190511e-03  5.39390931e-01
+ -4.43160448e-02  8.44656290e-02 -4.46923756e-03 -3.86948646e-03
+ -5.73989041e-04 -3.60582907e-03  3.47951767e-01 -1.95027953e-01
+  1.19632989e-03 -5.63430160e-04  2.81674357e-03 -4.47370431e-03
+ -1.75604936e-03  5.94211219e-01 -3.86366075e-03  1.41177309e-03
+  3.42146567e-04  3.26808610e-03 -5.77149445e-04 -2.04979197e-03]
+ Iteration:   14  Current Energy:  -4.987154085348  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 18
+         Function evaluations: 1331
+         Gradient evaluations: 35
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 21
+         Function evaluations: 2139
+         Gradient evaluations: 56
+ Current amplitudes
+[-1.84107855e-03 -6.86072589e-01  2.28325860e-01 -9.57232789e-02
+ -9.18781803e-03 -2.71876368e-01 -3.98890002e-03  8.93796445e-04
+ -3.98010109e-01  5.08703132e-02  2.00234666e-01 -6.07186802e-03
+ -5.73564861e-04  5.05454408e-04 -3.05150744e-03 -6.13582575e-01
+  4.88077941e-02 -9.73116804e-02 -2.08883882e-03 -3.94610136e-03
+  3.55542980e-03 -2.99803656e-03 -3.99111275e-01  2.24442060e-01
+ -2.30387794e-03 -2.03363621e-04  3.04688544e-04 -5.51831284e-04
+ -1.36841346e-03 -6.86681836e-01  4.06173378e-03  9.48010226e-05
+  2.01341942e-03  3.40145855e-04 -2.13937718e-03 -2.13552721e-04]
+ Iteration:   15  Current Energy:  -4.987154168875  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 20
+         Function evaluations: 1103
+         Gradient evaluations: 29
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 12
+         Function evaluations: 647
+         Gradient evaluations: 17
+ Current amplitudes
+[ 3.23213891e-03  6.40222164e-01 -2.04965777e-01  8.87208951e-02
+  5.17704293e-03  2.51537775e-01  4.88255242e-03  1.31011415e-03
+  3.76836118e-01 -5.01629373e-02 -1.90360557e-01  5.61276770e-03
+ -2.11311648e-03  3.24040141e-04  3.16220921e-03  5.76601411e-01
+ -5.15384110e-02  8.82034838e-02  2.23125890e-03 -8.29734786e-04
+ -3.18048422e-03  1.04346937e-03  3.70794452e-01 -2.13364242e-01
+ -4.87948802e-03 -2.92913348e-03 -2.09917457e-04 -3.37690400e-03
+ -4.31312445e-03  6.36451633e-01  4.03145451e-03 -4.88499105e-03
+ -2.71921807e-03  4.01320112e-03  1.34238776e-03  3.30473051e-03]
+ Iteration:   16  Current Energy:  -4.987154214814  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 21
+         Function evaluations: 1483
+         Gradient evaluations: 39
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 14
+         Function evaluations: 609
+         Gradient evaluations: 16
+ Current amplitudes
+[ 4.09309469e-03 -6.00233149e-01  1.97026596e-01 -8.39514317e-02
+ -3.24554719e-03 -2.35161847e-01 -3.39787602e-03  3.12254083e-03
+ -3.53465022e-01  4.50591852e-02  1.78254071e-01 -6.86177843e-03
+  2.59918593e-03  3.70025777e-03  3.02141094e-05 -5.45114970e-01
+  4.71903192e-02 -8.40028142e-02  2.94471276e-03 -3.78761206e-03
+  4.02631920e-03  1.34437947e-03 -3.49111150e-01  1.97498071e-01
+ -3.19609424e-03 -2.84431763e-03 -1.74109150e-03 -8.61649487e-04
+ -2.81328239e-03 -5.94162467e-01 -5.95877489e-04  4.51825948e-03
+ -2.46749060e-03 -3.14473339e-04  3.01601781e-03  4.89335185e-03]
+ Iteration:   17  Current Energy:  -4.987154239514  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 22
+         Function evaluations: 1559
+         Gradient evaluations: 41
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 16
+         Function evaluations: 647
+         Gradient evaluations: 17
+ Current amplitudes
+[-5.02578600e-04 -8.10965112e-01  2.70744538e-01 -1.15409736e-01
+ -1.06120965e-02 -3.20992039e-01 -3.11200238e-05 -3.73767352e-03
+ -4.73021372e-01  6.16612001e-02  2.40775338e-01 -6.30447889e-03
+ -4.82859238e-03  4.47624968e-03 -4.12493555e-03 -7.35876017e-01
+  6.47559049e-02 -1.12421245e-01 -3.20294291e-03  4.82264664e-03
+ -1.64783907e-03  4.41339346e-03 -4.75606423e-01  2.63999092e-01
+  7.33357590e-04  4.10521891e-03  4.80086183e-03  1.95726948e-03
+ -1.31694236e-03 -8.08244594e-01  4.24319436e-03  4.29229083e-04
+  2.11550805e-03  3.71498903e-03  1.84481330e-03  1.50432330e-03]
+ Iteration:   18  Current Energy:  -4.987154252690  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 18
+         Function evaluations: 3508
+         Gradient evaluations: 92
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 14
+         Function evaluations: 685
+         Gradient evaluations: 18
+ Current amplitudes
+[-1.19282828e-03  6.57168130e-01 -2.17711501e-01  9.12499405e-02
+  5.63890992e-03  2.58997621e-01 -1.55435998e-03  2.01977341e-03
+  3.83197847e-01 -5.13621222e-02 -1.95790664e-01  4.12411938e-03
+  2.16795402e-03 -2.75889572e-03 -3.45585855e-04  5.92473707e-01
+ -4.88834856e-02  9.26541337e-02 -2.20899921e-03  3.92778199e-03
+  1.44274314e-03 -2.51971868e-03  3.85689671e-01 -2.14154331e-01
+ -8.02310399e-04 -4.02609101e-03 -2.77838523e-03 -3.94575542e-03
+  1.97229395e-03  6.59383103e-01 -6.42532540e-04 -4.45705511e-03
+ -3.30063465e-03  4.44905792e-03  3.91915578e-03 -1.01739897e-03]
+ Iteration:   19  Current Energy:  -4.987154259733  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 16
+         Function evaluations: 1103
+         Gradient evaluations: 29
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 11
+         Function evaluations: 647
+         Gradient evaluations: 17
+ Current amplitudes
+[-3.58564296e-03 -5.21649832e-01  1.69879143e-01 -7.62395368e-02
+ -4.74150883e-03 -2.08508771e-01  8.65844855e-04  3.06942693e-03
+ -3.02801114e-01  3.53737780e-02  1.52482176e-01 -8.22039990e-03
+  3.81294692e-03  2.75521232e-03 -2.44630698e-03 -4.67892656e-01
+  3.90016885e-02 -7.38678769e-02  2.20647324e-03 -2.16453336e-03
+ -1.58430347e-03 -2.97575557e-03 -3.05605652e-01  1.70106702e-01
+  1.32310920e-03 -4.89487813e-03 -9.42657335e-04 -4.62448578e-03
+ -1.94946972e-03 -5.25126681e-01  4.55394800e-04  4.20446561e-03
+  3.54354685e-03 -8.74367269e-05 -1.55814933e-03 -4.97790960e-03]
+ Iteration:   20  Current Energy:  -4.987154263489  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 21
+         Function evaluations: 1255
+         Gradient evaluations: 33
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 15
+         Function evaluations: 647
+         Gradient evaluations: 17
+ Current amplitudes
+[ 1.44610348e-03 -5.93627833e-01  1.93874636e-01 -8.33227466e-02
+ -1.09107749e-02 -2.36692614e-01 -5.02610557e-04 -1.23453265e-03
+ -3.46108670e-01  4.75067996e-02  1.74159578e-01 -3.81075349e-03
+ -4.98076058e-03 -2.56817524e-03 -3.62929306e-03 -5.34909302e-01
+  4.09142242e-02 -8.52655199e-02 -9.95457939e-04 -2.66140435e-04
+ -2.30151181e-03 -4.32021839e-03 -3.47784468e-01  1.95708564e-01
+  1.55947267e-03 -4.71321248e-03 -3.94137349e-03  1.68263505e-03
+ -3.97429960e-03 -5.96888168e-01 -4.83133038e-04 -1.35258526e-03
+  1.73342916e-03 -4.59688660e-03 -2.74688220e-03 -2.14814680e-03]
+ Iteration:   21  Current Energy:  -4.987154265495  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 19
+         Function evaluations: 2672
+         Gradient evaluations: 70
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 13
+         Function evaluations: 647
+         Gradient evaluations: 17
+ Current amplitudes
+[-1.74731888e-03 -6.14306979e-01  1.98913682e-01 -8.66853258e-02
+ -7.85309399e-03 -2.43474750e-01 -3.41804760e-03  1.38361938e-03
+ -3.55968011e-01  4.86473007e-02  1.78844529e-01 -8.11859991e-03
+  4.95657037e-03  2.23943457e-03 -3.70329852e-03 -5.48458846e-01
+  4.56326587e-02 -8.41103334e-02 -3.39045530e-03  1.43893601e-03
+  4.57581682e-03  4.08828773e-03 -3.56928703e-01  2.02499127e-01
+ -1.96953772e-03 -4.25096811e-03 -3.28143658e-03  3.93593493e-03
+  2.07909387e-03 -6.10400555e-01  4.72033478e-03  9.89246679e-05
+ -3.28195005e-03 -2.03957658e-04 -1.00817783e-03 -2.86120041e-03]
+ Iteration:   22  Current Energy:  -4.987154266562  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 13
+         Function evaluations: 2062
+         Gradient evaluations: 54
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 15
+         Function evaluations: 1570
+         Gradient evaluations: 41
+ Current amplitudes
+[ 1.32936981e-03  2.32320221e-02 -1.08200732e-02  6.40011555e-03
+ -5.80740377e-04  1.09780304e-02 -3.42186713e-03 -5.42567153e-06
+  1.24984392e-02  2.23528466e-03 -6.81763014e-03  3.21663425e-03
+ -1.80124062e-03 -3.97450134e-04  2.13655330e-04  2.47341645e-02
+ -5.38767015e-03  1.84205438e-03 -4.15629882e-03  4.14337163e-03
+  3.16555871e-03 -9.94371113e-04  1.71846562e-02 -7.92571004e-03
+  1.11784335e-03  3.52183376e-03  4.86478621e-03 -4.19110212e-03
+  6.78899586e-04  2.72403823e-02 -1.03479539e-03 -2.45373490e-03
+ -3.68818303e-03  1.25220472e-03 -2.88979291e-03 -1.21663323e-03]
+ Iteration:   23  Current Energy:  -4.987154267122  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 12
+         Function evaluations: 1141
+         Gradient evaluations: 30
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 13
+         Function evaluations: 951
+         Gradient evaluations: 25
+ Current amplitudes
+[-9.87512203e-04  5.52682703e-01 -1.76607356e-01  8.18806004e-02
+  5.77748180e-03  2.19015984e-01  2.20257950e-03  1.89599493e-03
+  3.22463957e-01 -3.64768693e-02 -1.63337876e-01  4.51849330e-03
+ -3.44912431e-05 -4.07704432e-03  2.49503779e-04  4.96423417e-01
+ -4.52599236e-02  7.49321395e-02 -3.19920075e-03 -1.21950839e-04
+ -4.44066559e-03 -3.25963670e-03  3.23626643e-01 -1.82749633e-01
+  3.62155420e-04 -1.32483792e-03  1.45393911e-03  4.32050601e-03
+ -2.67077295e-03  5.55284027e-01 -1.66328230e-03  9.85046718e-04
+ -1.41079866e-03  1.80391484e-03  3.53199812e-03  2.92842528e-03]
+ Iteration:   24  Current Energy:  -4.987154267433  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 15
+         Function evaluations: 3470
+         Gradient evaluations: 91
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 13
+         Function evaluations: 609
+         Gradient evaluations: 16
+ Current amplitudes
+[ 1.21842594e-03 -5.23571283e-01  1.68520136e-01 -7.17769867e-02
+ -3.52128824e-03 -2.05261603e-01  8.14375291e-04 -3.51408702e-03
+ -3.09677231e-01  3.84544288e-02  1.54851931e-01 -3.30720453e-03
+  4.23269029e-03 -1.27924631e-03 -3.54844370e-03 -4.72033106e-01
+  3.71362717e-02 -7.57704770e-02 -3.21645715e-03 -4.50955653e-03
+  1.14339221e-03 -1.18994515e-03 -3.06705461e-01  1.72717735e-01
+  1.27631073e-03 -1.81507488e-03  8.22276842e-04 -5.42700780e-05
+  9.43170083e-04 -5.28553407e-01  4.64897912e-03 -2.64892456e-03
+ -4.23314378e-03 -2.05177549e-03  1.92934647e-03  4.32733472e-03]
+ Iteration:   25  Current Energy:  -4.987154267594  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 24
+         Function evaluations: 1597
+         Gradient evaluations: 42
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 12
+         Function evaluations: 571
+         Gradient evaluations: 15
+ Current amplitudes
+[ 3.44150941e-03 -6.27448885e-01  2.05572232e-01 -8.91759318e-02
+ -1.04826067e-02 -2.52278360e-01  2.87766346e-03  2.24243816e-03
+ -3.64504771e-01  4.84681856e-02  1.84476736e-01 -8.54351410e-03
+  1.70697174e-03 -9.43994329e-04 -4.26592018e-03 -5.62711819e-01
+  5.05751782e-02 -8.91162235e-02  6.01917244e-04  3.40248732e-03
+ -4.67433995e-04  2.15539575e-03 -3.63374075e-01  2.00765050e-01
+ -4.86935139e-04 -7.01457239e-04  2.80069991e-03 -4.81461501e-03
+  7.98528569e-04 -6.23974733e-01 -2.34214775e-04  2.17254424e-03
+  1.29896041e-03 -2.53803591e-03 -2.94593987e-03  3.50656403e-03]
+ Iteration:   26  Current Energy:  -4.987154267679  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 11
+         Function evaluations: 1912
+         Gradient evaluations: 50
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 18
+         Function evaluations: 2215
+         Gradient evaluations: 58
+ Current amplitudes
+[ 7.53545932e-05  8.26957641e-02 -2.55520176e-02  1.11992916e-02
+ -2.74244659e-03  3.01386292e-02  2.63685054e-03 -3.97415481e-04
+  4.97650450e-02 -6.48268097e-03 -2.68048049e-02 -4.68063963e-04
+ -2.05496317e-03  4.36280861e-03 -4.92445224e-03  7.54796161e-02
+ -8.63983229e-03  9.79288907e-03 -2.37443124e-03 -1.95583371e-03
+  2.62664829e-03  1.91055640e-03  4.76827936e-02 -2.84508252e-02
+ -2.97239112e-03  2.57713978e-03 -3.78714683e-03  4.07200295e-03
+  4.23727869e-03  8.01471084e-02  2.03294154e-03 -1.65512328e-03
+  1.36772261e-03 -4.74979180e-03 -2.80719169e-03 -4.62915347e-04]
+ Iteration:   27  Current Energy:  -4.987154267725  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 20
+         Function evaluations: 1179
+         Gradient evaluations: 31
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 14
+         Function evaluations: 609
+         Gradient evaluations: 16
+ Current amplitudes
+[-9.78161079e-05 -5.28922054e-01  1.78377482e-01 -7.88247703e-02
+ -9.84276444e-03 -2.13309987e-01 -1.58583081e-03  4.48917999e-03
+ -3.08772448e-01  3.61036207e-02  1.58338088e-01 -3.44196167e-03
+  4.72793817e-03  4.11858424e-03  2.59262756e-03 -4.84934720e-01
+  4.39584714e-02 -7.56355367e-02  3.77628862e-03 -4.58601995e-03
+ -4.43588846e-03  3.03158987e-03 -3.12124197e-01  1.72198196e-01
+ -1.56844464e-03 -2.22092476e-03 -1.37948745e-03 -1.43382022e-04
+  3.36431682e-03 -5.33304532e-01  4.07368266e-03  3.36709544e-03
+ -3.53868918e-03 -7.72356850e-04  3.30131236e-04 -2.44242228e-03]
+ Iteration:   28  Current Energy:  -4.987154267748  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 20
+         Function evaluations: 1217
+         Gradient evaluations: 32
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 13
+         Function evaluations: 571
+         Gradient evaluations: 15
+ Current amplitudes
+[ 6.62862341e-04  6.41376116e-01 -2.09715459e-01  9.03124001e-02
+  1.01781773e-02  2.54103329e-01  3.56061494e-03 -3.26097946e-03
+  3.74430534e-01 -5.00103246e-02 -1.86999456e-01  8.95980287e-03
+ -2.08833010e-03 -2.77904521e-03 -1.90664391e-03  5.76697011e-01
+ -5.42425781e-02  8.67159163e-02 -3.89068859e-03  2.33251702e-04
+ -4.48713550e-03  4.20648938e-03  3.72287844e-01 -2.06905227e-01
+ -2.99324197e-03  1.95854441e-03 -4.76020918e-03 -4.21488465e-03
+  4.12625882e-03  6.32479515e-01 -9.67617069e-05  2.31138754e-04
+ -3.14631115e-03  8.94972138e-04 -2.38720313e-03  1.55724964e-03]
+ Iteration:   29  Current Energy:  -4.987154267761  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 25
+         Function evaluations: 2091
+         Gradient evaluations: 55
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 13
+         Function evaluations: 609
+         Gradient evaluations: 16
+ Current amplitudes
+[-2.42763364e-03  6.00441474e-01 -1.95576170e-01  7.92770845e-02
+  1.07772027e-03  2.36872163e-01 -4.96301273e-04  3.75232154e-04
+  3.54570581e-01 -4.79160545e-02 -1.77436754e-01  9.93815615e-03
+  3.56013908e-04  4.62656284e-03 -1.48290877e-03  5.40537589e-01
+ -4.56022625e-02  8.65139492e-02 -4.28458013e-03 -2.41785689e-04
+  3.48797976e-03 -2.89013300e-03  3.50641568e-01 -1.98988939e-01
+ -1.85281921e-03 -3.29326520e-03  4.74351010e-03  1.06853189e-03
+ -2.21079948e-03  6.06476366e-01  5.38729157e-04 -1.43931671e-03
+  2.08719264e-03  1.74989184e-03  4.62242498e-03 -4.38781171e-03]
+ Iteration:   30  Current Energy:  -4.987154267768  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 21
+         Function evaluations: 1331
+         Gradient evaluations: 35
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 15
+         Function evaluations: 647
+         Gradient evaluations: 17
+ Current amplitudes
+[ 0.00377247  0.65295975 -0.21554078  0.09094469  0.00444322  0.25995655
+ -0.00399782 -0.00280722  0.38065715 -0.04712036 -0.19557624  0.00537716
+ -0.00474826 -0.00420114  0.00382352  0.5843105  -0.05091663  0.09499738
+  0.00483078  0.00372512  0.0042278   0.00331994  0.37743683 -0.21087706
+  0.00207291 -0.00087203  0.00103366  0.00470866 -0.0017338   0.65544013
+  0.00487334  0.0008695   0.00415048  0.00243667  0.00218742 -0.00386855]
+ Iteration:   31  Current Energy:  -4.987154267772  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 13
+         Function evaluations: 3165
+         Gradient evaluations: 83
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 18
+         Function evaluations: 2330
+         Gradient evaluations: 61
+ Current amplitudes
+[ 0.00246281 -0.07630176  0.02560544 -0.01292374  0.0015521  -0.03072866
+  0.00358153  0.00395524 -0.04475336  0.00042522  0.0275605   0.00324113
+ -0.00403709  0.00136009 -0.00130707 -0.06828088  0.01048099 -0.01208727
+ -0.00439453 -0.00046686 -0.00093201  0.00484993 -0.04042648  0.0223911
+  0.00263079  0.00162736 -0.00065676  0.00075774 -0.00089804 -0.0751864
+  0.00254874  0.00295685  0.00435117  0.00021083 -0.00433408  0.00426661]
+ Iteration:   32  Current Energy:  -4.987154267774  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 24
+         Function evaluations: 1711
+         Gradient evaluations: 45
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 41
+         Function evaluations: 3241
+         Gradient evaluations: 85
+ Current amplitudes
+[-2.48940692e-03 -2.08574906e+00  6.80044895e-01 -2.96674647e-01
+ -2.43714952e-02 -8.31676335e-01 -4.16632004e-03 -4.83536372e-03
+ -1.21915226e+00  1.56875295e-01  6.14080816e-01 -2.87398372e-02
+  3.83464655e-03  3.46841776e-03  8.85497851e-04 -1.88231794e+00
+  1.61067450e-01 -2.96390572e-01 -4.28880508e-04 -1.84171976e-03
+  4.97135368e-03  4.77741292e-03 -1.21554975e+00  6.80859832e-01
+  2.59989631e-05  5.15948505e-04  5.90255353e-04 -3.17914462e-03
+ -2.98718062e-03 -2.08268512e+00  3.46162500e-03  4.59510893e-03
+  2.60845349e-03  5.48347357e-04 -4.14422947e-03 -4.14465319e-03]
+ Iteration:   33  Current Energy:  -4.987154267775  Delta Energy:  -0.000000
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 19
+         Function evaluations: 1445
+         Gradient evaluations: 38
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -4.987154
+         Iterations: 16
+         Function evaluations: 761
+         Gradient evaluations: 20
+ Converged
+

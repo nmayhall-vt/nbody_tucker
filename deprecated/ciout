@@ -1,0 +1,114 @@
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -2.587132
+         Iterations: 17
+         Function evaluations: 56
+         Gradient evaluations: 44
+ Iteration:    0  Current Energy:  -2.587131857807  Delta Energy:  -2.587131857807
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.212774
+         Iterations: 18
+         Function evaluations: 27
+         Gradient evaluations: 26
+ Iteration:    1  Current Energy:  -3.212773938525  Delta Energy:  -0.625642080718
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.230092
+         Iterations: 16
+         Function evaluations: 71
+         Gradient evaluations: 59
+ Iteration:    2  Current Energy:  -3.230092277527  Delta Energy:  -0.017318339002
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.231770
+         Iterations: 15
+         Function evaluations: 22
+         Gradient evaluations: 21
+ Iteration:    3  Current Energy:  -3.231769619191  Delta Energy:  -0.001677341663
+Optimization terminated successfully.
+         Current function value: -3.232011
+         Iterations: 19
+         Function evaluations: 25
+         Gradient evaluations: 25
+ Iteration:    4  Current Energy:  -3.232010902402  Delta Energy:  -0.000241283212
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232044
+         Iterations: 37
+         Function evaluations: 43
+         Gradient evaluations: 42
+ Iteration:    5  Current Energy:  -3.232044102752  Delta Energy:  -0.000033200349
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232049
+         Iterations: 69
+         Function evaluations: 95
+         Gradient evaluations: 84
+ Iteration:    6  Current Energy:  -3.232049475826  Delta Energy:  -0.000005373074
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 63
+         Function evaluations: 75
+         Gradient evaluations: 74
+ Iteration:    7  Current Energy:  -3.232050531002  Delta Energy:  -0.000001055176
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 35
+         Function evaluations: 48
+         Gradient evaluations: 47
+ Iteration:    8  Current Energy:  -3.232050747558  Delta Energy:  -0.000000216556
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 40
+         Function evaluations: 54
+         Gradient evaluations: 53
+ Iteration:    9  Current Energy:  -3.232050794586  Delta Energy:  -0.000000047028
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 1
+         Function evaluations: 4
+         Gradient evaluations: 3
+ Iteration:   10  Current Energy:  -3.232050803615  Delta Energy:  -0.000000009029
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 1
+         Function evaluations: 4
+         Gradient evaluations: 3
+ Iteration:   11  Current Energy:  -3.232050805874  Delta Energy:  -0.000000002260
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 1
+         Function evaluations: 40
+         Gradient evaluations: 28
+ Iteration:   12  Current Energy:  -3.232050806693  Delta Energy:  -0.000000000819
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 0
+         Function evaluations: 25
+         Gradient evaluations: 14
+ Iteration:   13  Current Energy:  -3.232050807084  Delta Energy:  -0.000000000391
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 1
+         Function evaluations: 75
+         Gradient evaluations: 63
+ Iteration:   14  Current Energy:  -3.232050807294  Delta Energy:  -0.000000000211
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 1
+         Function evaluations: 56
+         Gradient evaluations: 46
+ Iteration:   15  Current Energy:  -3.232050807412  Delta Energy:  -0.000000000118
+Warning: Desired error not necessarily achieved due to precision loss.
+         Current function value: -3.232051
+         Iterations: 1
+         Function evaluations: 58
+         Gradient evaluations: 46
+
+ Exact Energies:
+    -3.232050807569   0.00000000 
+    -1.914213562373   2.00000000 
+    -1.914213562373   2.00000000 
+    -1.914213562373   2.00000000 
+    -0.500000000000   2.00000000 
+    -0.500000000000   2.00000000 
+    -0.500000000000   2.00000000 
+     0.232050807569  -0.00000000 
+     0.914213562373   2.00000000 
+     0.914213562373   2.00000000 
+
