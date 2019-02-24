@@ -65,6 +65,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                     n_q_states = None,
                     n_body_order = 2,
                     pt_order = 0,
+                    pt_type = 'mp',
                     # cluster_state optimization variables
                     max_iter = 100,     #max_iter
                     diis_thresh = 1e-7, #thresh
@@ -77,8 +78,37 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                     n_roots = 1,        #How many roots to solve for
                     dav_max_ss = 20,    #Max number of vectors in davidson subspace
                     dav_guess='pspace', #Initial guess for davidson
+                    #static args
+                    direct = 1,
+                    dav_precond = 1,
                     n_print=10          #num states to print
                 ):
+
+
+    #args = dict(j12, blocks)
+    args = {'j12':j12,
+            'blocks' : blocks,
+            'n_p_states'    :   n_p_states,
+            'n_q_states'    :   n_q_states,
+            'n_body_order'  :   n_body_order,
+            'pt_order'      :   pt_order,
+            'pt_type'       :   pt_type,
+            'max_iter'      :   max_iter,    
+            'diis_thresh'   :   diis_thresh,
+            'opt'           :   opt,      
+            'diis_start'    :   diis_start,      
+            'n_diis_vecs'   :   n_diis_vecs,     
+            'dav_thresh'    :   dav_thresh,
+            'dav_max_iter'  :   dav_max_iter, 
+            'n_roots'       :   n_roots,       
+            'dav_max_ss'    :   dav_max_ss,   
+            'dav_guess'     :   dav_guess,
+            'direct'        :   direct,
+            'dav_precond'   :   dav_precond,
+            'n_print'       :   n_print         
+            }
+    print(args)
+
 
     lattice = np.ones((j12.shape[0],1))
     n_blocks = len(blocks)
@@ -445,64 +475,8 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             print " Build Hamiltonian:"
             H,S2 = build_tucker_blocked_H(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12) 
         
+        l,v = do_variational_microiteration_update(args,n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12,dav_thresh,it,last_vectors)  
     
-        # 
-        #   Loop over davidson micro-iterations
-        print 
-        print " Solve for supersystem eigenvalues: Dimension = ", dim_tot
-        dav = Davidson(dim_tot, n_roots)
-        dav.thresh = dav_thresh 
-        dav.max_vecs = dav_max_ss
-        s2v = np.array([])
-        if it == 0:
-            if dav_guess == 'rand':
-                dav.form_rand_guess()
-            else:
-                dav.form_p_guess()
-        else:
-            dav.vec_curr = last_vectors 
-        dav.max_iter = dav_max_iter
-    
-        for dit in range(0,dav.max_iter):
-            #dav.form_sigma()
-           
-            if direct == 0:
-                dav.sig_curr = H.dot(dav.vec_curr)
-                hv = H.dot(dav.vec_curr)
-                s2v = S2.dot(dav.vec_curr)
-            else:
-                hv, s2v = build_tucker_blocked_sigma(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, dav.vec_curr) 
-                dav.sig_curr = hv
-        
-            if dav_precond:
-                hv_diag = build_tucker_blocked_diagonal(n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12, 0) 
-                dav.set_preconditioner(hv_diag)
-            #dav.set_preconditioner(H.diagonal())
-            
-            dav.update()
-            dav.print_iteration()
-            if dav.converged():
-                break
-        if dav.converged():
-            print " Davidson Converged"
-        else:
-            print " Davidson Not Converged"
-        print 
-    
-        l = np.array([])
-        v = np.array([])
-        if dav.max_iter == -1 and direct == 0:
-            print 
-            print " Diagonalizing explicitly:"
-    
-            if H.shape[0] > 3000:
-                l,v = scipy.sparse.linalg.eigsh(H, k=n_roots )
-            else:
-                l,v = np.linalg.eigh(H)
-        else:
-            # get eigen stuff from davidson
-            l = dav.eigenvalues()
-            v = dav.eigenvectors()
     
         last_vectors = cp.deepcopy(v)
     
