@@ -194,7 +194,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                     pt_mit = 1,
                     # cluster_state optimization variables
                     max_iter = 100,     #max_iter
-                    diis_thresh = 1e-7, #thresh
+                    diis_thresh = 1e-9, #thresh
                     opt = 'diis',       #what kind of solver
                     diis_start=0,       #which iter starts diis
                     n_diis_vecs=8,      #max diis subspace size
@@ -779,6 +779,10 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             """
     
             brdm_curr = brdms[bi] + Bi.full_S2
+            print("the brdm_curr")
+            print(brdm_curr)
+            print("The S2")
+            print(Bi.full_S2)
             if opt == "diis":
                 n_diis_vecs = n_diis_vecs 
                 proj_p = Bi.v_ss(0).dot(Bi.v_ss(0).T)
@@ -839,21 +843,33 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                 lxold = lxold[sort_ind]
                 vx_old = vx_old[:,sort_ind]
 
-            lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)  #have to use it while doing PT correcrions and not the next one. why??
+            temp = brdm_curr + Bi.full_S2
+            if it < 0: 
+                temp[0,0] += 1e7
+            #lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)  #have to use it while doing PT correcrions and not the next one. why??
+            lx,vx = np.linalg.eigh(temp)  
             #lx,vx = np.linalg.eigh(brdms[bi] + 0.0022 * Bi.full_S2 )
             #print(vx.shape)
 
             crdm = np.dot(vx_old.T,np.dot(brdms[bi],vx_old))
             cs2 = np.dot(vx_old.T,np.dot(Bi.full_S2,vx_old))
-            #print(crdm)
-            #print(cs2)
+            csz = np.dot(vx_old.T,np.dot(Bi.full_Sz,vx_old))
+            print(brdm_curr)
+            print(crdm)
+            print(cs2)
             #print(Bi.full_S2)
 
-            new_pt_brdm_idea = 1
+            new_pt_brdm_idea = 0
             if new_pt_brdm_idea:
                 print("NEW IDEa")
-                ltemp,vtemp = np.linalg.eigh(crdm[n_roots:,n_roots:] + 0.002 * cs2[n_roots:,n_roots:])
+                ltemp,vtemp = np.linalg.eigh(crdm[1:,1:] + 0.002 * cs2[1:,1:] +  0.001 * csz[1:,1:])
                 #ltemp,vtemp = np.linalg.eigh(brdm_curr[n_roots:,n_roots:] + Bi.full_S2[n_roots:,n_roots:])  #have to use it while doing PT correcrions and not the next one. why??
+                print("MAtrix we diag")
+                print(crdm[1:,1:])
+                print( cs2[1:,1:])
+                print(crdm[1:,1:] + 0.002 * cs2[1:,1:])
+
+                ltemp = vtemp.T.dot(crdm[1:,1:]).dot(vtemp).diagonal()
 
                 sort_ind = np.argsort(ltemp)[::-1]
                 ltemp = ltemp[sort_ind]
@@ -863,6 +879,9 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                 print(ltemp)
                 vx2 = np.eye(brdm_curr.shape[0])
                 vx2[1:,1:] = vtemp
+                print(vx2)
+                print("orthogonal?")
+                print(vx.T.dot(vx))
 
                 vx = np.dot(vx,vx2)
                 print("New v")
@@ -870,6 +889,8 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                 #print(vx2)
                 #vx = vx2
                 #print(brdm_curr)
+                print("S2 new")
+                print(vx.T.dot(Bi.full_S2.dot(vx)))
             else:
                 print("NO NOEW IDEA")
                 
@@ -981,19 +1002,19 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
 
 if __name__== "__main__":
 
-    size = (2,6)
-    blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11]]
-    n_p_states = [4,4,4]
+    size = (2,10)
+    blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15],[16,17,18,19]]
+    n_p_states = [4,4,4,4,4]
     nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(size=size,blocks=blocks),
                     blocks = blocks, 
                     n_p_states = n_p_states,
                     n_body_order =2,
-                    #pt_order =2,
-                    #pt_mit =12,
+                    pt_order =2,
+                    pt_mit =4,
                     n_roots = 1,
-                    #diis_start=1,
+                    diis_start=0,
                     n_diis_vecs=6,      #max diis subspace size
-                    #pt_type = 'mp',
+                    pt_type = 'mp',
                 )
 
 
