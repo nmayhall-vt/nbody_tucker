@@ -849,11 +849,11 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             #print(cs2)
             #print(Bi.full_S2)
 
-            new_pt_brdm_idea = 0
+            new_pt_brdm_idea = 1
             if new_pt_brdm_idea:
                 print("NEW IDEa")
-                #ltemp,vtemp = np.linalg.eigh(crdm[n_roots:,n_roots:] + 0.002 * cs2[n_roots:,n_roots:])
-                ltemp,vtemp = np.linalg.eigh(brdm_curr[n_roots:,n_roots:] + Bi.full_S2[n_roots:,n_roots:])  #have to use it while doing PT correcrions and not the next one. why??
+                ltemp,vtemp = np.linalg.eigh(crdm[n_roots:,n_roots:] + 0.002 * cs2[n_roots:,n_roots:])
+                #ltemp,vtemp = np.linalg.eigh(brdm_curr[n_roots:,n_roots:] + Bi.full_S2[n_roots:,n_roots:])  #have to use it while doing PT correcrions and not the next one. why??
 
                 sort_ind = np.argsort(ltemp)[::-1]
                 ltemp = ltemp[sort_ind]
