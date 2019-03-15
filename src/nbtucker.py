@@ -69,7 +69,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                     max_iter = 100,     #max_iter
                     diis_thresh = 1e-7, #thresh
                     opt = 'diis',       #what kind of solver
-                    diis_start=0,       #which iter starts diis
+                    diis_start=1,       #which iter starts diis
                     n_diis_vecs=8,      #max diis subspace size
                     # davidson optimization variables
                     dav_thresh  = 1e-8, #Threshold for supersystem davidson iterations
@@ -444,6 +444,10 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
         diis_frag_grams[bi] = []
     
     for it in range(0,max_iter):
+        print
+        print "=========================================================================================" 
+        print " Outer loop iteration: ", it 
+        print "=========================================================================================" 
         if direct == 0:
             print 
             print " Build Hamiltonian:"
@@ -483,7 +487,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                 dav.set_preconditioner(hv_diag)
             #dav.set_preconditioner(H.diagonal())
          
-            if opt == 'diis_sv':
+            if opt == 'diis_sv' and it >= diis_start:
                 if dit == 0:
                     print " Compute initial residual:"
                     vHv = hv[:,ts].T.conj().dot(dav.vec_curr[:,ts])
@@ -491,7 +495,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                     res.shape = (res.shape[0],1)
                     print res.shape
                     print( " Energy: %12.8f Norm of Res: %12.8f" %(vHv, np.linalg.norm(res)))
-                    diis_err_vecs.append(res)
+                    diis_err_vecs.append(abs(res))
 
             dav.update()
             dav.print_iteration()
@@ -520,11 +524,11 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
     
         last_vectors = cp.deepcopy(v)
         
-        if opt == 'diis_sv':
-            tmp = cp.deepcopy(v[:,ts])
+        if opt == 'diis_sv' and it>=diis_start:
+            tmp = cp.deepcopy(last_vectors[:,ts])
             tmp.shape = (tmp.shape[0],1)
             diis_sys_vecs.append(tmp)
-    
+        
         """
         print " Diagonalize Hamiltonian: Size of H: ", H.shape
         l = np.array([])
@@ -570,44 +574,58 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             Bi = lattice_blocks[bi]
             brdms[bi] = np.zeros(( Bi.full_dim, Bi.full_dim )) 
    
-        if opt == 'diis_sv':
-            if it > diis_start:
-                assert(len(diis_err_vecs) > 1)
-                assert(len(diis_sys_vecs) > 1)
+        if opt == 'diis_sv' and it >= diis_start:
+            assert(len(diis_err_vecs) > 0)
+            assert(len(diis_sys_vecs) > 0)
+            n_evecs = len(diis_err_vecs)
+            ss = np.hstack(diis_err_vecs)
+            S = ss.T.dot(ss)
+            
+            collapse = 1
+            if collapse:
+                sort_ind = np.argsort(S.diagonal())
+                sort_ind = [sort_ind[i] for i in range(0,min(len(sort_ind),n_diis_vecs))]
+                
+                print " Order of DIIS subspace", sort_ind
+                diis_err_vecs = [diis_err_vecs[i] for i in sort_ind]
+                diis_sys_vecs = [diis_sys_vecs[i] for i in sort_ind]
+                print " Vector errors", S.diagonal()[sort_ind] 
                 n_evecs = len(diis_err_vecs)
                 ss = np.hstack(diis_err_vecs)
                 S = ss.T.dot(ss)
-                print " Vector errors", n_evecs 
-                B = np.ones( (n_evecs+1, n_evecs+1) )
-                B[-1,-1] = 0
-                B[0:-1,0:-1] = cp.deepcopy(S) 
-                r = np.zeros( (n_evecs+1,1) )
-                r[-1] = 1
-               
-                print B
-                if n_evecs > 0: 
-                    x = np.linalg.pinv(B).dot(r)
-                    
-                    extrap_err_vec = np.zeros((diis_err_vecs[0].shape[0]))
-                    extrap_err_vec.shape = (extrap_err_vec.shape[0],1)
-                    
-                    extrap_sys_vec = np.zeros((diis_sys_vecs[0].shape[0]))
-                    extrap_sys_vec.shape = (extrap_sys_vec.shape[0],1)
-                    
-                    print x.shape
-                    print extrap_err_vec.shape
-                    print diis_err_vecs[0].shape
-                    print diis_sys_vecs[0].shape
-                    for i in range(0,x.shape[0]-1):
-                        extrap_err_vec += x[i,0]*diis_err_vecs[i]
-                        extrap_sys_vec += x[i,0]*diis_sys_vecs[i]
-                    
-                    print " DIIS Coeffs"
-                    for i in range(x.shape[0]):
-                        print "  %12.8f" %x[i,0]
-                    #print x.T
-                    print " CURRENT           error vector %12.2e " % S[-1,-1] 
-                    v = extrap_sys_vec/np.linalg.norm(extrap_sys_vec)
+            
+            print " Number of error vectors: %4i " %n_evecs
+            B = np.ones( (n_evecs+1, n_evecs+1) )
+            B[-1,-1] = 0
+            B[0:-1,0:-1] = cp.deepcopy(S) 
+            r = np.zeros( (n_evecs+1,1) )
+            r[-1] = 1
+            
+            [svd_u, svd_s, svd_v] = np.linalg.svd(S)
+            if n_evecs > 0: 
+                x = np.linalg.pinv(B).dot(r)
+                
+                extrap_err_vec = np.zeros((diis_err_vecs[0].shape[0]))
+                extrap_err_vec.shape = (extrap_err_vec.shape[0],1)
+                
+                extrap_sys_vec = np.zeros((diis_sys_vecs[0].shape[0]))
+                extrap_sys_vec.shape = (extrap_sys_vec.shape[0],1)
+                
+                print x.shape
+                print extrap_err_vec.shape
+                print diis_err_vecs[0].shape
+                print diis_sys_vecs[0].shape
+                for i in range(0,x.shape[0]-1):
+                    extrap_err_vec += x[i,0]*diis_err_vecs[i]
+                    extrap_sys_vec += x[i,0]*diis_sys_vecs[i]
+                
+                print " DIIS Coeffs"
+                for i in range(x.shape[0]):
+                    print "  %12.8f" %x[i,0]
+                #print x.T
+                print " CURRENT           error vector %12.2e " % S[-1,-1] 
+                print " Extrapolated      error vector %12.2e " % extrap_err_vec.T.dot(extrap_err_vec) 
+                v = extrap_sys_vec/np.linalg.norm(extrap_sys_vec)
     
         print
         print " Compute Block Reduced Density Matrices (BRDM):"
@@ -649,7 +667,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
         if 0:
             print
             print " Compute Block Reduced Density Matrices (BRDM) FULL!:"
-    # {{{
+    
             dim_tot_list = []
             full_dim = 1
             sum_1 = 0
@@ -679,13 +697,12 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             vec_curr.shape = (full_dim,1)
             print "v'v:   %12.8f" % vec_curr.T.dot(vec_curr)
             print "sum_1: %12.8f" % sum_1 
-     # }}}
+     
     
     
         print
         print " Compute Eigenvalues of BRDMs:"
         overlaps = []
-        diis_start = diis_start
         for bi in range(0,n_blocks):
             Bi = lattice_blocks[bi]
     
@@ -701,7 +718,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             brdm_curr = spin_proj.dot(brdms[bi]).dot(spin_proj)
             """
     
-            brdm_curr = brdms[bi] + Bi.full_S2
+            brdm_curr = brdms[bi] + .1*Bi.full_S2 + .2*Bi.full_Sz
             if opt == "diis":
                 n_diis_vecs = n_diis_vecs 
                 proj_p = Bi.v_ss(0).dot(Bi.v_ss(0).T)
@@ -718,12 +735,13 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                 
                 n_evecs = Bi.diis_vecs.shape[1]
                 
-                if it>diis_start:
+                if it>=diis_start:
                     S = Bi.diis_vecs.T.dot(Bi.diis_vecs )
                     
                     collapse = 1
                     if collapse:
                         sort_ind = np.argsort(S.diagonal())
+                        print " Order of DIIS subspace", sort_ind
                         sort_ind = [sort_ind[i] for i in range(0,min(len(sort_ind),n_diis_vecs))]
                         Bi.diis_vecs = Bi.diis_vecs[:,sort_ind]
                         tmp = []
@@ -737,11 +755,14 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                     B = np.ones( (n_evecs+1, n_evecs+1) )
                     B[-1,-1] = 0
                     B[0:-1,0:-1] = cp.deepcopy(S) 
-                    print B
                     r = np.zeros( (n_evecs+1,1) )
                     r[-1] = 1
                     if n_evecs > 0: 
                         x = np.linalg.pinv(B).dot(r)
+                        print
+                        print x
+                        print
+                        print r
                         
                         extrap_err_vec = np.zeros((Bi.diis_vecs.shape[0]))
                         extrap_err_vec.shape = (extrap_err_vec.shape[0])
@@ -833,12 +854,14 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
         last_vectors, tmp = np.linalg.qr(last_vectors)
     
    
-        if opt == "diis_sv" and len(diis_err_vecs) > 0:
+        if opt == "diis_sv" and it >= diis_start:
             """
             # Rotate diis vectors to new basis
             """
             dev = np.hstack(diis_err_vecs)
             dsv = np.hstack(diis_sys_vecs)
+            ev_ovlp = dev.T.dot(dev)
+            
             for si in range(0,last_vectors.shape[1]):
                 for t in sorted(tucker_blocks):
                     Tb = tucker_blocks[t]
@@ -870,10 +893,14 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             diis_sys_vecs = []
             for si in range(dev.shape[1]):
                 tmp = dev[:,si]
+                print  " Norm of rotated diis_err_vec %4i %12.8f old: %12.8f" %(si,np.linalg.norm(tmp),np.sqrt(ev_ovlp[si,si]))
+                tmp = tmp/np.linalg.norm(tmp) * np.sqrt(ev_ovlp[si,si])
                 tmp.shape = (tmp.shape[0],1)
                 diis_err_vecs.append(tmp)
             for si in range(dsv.shape[1]):
                 tmp = dsv[:,si]
+                print  " Norm of rotated diis_sys_vec %4i %12.8f " %(si,np.linalg.norm(tmp))
+                tmp = tmp / np.linalg.norm(tmp)
                 tmp.shape = (tmp.shape[0],1)
                 diis_sys_vecs.append(tmp)
     
@@ -896,11 +923,13 @@ if __name__== "__main__":
 
     size = (2,6)
     blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11]]
-    n_p_states = [4,2,4]
-    nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(size=size,blocks=blocks),
+    n_p_states = [2,4,4]
+    nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(size=size,blocks=blocks, ratio=2),
                     blocks = blocks, 
-                    opt='diis_sv',
-                    diis_start = 0,
+                    diis_thresh = 1e-10,
+                    opt='',
+                    diis_start = 2,
+                    max_iter = 100,
                     n_p_states = n_p_states
                 )
 
