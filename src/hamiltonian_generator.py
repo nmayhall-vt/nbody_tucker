@@ -40,6 +40,42 @@ def make_2d_lattice(size = (2,2),
     return(J)
 
 
+def make_1d_lattice(size = 4,
+                    blocks = [[0,1],[2,3]],
+                    ratio = .5,
+                    pbc=True
+                    ):
+    """Create an 1d lattice"""
+    n_blocks = len(blocks)
+    n = size
+
+
+
+    n_sites = size 
+    intra_block_bonds = np.zeros((n_sites, n_sites)) 
+    for bi in range(0,n_blocks):
+        for si in blocks[bi]:
+            for sj in blocks[bi]:
+                intra_block_bonds[si,sj] = 1
+
+    
+    J = np.zeros((n,n))
+    for i in range(0,n-1):
+        j= i+1
+        if intra_block_bonds[i,j] == 1:
+            J[i,j] = -1
+            J[j,i] = -1
+        else:
+            J[i,j] = -ratio
+            J[j,i] = -ratio
+
+    if pbc:
+        J[0,n-1] = -ratio
+        J[n-1,0] = -ratio
+    #print(J)
+    return(J)
+
+
 def print_lattice(edges):
     
     print igraph.__version__
@@ -118,5 +154,7 @@ def print_lattice(edges):
 
 if __name__== "__main__":
     j12 = make_2d_lattice()
+    print(j12)
+    j12 = make_1d_lattice(size=8,blocks=[[0,1,2,3],[4,5,6,7]])
+    print(j12)
     
-    #print_lattice(j12)

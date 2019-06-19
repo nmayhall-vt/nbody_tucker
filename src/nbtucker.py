@@ -65,19 +65,21 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                     n_q_states = None,
                     n_body_order = 2,
                     pt_order = 0,
+                    pt_type  = 'mp',
                     # cluster_state optimization variables
-                    max_iter = 100,     #max_iter
-                    diis_thresh = 1e-7, #thresh
-                    opt = 'diis',       #what kind of solver
-                    diis_start=1,       #which iter starts diis
-                    n_diis_vecs=8,      #max diis subspace size
+                    max_iter = 100,         #max_iter
+                    diis_thresh = 1e-7,     #thresh
+                    opt = 'diis',           #what kind of solver
+                    diis_start=1,           #which iter starts diis
+                    n_diis_vecs=8,          #max diis subspace size
+                    lattice_blocks = None,  #guess vectors for diis
                     # davidson optimization variables
-                    dav_thresh  = 1e-8, #Threshold for supersystem davidson iterations
-                    dav_max_iter = 20,  #maxiter for supersystem davidson iterations
-                    n_roots = 1,        #How many roots to solve for
-                    dav_max_ss = 20,    #Max number of vectors in davidson subspace
-                    dav_guess='pspace', #Initial guess for davidson
-                    n_print=10          #num states to print
+                    dav_thresh  = 1e-8,     #Threshold for supersystem davidson iterations
+                    dav_max_iter = 20,      #maxiter for supersystem davidson iterations
+                    n_roots = 1,            #How many roots to solve for
+                    dav_max_ss = 20,        #Max number of vectors in davidson subspace
+                    dav_guess='pspace',     #Initial guess for davidson
+                    n_print=10              #num states to print
                 ):
 
     lattice = np.ones((j12.shape[0],1))
@@ -108,8 +110,9 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
         n_q_space = n_q_states
     
     
-    # Get initial compression vectors 
-    p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states)
+    # Get initial compression vectors
+    if lattice_blocks == None:
+        p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states)
 
 
     """
@@ -140,32 +143,35 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                         
     
     blocks_in = cp.deepcopy(blocks)
-    lattice_blocks = {}         # dictionary of block objects
 
 
     #
     #   Initialize Block objects
-    print 
-    print " Prepare Lattice Blocks:"
-    print n_p_states, n_q_states
-    for bi in range(0,n_blocks):
-        lattice_blocks[bi] = Lattice_Block()
-        lattice_blocks[bi].init(bi,blocks_in[bi],[n_p_states[bi], n_q_states[bi]])
-    
-        lattice_blocks[bi].np = n_p_states[bi] 
-        lattice_blocks[bi].nq = n_q_states[bi] 
-        lattice_blocks[bi].vecs = np.hstack((p_states[bi],q_states[bi]))
+    if lattice_blocks == None:
+        print 
+        print " Prepare Lattice Blocks:"
+        print n_p_states, n_q_states
+        lattice_blocks = {}         # dictionary of block objects
+        for bi in range(0,n_blocks):
+            lattice_blocks[bi] = Lattice_Block()
+            lattice_blocks[bi].init(bi,blocks_in[bi],[n_p_states[bi], n_q_states[bi]])
         
-        lattice_blocks[bi].extract_lattice(lattice)
-        lattice_blocks[bi].extract_j12(j12)
-    
-        lattice_blocks[bi].form_H()
-        lattice_blocks[bi].form_site_operators()
-    
-        print lattice_blocks[bi]
-
-
-
+            lattice_blocks[bi].np = n_p_states[bi] 
+            lattice_blocks[bi].nq = n_q_states[bi] 
+            lattice_blocks[bi].vecs = np.hstack((p_states[bi],q_states[bi]))
+            
+            lattice_blocks[bi].extract_lattice(lattice)
+            lattice_blocks[bi].extract_j12(j12)
+        
+            lattice_blocks[bi].form_H()
+            lattice_blocks[bi].form_site_operators()
+        
+            print lattice_blocks[bi]
+    else:
+        print " Read lattice_blocks in"
+ 
+ 
+ 
     dim_tot = 0
     
     tb_0 = Tucker_Block()
@@ -916,6 +922,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter[ei-1])
         else:
             print " %10i  %12.8f  %12s" %(ei,e,"")
+    return tucker_blocks, lattice_blocks, v
 
 
 
