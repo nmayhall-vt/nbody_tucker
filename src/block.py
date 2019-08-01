@@ -1288,6 +1288,7 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
     for t_l in sorted(tucker_blocks):
         if t_l[0] <= var_order:
             tb_l = cp.deepcopy(tucker_blocks[t_l])
+            print(tb_l)
             tb_l.start = dim_tot_A
             tb_l.stop = tb_l.start + tb_l.full_dim 
             
@@ -1386,6 +1387,7 @@ def PT_mp(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,
     #v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
     #print v_upper.shape
     #print v_lcc.shape
+
     v_lcc = np.append(v_upper,v_lcc).reshape(dim_tot_X+dim_tot_A,n_roots)
     #printm(E_mpn)
     np.set_printoptions(suppress = True, precision = 5, linewidth=200)
@@ -2248,3 +2250,132 @@ def pt_build_H0Sz(blocks,tb_l, tb_r,j12):
     return H,S2
     #}}}
 
+def PT_lcc_3(n_blocks,lattice_blocks, tucker_blocks, tucker_blocks_pt,n_body_order,pt_order, l, v, j12, pt_type,n):
+# {{{
+    do_2b_diag = 0
+
+    if pt_type == "lcc" or "mp":
+        do_2b_diag = 0
+    else:
+        print " Bad value for pt_type"
+        exit(-1)
+    """
+    C(n) = R * V * C(n-1) - sum_k  R * E(k) * C(n-k)
+    
+    The second term is omitted coz it is the non renormalised term and makes the method non size consistent.
+    """
+    n = n-1
+    var_order = 0
+    var_order = n_body_order - pt_order
+
+    n_roots = v.shape[1]
+    e2 = np.zeros((n_roots))
+
+    tucker_blocks_0 = {}
+    tucker_blocks_1 = {}
+    dim_tot_X = 0 #Dim of orthogonal space
+    dim_tot_A = 0 #Dim of model space
+    for t_l in sorted(tucker_blocks):
+        if t_l[0] <= var_order:
+            tb_l = cp.deepcopy(tucker_blocks[t_l])
+            tb_l.start = dim_tot_A
+            tb_l.stop = tb_l.start + tb_l.full_dim 
+            
+            tucker_blocks_0[t_l] = tb_l 
+            
+            dim_tot_A += tb_l.full_dim
+        else:
+            tb_l = cp.deepcopy(tucker_blocks[t_l])
+            tb_l.start = dim_tot_X
+            tb_l.stop = tb_l.start + tb_l.full_dim 
+            
+            tucker_blocks_1[t_l] = tb_l 
+            
+            dim_tot_X += tb_l.full_dim
+            
+
+    D_X = np.zeros((dim_tot_X))     #diagonal of X space
+    H_Xs = np.zeros((dim_tot_X, n_roots))
+    E_mpn = np.zeros((n+1,n_roots))         #PT energy
+    v_n = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
+       
+
+    print " Configurations defining the variational space"
+    for t_l in sorted(tucker_blocks_0):
+        #print " 0: ", tucker_blocks_0[t_l]
+        print tucker_blocks_0[t_l], " Range= %8i:%-8i" %( tucker_blocks_0[t_l].start, tucker_blocks_0[t_l].stop)
+    print 
+    print " Configurations defining the perturbational space"
+    for t_l in sorted(tucker_blocks_1):
+        print tucker_blocks_1[t_l], " Range= %8i:%-8i" %( tucker_blocks_1[t_l].start, tucker_blocks_1[t_l].stop)
+        #print " 1: ", tucker_blocks_1[t_l]
+  
+
+    for t_l in sorted(tucker_blocks_1):
+        tb_l = tucker_blocks_1[t_l]
+        D_X[tb_l.start:tb_l.stop] = build_H_diag(lattice_blocks, tb_l, tb_l, j12, do_2b_diag)
+        for t_r in sorted(tucker_blocks_0):
+            tb_r = tucker_blocks_0[t_r]
+            hv,s2v = pt_build_H1v(lattice_blocks, tb_l, tb_r, j12,v[tb_r.start:tb_r.stop,:])
+            H_Xs[tb_l.start:tb_l.stop,:] += hv
+
+    #print v
+    #print l
+    #print H_Xs
+    #print D_X
+
+    H_Xs = H_Xs.reshape(dim_tot_X,n_roots)
+
+    v_lcc = np.zeros((dim_tot_X,n_roots))   #list of PT vectors
+    v_upper = np.zeros((dim_tot_A,n_roots))   #list of PT vectors
+
+    E_corr = np.zeros(n_roots)
+    
+    print
+    print "     LCC Iterations"
+    for s in range(0, n_roots):
+        res = 1/(l[s]-D_X)
+        v_n[: ,s] = np.multiply(res, H_Xs[:,s])
+        E_mpn[0,s] = np.dot(H_Xs[:,s].T,v_n[:,s])
+        #DHv = np.multiply(res, H_Xs[:,s])
+        #e2[s] = H_Xs[:,s].T.dot(DHv)
+        v_lcc[:,s] = v_n[:,s] 
+        E_corr[s] = E_mpn[0,s] 
+
+        print " %6s  %16s  %16s " %("Order","Correction","Energy")
+        print " %6i  %16.8f  %16.8f " %(2,E_mpn[0,s],E_corr[s])
+
+        for i in range(1,n):
+            h1,S1 = H1_build_tucker_blocked_sigma(n_blocks,tucker_blocks_1, lattice_blocks, n_body_order, j12,v_n[:,s].reshape(dim_tot_X,1))
+            v_n[:,s] = h1.reshape(dim_tot_X)
+            v_n[:,s] = np.multiply(res,v_n[:,s]) 
+            E_mpn[i,s] = np.dot(H_Xs[:,s].T, v_n[:,s])
+            E_corr[s] += E_mpn[i,s]
+            print " %6i  %16.8f  %16.8f " %(i+2,E_mpn[i,s],E_corr[s])
+            v_lcc[:,s] += v_n[:,s].reshape(dim_tot_X)
+         
+            if max(abs(E_mpn[i+1,s]),abs(E_mpn[i,s])) < 1e-8:
+                print "LCC Converged"
+                break
+            elif i+1 == n:
+                print
+                print " Converged only upto  %12.1e order " %(abs(E_mpn[i+1,s]-E_mpn[i,s]))
+                
+        v_upper[:,s] = v[0:dim_tot_A,s]
+        #print "Correlation %16.8f " %(E_corr[s])
+
+    #v = np.append(v,v_n[:,0]).reshape(dim_tot_X+dim_tot_A,1)
+    #print v_upper.shape
+    #print v_lcc.shape
+    v_lcc = np.append(v_upper,v_lcc).reshape(dim_tot_X+dim_tot_A,n_roots)
+    #printm(E_mpn)
+    np.set_printoptions(suppress = True, precision = 5, linewidth=200)
+    #print(v_lcc)
+    
+    norm = np.linalg.norm(v_lcc)
+    print
+    print "Norm of the LCC vector:    %16.8f " %(norm)
+    v_lcc = v_lcc/norm
+    return E_corr, v_lcc
+
+# }}}

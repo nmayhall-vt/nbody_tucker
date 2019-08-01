@@ -38,7 +38,7 @@ def get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states):
         H_b, tmp, S2_b, Sz_b = form_hdvv_H(lat_b,j_b)
 
         # Diagonalize an arbitrary linear combination of the quantum numbers we insist on preserving
-        l_b,v_b = np.linalg.eigh(H_b + .9*Sz_b + .8*S2_b) 
+        l_b,v_b = np.linalg.eigh(H_b + .09*Sz_b + .8*S2_b) 
         h_b = v_b.transpose().dot(H_b).dot(v_b).diagonal()
         
         sort_ind = np.argsort(h_b)
@@ -148,6 +148,7 @@ def form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12,v,ts):
     print " Compute Block Reduced Density Matrices (BRDM):"
     for tb1 in sorted(tucker_blocks):
         Tb1 = tucker_blocks[tb1]
+        print("shape",v.shape)
         vb1 = cp.deepcopy(v[Tb1.start:Tb1.stop, ts])
         vb1.shape = Tb1.block_dims
         for tb2 in sorted(tucker_blocks):
@@ -171,6 +172,7 @@ def form_brdm(n_blocks, tucker_blocks, lattice_blocks, j12,v,ts):
                         brdms[bi] += u1.dot(brdm_tmp).dot(u2.T)
                 if len(different) == 1:
                     vb2 = cp.deepcopy(v[Tb2.start:Tb2.stop, ts])
+                    print vb2
                     vb2.shape = Tb2.block_dims
                     bi = different[0]
                     brdm_tmp = form_1fdm(vb1,vb2,[bi])
@@ -198,6 +200,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                     opt = 'diis',       #what kind of solver
                     diis_start=0,       #which iter starts diis
                     n_diis_vecs=8,      #max diis subspace size
+                    lattice_blocks = None,  #guess vectors for diis
                     # davidson optimization variables
                     dav_thresh  = 1e-7, #Threshold for supersystem davidson iterations
                     dav_max_iter = 20,  #maxiter for supersystem davidson iterations
@@ -225,6 +228,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             'opt'           :   opt,      
             'diis_start'    :   diis_start,      
             'n_diis_vecs'   :   n_diis_vecs,     
+            'lattice_blocks':   lattice_blocks,
             'dav_thresh'    :   dav_thresh,
             'dav_max_iter'  :   dav_max_iter, 
             'n_roots'       :   n_roots,       
@@ -267,7 +271,9 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
     
     
     # Get initial compression vectors 
-    p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states)
+    if lattice_blocks == None:
+        print("Initialize the compression vectors")
+        p_states, q_states = get_guess_vectors(lattice, j12, blocks, n_p_states, n_q_states)
 
 
     """
@@ -298,29 +304,53 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                         
     
     blocks_in = cp.deepcopy(blocks)
-    lattice_blocks = {}         # dictionary of block objects
 
 
     #
     #   Initialize Block objects
-    print 
-    print " Prepare Lattice Blocks:"
-    print n_p_states, n_q_states
-    for bi in range(0,n_blocks):
-        lattice_blocks[bi] = Lattice_Block()
-        lattice_blocks[bi].init(bi,blocks_in[bi],[n_p_states[bi], n_q_states[bi]])
-    
-        lattice_blocks[bi].np = n_p_states[bi] 
-        lattice_blocks[bi].nq = n_q_states[bi] 
-        lattice_blocks[bi].vecs = np.hstack((p_states[bi],q_states[bi]))
+    if lattice_blocks == None:
+        print 
+        print " Prepare Lattice Blocks:"
+        print n_p_states, n_q_states
+        lattice_blocks = {}         # dictionary of block objects
+        for bi in range(0,n_blocks):
+            lattice_blocks[bi] = Lattice_Block()
+            lattice_blocks[bi].init(bi,blocks_in[bi],[n_p_states[bi], n_q_states[bi]])
         
-        lattice_blocks[bi].extract_lattice(lattice)
-        lattice_blocks[bi].extract_j12(j12)
+            lattice_blocks[bi].np = n_p_states[bi] 
+            lattice_blocks[bi].nq = n_q_states[bi] 
+            lattice_blocks[bi].vecs = np.hstack((p_states[bi],q_states[bi]))
+            
+            lattice_blocks[bi].extract_lattice(lattice)
+            lattice_blocks[bi].extract_j12(j12)
+        
+            lattice_blocks[bi].form_H()
+            lattice_blocks[bi].form_site_operators()
     
-        lattice_blocks[bi].form_H()
-        lattice_blocks[bi].form_site_operators()
+            print lattice_blocks[bi]
+    else:
+        print " Read lattice_blocks in"
+        vvecs = {}
+        for bi in range(0,n_blocks):
+            vvecs[bi] = cp.deepcopy(lattice_blocks[bi].vecs)
+            print(vvecs[bi])
+
+        lattice_blocks = {}         # dictionary of block objects
+        for bi in range(0,n_blocks):
+            lattice_blocks[bi] = Lattice_Block()
+            lattice_blocks[bi].init(bi,blocks_in[bi],[n_p_states[bi], n_q_states[bi]])
+        
+            lattice_blocks[bi].np = n_p_states[bi] 
+            lattice_blocks[bi].nq = n_q_states[bi] 
+            lattice_blocks[bi].vecs = vvecs[bi]
+            
+            lattice_blocks[bi].extract_lattice(lattice)
+            lattice_blocks[bi].extract_j12(j12)
+        
+            lattice_blocks[bi].form_H()
+            lattice_blocks[bi].form_site_operators()
     
-        print lattice_blocks[bi]
+            print lattice_blocks[bi]
 
 
 
@@ -601,6 +631,10 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
         diis_frag_grams[bi] = []
     
     for it in range(0,max_iter):
+        print
+        print "=========================================================================================" 
+        print " Outer loop iteration: ", it 
+        print "=========================================================================================" 
 
         if pt_order == 0:
             l,v = do_variational_microiteration_update(args,n_blocks, tucker_blocks, lattice_blocks, n_body_order, j12,dav_thresh,it,last_vectors)  
@@ -779,10 +813,10 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             """
     
             brdm_curr = brdms[bi] + Bi.full_S2
-            print("the brdm_curr")
-            print(brdm_curr)
-            print("The S2")
-            print(Bi.full_S2)
+            #print("the brdm_curr")
+            #print(brdm_curr)
+            #print("The S2")
+            #print(Bi.full_S2)
             if opt == "diis":
                 n_diis_vecs = n_diis_vecs 
                 proj_p = Bi.v_ss(0).dot(Bi.v_ss(0).T)
@@ -809,6 +843,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                         Bi.diis_vecs = Bi.diis_vecs[:,sort_ind]
                         tmp = []
                         for i in sort_ind:
+                            print(sort_ind)
                             tmp.append(diis_frag_grams[bi][i])
                         diis_frag_grams[bi] = cp.deepcopy(tmp)
                         print " Vector errors", S.diagonal()[sort_ind] 
@@ -837,15 +872,15 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                         print " CURRENT           error vector %12.2e " % error_vector.T.dot(error_vector)
     
             if it ==0:
-                lxold,vx_old = np.linalg.eigh(brdms[bi] + 0.0022 * Bi.full_S2 )
-                print(lxold)
+                lxold,vx_old = np.linalg.eigh(brdms[bi] + 0.0022 * Bi.full_S2 + 0.0033 * Bi.full_Sz )
                 sort_ind = np.argsort(lxold)[::-1]
                 lxold = lxold[sort_ind]
                 vx_old = vx_old[:,sort_ind]
 
-            temp = brdm_curr + Bi.full_S2
+            #temp = brdm_curr +  0.033 * Bi.full_S2 + 0.022 * Bi.full_Sz
+            temp = brdm_curr +  0.033 * Bi.full_S2 
             if it < 0: 
-                temp[0,0] += 1e7
+                temp[0,0] += 1e19
             #lx,vx = np.linalg.eigh(brdm_curr + Bi.full_S2)  #have to use it while doing PT correcrions and not the next one. why??
             lx,vx = np.linalg.eigh(temp)  
             #lx,vx = np.linalg.eigh(brdms[bi] + 0.0022 * Bi.full_S2 )
@@ -854,10 +889,11 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             crdm = np.dot(vx_old.T,np.dot(brdms[bi],vx_old))
             cs2 = np.dot(vx_old.T,np.dot(Bi.full_S2,vx_old))
             csz = np.dot(vx_old.T,np.dot(Bi.full_Sz,vx_old))
-            print(brdm_curr)
-            print(crdm)
-            print(cs2)
+            #print(brdm_curr)
+            #print(crdm)
+            #print(cs2)
             #print(Bi.full_S2)
+            #print("ZERO ENERGY",e0)
 
             new_pt_brdm_idea = 0
             if new_pt_brdm_idea:
@@ -891,10 +927,10 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                 #print(brdm_curr)
                 print("S2 new")
                 print(vx.T.dot(Bi.full_S2.dot(vx)))
-            else:
-                print("NO NOEW IDEA")
                 
-                
+            damping = 1  
+            #if damping :
+
             #print(vx.T.dot(brdms[bi]).dot(vx))
             lx = vx.T.dot(brdms[bi]).dot(vx).diagonal()
             #print(lx)
@@ -905,13 +941,13 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             vx = vx[:,sort_ind]
 
             #vx_old = vx #vpt_new
-            print("lx")
-            print(lx)
+            #print("lx")
+            #print(lx)
             
             vp = vx[:,0:Bi.ss_dims[0]]
             vq = vx[:,Bi.ss_dims[0]:Bi.ss_dims[0]+Bi.ss_dims[1]]
            
-            tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + Bi.full_H + Bi.full_Sz + Bi.full_S2).dot(vp))
+            tmp, up = np.linalg.eigh(vp.T.dot(brdms[bi] + Bi.full_H + 0.033 * Bi.full_Sz + 0.053 * Bi.full_S2).dot(vp))
             vp = vp.dot(up)
             sort_ind = np.argsort(vp.T.dot(brdms[bi]).dot(vp).diagonal() )[::-1]
             vp = vp[:,sort_ind]
@@ -998,23 +1034,33 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
                 print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter_lcc[ei-1])
             else:
                 print " %10i  %12.8f  %12s" %(ei,e,"")
+        energy_per_iter = cp.deepcopy(energy_per_iter_lcc)
 
+    return energy_per_iter[-1], tucker_blocks, lattice_blocks, v, brdms
 
 if __name__== "__main__":
 
-    size = (2,10)
-    blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15],[16,17,18,19]]
-    n_p_states = [4,4,4,4,4]
+    size = (1,12)
+    cut = (3,4)
+    blocks = np.arange(size[0]*size[1]).reshape(cut)
+    print("blocks",blocks)
+    #blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11]]
+    n_p_states = []
+    for i in range(0,6):
+        n_p_states.append(4)
+        
+        
     nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(size=size,blocks=blocks),
                     blocks = blocks, 
                     n_p_states = n_p_states,
                     n_body_order =2,
                     pt_order =2,
-                    pt_mit =4,
+                    pt_mit =30,
                     n_roots = 1,
                     diis_start=0,
-                    n_diis_vecs=6,      #max diis subspace size
+                    n_diis_vecs=8,      #max diis subspace size
                     pt_type = 'mp',
+                    max_iter = 50,
                 )
 
 
