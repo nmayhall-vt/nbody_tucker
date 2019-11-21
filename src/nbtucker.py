@@ -785,6 +785,7 @@ def nbody_tucker(   j12 = hamiltonian_generator.make_2d_lattice(),
             print " %10i  %12.8f  %12.1e" %(ei,e,e-energy_per_iter[ei-1])
         else:
             print " %10i  %12.8f  %12s" %(ei,e,"")
+    return energy_per_iter[-1]
 
 
 if __name__== "__main__":
