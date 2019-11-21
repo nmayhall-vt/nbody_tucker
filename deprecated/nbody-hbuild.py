@@ -114,6 +114,7 @@ def form_compressed_zero_order_hamiltonian_diag(vecs,Hi):
      
 
     #H = H.reshape(dim,dim)
+<<<<<<< HEAD:deprecated/nbody-hbuild.py
     #print "     Size of Hamitonian block: ", H.shape
     return H.diagonal()
     # }}}
@@ -166,6 +167,8 @@ def form_compressed_zero_order_hamiltonian_diag1(vecs,Hi):
 
     #H = H.reshape(dim,dim)
     #print "     Size of Hamitonian block: ", H.shape
+=======
+>>>>>>> master:nbody-hbuild.py
     return H.diagonal()
     # }}}
 
@@ -269,12 +272,16 @@ def form_compressed_hamiltonian_diag(vecs,Hi,Hij):
                 H += h.reshape(tens_dims).transpose(swap)
                 
     H = H.reshape(dim,dim)
+<<<<<<< HEAD:deprecated/nbody-hbuild.py
 
     ## Project this onto m_s = 0 (or other target)
     #Sz = form_compressed_zero_order_hamiltonian_diag(vecs0,Szi)# This is the diagonal of Sz in the current space
     #H = filter_rows_cols(H, Szi, Sz0_0, target_ms)
 
     #print "     Size of Hamitonian block: ", H.shape
+=======
+    #printm(H)
+>>>>>>> master:nbody-hbuild.py
     return H
     # }}}
 
@@ -330,7 +337,10 @@ def form_compressed_hamiltonian_offdiag_1block_diff(vecs_l,vecs_r,Hi,Hij,differe
     assert(dim_same == dim_same_check)
 
     H = np.zeros((dim_l,dim_r))
+<<<<<<< HEAD:deprecated/nbody-hbuild.py
     #print "     Size of Hamitonian block: ", H.shape
+=======
+>>>>>>> master:nbody-hbuild.py
 
     assert(len(dims_l) == len(dims_r))
     n_dims = len(dims_l)
@@ -502,7 +512,10 @@ def form_compressed_hamiltonian_offdiag_2block_diff(vecs_l,vecs_r,Hi,Hij,differe
     assert(dim_same == dim_same_check)
 
     H = np.zeros((dim_l,dim_r))
+<<<<<<< HEAD:deprecated/nbody-hbuild.py
     #print "     Size of Hamitonian block: ", H.shape
+=======
+>>>>>>> master:nbody-hbuild.py
 
     assert(len(dims_l) == len(dims_r))
     n_dims = len(dims_l)
@@ -605,6 +618,11 @@ def assemble_blocked_matrix(H_sectors,n_blocks,n_body_order):
 
         nd = n0 + n1 + n2
 
+<<<<<<< HEAD:deprecated/nbody-hbuild.py
+=======
+        #print "Dimensions: ", n0, n1, n2, " = ", nd
+
+>>>>>>> master:nbody-hbuild.py
         Htest = np.empty([nd,nd])
 
         row = np.empty([n0,nd])
@@ -2137,6 +2155,25 @@ for it in range(0,maxiter):
         
 
 
+<<<<<<< HEAD:deprecated/nbody-hbuild.py
+=======
+    print " %5s    %16s  %16s  %12s" %("State","Energy","Relative","<S2>")
+    for si,i in enumerate(lp):
+        print " %5i =  %16.8f  %16.8f  %12.8f" %(si,i*convert,(i-lp[0])*convert,abs(s2[si,si]))
+        if si>args['n_print']:
+            break
+    
+    #print
+    #print " Energy  Error due to compression    :  %12.8f - %12.8f = %12.8f" %(lp[0],l[0],lp[0]-l[0])
+
+
+    energy_per_iter += [lp[target_state]]
+
+    thresh = 1.0*np.power(10.0,-float(args['thresh']))
+    if it > 0:
+        if abs(lp[target_state]-energy_per_iter[it-1]) < thresh:
+            break# }}}
+>>>>>>> master:nbody-hbuild.py
 
     
     
