@@ -1,5 +1,7 @@
 n-Body Tucker for isotropic spin lattice
 ===
+Code used to generate data for Journal of Chemical Theory and Computation, 13, 4818-4828, (2017): 
+[article](http://pubs.acs.org/doi/abs/10.1021/acs.jctc.7b00696)
 
 ### Install
 ```
