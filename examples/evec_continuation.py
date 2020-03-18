@@ -86,20 +86,20 @@ J3 = transform_Jinter(j12,-0.5,-0.030)
 J4 = transform_Jinter(j12,-0.5,-0.040)
 J = transform_Jinter(j12,-0.5,-10.0)
  
-enb1, tb, lb, v1 = nbtucker.nbody_tucker(j12 = J1, blocks = blocks, n_body_order = 2)
-enb2, tb, lb, v2 = nbtucker.nbody_tucker(j12 = J2, blocks = blocks, n_body_order = 2)
-enb3, tb, lb, v3 = nbtucker.nbody_tucker(j12 = J3, blocks = blocks, n_body_order = 2)
-enb4, tb, lb, v4 = nbtucker.nbody_tucker(j12 = J4, blocks = blocks, n_body_order = 2)
+enb1, tb, lb, v1,bb = nbtucker.nbody_tucker(j12 = J1, blocks = blocks, n_body_order = 2)
+enb2, tb, lb, v2,bb = nbtucker.nbody_tucker(j12 = J2, blocks = blocks, n_body_order = 2)
+enb3, tb, lb, v3,bb = nbtucker.nbody_tucker(j12 = J3, blocks = blocks, n_body_order = 2)
+enb4, tb, lb, v4,bb = nbtucker.nbody_tucker(j12 = J4, blocks = blocks, n_body_order = 2)
 
 
 
-enb2, tb, lb, v4 = nbtucker.nbody_tucker(j12 = J, blocks = blocks, n_body_order = 2)
+enb2, tb, lb, v4,bb = nbtucker.nbody_tucker(j12 = J, blocks = blocks, n_body_order = 2)
 H,S2 = build_tucker_blocked_H(n_blocks,tb, lb, n_body_order=2, j12=J)
 print(H)
 
 
 e_new = evec_continuation(n,H,v1,v2,v3,v4)
-efci, tb, lb, v4 = nbtucker.nbody_tucker(j12 = J, blocks = blocks, n_body_order = 4)
+efci, tb, lb, v4,bb = nbtucker.nbody_tucker(j12 = J, blocks = blocks, n_body_order = 4)
 print("fci  ",efci)
 print("nb2  ",enb2)
 print("pred ",e_new[0])

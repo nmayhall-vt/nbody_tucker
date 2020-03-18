@@ -4,7 +4,7 @@ import hamiltonian_generator
 import itertools as it
 from nbtucker import *
 
-n_blocks = 4
+n_blocks = 3
 iepa_order = 2
 
 
@@ -13,15 +13,16 @@ iepa_order = 2
 #blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15],[16,17,18,19]]
 blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11],[12,13,14,15]]
 #blocks = [[0,1],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13],[14,15]]
-#blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11]]
+blocks = [[0,1,2,3],[4,5,6,7],[8,9,10,11]]
 
 #j12 = np.loadtxt('j12.04.1d.period.afero.24site.m')
 #j12 = np.loadtxt('jtemp_12.m')
 j12 = np.loadtxt('j12_grid4x4.m')
 #j12 = np.loadtxt('j12.04.1d.linear.afero.12site.m')
 #j12 = np.loadtxt('block4/j12.05.m')
-j12 = np.loadtxt('j12.05.1d.linear.afero.16site.m')
-j12 = np.loadtxt('j12.05.1d.period.afero.16site.m')
+#j12 = np.loadtxt('j12.05.1d.linear.afero.16site.m')
+#j12 = np.loadtxt('j12.05.1d.period.afero.16site.m')
+j12 = np.loadtxt('j12.05.lin.12.m')
 
 assert(np.allclose(j12.T,j12))
 
@@ -35,7 +36,7 @@ for l in range(0,iepa_order+1):
 nps0 = [1,1,1,1]
 e0, tbs0, lbs0, v,brdmn  = nbtucker.nbody_tucker(j12 = j12, blocks = blocks, n_p_states = nps0,n_body_order = 0)
 
-miter = 2
+miter = 5
 energy_per_iter = []
 e_icpa = []
 d_old = {}
@@ -72,7 +73,7 @@ for i in range(0,miter):
     for bi in frag:
         ii = 0
         for key in vec_key:
-            crdm[key,bi] = np.dot(lbs[key][bi].vecs.T,np.dot(brdm[key][bi],lbs[key][bi].vecs))
+            #crdm[key,bi] = np.dot(lbs[key][bi].vecs.T,np.dot(brdm[key][bi],lbs[key][bi].vecs))
             #print key
             #print("OLD")
             #print crdm[key,bi]
@@ -80,7 +81,7 @@ for i in range(0,miter):
             #print(-np.linalg.eigvalsh(-crdm[key,bi]))
             if len(key) == 0:
                 #new_rdm[bi] = crdm[key,bi]
-                new_rdm[bi] = brdm[key][bi]
+                new_rdm[bi] = cp.deepcopy(brdm[key][bi])
             if len(key) == 1:
                 ii += 1     #imp
                 #new_rdm[bi] -= (n_blocks-ii)* crdm[key,bi]
@@ -92,13 +93,14 @@ for i in range(0,miter):
                 #corr_rdm[key,bi] = brdm[key][bi] - brdm[(key[0]),][bi] - brdm[(key[1]),][bi]
                 corr_rdm[key,bi] = brdm[key][bi] - brdm[()][bi]
 
-        #for key in vec_key:
-        #    if len(key) == 0:
-        #        new_rdm[bi] = brdm[key][bi] 
-        #    if len(key) == 1:
-        #        new_rdm[bi] += corr_rdm[key,bi] 
-        #    if len(key) == 2:
-        #        new_rdm[bi] += corr_rdm[key,bi] - corr_rdm[(key[0],),bi] - corr_rdm[(key[1],),bi]
+        if iepa_order ==1: 
+            for key in vec_key:
+                if len(key) == 0:
+                    new_rdm[bi] = cp.deepcopy(brdm[key][bi])
+                if len(key) == 1:
+                    new_rdm[bi] += corr_rdm[key,bi] 
+                if len(key) == 2:
+                    new_rdm[bi] += corr_rdm[key,bi] - corr_rdm[(key[0],),bi] - corr_rdm[(key[1],),bi]
 
         #print("CNEW")
         #print(new_rdm[bi])
@@ -110,7 +112,10 @@ for i in range(0,miter):
             icpa = e[key]
         if len(key) == 1:
             ii += 1     #imp
-            icpa -= (n_blocks-ii)* e[key]
+            if iepa_order ==2: 
+                icpa -= (n_blocks-ii)* e[key]
+            if iepa_order ==1: 
+                icpa += e[key] - e[()]
         if len(key) == 2:
             icpa +=  e[key]
     e_icpa.append(icpa)
@@ -122,8 +127,8 @@ for i in range(0,miter):
     lbs_new = {}
     for bi in frag:
         Bi = lbs[()][bi]
-        lx,vx = np.linalg.eigh(new_rdm[bi] + 0.0022 * Bi.full_S2  + 0.0032 * Bi.full_Sz )
-        #lx,vx = np.linalg.eigh(new_rdm[bi])
+        #lx,vx = np.linalg.eigh(new_rdm[bi] + 0.0022 * Bi.full_S2  + 0.0032 * Bi.full_Sz )
+        lx,vx = np.linalg.eigh(new_rdm[bi])
 
         lx = vx.T.dot(new_rdm[bi]).dot(vx).diagonal()
         sort_ind = np.argsort(lx)[::-1]
@@ -163,10 +168,13 @@ for i in range(0,miter):
         Bi.form_H()
         Bi.form_site_operators()
         #lbs[()][bi] = Bi
-        lbs_new[bi] = Bi
+        lbs_new[bi] = cp.deepcopy(Bi)
+        print("--------------")
+        print("CRDM for block",bi)
+        print("--------------")
+        print(np.dot(lbs0[bi].vecs.T,np.dot(new_rdm[bi],lbs0[bi].vecs)))
 
 
-    nps0 = [1,1,1,1]
     e, tbs0, lbs0, v,brdmm  = nbtucker.nbody_tucker(j12 = j12, blocks = blocks, n_p_states = nps0,n_body_order = 0, lattice_blocks = lbs_new,max_iter=1)
 
     d_new[i] = brdmm[0]
@@ -176,6 +184,7 @@ for i in range(0,miter):
     energy_per_iter.append(e)
 
 nps0 = [16,16,16,16]
+efci, tbs0, lbs0, v,brdm  = nbtucker.nbody_tucker(j12 = j12, blocks = blocks, n_p_states = nps0,n_body_order = 0,lattice_blocks=lbs_new)
 e, tbs0, lbs0, v,brdm  = nbtucker.nbody_tucker(j12 = j12, blocks = blocks, n_p_states = nps0,n_body_order = 0)
 
 print(e0)
@@ -190,3 +199,4 @@ print("old")
 print(brdmn[0])
 print(brdm[0])
 print(e)
+print(efci)
